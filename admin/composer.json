@@ -1,0 +1,17 @@
+{
+  "name": "hupa/theme",
+  "type": "theme",
+  "license": "MIT",
+  "description": "Ein leistungsstarkes WordPress Theme mit WooCommerce Unterstützung von <a href =\"https://www.hummelt-werbeagentur.de/\">Hummelt & Partner</a>. Das Theme hat eine große Auswahl an Kategorie-, Seiten-, Beitrags-, Autoren- und Archivvorlagen sowie Sidebar-, Header-, Footer- und 404-Widgets.",
+  "homepage": "https://wwdh.de/",
+  "require": {
+    "php": "~7.4",
+    "vlucas/phpdotenv": "^5.4",
+    "oscarotero/env": "^2.1",
+    "components/font-awesome": "4.7.0",
+    "twbs/bootstrap-icons": "^1.8.3",
+    "guzzlehttp/guzzle": "^7.3",
+    "twig/twig": "^3.0",
+    "yahnis-elsts/plugin-update-checker": "^4.11"
+  }
+}

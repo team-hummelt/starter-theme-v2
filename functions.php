@@ -10,21 +10,6 @@
 //TODO WARNING JOB THEME INIT
 require_once('admin/hupa-starter-theme-v2-init.php');
 
-//TODO THEME UPDATER
-//delete_option('hupa_starter_product_install_authorize');
-//require_once('admin/inc/update-checker/vendor/autoload.php');
-
-function hupa_register_theme_updater()
-{
-    if(get_hupa_option('update_aktiv')) {
-        $hupaStarterUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-            'https://github.com/team-hummelt/hupa-starter/',
-            __FILE__,
-            'hupa-starter'
-        );
-        $hupaStarterUpdateChecker->getVcsApi()->enableReleaseAssets();
-    }
-}
 
 function load_woocommerce_function(){
     if (get_hupa_option('woocommerce_aktiv')) {
@@ -33,6 +18,7 @@ function load_woocommerce_function(){
 // WooCommerce END
     }
 }
+
 //add_action('init', 'load_woocommerce_function');
 
 // Register Bootstrap 5 Nav Walker
@@ -125,9 +111,6 @@ add_action('after_setup_theme', 'bootscore_setup');
  */
 function bootscore_content_width()
 {
-    // This variable is intended to be overruled from themes.
-    // Open WPCS issue: {@link https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/issues/1043}.
-    // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
     $GLOBALS['content_width'] = apply_filters('bootscore_content_width', 640);
 }
 
@@ -365,9 +348,6 @@ function wpse_231597_style_loader_tag($tag): string
     return preg_replace("/id='font-awesome-css'/", "id='font-awesome-css' online=\"if(media!='all')media='all'\"", $tag);
 
 }
-
-// Add <link rel=preload> to Fontawesome END
-
 
 /**
  * Custom template tags for this theme.

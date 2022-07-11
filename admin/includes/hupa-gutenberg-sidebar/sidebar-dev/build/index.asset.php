@@ -1,0 +1,1 @@
+<?php return array('dependencies' => array('wp-components', 'wp-components/build/resizable-box/resize-tooltip/label', 'wp-element', 'wp-polyfill'), 'version' => '10ae192bdaa72534b926056c9e68b924');

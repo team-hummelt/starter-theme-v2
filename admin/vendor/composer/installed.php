@@ -1,11 +1,11 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'theme',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => '0e31d890ea97e6fa79e0e98f55d2e9eb8207d3e7',
         'name' => 'hupa/theme',
         'dev' => true,
     ),
@@ -56,12 +56,12 @@
             'dev_requirement' => false,
         ),
         'hupa/theme' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'theme',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => '0e31d890ea97e6fa79e0e98f55d2e9eb8207d3e7',
             'dev_requirement' => false,
         ),
         'oscarotero/env' => array(
@@ -134,6 +134,15 @@
             'install_path' => __DIR__ . '/../ralouphie/getallheaders',
             'aliases' => array(),
             'reference' => '120b605dfeb996808c31b6477290a714d356e822',
+            'dev_requirement' => false,
+        ),
+        'roots/bedrock-autoloader' => array(
+            'pretty_version' => '1.0.4',
+            'version' => '1.0.4.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../roots/bedrock-autoloader',
+            'aliases' => array(),
+            'reference' => 'f508348a3365ab5ce7e045f5fd4ee9f0a30dd70f',
             'dev_requirement' => false,
         ),
         'symfony/deprecation-contracts' => array(

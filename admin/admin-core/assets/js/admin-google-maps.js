@@ -171,7 +171,7 @@ function render_pin_templates(data = false, id = false, add = false) {
     }
 
     let lang = hupa_starter.theme_language;
-    let defImg = `<img class="img-fluid" src="${hupa_starter.admin_url}assets/images/img-placeholder.svg" alt="" width="80">`;
+    let defImg = `<img class="img-fluid" src="${hupa_starter.admin_url}admin-core/assets/images/img-placeholder.svg" alt="" width="80">`;
     let html = `
         <div id="mapsPin${id}" class="gmaps-pins-wrapper border rounded my-3 shadow-sm p-3 bg-custom-gray">
         <hr>
@@ -284,4 +284,3 @@ function createRandomCode(length) {
     }
     return randomCodes;
 }
-

@@ -1,12 +1,12 @@
 <?php
 /*
- * Template Name: Sidebar left
+ * Template Name: Sidebar Links
  * Template Post Type: post
  */
 defined('ABSPATH') or die();
 $pageId = is_singular() ? get_the_ID() : 0;
 $pageSettings = apply_filters('get_page_meta_data', (int)$pageId);
-$pageSettings->title_css ? $titleCss = 'class="' . $pageSettings->title_css . '"' : $titleCss = '';
+$pageSettings->title_css ? $titleCss = 'class="entry-title ' . $pageSettings->title_css . '"' : $titleCss = 'class="entry-title"';
 get_header(); ?>
 
 <div class="site-content">
@@ -22,9 +22,7 @@ get_header(); ?>
             <div class="row">
                 <?php get_sidebar(); ?>
                 <div class="col-md-8 col-xxl-9 order-first order-md-last">
-
                     <main id="main" class="site-main">
-
                         <header class="entry-header">
                             <?php the_post(); ?>
                             <?php !get_hupa_option('post_kategorie') ?: bootscore_category_badge() ; ?>
@@ -51,26 +49,23 @@ get_header(); ?>
                         </div>
 
                         <footer class="entry-footer clear-both">
+                            <?php hupa_social_media(); ?>
                             <div class="mb-4">
-                                <?php hupa_social_media(); ?>
                                 <?php !get_hupa_option('post_tags') ?: bootscore_tags(); ?>
                             </div>
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-center">
+                            <nav class="py-4">
+                                <ul class="single-pagination pagination justify-content-between">
                                     <li class="page-item">
-                                        <?php previous_post_link('%link'); ?>
+                                        <?php previous_post_link( '%link','<i class="fa fa-angle-left"></i>&nbsp; Vorheriger Artikel',true ) ?>
                                     </li>
                                     <li class="page-item">
-                                        <?php next_post_link('%link'); ?>
+                                        <?php next_post_link( '%link','Nächster Artikel&nbsp; <i class="fa fa-angle-right"></i>',true ) ?>
                                     </li>
                                 </ul>
                             </nav>
                         </footer>
-
                         <?php comments_template(); ?>
-
                     </main><!-- #main -->
-
                 </div><!-- col -->
             </div><!-- row -->
 

@@ -55,6 +55,10 @@
   color: #ffbf31 !important;
 }
 
+a .green_submenue {
+  color: greenyellow !important;
+}
+
 .menu_hupa {
   margin-right: 4px;
   display: inline;

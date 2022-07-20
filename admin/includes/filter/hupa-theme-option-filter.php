@@ -3,6 +3,7 @@
 namespace Hupa\StarterThemeV2;
 
 use HupaStarterThemeV2;
+use Hupa\Starter\Config;
 use stdClass;
 use WP_Query;
 
@@ -52,7 +53,7 @@ class HupaStarterOptionFilter
         $this->main = $main;
     }
 
-    public function hupa_get_hupa_option($option): string
+    public function hupa_get_hupa_option($option)
     {
         global $wpdb;
         $table = $wpdb->prefix . $this->table_settings;
@@ -512,8 +513,12 @@ class HupaStarterOptionFilter
         global $wpdb;
         $table = $wpdb->prefix . $this->table_social;
         $social = $this->get_theme_default_settings();
+
         $default = apply_filters('arrayToObject', $social['social_media']);
+
         foreach ($default as $tmp) {
+            isset($tmp->url) ? $url = $tmp->url : $url = '';
+            isset($tmp->share_txt) ? $share_txt = $tmp->share_txt : $share_txt = '';
             $wpdb->update(
                 $table,
                 array(
@@ -524,8 +529,8 @@ class HupaStarterOptionFilter
                     'btn' => $tmp->btn,
                     'icon' => $tmp->icon,
                     'position' => $tmp->position,
-                    'share_txt' => $tmp->share_txt,
-                    'url' => $tmp->url
+                    'share_txt' => $share_txt,
+                    'url' => $url
                 ),
                 array('slug' => $tmp->slug),
                 array('%s', '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%s'),
@@ -1099,7 +1104,7 @@ class HupaStarterOptionFilter
                 }
             }
 
-            if (WP_POST_SELECTOR_AKTIV) {
+            if (Config::get('WP_POST_SELECTOR_AKTIV')) {
                 $regEx = '/<!.*theme-post-selector.*({.*}).*>/m';
                 preg_match_all($regEx, $record->custum_header, $matches, PREG_SET_ORDER, 0);
                 if ($matches) {
@@ -1212,7 +1217,7 @@ class HupaStarterOptionFilter
                 }
             }
 
-            if (WP_POST_SELECTOR_AKTIV) {
+            if (Config::get('WP_POST_SELECTOR_AKTIV')) {
                 $regEx = '/<!.*theme-post-selector.*({.*}).*>/m';
                 preg_match_all($regEx, $record->custum_footer, $matches, PREG_SET_ORDER, 0);
                 if ($matches) {
@@ -1419,7 +1424,7 @@ class HupaStarterOptionFilter
                 }
             }
 
-            if (WP_POST_SELECTOR_AKTIV) {
+            if (Config::get('WP_POST_SELECTOR_AKTIV')) {
                 $regEx = '/<!.*theme-post-selector.*({.*}).*>/m';
                 preg_match_all($regEx, $record->custum_header, $matches, PREG_SET_ORDER, 0);
                 if ($matches) {
@@ -1518,7 +1523,7 @@ class HupaStarterOptionFilter
                 }
             }
 
-            if (WP_POST_SELECTOR_AKTIV) {
+            if (Config::get('WP_POST_SELECTOR_AKTIV')) {
                 $regEx = '/<!.*theme-post-selector.*({.*}).*>/m';
                 preg_match_all($regEx, $record->custum_footer, $matches, PREG_SET_ORDER, 0);
                 if ($matches) {

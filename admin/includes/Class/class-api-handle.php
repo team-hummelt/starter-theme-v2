@@ -1,9 +1,19 @@
 <?php
 
 namespace Hupa\API;
+/**
+ * The admin-specific Admin functionality of the theme.
+ *
+ * @link       https://wwdh.de
+ * @since      2.0.0
+ *
+ * @package    Hupa_Starterter_v2
+ * @subpackage Hupa_Starterter_v2/includes/Class
+ */
 
 defined('ABSPATH') or die();
 use Hupa\Starter\Config;
+use HupaStarterThemeV2;
 use stdClass;
 
 if ( ! function_exists( 'get_plugins' ) ) {
@@ -13,12 +23,39 @@ if ( ! function_exists( 'get_plugins' ) ) {
 /**
  * REGISTER HUPA CUSTOM THEME
  * @package Hummelt & Partner WordPress Theme
- * Copyright 2021, Jens Wiecker
+ * Copyright 2022, Jens Wiecker
  * License: Commercial - goto https://www.hummelt-werbeagentur.de/
  */
 final class HupaStarterThemeAPI
 {
     private static $instance;
+
+    /**
+     * Store plugin main class to allow admin access.
+     *
+     * @since    2.0.0
+     * @access   private
+     * @var HupaStarterThemeV2 $main The main class.
+     */
+    protected  HupaStarterThemeV2 $main;
+
+    /**
+     * The ID of this theme.
+     *
+     * @since    2.0.0
+     * @access   private
+     * @var      string    $basename    The ID of this theme.
+     */
+    protected string $basename;
+
+    /**
+     * The version of this theme.
+     *
+     * @since    2.0.0
+     * @access   private
+     * @var      string    $theme_version    The current version of this theme.
+     */
+    protected string $theme_version;
 
     /**
      * @return static
@@ -33,11 +70,6 @@ final class HupaStarterThemeAPI
 
 
     public function __construct()
-    {
-
-    }
-
-    public function theme_action_init()
     {
 
     }
@@ -132,6 +164,3 @@ final class HupaStarterThemeAPI
     }
 
 }
-
-global $hupa_api_handle;
-$hupa_api_handle = HupaStarterThemeAPI::instance();

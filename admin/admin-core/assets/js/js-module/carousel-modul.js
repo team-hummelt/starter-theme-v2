@@ -121,7 +121,7 @@ function load_color_pickr(addId = false) {
 function render_carousel(data, handle = false) {
     let lang = data.language;
     let defImage = `<img class="img-fluid carousel-image"
-     src="${hupa_starter.admin_url}assets/images/hupa-logo.svg"
+     src="${hupa_starter.admin_url}admin-core/assets/images/hupa-logo.svg"
      alt=""
      width="200">`;
     let selectCaptionBG = '';
@@ -439,7 +439,7 @@ function render_slider_items(slider, lang, id, record, method = '',) {
     let showDelBtn = '';
     let showAddBtn = '';
     let defImage = `<img class="img-fluid carousel-image"
-     src="${hupa_starter.admin_url}assets/images/hupa-logo.svg"
+     src="${hupa_starter.admin_url}admin-core/assets/images/hupa-logo.svg"
      alt=""
      width="200">`;
     let html = '';

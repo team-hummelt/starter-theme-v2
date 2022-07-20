@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
 
         $(window).on("resize", function (event) {
-          //  console.log( $(this).width() );
+            //  console.log( $(this).width() );
             let scroll = $(window).scrollTop();
             carouselMargin = header.innerHeight() - header.innerHeight();
             if (topArea[0] && carouselWrapper.hasClass('carousel-margin-top')) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Blank with container
+ * Template Name: Blank mit container
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
@@ -8,7 +8,7 @@
  */
 $pageId = is_singular() ? get_the_ID() : 0;
 $pageSettings = apply_filters('get_page_meta_data', (int)$pageId);
-$pageSettings->title_css ? $titleCss = 'class="' . $pageSettings->title_css . '"' : $titleCss = '';
+$pageSettings->title_css ? $titleCss = 'class="entry-title ' . $pageSettings->title_css . '"' : $titleCss = 'class="entry-title"';
 get_header();
 ?>
     <div class="site-content">

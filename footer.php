@@ -25,56 +25,56 @@ $pageBottomFooter = $pageSettings->show_bottom_footer;
                 </div>
             <?php endif; ?>
             <?php if($pageSettings->show_widgets_footer): ?>
-            <div class="row <?=get_hupa_option( 'fix_footer' ) && $pageSettings->show_bottom_footer ? 'mb-5' : 'mb-2'?> ">
-                <!-- Footer 1 Widget -->
-                <div class="col-md-6 col-lg-3">
-                    <?php if ( is_active_sidebar( 'footer-1' )) : ?>
-                        <div>
-                            <?php dynamic_sidebar( 'footer-1' ); ?>
-                        </div>
-                    <?php endif; ?>
-                </div>
-                <!-- Footer 2 Widget -->
-                <div class="col-md-6 col-lg-3">
-                    <?php if ( is_active_sidebar( 'footer-2' )) : ?>
-                        <div>
-                            <?php dynamic_sidebar( 'footer-2' ); ?>
-                        </div>
-                    <?php endif; ?>
-                </div>
+                <div class="row <?=get_hupa_option( 'fix_footer' ) && $pageSettings->show_bottom_footer ? 'mb-5' : 'mb-2'?> ">
+                    <!-- Footer 1 Widget -->
+                    <div class="col-md-6 col-lg-3">
+                        <?php if ( is_active_sidebar( 'footer-1' )) : ?>
+                            <div>
+                                <?php dynamic_sidebar( 'footer-1' ); ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    <!-- Footer 2 Widget -->
+                    <div class="col-md-6 col-lg-3">
+                        <?php if ( is_active_sidebar( 'footer-2' )) : ?>
+                            <div>
+                                <?php dynamic_sidebar( 'footer-2' ); ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
 
-                <!-- Footer 3 Widget -->
-                <div class="col-md-6 col-lg-3">
-                    <?php if ( is_active_sidebar( 'footer-3' )) : ?>
-                        <div>
-                            <?php dynamic_sidebar( 'footer-3' ); ?>
-                        </div>
-                    <?php endif; ?>
-                </div>
+                    <!-- Footer 3 Widget -->
+                    <div class="col-md-6 col-lg-3">
+                        <?php if ( is_active_sidebar( 'footer-3' )) : ?>
+                            <div>
+                                <?php dynamic_sidebar( 'footer-3' ); ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
 
-                <!-- Footer 4 Widget -->
-                <div class="col-md-6 col-lg-3">
-                    <?php if ( is_active_sidebar( 'footer-4' )) : ?>
-                        <div>
-                            <?php dynamic_sidebar( 'footer-4' ); ?>
-                        </div>
-                    <?php endif; ?>
+                    <!-- Footer 4 Widget -->
+                    <div class="col-md-6 col-lg-3">
+                        <?php if ( is_active_sidebar( 'footer-4' )) : ?>
+                            <div>
+                                <?php dynamic_sidebar( 'footer-4' ); ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    <!-- Footer Widgets End -->
                 </div>
-                <!-- Footer Widgets End -->
-            </div>
             <?php endif; ?>
-            
+
             <!-- Bootstrap 5 Nav Walker Footer Menu -->
             <?php
-                wp_nav_menu(array(
-                    'theme_location' => 'footer-menu',
-                    'container' => false,
-                    'menu_class' => '',
-                    'fallback_cb' => '__return_false',
-                    'items_wrap' => '<ul id="footer-menu" class="nav %2$s">%3$s</ul>',
-                    'depth' => 1,
-                    'walker' => new bootstrap_5_wp_nav_menu_walker()
-                ));
+            wp_nav_menu(array(
+                'theme_location' => 'footer-menu',
+                'container' => false,
+                'menu_class' => '',
+                'fallback_cb' => '__return_false',
+                'items_wrap' => '<ul id="footer-menu" class="nav %2$s">%3$s</ul>',
+                'depth' => 1,
+                'walker' => new bootstrap_5_wp_nav_menu_walker()
+            ));
             ?>
             <!-- Bootstrap 5 Nav Walker Footer Menu End -->
         </div>
@@ -85,29 +85,26 @@ $pageBottomFooter = $pageSettings->show_bottom_footer;
     <?=$pageSettings->custum_footer?>
 </div>
 <?php  if($pageSettings->show_bottom_footer): ?>
-<div class="footer bootscore-info border-top py-2 text-center <?=!$pageSettings->fixed_footer ?: 'fixed-bottom'?>">
-    <div class="container">
-      &nbsp;<?php
-        $footerTxt = str_replace('###YEAR###', date('Y'), get_hupa_option('bottom_area_text'));
-        $footerTxt = htmlspecialchars_decode($footerTxt);
-        $footerTxt = stripslashes_deep($footerTxt);
-        echo $footerTxt;
-        ?>
+    <div class="footer bootscore-info border-top py-2 text-center <?=!$pageSettings->fixed_footer ?: 'fixed-bottom'?>">
+        <div class="container">
+            &nbsp;<?php
+            $footerTxt = str_replace('###YEAR###', date('Y'), get_hupa_option('bottom_area_text'));
+            $footerTxt = htmlspecialchars_decode($footerTxt);
+            $footerTxt = stripslashes_deep($footerTxt);
+            echo $footerTxt;
+            ?>
+        </div>
     </div>
-</div>
 <?php endif; ?>
 
 <div class="top-button <?=get_hupa_option( 'scroll_top' ) ?'':'d-none'?>">
-    <a href="#to-top" class="btn btn-scroll-to-top shadow"><i class="fas fa-chevron-up"></i></a>
+    <a href="#to-top" class="btn btn-scroll-to-top shadow"><i class="fa fa-chevron-up"></i></a>
 </div>
 
 </div><!-- #page -->
 
 <?php wp_footer(); ?>
-<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter="">
-    <h3 class="title text-white fs-4"></h3>
-    <a class="close">×</a>
-    <div class="slides"></div>
-</div>
+
+<div id="blueimp-gallery"></div>
 </body>
 </html>

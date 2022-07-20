@@ -158,70 +158,73 @@ class Hupa_Starter_V2_Public_Ajax
         $responseJson = new stdClass();
         $responseJson->status = false;
         $responseJson->msg = date('H:i:s', current_time('timestamp'));
-
-        switch ( $this->method ) {
+        global $hupa_register_theme_options;
+        switch ($this->method) {
             case 'get_gmaps_data':
-                $dbPins = get_hupa_option('map_pins');
+                $dbPins = $hupa_register_theme_options->hupa_get_hupa_option('map_pins');
+
                 $retArr = [];
-                foreach ($dbPins as $tmp) {
-                    if ($tmp->custom_pin_check) {
-                        if ($tmp->custom_pin_img) {
-                            $imdId = $tmp->custom_pin_img;
-                            $img = wp_get_attachment_image_src($tmp->custom_pin_img);
-                            $imgUrl = $img[0];
-                            $imgStPin = '<img class="range-image img-fluid" src="' . $img[0] . '" width="' . $tmp->custom_width . '" height="' . $tmp->custom_height . '">';
+                if ($dbPins) {
+                    foreach ($dbPins as $tmp) {
+                        if ($tmp->custom_pin_check) {
+                            if ($tmp->custom_pin_img) {
+                                $imdId = $tmp->custom_pin_img;
+                                $img = wp_get_attachment_image_src($tmp->custom_pin_img);
+                                $imgUrl = $img[0];
+                                $imgStPin = '<img class="range-image img-fluid" src="' . $img[0] . '" width="' . $tmp->custom_width . '" height="' . $tmp->custom_height . '">';
+                            } else {
+                                if ($hupa_register_theme_options->hupa_get_hupa_option('map_standard_pin')) {
+                                    $imdId = $hupa_register_theme_options->hupa_get_hupa_option('map_standard_pin');
+                                    $img = wp_get_attachment_image_src($imdId);
+                                    $imgUrl = $img[0];
+                                    $imgStPin = '<img class="range-image img-fluid" src="' . $img[0] . '" width="' . $hupa_register_theme_options->hupa_get_hupa_option('map_pin_width') . '" height="' . $hupa_register_theme_options->hupa_get_hupa_option('map_pin_height') . '">';
+                                } else {
+                                    $imdId = false;
+                                    $imgUrl = Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/img-placeholder.svg';
+                                    $imgStPin = '<img class="img-fluid" src="' . Config::get('WP_THEME_ADMIN_URL') . '\'admin-core/assets/images/img-placeholder.svg\'" alt="" width="">';
+                                }
+                            }
                         } else {
-                            if (get_hupa_option('map_standard_pin')) {
-                                $imdId = get_hupa_option('map_standard_pin');
+                            $imdId = $hupa_register_theme_options->hupa_get_hupa_option('map_standard_pin');
+                            if ($imdId) {
                                 $img = wp_get_attachment_image_src($imdId);
                                 $imgUrl = $img[0];
-                                $imgStPin = '<img class="range-image img-fluid" src="' . $img[0] . '" width="' . get_hupa_option('map_pin_width') . '" height="' . get_hupa_option('map_pin_height') . '">';
+                                $imgStPin = '<img class="range-image img-fluid" src="' . $img[0] . '" width="' . $hupa_register_theme_options->hupa_get_hupa_option('map_pin_width') . '" height="' . $hupa_register_theme_options->hupa_get_hupa_option('map_pin_height') . '">';
                             } else {
                                 $imdId = false;
                                 $imgUrl = Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/img-placeholder.svg';
                                 $imgStPin = '<img class="img-fluid" src="' . Config::get('WP_THEME_ADMIN_URL') . '\'admin-core/assets/images/img-placeholder.svg\'" alt="" width="">';
                             }
                         }
-                    } else {
-                        $imdId = get_hupa_option('map_standard_pin');
-                        if ($imdId) {
-                            $img = wp_get_attachment_image_src($imdId);
-                            $imgUrl = $img[0];
-                            $imgStPin = '<img class="range-image img-fluid" src="' . $img[0] . '" width="' . get_hupa_option('map_pin_width') . '" height="' . get_hupa_option('map_pin_height') . '">';
-                        } else {
-                            $imdId = false;
-                            $imgUrl = Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/img-placeholder.svg';
-                            $imgStPin = '<img class="img-fluid" src="' . Config::get('WP_THEME_ADMIN_URL') . '\'admin-core/assets/images/img-placeholder.svg\'" alt="" width="">';
-                        }
+                        $retItem = [
+                            'id' => $tmp->id,
+                            'coords' => $tmp->coords,
+                            'info_text' => $tmp->info_text,
+                            'custom_pin_aktiv' => (bool)$tmp->custom_pin_check,
+                            'custom_pin_img_id' => $imdId,
+                            //'custom_pin_img'    => $imgStPin,
+                            'img_url' => $imgUrl,
+                            'custom_height' => $tmp->custom_height,
+                            'custom_width' => $tmp->custom_width
+                        ];
+                        $retArr[] = $retItem;
                     }
-                    $retItem = [
-                        'id' => $tmp->id,
-                        'coords' => $tmp->coords,
-                        'info_text' => $tmp->info_text,
-                        'custom_pin_aktiv' => (bool)$tmp->custom_pin_check,
-                        'custom_pin_img_id' => $imdId,
-                        //'custom_pin_img'    => $imgStPin,
-                        'img_url' => $imgUrl,
-                        'custom_height' => $tmp->custom_height,
-                        'custom_width' => $tmp->custom_width
-                    ];
-                    $retArr[] = $retItem;
                 }
 
                 $standardPig = false;
-                $imgId = get_hupa_option('map_standard_pin');
+                $imgId = $hupa_register_theme_options->hupa_get_hupa_option('map_standard_pin');
                 if ($imgId) {
                     $standardPig = wp_get_attachment_image_src($imgId, 'large')[0];
                 }
-                get_hupa_option('map_color') ? $farbschema = get_hupa_option('map_color') : $farbschema = false;
+                $hupa_register_theme_options->hupa_get_hupa_option('map_color') ? $farbschema = $hupa_register_theme_options->hupa_get_hupa_option('map_color') : $farbschema = false;
 
-                $responseJson->api_key = base64_encode(get_hupa_option('map_apikey'));
-                $responseJson->datenschutz = (bool)get_hupa_option('map_datenschutz');
-                $responseJson->farbshema_aktiv = (bool)get_hupa_option('map_colorcheck');
+                $responseJson->api_key = base64_encode($hupa_register_theme_options->hupa_get_hupa_option('map_apikey'));
+                $responseJson->datenschutz = (bool)$hupa_register_theme_options->hupa_get_hupa_option('map_datenschutz');
+                $responseJson->farbshema_aktiv = (bool)$hupa_register_theme_options->hupa_get_hupa_option('map_colorcheck');
                 $responseJson->farbshema = $farbschema;
                 $responseJson->std_pin_img = $standardPig;
-                $responseJson->std_pin_height = get_hupa_option('map_pin_height');
-                $responseJson->std_pin_width = get_hupa_option('map_pin_width');
+                $responseJson->std_pin_height = $hupa_register_theme_options->hupa_get_hupa_option('map_pin_height');
+                $responseJson->std_pin_width = $hupa_register_theme_options->hupa_get_hupa_option('map_pin_width');
                 $responseJson->pins = $retArr;
                 break;
             case'set_gmaps_session':

@@ -1,4 +1,7 @@
 <?php
+
+use Hupa\Starter\Config;
+
 defined('ABSPATH') or die();
 
 /**
@@ -10,10 +13,10 @@ defined('ABSPATH') or die();
 
 
 $data = json_decode(file_get_contents("php://input"));
-
 if($data->make_id == 'make_exec'){
-   global $hupa_starter_license_exec;
-   $makeJob = $hupa_starter_license_exec->make_api_exec_job($data);
+
+    global $hupa_starter_license_exec;
+    $makeJob = $hupa_starter_license_exec->make_api_exec_job($data);
     $backMsg =  [
         'msg' => $makeJob->msg,
         'status' => $makeJob->status,
@@ -50,13 +53,13 @@ switch ($data->make_id) {
     case'send_versions':
         $backMsg = [
             'status' => true,
-            'theme_version' => THEME_VERSION,
-            'child_version' => CHILD_VERSION
+            'theme_version' => Config::get('THEME_VERSION'),
+            'child_version' => Config::get('CHILD_VERSION')
         ];
         break;
     default:
         $backMsg = [
-          'status' => false
+            'status' => false
         ];
 }
 

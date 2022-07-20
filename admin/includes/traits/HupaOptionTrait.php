@@ -11,7 +11,6 @@ defined('ABSPATH') or die();
  * @package Hummelt & Partner WordPress Theme
  * Copyright 2021, Jens Wiecker
  * License: Commercial - goto https://www.hummelt-werbeagentur.de/
- * https://www.hummelt-werbeagentur.de/
  */
 trait HupaOptionTrait
 {
@@ -317,7 +316,7 @@ trait HupaOptionTrait
             =================================================*/
             'theme_wp_general' => [
                 $this->logo_image => 0,
-                $this->top_menu_aktiv => 1,
+                $this->top_menu_aktiv => 0,
                 $this->top_area_container => 1,
                 $this->menu_container => 1,
                 $this->main_container => 1,
@@ -384,7 +383,6 @@ trait HupaOptionTrait
 
                 $this->hupa_select_404 = 0,
 
-
                 $this->archiv_template => 1,
                 $this->autoren_template => 1,
                 $this->post_kategorie => 1,
@@ -404,7 +402,7 @@ trait HupaOptionTrait
             ================= SETTINGS WordPress OPTIONS =================
             ==============================================================*/
             'theme_wp_optionen' => [
-                $this->update_aktiv = 1,
+                $this->update_aktiv = 0,
                 $this->svg => 1,
                 $this->gutenberg => 0,
                 $this->gb_widget => 1,
@@ -423,7 +421,7 @@ trait HupaOptionTrait
             ===============================================*/
             'theme_fonts' => [
                 $this->prefix_h1 . $this->font_family => 'Roboto',
-                $this->prefix_h1 . $this->font_style => 3,
+                $this->prefix_h1 . $this->font_style => 2,
                 $this->prefix_h1 . $this->font_size => 40,
                 $this->prefix_h1 . $this->font_height => 1.5,
                 $this->prefix_h1 . $this->font_bs_check => 0,
@@ -431,7 +429,7 @@ trait HupaOptionTrait
                 $this->prefix_h1 . $this->font_color => '#3c434a',
 
                 $this->prefix_h2 . $this->font_family => 'Roboto',
-                $this->prefix_h2 . $this->font_style => 3,
+                $this->prefix_h2 . $this->font_style => 2,
                 $this->prefix_h2 . $this->font_size => 32,
                 $this->prefix_h2 . $this->font_height => 1.5,
                 $this->prefix_h2 . $this->font_bs_check => 0,
@@ -439,7 +437,7 @@ trait HupaOptionTrait
                 $this->prefix_h2 . $this->font_color => '#3c434a',
 
                 $this->prefix_h3 . $this->font_family => 'Roboto',
-                $this->prefix_h3 . $this->font_style => 3,
+                $this->prefix_h3 . $this->font_style => 2,
                 $this->prefix_h3 . $this->font_size => 28,
                 $this->prefix_h3 . $this->font_height => 1.5,
                 $this->prefix_h3 . $this->font_bs_check => 0,
@@ -447,7 +445,7 @@ trait HupaOptionTrait
                 $this->prefix_h3 . $this->font_color => '#3c434a',
 
                 $this->prefix_h4 . $this->font_family => 'Roboto',
-                $this->prefix_h4 . $this->font_style => 3,
+                $this->prefix_h4 . $this->font_style => 2,
                 $this->prefix_h4 . $this->font_size => 24,
                 $this->prefix_h4 . $this->font_height => 1.5,
                 $this->prefix_h4 . $this->font_bs_check => 0,
@@ -455,7 +453,7 @@ trait HupaOptionTrait
                 $this->prefix_h4 . $this->font_color => '#3c434a',
 
                 $this->prefix_h5 . $this->font_family => 'Roboto',
-                $this->prefix_h5 . $this->font_style => 3,
+                $this->prefix_h5 . $this->font_style => 2,
                 $this->prefix_h5 . $this->font_size => 20,
                 $this->prefix_h5 . $this->font_height => 1.5,
                 $this->prefix_h5 . $this->font_bs_check => 0,
@@ -463,7 +461,7 @@ trait HupaOptionTrait
                 $this->prefix_h5 . $this->font_color => '#3c434a',
 
                 $this->prefix_h6 . $this->font_family => 'Roboto',
-                $this->prefix_h6 . $this->font_style => 3,
+                $this->prefix_h6 . $this->font_style => 2,
                 $this->prefix_h6 . $this->font_size => 16,
                 $this->prefix_h6 . $this->font_height => 1.5,
                 $this->prefix_h6 . $this->font_bs_check => 0,
@@ -481,7 +479,7 @@ trait HupaOptionTrait
 
                 //Top Footer Body
                 $this->prefix_top_footer_body . $this->font_family => 'Roboto',
-                $this->prefix_top_footer_body . $this->font_style => 3,
+                $this->prefix_top_footer_body . $this->font_style => 9,
                 $this->prefix_top_footer_body . $this->font_size => 16,
                 $this->prefix_top_footer_body . $this->font_height => 1.5,
                 $this->prefix_top_footer_body . $this->font_bs_check => 0,
@@ -490,7 +488,7 @@ trait HupaOptionTrait
 
                 //BODY
                 $this->prefix_body . $this->font_family => 'Roboto',
-                $this->prefix_body . $this->font_style => 3,
+                $this->prefix_body . $this->font_style => 9,
                 $this->prefix_body . $this->font_size => 16,
                 $this->prefix_body . $this->font_height => 1.5,
                 $this->prefix_body . $this->font_bs_check => 0,
@@ -499,7 +497,7 @@ trait HupaOptionTrait
 
                 //WIDGET //TODO Widget Body
                 $this->prefix_widget . $this->font_family => 'Roboto',
-                $this->prefix_widget . $this->font_style => 11,
+                $this->prefix_widget . $this->font_style => 10,
                 $this->prefix_widget . $this->font_size => 21,
                 $this->prefix_widget . $this->font_height => 1.5,
                 $this->prefix_widget . $this->font_bs_check => 0,
@@ -508,7 +506,7 @@ trait HupaOptionTrait
 
                 //UNTERTITEL
                 $this->prefix_under . $this->font_family => 'Roboto',
-                $this->prefix_under . $this->font_style => 3,
+                $this->prefix_under . $this->font_style => 9,
                 $this->prefix_under . $this->font_size => 12,
                 $this->prefix_under . $this->font_height => 1.5,
                 $this->prefix_under . $this->font_bs_check => 0,
@@ -526,7 +524,7 @@ trait HupaOptionTrait
 
                 //BUTTON
                 $this->prefix_btn . $this->font_family => 'Roboto',
-                $this->prefix_btn . $this->font_style => 3,
+                $this->prefix_btn . $this->font_style => 9,
                 $this->prefix_btn . $this->font_size => 16,
                 $this->prefix_btn . $this->font_height => 1.5,
                 $this->prefix_btn . $this->font_bs_check => 0,
@@ -536,7 +534,7 @@ trait HupaOptionTrait
                 //FOOTER
                 //TODO INFO FOOTER FONT
                 $this->prefix_footer . $this->font_family => 'Roboto',
-                $this->prefix_footer . $this->font_style => 3,
+                $this->prefix_footer . $this->font_style => 9,
                 $this->prefix_footer . $this->font_size => 16,
                 $this->prefix_footer . $this->font_height => 1.5,
                 $this->prefix_footer . $this->font_bs_check => 0,
@@ -545,7 +543,7 @@ trait HupaOptionTrait
 
                 //FOOTER WIDGET HEADLINE
                 $this->prefix_footer_headline . $this->font_family => 'Roboto',
-                $this->prefix_footer_headline . $this->font_style => 3,
+                $this->prefix_footer_headline . $this->font_style => 9,
                 $this->prefix_footer_headline . $this->font_size => 24,
                 $this->prefix_footer_headline . $this->font_height => 1.2,
                 $this->prefix_footer_headline . $this->font_bs_check => 0,
@@ -554,7 +552,7 @@ trait HupaOptionTrait
 
                 //FOOTER WIDGET
                 $this->prefix_footer_widget . $this->font_family => 'Roboto',
-                $this->prefix_footer_widget . $this->font_style => 4,
+                $this->prefix_footer_widget . $this->font_style => 2,
                 $this->prefix_footer_widget . $this->font_size => 16,
                 $this->prefix_footer_widget . $this->font_height => 1.5,
                 $this->prefix_footer_widget . $this->font_bs_check => 0,
@@ -563,7 +561,7 @@ trait HupaOptionTrait
 
                 //TOP AREA
                 $this->prefix_top_area . $this->font_family => 'Roboto',
-                $this->prefix_top_area . $this->font_style => 3,
+                $this->prefix_top_area . $this->font_style => 2,
                 $this->prefix_top_area . $this->font_size => 14,
                 $this->prefix_top_area . $this->font_height => 1.5,
                 $this->prefix_top_area . $this->font_bs_check => 0,

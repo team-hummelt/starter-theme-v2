@@ -1,6 +1,18 @@
 <?php
 
-namespace Hupa\StarterTheme;
+namespace Hupa\StarterThemeV2;
+
+use HupaStarterThemeV2;
+use Hupa\Starter\Config;
+/**
+ * The admin-specific Gutenberg Tools functionality of the theme.
+ *
+ * @link       https://wwdh.de
+ * @since      2.0.0
+ *
+ * @package    Hupa_Starterter_v2
+ * @subpackage Hupa_Starterter_v2/includes/gutenberg-tools
+ */
 
 defined( 'ABSPATH' ) or die();
 
@@ -14,24 +26,51 @@ defined( 'ABSPATH' ) or die();
 final class HupaRegisterGutenbergTools {
     private static $instance;
 
+    //OPTION TRAIT
+    use HupaOptionTrait;
+
+    /**
+     * Store plugin main class to allow admin access.
+     *
+     * @since    2.0.0
+     * @access   private
+     * @var HupaStarterThemeV2 $main The main class.
+     */
+    protected  HupaStarterThemeV2 $main;
+
+    /**
+     * The ID of this theme.
+     *
+     * @since    2.0.0
+     * @access   private
+     * @var      string    $basename    The ID of this theme.
+     */
+    protected string $basename;
+
+    /**
+     * The version of this theme.
+     *
+     * @since    2.0.0
+     * @access   private
+     * @var      string    $theme_version    The current version of this theme.
+     */
+    protected string $theme_version;
+
     /**
      * @return static
      */
-    public static function tools_instance(): self {
+    public static function tools_instance(string  $theme_name, string  $theme_version, HupaStarterThemeV2  $main): self {
         if ( is_null( self::$instance ) ) {
-            self::$instance = new self();
+            self::$instance = new self($theme_name, $theme_version, $main);
         }
         return self::$instance;
     }
 
-    public function init_hupa_gutenberg_tools(): void {
-        //JOB HUPA GUTENBERG TOOLS
-
-        add_action( 'init', array( $this, 'gutenberg_block_google_maps_register' ) );
-        add_action( 'enqueue_block_editor_assets', array( $this, 'hupa_theme_editor_hupa_carousel_scripts' ) );
-        add_action( 'enqueue_block_editor_assets', array( $this, 'hupa_theme_editor_hupa_tools_scripts' ) );
-        add_action( 'enqueue_block_editor_assets', array( $this, 'hupa_theme_editor_menu_scripts' ) );
-
+    public function __construct(string  $theme_name, string  $theme_version, HupaStarterThemeV2  $main)
+    {
+        $this->basename = $theme_name;
+        $this->theme_version = $theme_version;
+        $this->main = $main;
     }
 
     /**
@@ -45,8 +84,8 @@ final class HupaRegisterGutenbergTools {
         $plugin_asset = require 'google-maps/build/index.asset.php';
         wp_register_script(
             'hupa-theme-gutenberg-tools',
-            HUPA_THEME_TOOLS_URL . 'google-maps/build/index.js',
-            $plugin_asset['dependencies'], THEME_VERSION, true );
+            Config::get('HUPA_THEME_TOOLS_URL') . '/google-maps/build/index.js',
+            $plugin_asset['dependencies'], $this->theme_version, true );
 
         register_block_type( 'hupa/theme-google-maps', array(
             'render_callback' => 'callback_hupa_google_maps',
@@ -59,8 +98,8 @@ final class HupaRegisterGutenbergTools {
         $plugin_asset = require 'theme-carousel/build/index.asset.php';
         wp_register_script(
             'hupa-theme-carousel-tools',
-            HUPA_THEME_TOOLS_URL . 'theme-carousel/build/index.js',
-            $plugin_asset['dependencies'], THEME_VERSION, true );
+            Config::get('HUPA_THEME_TOOLS_URL') . '/theme-carousel/build/index.js',
+            $plugin_asset['dependencies'], $this->theme_version, true );
 
         register_block_type( 'hupa/theme-carousel', array(
             'render_callback' => 'callback_hupa_theme_carousel',
@@ -73,8 +112,8 @@ final class HupaRegisterGutenbergTools {
         $plugin_asset = require 'menu-select/build/index.asset.php';
         wp_register_script(
             'hupa-theme-menu-select',
-            HUPA_THEME_TOOLS_URL . 'menu-select/build/index.js',
-            $plugin_asset['dependencies'], THEME_VERSION, true );
+            Config::get('HUPA_THEME_TOOLS_URL') . '/menu-select/build/index.js',
+            $plugin_asset['dependencies'], $this->theme_version, true );
 
         register_block_type( 'hupa/theme-menu-select', array(
             'render_callback' => 'callback_hupa_menu_select',
@@ -92,7 +131,7 @@ final class HupaRegisterGutenbergTools {
     public function hupa_theme_editor_hupa_tools_scripts(): void {
         wp_enqueue_script( 'hupa-theme-gutenberg-tools' );
         wp_enqueue_style( 'hupa-theme-tools-style');
-        wp_enqueue_style( 'hupa-theme-tools-style', HUPA_THEME_TOOLS_URL . 'google-maps/build/index.css',
+        wp_enqueue_style( 'hupa-theme-tools-style', Config::get('HUPA_THEME_TOOLS_URL') . '/google-maps/build/index.css',
             [], '' );
     }
 
@@ -104,7 +143,7 @@ final class HupaRegisterGutenbergTools {
     public function hupa_theme_editor_menu_scripts(): void {
         wp_enqueue_script( 'hupa-theme-menu-select' );
         wp_enqueue_style( 'hupa-theme-menu-select-style');
-        wp_enqueue_style( 'hupa-theme-menu-select-style', HUPA_THEME_TOOLS_URL . 'tools-editor-style.css',
+        wp_enqueue_style( 'hupa-theme-menu-select-style', Config::get('HUPA_THEME_TOOLS_URL') . '/tools-editor-style.css',
             [], '' );
     }
 
@@ -116,13 +155,8 @@ final class HupaRegisterGutenbergTools {
     public function hupa_theme_editor_hupa_carousel_scripts(): void {
         wp_enqueue_script( 'hupa-theme-carousel-tools' );
         wp_enqueue_style( 'hupa-theme-carousel-style');
-        wp_enqueue_style( 'hupa-theme-carousel-style', HUPA_THEME_TOOLS_URL . 'theme-carousel/build/index.css',
+        wp_enqueue_style( 'hupa-theme-carousel-style', Config::get('HUPA_THEME_TOOLS_URL') . '/theme-carousel/build/index.css',
             [], '' );
     }
 
-}
-
-$hupa_register_gutenberg_tools = HupaRegisterGutenbergTools::tools_instance();
-if ( ! empty( $hupa_register_gutenberg_tools ) ) {
-    $hupa_register_gutenberg_tools->init_hupa_gutenberg_tools();
 }

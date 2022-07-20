@@ -15,7 +15,7 @@ defined('ABSPATH') or die();
 use Hupa\StarterThemeV2\HupaOptionTrait;
 use HupaStarterThemeV2;
 use Hupa\Starter\Config;
-
+use StarterAPIExec\License\Api_Request_Theme_V2_Exec;
 
 
 /**
@@ -143,7 +143,8 @@ final class RegisterHupaStarter
         $wp->add_query_var(  Config::get('HUPA_THEME_SLUG') );
     }
 
-    function hupa_starter_theme_license_callback_trigger_check(): void {
+    public function hupa_starter_theme_license_callback_trigger_check(): void {
+
         if ( get_query_var(  Config::get('HUPA_THEME_SLUG') ) ===  Config::get('HUPA_THEME_SLUG') ) {
             require 'api-request-page.php';
             exit;
@@ -172,6 +173,11 @@ final class RegisterHupaStarter
             update_option('hupa_wp_debug_log', 0);
             update_option('wp_debug_display', 0);
             update_option('hupa_wp_script_debug', 0);
+
+            update_option('hupa_wp_automatic_update', 0);
+            update_option('hupa_wp_disable_wp_cron', 0);
+            update_option('hupa_wp_disallow_file_edit', 0);
+            update_option('hupa_wp_disallow_file_mods', 0);
 
 
             update_option('hupa_show_fatal_error', 0);
@@ -218,6 +224,11 @@ final class RegisterHupaStarter
 
         delete_option('ssl_login_aktiv');
         delete_option('admin_ssl_login_aktiv');
+
+        delete_option('hupa_wp_automatic_update');
+        delete_option('hupa_wp_disable_wp_cron');
+        delete_option('hupa_wp_disallow_file_edit');
+        delete_option('hupa_wp_disallow_file_mods');
 
 
     }

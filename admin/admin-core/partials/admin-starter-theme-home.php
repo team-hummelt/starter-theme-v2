@@ -4022,7 +4022,7 @@ global $hupa_api_handle;
                                         </div>
                                     </div>
                                     <hr>
-                                    <?php if (!HUPA_MINIFY_AKTIV): ?>
+                                    <?php if (!Config::get('HUPA_MINIFY_AKTIV')): ?>
                                         <div class="col-lg-12 pt-2">
                                             <h6>
                                                 <i class="font-blue fa fa-wordpress"></i>&nbsp;<?= __('Remove WordPress Version', 'bootscore'); ?>

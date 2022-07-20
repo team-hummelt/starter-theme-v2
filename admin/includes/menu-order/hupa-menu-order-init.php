@@ -2,7 +2,6 @@
 
 defined('ABSPATH') or die();
 
-use Hupa\MenuOrder\HupaMenuOrder;
 use Hupa\MenuOrder\HupaMenuOrderHelper;
 
 /**
@@ -10,15 +9,11 @@ use Hupa\MenuOrder\HupaMenuOrderHelper;
  * @package Hummelt & Partner WordPress Theme
  * Copyright 2021, Jens Wiecker
  * License: Commercial - goto https://www.hummelt-werbeagentur.de/
- * https://www.hummelt-werbeagentur.de/
  */
 
 //WARNING JOB MENU ORDER
-require 'class/class-order-core.php';
-require 'class/class-order-helper.php';
 
-global $hupa_menu_order;
-$hupa_menu_order = HupaMenuOrder::instance();
+require 'class/class-order-helper.php';
 
 global $hupa_menu_helper;
 $hupa_menu_helper = HupaMenuOrderHelper::instance();

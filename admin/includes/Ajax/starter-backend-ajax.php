@@ -58,7 +58,7 @@ class Hupa_Starter_V2_Admin_Ajax
      * @access   private
      * @var      array|object $data The AJAX DATA.
      */
-    private $data;
+    protected $data;
 
 
     private static $hupa_admin_ajax_instance;
@@ -131,15 +131,9 @@ class Hupa_Starter_V2_Admin_Ajax
         $this->theme_version = $theme_version;
         $this->main = $main;
         $this->twig = $twig;
-
-        $this->method     = '';
+        $this->method = $_POST['method'];
         if ( isset( $_POST['daten'] ) ) {
             $this->data   = $_POST['daten'];
-            $this->method = filter_var( $this->data['method'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH );
-        }
-
-        if ( ! $this->method ) {
-            $this->method = $_POST['method'];
         }
     }
 
@@ -152,9 +146,9 @@ class Hupa_Starter_V2_Admin_Ajax
 
         global $hupa_api_handle;
         global $hupa_optionen_class;
-        global $hupa_menu_helper;
         global $hupa_register_theme_options;
         global $wpdb;
+
         $record               = new stdClass();
         $responseJson         = new stdClass();
         $responseJson->status = false;
@@ -187,6 +181,11 @@ class Hupa_Starter_V2_Admin_Ajax
                         filter_input(INPUT_POST, 'show_uhr_aktive', FILTER_SANITIZE_STRING) ? $record->show_uhr_aktive = 1 : $record->show_uhr_aktive = 0;
                         filter_input(INPUT_POST, 'news_api_aktiv', FILTER_SANITIZE_STRING) ? $record->news_api_aktiv = 1 : $record->news_api_aktiv = 0;
 
+                        //$record->update_aktiv
+                        $apiJson = $this->main->get_license_config();
+                        $apiJson->update->update_aktiv=$record->update_aktiv;
+                        $config_file = Config::get('THEME_ADMIN_INCLUDES') . 'license/config.json';
+                        file_put_contents($config_file, json_encode( $apiJson) );
 
                         apply_filters('update_hupa_options', $record, 'wp_optionen');
                         $responseJson->spinner = true;
@@ -745,6 +744,12 @@ class Hupa_Starter_V2_Admin_Ajax
                         filter_input(INPUT_POST, 'wp_debug_log', FILTER_SANITIZE_STRING) ? $wp_debug_log = 1 : $wp_debug_log = 0;
                         filter_input(INPUT_POST, 'hupa_wp_script_debug', FILTER_SANITIZE_STRING) ? $hupa_wp_script_debug = 1 : $hupa_wp_script_debug = 0;
 
+                        //Optionen
+                        filter_input(INPUT_POST, 'hupa_wp_automatic_update', FILTER_SANITIZE_STRING) ? $hupa_wp_automatic_update = 1 : $hupa_wp_automatic_update = 0;
+                        filter_input(INPUT_POST, 'hupa_wp_disable_wp_cron', FILTER_SANITIZE_STRING) ? $hupa_wp_disable_wp_cron = 1 : $hupa_wp_disable_wp_cron = 0;
+                        filter_input(INPUT_POST, 'hupa_wp_disallow_file_edit', FILTER_SANITIZE_STRING) ? $hupa_wp_disallow_file_edit = 1 : $hupa_wp_disallow_file_edit = 0;
+                        filter_input(INPUT_POST, 'hupa_wp_disallow_file_mods', FILTER_SANITIZE_STRING) ? $hupa_wp_disallow_file_mods = 1 : $hupa_wp_disallow_file_mods = 0;
+
                         $wp_debug_radio = filter_input(INPUT_POST, 'debug', FILTER_VALIDATE_INT);
 
                         filter_input(INPUT_POST, 'show_fatal_error', FILTER_SANITIZE_STRING) ? $show_fatal_error = 1 : $show_fatal_error = 0;
@@ -770,6 +775,12 @@ class Hupa_Starter_V2_Admin_Ajax
                         update_option('wp_debug_display', $wp_debug_display);
                         update_option('hupa_wp_script_debug', $hupa_wp_script_debug);
 
+                        //Optionen
+                        update_option('hupa_wp_automatic_update', $hupa_wp_automatic_update);
+                        update_option('hupa_wp_disable_wp_cron', $hupa_wp_disable_wp_cron);
+                        update_option('hupa_wp_disallow_file_edit', $hupa_wp_disallow_file_edit);
+                        update_option('hupa_wp_disallow_file_mods', $hupa_wp_disallow_file_mods);
+
                         update_option('hupa_show_fatal_error', $show_fatal_error);
                         update_option('hupa_db_repair', $db_repair);
 
@@ -794,6 +805,67 @@ class Hupa_Starter_V2_Admin_Ajax
                             }
                         } else {
                             $hupa_optionen_class->theme_deactivate_mu_plugin();
+                        }
+
+
+                        //JOB AUTOMATIC_UPDATER_DISABLED
+                        if ($hupa_wp_automatic_update) {
+                            $create = $hupa_optionen_class->add_create_config_put('AUTOMATIC_UPDATER_DISABLED', 'AUTOMATIC UPDATER DISABLED CACHE', 1);
+                            if (!$create->status) {
+                                $responseJson->msg = $create->msg;
+                                return $responseJson;
+                            }
+                        } else {
+                            $delete = $hupa_optionen_class->delete_config_put('AUTOMATIC_UPDATER_DISABLED', 'AUTOMATIC UPDATER DISABLED', 1);
+                            if (!$delete->status) {
+                                $responseJson->msg = $delete->msg;
+                                return $responseJson;
+                            }
+                        }
+
+                        //JOB DISABLE_WP_CRON
+                        if ($hupa_wp_disable_wp_cron) {
+                            $create = $hupa_optionen_class->add_create_config_put('DISABLE_WP_CRON', 'DISABLE WP CRON', 1);
+                            if (!$create->status) {
+                                $responseJson->msg = $create->msg;
+                                return $responseJson;
+                            }
+                        } else {
+                            $delete = $hupa_optionen_class->delete_config_put('DISABLE_WP_CRON', 'DISABLE WP CRON', 1);
+                            if (!$delete->status) {
+                                $responseJson->msg = $delete->msg;
+                                return $responseJson;
+                            }
+                        }
+
+                        //JOB DISALLOW_FILE_EDIT
+                        if ($hupa_wp_disallow_file_edit) {
+                            $create = $hupa_optionen_class->add_create_config_put('DISALLOW_FILE_EDIT', 'DISALLOW FILE EDIT', 1);
+                            if (!$create->status) {
+                                $responseJson->msg = $create->msg;
+                                return $responseJson;
+                            }
+                        } else {
+                            $delete = $hupa_optionen_class->delete_config_put('DISALLOW_FILE_EDIT', 'DISALLOW FILE EDIT', 1);
+                            if (!$delete->status) {
+                                $responseJson->msg = $delete->msg;
+                                return $responseJson;
+                            }
+                        }
+
+                        //JOB DISALLOW_FILE_MODS
+                        if ($hupa_wp_disallow_file_mods) {
+                            $create = $hupa_optionen_class->add_create_config_put('DISALLOW_FILE_MODS', 'DISALLOW FILE MODS', 1);
+                            if (!$create->status) {
+                                $responseJson->msg = $create->msg;
+                                return $responseJson;
+                            }
+                        } else {
+                            $delete = $hupa_optionen_class->delete_config_put('DISALLOW_FILE_MODS', 'DISALLOW FILE MODS', 1);
+                            if (!$delete->status) {
+                                $responseJson->msg = $delete->msg;
+                                return $responseJson;
+                            }
                         }
 
                         //JOB WP CACHE
@@ -1019,7 +1091,7 @@ class Hupa_Starter_V2_Admin_Ajax
                         update_option('hupa_sort_options', $options);
                         $responseJson->status = true;
                         $responseJson->spinner = true;
-                        break;
+                        return $responseJson;
 
                     case 'theme_options_duplicate':
                         $show_duplicate_interfaces = array($_POST['show_duplicate_interfaces']);
@@ -1036,7 +1108,7 @@ class Hupa_Starter_V2_Admin_Ajax
                         update_option('hupa_duplicate_options', $options);
                         $responseJson->status = true;
                         $responseJson->spinner = true;
-                        break;
+                        return $responseJson;
                 }
 
                 $responseJson->status = true;
@@ -1315,8 +1387,8 @@ class Hupa_Starter_V2_Admin_Ajax
 
 
             case'theme_google_maps':
-                $data = json_decode(stripslashes_deep($_POST['daten']));
 
+                $data = json_decode(stripslashes_deep($_POST['daten']));
                 $record->map_apikey = filter_var($data->map_apikey, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                 filter_var($data->map_datenschutz, FILTER_SANITIZE_STRING) ? $record->map_datenschutz = 1 : $record->map_datenschutz = 0;
                 filter_var($data->map_colorcheck, FILTER_SANITIZE_STRING) ? $record->map_colorcheck = 1 : $record->map_colorcheck = 0;
@@ -1404,10 +1476,8 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
             case 'get_google_maps_pins':
                 $handle = filter_input(INPUT_POST, 'handle', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-                 $dbPins = get_hupa_option('map_pins');
+                $dbPins = get_hupa_option('map_pins');
 
-
-              /*
 
                 $retArr = [];
                 foreach ($dbPins as $tmp) {
@@ -1417,17 +1487,17 @@ class Hupa_Starter_V2_Admin_Ajax
                             $imdId = $tmp->custom_pin_img;
                             $img = wp_get_attachment_image_src($tmp->custom_pin_img);
                             $imgUrl = $img[0];
-                            $imgStPin = '<img class="range-image img-fluid" src="' . $img[0] . '" width="' . $tmp->custom_width + $factor . '" height="' . $tmp->custom_height + $factor . '">';
+                            $imgStPin = '<img class="range-image img-fluid" src="'.$img[0].'" alt="" width="'.($tmp->custom_width + $factor).'" height="'.($tmp->custom_height + $factor).'">';
                         } else {
                             if (get_hupa_option('map_standard_pin')) {
                                 $imdId = get_hupa_option('map_standard_pin');
                                 $img = wp_get_attachment_image_src($imdId);
                                 $imgUrl = $img[0];
-                                $imgStPin = '<img class="range-image img-fluid" src="' . $img[0] . '" width="' . get_hupa_option('map_pin_width') + $factor . '" height="' . get_hupa_option('map_pin_height') + $factor . '">';
+                                $imgStPin = '<img class="range-image img-fluid" src="'.$img[0].'" alt="" width="'.(get_hupa_option('map_pin_width') + $factor).'" height="'.(get_hupa_option('map_pin_height') + $factor).'">';
                             } else {
                                 $imdId = false;
                                 $imgUrl = Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/img-placeholder.svg';
-                                $imgStPin = '<img class="img-fluid" src="' . Config::get('WP_THEME_ADMIN_URL') . '\'admin-core/assets/images/img-placeholder.svg\'" alt="" width="' . $factor + 25 . '">';
+                                $imgStPin = '<img class="img-fluid" src="'.Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/img-placeholder.svg'.'" alt="" width="'.($factor + 25).'">';
                             }
                         }
                     } else {
@@ -1435,11 +1505,11 @@ class Hupa_Starter_V2_Admin_Ajax
                         if ($imdId) {
                             $img = wp_get_attachment_image_src($imdId);
                             $imgUrl = $img[0];
-                            $imgStPin = '<img class="range-image img-fluid" src="' . $img[0] . '" width="' . get_hupa_option('map_pin_width') + $factor . '" height="' . get_hupa_option('map_pin_height') + $factor . '">';
+                            $imgStPin = '<img class="range-image img-fluid" src="'.$img[0].'" alt="" width="'.(get_hupa_option('map_pin_width') + $factor).'" height="'.(get_hupa_option('map_pin_height') + $factor).'">';
                         } else {
                             $imdId = false;
                             $imgUrl = Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/img-placeholder.svg';
-                            $imgStPin = '<img class="img-fluid" src="' . Config::get('WP_THEME_ADMIN_URL') . '\'admin-core/assets/images/img-placeholder.svg\'" alt="" width="' . $factor + 25 . '">';
+                            $imgStPin = '<img class="img-fluid" src="'.Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/img-placeholder.svg'.'" alt="" width="'.($factor + 25).'">';
                         }
                     }
                     $retItem = [
@@ -1456,7 +1526,8 @@ class Hupa_Starter_V2_Admin_Ajax
                     $retArr[] = $retItem;
                 }
                 $responseJson->pins = $retArr;
-                $responseJson->maps_template = true;*/
+                $responseJson->maps_template = true;
+                $responseJson->msg = '';
                 break;
 
             case 'change_sortable_position':

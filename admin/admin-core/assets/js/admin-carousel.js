@@ -83,7 +83,6 @@ function send_xhr_carousel_data(data, is_formular = true) {
                 case'carousel':
                     if (data.renderData.status) {
                         render_carousel(data.renderData);
-
                         carousel_autosave_events();
                     }
                     break;
@@ -201,7 +200,7 @@ function delete_slider_img(event, rand) {
         btnDelImg = event;
 
     imgContainer.innerHTML = `<img class="img-fluid carousel-image"
-     src="${hupa_starter.admin_url}assets/images/hupa-logo.svg"
+     src="${hupa_starter.admin_url}admin-core/assets/images/hupa-logo.svg"
      alt=""
      width="200">`;
     btnAddImg.classList.remove('d-none');

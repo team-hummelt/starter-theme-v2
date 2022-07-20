@@ -17,6 +17,7 @@ use Hupa\Starter\Config;
 use Hupa\StarterThemeV2\HupaCarouselTrait;
 use Hupa\StarterThemeV2\HupaOptionTrait;
 use HupaStarterThemeV2;
+use Puc_v4_Factory;
 use Twig\Environment;
 use WP_User;
 
@@ -425,12 +426,13 @@ final class HupaRegisterStarterTheme
         global $wp;
         $wp->add_query_var(Config::get('HUPA_STARTER_THEME_QUERY'));
         add_action('template_redirect', array($this, 'hupa_starter_theme_template_callback_trigger_check'));
-        function hupa_starter_theme_template_callback_trigger_check(): void
-        {
-            if (get_query_var(Config::get('HUPA_STARTER_THEME_QUERY')) === 'pdf') {
-                require 'public-pages/starter-public-download.php';
-                exit();
-            }
+    }
+
+    public function hupa_starter_theme_template_callback_trigger_check(): void
+    {
+        if (get_query_var(Config::get('HUPA_STARTER_THEME_QUERY')) === 'pdf') {
+            require 'public-pages/starter-public-download.php';
+            exit();
         }
     }
 
@@ -703,6 +705,51 @@ final class HupaRegisterStarterTheme
             wp_enqueue_script('js-hupa-maps-settings', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/js/google-maps-settings.js', array(), $this->theme_version, true);
         }
 
+    }
+
+    /**
+     * Register the Update-Checker for the Theme.
+     *
+     * @since    2.0.0
+     */
+    public function set_hupa_theme_v2_update_checker() {
+
+        $updOptionen = $this->main->get_license_config();
+        if($updOptionen->update->update_aktiv == '1' ) {
+            $hupaThemeV2UpdateChecker = Puc_v4_Factory::buildUpdateChecker(
+                $updOptionen->update->update_url_git,
+                HUPA_THEME_DIR,
+                $this->basename
+            );
+
+            if ($updOptionen->update->update_type == '1' ) {
+                if ($updOptionen->update->update_branch == 'release') {
+                    $hupaThemeV2UpdateChecker->getVcsApi()->enableReleaseAssets();
+                } else {
+                    $hupaThemeV2UpdateChecker->setBranch($updOptionen->update->branch_name);
+                }
+            }
+
+        }
+    }
+
+    public function hupa_theme_show_upgrade_notification( $current_theme_metadata, $new_theme_metadata ) {
+
+        /**
+         * Check "upgrade_notice" in readme.txt.
+         *
+         * Eg.:
+         * == Upgrade Notice ==
+         * = 20180624 = <- new version
+         * Notice		<- message
+         *
+         */
+        if ( isset( $new_theme_metadata->upgrade_notice ) && strlen( trim( $new_theme_metadata->upgrade_notice ) ) > 0 ) {
+
+            // Display "upgrade_notice".
+            echo sprintf( '<span style="background-color:#d54e21;padding:10px;color:#f9f9f9;margin-top:10px;display:block;"><strong>%1$s: </strong>%2$s</span>', esc_attr( 'Important Upgrade Notice', 'post-selector' ), esc_html( rtrim( $new_theme_metadata->upgrade_notice ) ) );
+
+        }
     }
 }
 

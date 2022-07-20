@@ -107,11 +107,11 @@ class HupaStarterFontsHandle
     {
 
         $folderArr = [];
-        if (is_dir(THEME_FONTS_DIR)) {
-            $files = array_diff(scandir(THEME_FONTS_DIR), array('.', '..', '.htaccess'));
+        if (is_dir(Config::get('THEME_FONTS_DIR'))) {
+            $files = array_diff(scandir(Config::get('THEME_FONTS_DIR')), array('.', '..', '.htaccess'));
 
             foreach ($files as $tmp) {
-                if (!is_dir(THEME_FONTS_DIR . $tmp)) {
+                if (!is_dir(Config::get('THEME_FONTS_DIR') . $tmp)) {
                     continue;
                 }
                 $folderArr[] = $tmp;
@@ -142,8 +142,8 @@ class HupaStarterFontsHandle
     {
         $fileLines = [];
         foreach ($this->read_theme_font_folder() as $tmp) {
-            if (file_exists(THEME_FONTS_DIR . $tmp . '.css')) {
-                $fileLines[] = file(THEME_FONTS_DIR . $tmp . '.css');
+            if (file_exists(Config::get('THEME_FONTS_DIR') . $tmp . '.css')) {
+                $fileLines[] = file(Config::get('THEME_FONTS_DIR') . $tmp . '.css');
             }
         }
 

@@ -1,12 +1,12 @@
 <?php
 /*
- * Template Name: Full width image
+ * Template Name: Bild in voller Breite
  * Template Post Type: post
  */
 
 $pageId = is_singular() ? get_the_ID() : 0;
 $pageSettings = apply_filters('get_page_meta_data', (int)$pageId);
-$pageSettings->title_css ? $titleCss = 'class="' . $pageSettings->title_css . '"' : $titleCss = '';
+$pageSettings->title_css ? $titleCss = 'class="entry-title ' . $pageSettings->title_css . '"' : $titleCss = 'class="entry-title"';
 get_header(); ?>
 <div class="site-content">
     <?= $pageSettings->custum_header; ?>

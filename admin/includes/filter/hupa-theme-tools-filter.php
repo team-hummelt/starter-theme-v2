@@ -32,7 +32,6 @@ class HupaStarterToolsFilter
     //OPTION TRAIT
     use HupaOptionTrait;
 
-
     /**
      * Store plugin main class to allow admin access.
      *

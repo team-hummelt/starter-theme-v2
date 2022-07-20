@@ -190,7 +190,7 @@ class HupaStarterHelper
         $jsonArr = json_encode($jsonArr, JSON_UNESCAPED_SLASHES);
         file_put_contents($bs_json, $jsonArr);
 
-        $cheatSet = $reg_bs_json = THEME_ADMIN_DIR . 'admin-core/ajax/tools/FontAwesomeCheats.txt';
+        $cheatSet = THEME_ADMIN_DIR . 'admin-core/ajax/tools/FontAwesomeCheats.txt';
         $fa_json = THEME_ADMIN_DIR . 'admin-core/ajax/tools/fa-icons.json';
         $cheatSet = file_get_contents($cheatSet);
 

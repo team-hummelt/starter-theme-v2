@@ -101,8 +101,8 @@ final class HupaEnqueueStarterTheme
         // TODO ANIMATE
         wp_enqueue_style('hupa-starter-public-animate', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/css/tools/animate.min.css', array(), $modificated);
         // TODO ICONS
-        wp_enqueue_style('hupa-starter-bootstrap-icons-style', get_template_directory_uri() . '/icons/bootstrap-icons/bootstrap-icons.css', array(), $modificated);
-        wp_enqueue_style('hupa-starter-font-awesome-icons-style', get_template_directory_uri() . '/icons/font-awesome-4.7.0/font-awesome.css', array(), $modificated);
+        //wp_enqueue_style('hupa-starter-bootstrap-icons-style', get_template_directory_uri() . '/icons/bootstrap-icons/bootstrap-icons.css', array(), $modificated);
+        //wp_enqueue_style('hupa-starter-font-awesome-icons-style', get_template_directory_uri() . '/icons/font-awesome-4.7.0/font-awesome.css', array(), $modificated);
         // TODO jQuery LazyLoad
         wp_enqueue_script('hupa-lazy-load', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/theme-scripte/tools/jquery.lazy.min.js', array(), $modificated, true);
         wp_enqueue_script('hupa-lazy-load-plugins', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/theme-scripte/tools/jquery.lazy.plugins.min.js', array(), $modificated, true);
@@ -118,8 +118,8 @@ final class HupaEnqueueStarterTheme
             wp_enqueue_script('hupa-theme-wow-js-script', get_template_directory_uri() . '/js/wowjs/wow.min.js', array(), $modificated, true);
         }
 
-        wp_enqueue_style('bootstrap-icons-style', Config::get('HUPA_THEME_VENDOR_URL') . 'twbs/bootstrap-icons/font/bootstrap-icons.css', array(), $this->theme_version);
-        wp_enqueue_style('font-awesome-icons-style', Config::get('HUPA_THEME_VENDOR_URL') . 'components/font-awesome/css/font-awesome.min.css', array(), $this->theme_version);
+        wp_enqueue_style('bootstrap-icons-style', Config::get('HUPA_THEME_VENDOR_URL') . 'twbs/bootstrap-icons/font/bootstrap-icons.css', array(), $modificated);
+        wp_enqueue_style('font-awesome-icons-style', Config::get('HUPA_THEME_VENDOR_URL') . 'components/font-awesome/css/font-awesome.min.css', array(), $modificated);
 
         if (get_hupa_option('menu') == 5) {
             $img = wp_get_attachment_image_src(get_hupa_option('logo_image'), 'large');

@@ -32,7 +32,8 @@ if (file_exists(THEME_ADMIN_DIR . '.env')) {
             'HUPA_SIDEBAR',
             'HUPA_TOOLS',
             'HUPA_CAROUSEL',
-            'HUPA_MAPS'
+            'HUPA_MAPS',
+            'THEME_AJAX_TEMPLATE_DIR'
         ]
     );
 }
@@ -69,8 +70,8 @@ if (!get_option('theme_capabilities')) {
     update_option('theme_capabilities', $capabilities);
 }
 
-$theme_data = wp_get_theme('hupa-starter-v2');
-$child_data = wp_get_theme('hupa-starter-child-v2');
+$theme_data = wp_get_theme('starter-theme-v2');
+$child_data = wp_get_theme('starter-theme-child-v2');
 if ($child_data->exists()) {
     $childVersion = $child_data->get('Version');
     $ifChild = true;

@@ -112,6 +112,7 @@ use Hupa\Starter\Config;
                 $css = file_get_contents(Config::get('THEME_ADMIN_INCLUDES') . 'theme-fonts' . DIRECTORY_SEPARATOR .'Roboto.css', true);
                 file_put_contents(Config::get('THEME_FONTS_DIR') . 'Roboto.css', $css);
                 apply_filters('update_hupa_options', 'no-data', 'sync_font_folder');
+                apply_filters('generate_theme_css', '');
             }
         }
 

@@ -13,7 +13,6 @@ defined('ABSPATH') or die();
  * @package Hummelt & Partner WordPress Theme
  * Copyright 2022, Jens Wiecker
  * License: Commercial - goto https://www.hummelt-werbeagentur.de/
- * https://www.hummelt-werbeagentur.de/
  */
 class HupaStarterHelper
 {
@@ -84,9 +83,16 @@ class HupaStarterHelper
         return str_pad($opacity, 2, 0, STR_PAD_RIGHT);
     }
 
+    public function cleanWhitespace($string): string
+    {
+        if (!$string) {
+            return '';
+        }
+        return trim(preg_replace('/\s+/', ' ', $string));
+    }
+
     final public function hupa_wp_get_attachment($attachment_id): object
     {
-
         $attachment = get_post($attachment_id);
         $attach = array(
             'alt' => get_post_meta($attachment->ID, '_wp_attachment_image_alt', true),
@@ -290,5 +296,39 @@ class HupaStarterHelper
             $file = file_get_contents($newList, true);
             file_put_contents($template, $file, LOCK_EX);
         }
+    }
+
+
+    public function api_set_error_message($type):array
+    {
+
+        switch ($type) {
+            case'no_plugins_found':
+                $return = [403, 'no_method_found', 'Method data is unknown.'];
+                break;
+            case'invalid_key':
+                $return = [403, 'invalid_key', 'Client access data is unknown.'];
+                break;
+            case 'Login_locked':
+                $return = [403, 'Login_locked', 'Login for this account locked.'];
+                break;
+            case'unable_sign':
+                $return = [403, 'unable_sign', 'Client access data is unknown.'];
+                break;
+            case'unknown_route':
+                $return = [404, 'unknown_route', 'Route Not found.'];
+                break;
+            default:
+                $return = [400, 'api_error', 'API unknown error'];
+        }
+        return  $return;
+    }
+
+    public function html_compress_template(string $string):string
+    {
+        if(!$string){
+            return $string;
+        }
+        return preg_replace(['/<!--(.*)-->/Uis', "/[[:blank:]]+/"], ['', ' '], str_replace(["\n", "\r", "\t"], '', $string));
     }
 }

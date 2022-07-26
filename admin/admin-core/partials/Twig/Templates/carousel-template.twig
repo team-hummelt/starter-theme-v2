@@ -1,0 +1,8 @@
+{% extends "@partials-layout/carousel-layout.twig" %}
+{% block content %}
+    {% for r in record %}
+        {{ include('@partials-loops/carousel-loop.twig') }}
+    {% endfor %}
+    <div id="snackbar-success"></div>
+    <div id="snackbar-warning"></div>
+{% endblock %}

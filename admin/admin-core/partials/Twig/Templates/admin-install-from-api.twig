@@ -1,48 +1,36 @@
-<?php
-defined('ABSPATH') or die();
-/**
- * ADMIN HOME SITE
- * @package Hummelt & Partner WordPress Theme
- * Copyright 2021, Jens Wiecker
- * License: Commercial - goto https://www.hummelt-werbeagentur.de/
- */
-global $hupa_api_handle;
-
-?>
 <div class="wp-bs-starter-wrapper">
     <div class="container">
         <div class="card shadow-sm">
             <h5 class="card-header d-flex align-items-center bg-hupa py-4">
                 <i class="icon-hupa-white d-block mt-2" style="font-size: 2rem"></i>&nbsp;
-                <?= __('Theme API Installation', 'bootscore') ?> </h5>
+                {{ 'Theme API Installation'|__ }} </h5>
             <div class="card-body pb-4" style="min-height: 72vh">
                 <div class="d-flex align-items-center">
                     <h5 class="card-title"><i
-                                class="hupa-color fa fa-arrow-circle-right"></i> <?= __('Theme', 'bootscore') ?>
-                        / <span id="currentSideTitle"><?= __('Installationen', 'bootscore') ?></span>
+                                class="hupa-color fa fa-arrow-circle-right me-1"></i> {{ 'Theme'|__ }}
+                        / <span id="currentSideTitle">{{ 'Installationen'|__ }} </span>
                     </h5>
                 </div>
                 <hr>
                 <div class="settings-btn-group d-flex">
-                    <button data-site="<?= __('Installationen', 'bootscore') ?>" type="button"
+                    <button data-site="{{ 'Installationen'|__ }}" type="button"
                             data-load="loadInstallFormularFonts"
                             data-bs-toggle="collapse" data-bs-target="#collapseSettingsFontInstallSite"
                             class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm active" disabled>
-                        <i class="fa fa-server"></i>&nbsp;
-                        <?= __('Installationen', 'bootscore') ?>
+                        <i class="fa fa-server me-1"></i> {{ 'Installationen'|__ }}
                     </button>
 
-                    <button data-site="<?= __('Installierte Schriften', 'bootscore') ?>" type="button"
+                    <button data-site="{{ 'Installierte Schriften'|__ }}" type="button"
                             data-load="loadInstallFonts"
                             data-bs-toggle="collapse" data-bs-target="#InstallierteFonts"
                             aria-expanded="false" aria-controls="InstallierteFonts"
                             class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-font"></i>&nbsp;
-                        <?= __('Installierte Schriften', 'bootscore') ?>
+                        {{ 'Installierte Schriften'|__ }}
                     </button>
                 </div>
                 <hr>
                 <div id="settings_display_data">
-                    <!--  TODO JOB WARNING Fonts Installieren -->
+                    {# TODO JOB WARNING Fonts Installieren #}
                     <div class="collapse show" id="collapseSettingsFontInstallSite"
                          data-bs-parent="#settings_display_data">
                         <div class="border rounded mt-1 shadow-sm p-3 bg-custom-gray">
@@ -56,10 +44,12 @@ global $hupa_api_handle;
                                 <div class="col-xl-5 col-lg-6 col-12">
                                     <input type="hidden" name="method" value="install_api_font">
                                     <input class="selectFontName" type="hidden" name="font_name">
-                                    <label for="inputInstallFont" class="form-label">Schriftart</label>
-                                    <select onchange="change_font_install_select(this)" id="inputInstallFont"
-                                            name="font_install_id" class="form-select">
-                                    </select>
+                                    <div class="form-floating">
+                                        <select class="form-select no-blur" id="inputInstallFont"
+                                                name="font_install_id" onchange="change_font_install_select(this)">
+                                        </select>
+                                        <label for="inputInstallFont">Schriftart</label>
+                                    </div>
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <button type="button" onclick="btn_install_fonts(this)"
@@ -87,14 +77,15 @@ global $hupa_api_handle;
                             <hr>
                             <form id="install_plugin_form">
                                 <div class="col-xl-5 col-lg-6 col-12">
-                                    <input  type="hidden" name="method" value="install_api_plugin">
-                                    <input  type="hidden" name="select_container" value="inputInstallPlugins">
-
-                                    <label for="inputInstallPlugins" class="form-label">Plugin installieren</label>
-                                    <select data-method="api_download_plugin" onchange="change_api_install_select(this)"
-                                            id="inputInstallPlugins"
-                                            name="plugin_install_id" class="form-select">
-                                    </select>
+                                    <input type="hidden" name="method" value="install_api_plugin">
+                                    <input type="hidden" name="select_container" value="inputInstallPlugins">
+                                    <div class="form-floating">
+                                        <select data-method="api_download_plugin" onchange="change_api_install_select(this)"
+                                                class="form-select no-blur" id="inputInstallPlugins"
+                                                name="plugin_install_id">
+                                        </select>
+                                        <label for="inputInstallPlugins">Plugin installieren</label>
+                                    </div>
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <button type="button" onclick="btn_api_install(this)"
@@ -103,7 +94,7 @@ global $hupa_api_handle;
                                     </button>
                                     <div class="upload_spinner mt-4 d-flex align-items-center d-none">
                                         <i class="text-muted fa fa-wordpress fa-spin fa-3x mx-2"></i>
-                                        <span class="animate-flicker"> Plugin wird Installiert...</span>
+                                        <span class="animate-flicker"> Plugin wird installiert...</span>
                                     </div>
 
                                     <button type="button" onclick="activate_api_install_type(this)"
@@ -121,19 +112,23 @@ global $hupa_api_handle;
                             <hr>
                             <form id="install_child_form">
                                 <input class="api_method" type="hidden" name="method" value="api_download_theme">
-                                <input  type="hidden" name="select_container" value="inputInstallChild">
+                                <input type="hidden" name="select_container" value="inputInstallChild">
                                 <div class="col-xl-5 col-lg-6 col-12 mb-2">
-                                    <label for="inputInstallChild" class="form-label">Child Theme installieren</label>
-                                    <select  onchange="change_api_install_select(this)" id="inputInstallChild"
-                                            name="child_install_id" class="form-select">
-                                    </select>
+
+                                    <div class="form-floating">
+                                        <select onchange="change_api_install_select(this)"
+                                                class="form-select no-blur" id="inputInstallChild"
+                                                name="child_install_id">
+                                        </select>
+                                        <label for="inputInstallChild">Child Theme installieren</label>
+                                    </div>
                                 </div>
 
                                 <div style="max-width: 150px">
                                     <label for="inputDownloadPin"
                                            class="form-label col-form-label-sm pb-0 mb-0">PIN:</label>
-                                    <input  type="number" name="download_pin" id="inputDownloadPin"
-                                            class="form-control form-control-sm mt-0" disabled>
+                                    <input type="number" name="download_pin" id="inputDownloadPin"
+                                           class="form-control form-control-sm mt-0" disabled>
                                 </div>
 
                                 <div class="d-flex align-items-center">
@@ -167,7 +162,7 @@ global $hupa_api_handle;
                         <div class="border rounded mt-1 shadow-sm p-3 bg-custom-gray">
                             <div class="d-flex align-items-center flex-wrap">
                                 <h5 class="card-title">
-                                    <i class="font-blue fa fa-font"></i>&nbsp; Installierte Schriften
+                                    <i class="font-blue fa fa-font"></i>&nbsp; installierte Schriften
                                 </h5>
                             </div>
                             <hr>
@@ -178,36 +173,6 @@ global $hupa_api_handle;
             </div>
         </div>
     </div>
-
-
-    <div class="modal fade" id="fontDeleteModal" tabindex="-1" aria-labelledby="iframeDeleteModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-hupa">
-                    <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-trash"></i> Schrift löschen</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <h6 class="text-center">
-                        <b class="text-danger">Schrift wirklich löschen?</b>
-                        <small class="d-block">Diese Aktion kann <b class="text-danger">nicht</b> rückgängig gemacht
-                            werden!</small>
-                    </h6>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light border" data-bs-dismiss="modal"><i
-                                class="text-danger fa fa-times"></i>&nbsp; Abbrechen
-                    </button>
-                    <button onclick="delete_install_font(this)" type="button" data-bs-dismiss="modal"
-                            class="btn_delete_font btn btn-danger">
-                        <i class="fa fa-trash-o"></i>&nbsp; löschen
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </div>
 <div id="snackbar-success"></div>
 <div id="snackbar-warning"></div>

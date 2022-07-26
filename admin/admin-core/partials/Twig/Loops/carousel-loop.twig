@@ -1,0 +1,360 @@
+<div id="carousel{{ r.id }}" class="my-4">
+    <div class="card shadow-sm">
+        <h5 class="d-flex card-header carousel-header py-4 carousel-box-bg-header">{{ r.bezeichnung }}
+            <span class="ms-auto">
+    <i data-id="{{ r.id }}" data-method="delete_carousel_item" data-type="carousel"
+       class="sweet-alert2 btn-trash-icon text-danger fa fa-trash-o"></i>
+    </span>
+        </h5>
+        <div class="card-body">
+            <div class="d-flex align-items-center">
+                <div class="header">
+                    <h6 class="card-title">Shortcode: <b class="font-blue">[carousel id={{ r.id }}]</b></h6>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer py-3 mt-auto carousel-box-bg-footer">
+            <button data-type="collapse-carousel" data-site="{{ 'Carousel Settings'|__ }}"
+                    data-target="#carouselSettings{{ r.id }}"
+                    class="btn-carousel-action btn btn-hupa btn-outline-secondary">
+                <i class="fa fa-gears"></i>&nbsp; {{ 'Carousel Settings'|__ }}
+            </button>
+            <button data-type="collapse-carousel" data-site="{{ 'Slider Settings'|__ }}"
+                    data-target="#sliderSettings{{ r.id }}"
+                    class="btn-carousel-action btn btn-hupa btn-outline-secondary">
+                <i class="fa fa-exchange"></i>&nbsp; {{ 'Slider Settings'|__ }}
+            </button>
+        </div>
+
+        <div class="collapse" id="carouselSettings{{ r.id }}">
+            <div class="container">
+                <form class="sendAjaxCarouselForm" action="#" method="post">
+                    <input type="hidden" name="method" value="update_carousel">
+                    <input type="hidden" name="id" value="{{ r.id }}">
+                    <h5 class="card-title py-2"><i
+                                class="font-blue fa fa-gears"></i>&nbsp; {{ 'Carousel options'|__ }}
+                        <small class="small text-muted">( ID: {{ r.id }} )</small></h5>
+
+                    <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option first-box align-items-center">
+                        <div class="col">
+                            <div class="col-xxl-8 col-xl-10 col-12 p-2">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control no-blur" value="{{ r.bezeichnung }}"
+                                           name="bezeichnung" onkeyup="changeCarouselTitle(this, {{ r.id }});"
+                                           id="inputBezeichnung{{ r.id }}" placeholder="{{ 'Designation'|__ }}">
+                                    <label for="inputBezeichnung{{ r.id }}">{{ 'Designation'|__ }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <small class="small d-block p-2">{{ 'Change the name of the carousel.'|__ }}</small>
+                        </div>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option first-box align-items-center">
+                        <div class="col">
+                            <div class="col-xxl-8 col-xl-10 col-12 p-2">
+                                <div class="form-floating">
+                                    <select class="form-select no-blur" id="selectCarouselImageSize{{ r.id }}"
+                                            aria-label="Bildgröße auswählen"
+                                            name="carousel_image_size">
+                                        <option value="medium"
+                                                {% if r.carousel_image_size == 'medium' %}selected{% endif %}>medium
+                                        </option>
+                                        <option value="large"
+                                                {% if r.carousel_image_size == 'large' %}selected{% endif %}>large
+                                        </option>
+                                        <option value="full"
+                                                {% if r.carousel_image_size == 'full' %}selected{% endif %}}>full
+                                        </option>
+                                    </select>
+                                    <label for="selectCarouselImageSize{{ r.id }}">Bildgröße auswählen</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col"></div>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option align-items-center">
+                        <div class="col">
+                            <div class="col-xl-6 col-lg-8 col-12 p-2">
+                                <div class="form-check form-switch py-3">
+                                    <input onclick="this.blur()" class="form-check-input" name="carousel_lazy_load"
+                                           type="checkbox"
+                                           id="checkLazyLoad{{ r.id }}" {% if r.carousel_lazy_load %}checked{% endif %}>
+                                    <label class="form-check-label"
+                                           for="checkLazyLoad{{ r.id }}">lazy load aktiv</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                        </div>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option first-box align-items-center">
+                        <div class="col">
+                            <div class="col-xxl-8 col-xl-10 col-12 p-2">
+
+                                <div class="form-floating">
+                                    <textarea class="form-control no-blur" placeholder="{{ 'Static text'|__ }}"
+                                              name="data_static_text" id="TextareaStaticText{{ r.id }}" style="height: 180px">{{ r.data_static_text|trim }}</textarea>
+                                    <label for="TextareaStaticText{{ r.id }}">{{ 'Static text'|__ }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <small class="small d-block p-2">{{ 'The entered text is displayed with each slider. CSS can be used.'|__ }}</small>
+                        </div>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option first-box align-items-center">
+                        <div class="col">
+                            <div class="col-xxl-8 col-xl-10 col-12 p-2">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control no-blur" value="{{ r.container_height }}"
+                                           name="container_height"
+                                           id="inputContainerHeight{{ r.id }}"
+                                           placeholder="{{ 'Container height'|__ }}">
+                                    <label for="inputContainerHeight{{ r.id }}">{{ 'Container height'|__ }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <small class="small d-block p-2">{{ 'The height can be specified in px, rem or vh (e.g. 500px). If the entry is empty, the default height of 65vh is used.'|__ }}</small>
+                        </div>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option first-box align-items-center">
+                        <div class="col">
+                            <div class="col-xxl-8 col-xl-10 col-12 p-2">
+                                <div class="form-floating">
+                                    <select class="form-select no-blur" id="selectCarouselAnimation{{ r.id }}"
+                                            aria-label="{{ 'animation'|__ }}"
+                                            name="data_animate">
+                                        <option value="medium" {% if r.data_animate == '1' %}selected{% endif %}>slide
+                                        </option>
+                                        <option value="large" {% if r.data_animate == '2' %}selected{% endif %}>fade
+                                        </option>
+                                    </select>
+                                    <label for="selectCarouselAnimation{{ r.id }}">{{ 'animation'|__ }}</label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col">
+                            <small class="small d-block p-2">{{ 'Select the animation for the transition.'|__ }}</small>
+                        </div>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option first-box align-items-center">
+                        <div class="col">
+                            <div class="col-xxl-8 col-xl-10 col-12 p-2">
+                                <div class="form-floating">
+                                    <select class="form-select no-blur" id="selectCaptionBg{{ r.id }}"
+                                            aria-label="{{ 'Background for text'|__ }}"
+                                            name="caption_bg">
+                                        {% for sbg in select_bg %}
+                                            <option value="{{ loop.index0 }}"
+                                                    {% if r.caption_bg == loop.index0 %}selected{% endif %}>{{ sbg }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="selectCaptionBg{{ r.id }}">{{ 'Background for text'|__ }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <small class="small d-block p-2">{{ 'For better readability, a background can be displayed behind the text.'|__ }}</small>
+                        </div>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option first-box align-items-center">
+                        <div class="col">
+                            <div class="col-xxl-8 col-xl-10 col-12 p-2">
+
+                                <div class="form-floating">
+                                    <select class="form-select no-blur" id="selectSelectorBg{{ r.id }}"
+                                            aria-label="{{ 'Background for selectors'|__ }}"
+                                            name="select_bg">
+                                        {% for sbg in select_bg %}
+                                            <option value="{{ loop.index0 }}"
+                                                    {% if r.select_bg == loop.index0 %}selected{% endif %}>{{ sbg }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="selectSelectorBg{{ r.id }}">{{ 'Background for selectors'|__ }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <small class="small d-block p-2">{{ 'If selected, a background colour is displayed behind the selectors.'|__ }}</small>
+                        </div>
+                    </div>
+                    <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option align-items-center">
+                        <div class="col">
+                            <div class="col-xxl-8 col-xl-10 col-12 p-2">
+                                <div class="form-check form-switch py-3">
+                                    <input class="form-check-input no-blur" name="margin_aktiv" type="checkbox"
+                                           id="checkTopMargin{{ r.id }}" {% if r.margin_aktiv %}checked{% endif %}>
+                                    <label class="form-check-label"
+                                           for="checkTopMargin{{ r.id }}">{{ 'padding-top enabled'|__ }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <small class="small d-block p-2">
+                                {{ 'Determines whether the carousel should be displayed under the navigation. This option is only used in the custom header.'|__ }}
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option align-items-center">
+                        <div class="col">
+                            <div class="col-xxl-8 col-xl-10 col-12 p-2">
+                                <div class="form-check form-switch py-3">
+                                    <input class="form-check-input no-blur" name="full_width" type="checkbox"
+                                           id="checkFullWidth{{ r.id }}" {% if r.full_width %}checked{% endif %}>
+                                    <label class="form-check-label"
+                                           for="checkFullWidth{{ r.id }}">{{ 'Carousel full width'|__ }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <small class="small d-block p-2">
+                                {{ 'When active, the carousel is displayed over the entire available screen width.'|__ }}
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option align-items-center">
+                        <div class="col">
+                            <div class="col-xl-6 col-lg-8 col-12 p-2">
+                                <div class="form-check form-switch py-3">
+                                    <input class="form-check-input no-blur" name="controls" type="checkbox"
+                                           id="checkControls{{ r.id }}" {% if r.controls %}checked{% endif %}>
+                                    <label class="form-check-label"
+                                           for="checkControls{{ r.id }}">{{ 'Display control elements'|__ }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <small class="small d-block p-2">
+                                {{ 'Adding in the previous and next controls.'|__ }}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option align-items-center">
+                        <div class="col">
+                            <div class="col-xxl-8 col-xl-10 col-12 p-2">
+                                <div class="form-check form-switch py-3">
+                                    <input class="form-check-input no-blur" name="indicator" type="checkbox"
+                                           id="checkIndicator{{ r.id }}" {% if r.indicator %}checked{% endif %}>
+                                    <label class="form-check-label"
+                                           for="checkIndicator{{ r.id }}">{{ 'Show indicators'|__ }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <small class="small d-block p-2">
+                                {{ 'You can also add the indicators to the carousel, alongside the controls, too.'|__ }}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option align-items-center">
+                        <div class="col">
+                            <div class="col-xxl-8 col-xl-10 col-12 p-2">
+                                <div class="form-check form-switch py-3">
+                                    <input class="form-check-input no-blur" name="data_autoplay" type="checkbox"
+                                           id="checkAutoplay{{ r.id }}" {% if r.data_autoplay %}checked{% endif %}>
+                                    <label class="form-check-label"
+                                           for="checkAutoplay{{ r.id }}">{{ 'autoplay'|__ }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <small class="small d-block p-2">
+                                {% autoescape false %}
+                                    {{ 'If active, the individual slides are played back <b>automatically</b>. You can specify the time interval individually in the <b>slider settings</b> for each slider.'|__ }}
+                                {% endautoescape %}
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option align-items-center">
+                        <div class="col">
+                            <div class="col-xxl-8 col-xl-10 col-12 p-2">
+                                <div class="form-check form-switch py-3">
+                                    <input class="form-check-input no-blur" name="data_stop_hover" type="checkbox"
+                                           id="checkStopHover{{ r.id }}" {% if r.data_stop_hover %}checked{% endif %}>
+                                    <label class="form-check-label"
+                                           for="checkStopHover{{ r.id }}">{{ 'Slide hover stop'|__ }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <small class="small d-block p-2">
+                                {{ 'If set to "hover", pauses the cycling of the carousel on mouseenter and resumes the cycling of the carousel on mouseleave. If set to false, hovering over the carousel won’t pause it. On touch-enabled devices, when set to "hover", cycling will pause on touchend (once the user finished interacting with the carousel) for two intervals, before automatically resuming. This is in addition to the mouse behavior.'|__ }}
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option align-items-center">
+                        <div class="col">
+                            <div class="col-xxl-8 col-xl-10 col-12 p-2">
+                                <div class="form-check form-switch py-3">
+                                    <input class="form-check-input no-blur" name="data_touch_active" type="checkbox"
+                                           id="checkDataTouch{{ r.id }}" {% if r.data_touch_active %}checked{% endif %}>
+                                    <label class="form-check-label"
+                                           for="checkDataTouch{{ r.id }}">{{ 'Touch active'|__ }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <small class="small d-block p-2">
+                                {{ 'Whether the carousel should support left/right swipe interactions on touchscreen devices.'|__ }}
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option align-items-center">
+                        <div class="col">
+                            <div class="col-xxl-8 col-xl-10 col-12 p-2">
+                                <div class="form-check form-switch py-3">
+                                    <input class="form-check-input no-blur" name="data_keyboard_active" type="checkbox"
+                                           id="checkDataKeyboard{{ r.id }}" {% if r.data_keyboard_active %}checked{% endif %}>
+                                    <label class="form-check-label"
+                                           for="checkDataKeyboard{{ r.id }}">{{ 'Keyboard active'|__ }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <small class="small d-block p-2">
+                                {{ 'Whether the carousel should react to keyboard events.'|__ }}
+                            </small>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="collapse" id="sliderSettings{{ r.id }}">
+            <div class="add-wrapper">
+                <button onclick="add_carousel_slider(this, '{{ r.id }}')" class="btn btn-blue btn-sm ms-1 my-3">
+                    <i class="fa fa-plus "></i>&nbsp; {{ 'add new slider'|__ }}
+                </button>
+            </div>
+            <div id="accordionSliderParent">
+                <div class="accordion sliderSortable">
+                    {# SLIDER #}
+                    {% for sl in r.slider %}
+                        {% set i = ( i|default(-1) ) + 1 %}
+                        {% set rand = random() %}
+                        {% set randId = random() %}
+                        {{ include('@partials-loops/slider-items-loop.twig') }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

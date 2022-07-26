@@ -27,8 +27,6 @@ let clickAdminBarOptions = document.getElementById("wp-admin-bar-hupa_options_pa
 let resetMsgAlert = document.getElementById("reset-msg-alert");
 
 
-
-
 /*=================================================
 ========== TOGGLE SETTINGS COLLAPSE BTN  ==========
 ===================================================
@@ -93,9 +91,9 @@ if (settingsColBtn) {
 }
 
 
-/*=========================================
-========== AJAX FORMS AUTO SAVE  ==========
-===========================================
+/**=========================================
+========== AJAX FORMS AUTO SAVE  ===========
+============================================
 */
 
 let themeSendFormTimeout;
@@ -119,27 +117,6 @@ if (themeSendFormular) {
         }
     });
 }
-
-/**====================================================
- ================ BTN DELETE FONT MODAL================
- ======================================================*/
-let fontDeleteModal = document.getElementById('fontDeleteModal');
-if (fontDeleteModal) {
-    fontDeleteModal.addEventListener('show.bs.modal', function (event) {
-        let button = event.relatedTarget
-        let id = button.getAttribute('data-bs-id');
-        document.querySelector('.btn_delete_font').setAttribute('data-id', id);
-    })
-}
-
-function delete_install_font(e) {
-    const data = {
-        'method': 'delete_font',
-        'id': e.getAttribute('data-id')
-    }
-    send_xhr_form_data(data, false);
-}
-
 
 /*=====================================
 ========== SYNC FONT FOLDER  ==========
@@ -279,7 +256,7 @@ if (capabilities) {
 
 if(capabilitySelect){
     capabilitySelect.addEventListener("change", function (e) {
-        console.log(this.value)
+
         let formData = {
             'method': 'update_capability',
             'type' : this.getAttribute('data-type'),
@@ -395,7 +372,9 @@ function send_xhr_form_data(data, is_formular = true, callback = '') {
                     break;
                 case'load_install_fonts':
                     if (data.status) {
-                        get_install_fonts_template(data.record)
+                        document.getElementById('installFontsContainer').innerHTML = data.template;
+                    } else {
+                        warning_message(data.msg);
                     }
                     break;
                 case'load_install_list_api_data':
@@ -503,9 +482,9 @@ function send_xhr_form_data(data, is_formular = true, callback = '') {
     }
 }
 
-/*===========================================
-========== WordPress Image Upload  ==========
-=============================================
+/**===========================================
+========== WordPress Image Upload  ===========
+==============================================
 */
 
 let themeUploadMediaImg = document.querySelectorAll(".theme_upload_media_img");
@@ -957,6 +936,8 @@ if (smallThemeSendModalBtn) {
 }
 
 
+
+
 let iconSettingsInfoModal = document.getElementById('dialog-add-icon');
 if (iconSettingsInfoModal) {
     iconSettingsInfoModal.addEventListener('show.bs.modal', function (event) {
@@ -1037,41 +1018,6 @@ function get_install_fonts_overview() {
         'method': 'load_install_fonts',
     }
     send_xhr_form_data(installFonts, false);
-}
-
-function get_install_fonts_template(data = false) {
-    let html = '';
-    for (const [keyFamily, valFamily] of Object.entries(data)) {
-        html += `
-            <div id="installFont-${valFamily.family}" class="col-xl-4 col-lg-6 col-12 p-2">
-            <div class="d-flex overflow-hidden position-relative border h-100 w-100 shadow-sm">
-                <div class="p-3 d-flex flex-column w-100 h-100">
-                    <div class="header-font">
-                        <h5 class="strong-font-weight "><i class="font-blue fa fa-arrow-circle-right"></i>&nbsp; ${valFamily.family}</h5>
-                        <hr class="mt-0">
-                    </div>
-                    <div class="font-body">
-                        <h6>Schriftstile:</h6>
-                        <ul class="li-font-list list-unstyled mb-2">`;
-        for (const [keyStyle, valStyle] of Object.entries(valFamily.styles)) {
-            html += `<li>${valStyle}</li>`;
-        }
-        html += `</ul>
-                    </div>
-                    <div class="mt-auto font-footer">
-                        <hr class="mt-1">
-                        <button data-bs-id="${valFamily.family}" data-bs-toggle="modal"
-                                data-bs-target="#fontDeleteModal"
-                                class="btn btn-hupa btn-outline-secondary btn-sm">
-                            <i class="fa fa-trash"></i>&nbsp; Schrift löschen
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>`;
-
-    }
-    document.getElementById('installFontsContainer').innerHTML = html;
 }
 
 if (current_page == 'hupa-install-font') {

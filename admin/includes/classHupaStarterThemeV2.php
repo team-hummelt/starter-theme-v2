@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  * The file that defines the core theme class
  *
@@ -41,6 +39,8 @@ use Hupa\ThemeLicense\HupaApiServerHandle;
 use Hupa\ThemeLicense\RegisterHupaStarter;
 use StarterAPIExec\EXEC\HupaStarterLicenseExecAPI;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Extension\CoreExtension;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFilter;
 
@@ -151,6 +151,7 @@ class HupaStarterThemeV2
      * Load the dependencies, define the locale, and set the hooks for the admin area and
      * the public-facing side of the site.
      *
+     * @throws LoaderError
      * @since    2.0.0
      */
     public function __construct()
@@ -166,16 +167,32 @@ class HupaStarterThemeV2
 
         $this->load_dependencies();
 
-        $tempDir = THEME_ADMIN_DIR . 'admin-core/partials/';
+        $tempDir = THEME_ADMIN_DIR . 'admin-core'.DIRECTORY_SEPARATOR.'partials'.DIRECTORY_SEPARATOR . 'Twig' . DIRECTORY_SEPARATOR;
+
         $twig_loader = new FilesystemLoader($tempDir);
+        $twig_loader->addPath($tempDir . 'Loops', 'partials-loops');
+        $twig_loader->addPath($tempDir . 'Templates', 'partials-templates');
+        $twig_loader->addPath($tempDir . 'Layout', 'partials-layout');
+        $twig_loader->addPath($tempDir . 'Modal', 'partials-modal');
+
         $this->twig = new Environment($twig_loader);
+        $this->twig->getExtension(CoreExtension::class)->setTimezone('Europe/Berlin');
+        // JOB Twig Filter
         $wpGetText = new TwigFilter('__', function ($text) {
             return __($text, 'bootscore');
         });
+        $hasNavMenu = new TwigFilter('has_nav_menu', function ($hasMenu){
+            return has_nav_menu($hasMenu);
+        });
+        $getOption = new TwigFilter('get_option', function ($option){
+            return get_option($option);
+        });
         $this->twig->addFilter($wpGetText);
+        $this->twig->addFilter($hasNavMenu);
+        $this->twig->addFilter($getOption);
+        // JOB Twig Filter End
 
         $this->define_create_database_hooks();
-
         $this->define_theme_helper_hooks();
 
         $this->define_theme_options_hooks();
@@ -202,9 +219,9 @@ class HupaStarterThemeV2
         $this->define_wp_optionen_hooks();
         //Shortcodes
         $this->define_theme_shortcodes_hooks();
-
+        // License API
         $this->define_theme_api_handle();
-
+        // Admin Dashboard
         $this->define_admin_hooks();
     }
 
@@ -256,6 +273,11 @@ class HupaStarterThemeV2
          * The class responsible for defining theme options.
          */
         require(Config::get('THEME_ADMIN_INCLUDES') . 'filter/theme-helper.php');
+
+        /**
+         * The class responsible for defining oAuth2 Server options.
+         */
+        require(Config::get('THEME_ADMIN_INCLUDES') . 'oAuthServer/OauthServer.php');
 
         /**
          * The class responsible for defining theme options.
@@ -508,7 +530,9 @@ class HupaStarterThemeV2
         $this->loader->add_filter('hupaObject2array', $hupa_register_theme_helper, 'object2array_recursive');
         $this->loader->add_filter('make_bootstrap_icon_json', $hupa_register_theme_helper, 'create_bootstrap_icon_json');
         $this->loader->add_action('change_beitragslisten_template', $hupa_register_theme_helper, 'changeBeitragsListenTemplate', 10, 2);
-
+        $this->loader->add_filter('clean_white_space', $hupa_register_theme_helper, 'cleanWhitespace');
+        $this->loader->add_filter('oauth_set_error_message', $hupa_register_theme_helper, 'api_set_error_message');
+        $this->loader->add_filter('compress_template', $hupa_register_theme_helper, 'html_compress_template');
     }
 
     /**
@@ -764,8 +788,6 @@ class HupaStarterThemeV2
         //TODO  VALIDATE SOURCE BY Authorization Code
         $this->loader->add_filter('get_resource_authorization_code', $hupa_wp_remote_action, 'hupaInstallByAuthorizationCode');
 
-
-
         $hupa_register_starter = RegisterHupaStarter::hupa_starter_instance($this->get_theme_slug(), $this->get_theme_version(), $this->main);
         if (!get_option('hupa_starter_product_install_authorize')) {
             $this->loader->add_action('admin_menu', $hupa_register_starter, 'register_license_hupa_starter_theme');
@@ -825,10 +847,10 @@ class HupaStarterThemeV2
      */
     private function define_theme_shortcodes_hooks()
     {
-        $theme_shortcode_handle = HupaCarouselShortCode::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
-        $theme_shortcode_icon = HupaIconsShortCode::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
-        $theme_shortcode_social_btn = HupaSocialButtonShortCode::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
-        $theme_shortcode_google_maps = HupaGoogleMapsShortCode::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
+        HupaCarouselShortCode::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
+        HupaIconsShortCode::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
+        HupaSocialButtonShortCode::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
+        HupaGoogleMapsShortCode::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
     }
 
     /** Register all the hooks related to the admin options area functionality

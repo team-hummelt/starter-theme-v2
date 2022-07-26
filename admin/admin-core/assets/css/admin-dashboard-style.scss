@@ -10,6 +10,13 @@ $tooltip-bg: #e11d2a;
 
 $dotBoxBg: #f8f9fa;
 $dotBoxBorder: #dee2e6;
+$yellow: #ffbf31;
+
+.bg-yellow {
+  background-color: $yellow !important;
+  //color: #fff;
+}
+
 
 body .wp-bs-starter-wrapper {
   font-size: 1rem;
@@ -30,12 +37,13 @@ body .wp-bs-starter-wrapper {
     color: #ccc;
     text-shadow: 0 1px 2px #000;
     text-align: center;
-    background-color: #aa000b!important;
+    background-color: #aa000b !important;
     border-radius: 6px;
     font-size: 70px;
   }
+
   .flip-clock-dot {
-    background: #aa000b!important;
+    background: #aa000b !important;
   }
 }
 
@@ -73,6 +81,17 @@ body .wp-bs-starter-wrapper {
 //WRAPPER
 .wp-bs-starter-wrapper {
 
+  #accordionSliderParent h2:first-child {
+    border-top-left-radius: .25rem !important;
+
+  }
+
+  .no-blur:focus, .no-blur:active, .no-blur:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+  }
+
   .max-width25 {
     max-width: 25em;
   }
@@ -84,34 +103,59 @@ body .wp-bs-starter-wrapper {
     pre {
       white-space: pre-wrap;
       margin: 1rem 0;
-      font-size: 14px ;
-      font-weight: 600!important;
-      line-height: 1.6!important;
+      font-size: 14px;
+      font-weight: 600 !important;
+      line-height: 1.6 !important;
       height: 100%;
-      margin-bottom: 0!important;
+      margin-bottom: 0 !important;
     }
   }
 
   @keyframes flickerAnimation {
-    0%   { opacity:1; }
-    50%  { opacity:0; }
-    100% { opacity:1; }
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
-  @-o-keyframes flickerAnimation{
-    0%   { opacity:1; }
-    50%  { opacity:0; }
-    100% { opacity:1; }
+  @-o-keyframes flickerAnimation {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
-  @-moz-keyframes flickerAnimation{
-    0%   { opacity:1; }
-    50%  { opacity:0; }
-    100% { opacity:1; }
+  @-moz-keyframes flickerAnimation {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
-  @-webkit-keyframes flickerAnimation{
-    0%   { opacity:1; }
-    50%  { opacity:0; }
-    100% { opacity:1; }
+  @-webkit-keyframes flickerAnimation {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
+
   .animate-flicker {
     -webkit-animation: flickerAnimation 1s infinite;
     -moz-animation: flickerAnimation 1s infinite;
@@ -767,12 +811,13 @@ body .wp-bs-starter-wrapper {
     position: relative;
 
     button.accordion-button {
-      padding-left: 5.5rem;
+      padding-left: 6rem;
       position: relative;
     }
 
     .sliderHandle {
       z-index: 9;
+      border-bottom: 1px solid #dbdbdb;
       background-color: #e4e4e4;
       display: block;
       position: absolute;
@@ -819,8 +864,7 @@ body .wp-bs-starter-wrapper {
     border-top: 1px solid;
     border-bottom: 1px solid;
     border-color: #e0e0e0;
-    margin: .7rem 0;
-
+    //margin: .7rem 0 0;
     button {
       margin-left: 1rem !important;
     }
@@ -917,7 +961,257 @@ body .wp-bs-starter-wrapper {
     }
   }
 
+  .btn-outline-success.active {
+      color: #fff!important;
+  }
 }
+
+.swal-success-container {
+  background: var(--app-bg) !important;
+  color: var(--body-color) !important;
+  font-family: inherit;
+  font-size: 1rem;
+  border: 1px solid var(--bs-success) !important;
+}
+
+.swal-error-container {
+  background: var(--app-bg) !important;
+  color: var(--body-color) !important;
+  font-family: inherit;
+  font-size: 1rem;
+  border: 1px solid var(--bs-danger) !important;
+
+  .swal2-x-mark-line-left, .swal2-x-mark-line-right {
+    background-color: var(--bs-danger) !important;
+  }
+
+  .swal2-icon.swal2-error {
+    border-color: var(--bs-danger) !important;
+  }
+}
+
+.swal-danger {
+  color: #D73814FF;
+}
+
+.swal-danger-container {
+  background-color: rgba(84, 90, 90, 0.90) !important;
+  font-family: inherit;
+  font-size: 1rem;
+  border: 3px solid #D73814FF !important;
+
+  .swal2-x-mark-line-left, .swal2-x-mark-line-right {
+    background-color: #D73814FF !important;
+  }
+
+  .swal2-icon.swal2-error {
+    border-color: #D73814FF !important;
+  }
+
+  .swal2-title {
+    color: #e8e8e8;
+    font-weight: 400 !important;
+  }
+
+  .swal-delete-body {
+    color: #d1d1d1 !important;
+  }
+
+  .swal2-validation-message {
+    background-color: transparent !important;
+    color: #e8e8e8;
+  }
+
+  .swal2-input-label {
+    color: #e8e8e8;
+    padding: 0 1.5rem;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .swal2-input {
+    color: #e8e8e8;
+  }
+
+  .swal2-input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+  }
+
+  .swal2-checkbox {
+    background-color: rgba(84, 90, 90, 0) !important;
+    color: #e8e8e8;
+  }
+
+  button {
+    padding: .5rem 1rem !important;
+  }
+
+  .swal2-cancel {
+    background-color: #d5d5d5 !important;
+    color: #555 !important;
+    box-shadow: unset !important;
+    display: flex !important;
+    align-items: center;
+
+    &:before {
+      content: '\F623';
+      font-family: bootstrap-icons, sans-serif;
+      color: #D73814FF !important;
+      margin-right: .5rem;
+    }
+  }
+
+  button.swal2-confirm.swal2-styled {
+    background-color: #D73814FF;
+    box-shadow: unset !important;
+    display: flex !important;
+    align-items: center;
+  }
+
+  .swal2-html-container {
+    margin: .5rem 1.6rem 0.3rem !important;
+  }
+
+  .swal-cancel:hover {
+    background-color: #f3f3f3 !important;
+  }
+}
+
+.swal-delete-container {
+
+  background-color: rgba(84, 90, 90, 0.90) !important;
+  font-family: inherit;
+  font-size: 1rem;
+  border: 3px solid #D73814FF !important;
+
+  .swal2-x-mark-line-left, .swal2-x-mark-line-right {
+    background-color: #D73814FF !important;
+  }
+
+  .swal2-icon.swal2-error {
+    border-color: #D73814FF !important;
+  }
+
+  .swal2-title {
+    color: #e8e8e8;
+    font-weight: 400 !important;
+  }
+
+  .swal-delete-body {
+    color: #d1d1d1 !important;
+    display: block;
+    padding-top: 1rem;
+  }
+
+  .swal2-validation-message {
+    background-color: transparent !important;
+    color: #e8e8e8;
+  }
+
+  .swal2-input-label {
+    color: #e8e8e8;
+    padding: 0 1.5rem;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .swal2-input {
+    color: #e8e8e8;
+  }
+
+  .swal2-input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+  }
+
+  .swal2-checkbox {
+    background-color: rgba(84, 90, 90, 0) !important;
+    color: #e8e8e8;
+  }
+
+  button {
+    padding: .5rem 1rem !important;
+  }
+
+  .swal2-styled.swal2-confirm:not(.error-sw .swal2-styled.swal2-confirm) {
+    background-color: #D73814FF;
+    box-shadow: unset !important;
+    display: flex !important;
+    align-items: center;
+
+    &:before {
+      content: '\F5DE';
+      font-family: bootstrap-icons, sans-serif;
+      margin-right: .5rem;
+    }
+
+    &:hover {
+      background-color: #ce3513;
+    }
+  }
+
+  &.error-sw .swal2-styled.swal2-confirm {
+    background-color: #D73814FF;
+    box-shadow: unset !important;
+    display: flex !important;
+    align-items: center;
+
+    &:before {
+      content: '\F623';
+      font-family: bootstrap-icons, sans-serif;
+      margin-right: .5rem;
+    }
+  }
+
+  .swal2-cancel:not(.error-sw .swal2-cancel) {
+    background-color: #d5d5d5 !important;
+    color: #555 !important;
+    box-shadow: unset !important;
+    display: flex !important;
+    align-items: center;
+
+    &:before {
+      content: '\F623';
+      font-family: bootstrap-icons, sans-serif;
+      color: #D73814FF !important;
+      margin-right: .5rem;
+    }
+  }
+
+
+  .swal2-html-container {
+    margin: .5rem 1.6rem 0.3rem !important;
+  }
+
+  .swal-cancel:hover {
+    background-color: #f3f3f3 !important;
+  }
+
+}
+
+.swal-info-container {
+  background-color: var(--app-bg) !important;
+  color: var(--body-color) !important;
+  opacity: .9 !important;
+  border: 1px solid var(--bs-success) !important;
+
+  .swal2-image {
+    margin: 0 auto 0 !important;
+  }
+
+  .swal2-styled.swal2-confirm {
+    background-color: $blue;
+  }
+
+  .swal2-styled.swal2-confirm:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+
 
 //end WRAPPER
 

@@ -1,33 +1,70 @@
-let loadCarousel = document.getElementById("theme-carousel-data");
 let carouselSendFormTimeout;
+(function ($) {
+    "use strict";
+    $(document).on('click', '.btn-carousel-action', function () {
+        let type = $(this).attr('data-type');
+        let formData;
+        $(this).trigger('blur');
+        switch (type) {
+            case 'collapse-carousel':
+                let siteTitle = $("#currentSideTitle");
+                siteTitle.html($(this).attr('data-site'));
+                let btnCollapse = $('.btn-carousel-action');
+                let thisClassActive = $(this).hasClass("active");
+                btnCollapse.removeClass('active').prop('disabled', false);
+                let currentTarget = $(this).attr('data-target');
+                new bootstrap.Collapse(currentTarget, {
+                    toggle: true,
+                    parent: '#theme-carousel-data'
+                });
 
-/*======================================
-========== LOAD CAROUSEL DATA ==========
-========================================
-*/
-function loadModulScript(src) {
-    return new Promise(function (resolve, reject) {
-        let script = document.createElement('script');
-        script.src = src;
-        script.onload = () => resolve(script);
-        script.onerror = () => reject(new Error(`Script load error for ${src}`));
-        document.head.append(script);
+                let parHead = $(this).parents('.card')[0];
+                $('.card-header.carousel-header').removeClass('carousel-aktiv').addClass('bg-custom-gray')
+                let headerAktiv = $('.card-header ', parHead);
+                if (thisClassActive) {
+                    $(this).removeClass("active");
+                } else {
+                    $(this).addClass("active");
+                }
+                if ($('.btn-carousel-action.active').length) {
+                    headerAktiv.addClass('carousel-aktiv').removeClass('bg-custom-gray')
+                } else {
+                    headerAktiv.addClass('bg-custom-gray').removeClass('carousel-aktiv')
+                }
+                break;
+            case'add_caption_btn':
+                formData = {
+                    'method': type,
+                    'rand': $(this).attr('data-rand'),
+                    'slider_id': $(this).attr('data-sl-id'),
+                    'rand-id': $(this).attr('data-rand-id')
+                };
+                send_xhr_carousel_data(formData, false);
+                break;
+            case'switch-title-tag':
+                let parDiv = $(this).next().parents('div');
+                let titleTag = $('input.form-control ', parDiv[1]);
+                if ($(this).prop('checked')) {
+                    titleTag.prop('disabled', false);
+                } else {
+                    titleTag.prop('disabled', true);
+                }
+                break;
+        }
     });
-}
 
-if (loadCarousel) {
-    let loadCarouselModul = loadModulScript(hupa_starter.admin_js_module + 'carousel-modul.js');
-    loadCarouselModul.then(
-        script => {
-            const loadMethod = {
-                'method': 'get_carousel_data'
-            }
-            send_xhr_carousel_data(loadMethod, false);
-        },
-        error => console.log(`Error: ${error.message}`)
-    );
+    $(document).on('click', '.set-collapse-active', function () {
+        let setColl = $('.set-collapse-active');
+        let ifActive = $(this).hasClass('active');
+        setColl.removeClass('active');
+        if (!ifActive) {
+            $(this).addClass('active');
+        }
+    });
 
-}
+
+})(jQuery);
+
 
 /*============================================
 ========== AJAX FORMULAR SUBMIT BTN ==========
@@ -50,6 +87,12 @@ if (themeSendBtnCarouselFormular) {
 */
 function send_xhr_carousel_data(data, is_formular = true) {
 
+    let carouselData = document.getElementById('theme-carousel-data');
+    if (!carouselData) {
+        let html = '<div id="theme-carousel-data"</div>';
+        let carouselCard = document.getElementById('carouselCard');
+        carouselCard.insertAdjacentHTML('beforeend', html);
+    }
     let xhr = new XMLHttpRequest();
     let formData = new FormData();
     xhr.open('POST', theme_ajax_obj.ajax_url, true);
@@ -79,24 +122,156 @@ function send_xhr_carousel_data(data, is_formular = true) {
             if (data.reset_form) {
                 reset_formular_input();
             }
+            if (!data.status) {
+                warning_message(data.msg);
+            }
             switch (data.render) {
                 case'carousel':
-                    if (data.renderData.status) {
-                        render_carousel(data.renderData);
-                        carousel_autosave_events();
-                    }
+                    let Carousel = document.getElementById('theme-carousel-data');
+                    Carousel.insertAdjacentHTML('afterbegin', data.template);
+                    setInitAppSortable();
+                    carousel_autosave_events();
+                    load_color_pickr();
                     break;
                 case'slider':
-                    render_slider_items(data.slider, data.lang, data.carouselId, data.record,'add');
+                    let Slider = document.getElementById('sliderSettings' + data.id);
+                    let SortableWrapper = Slider.querySelector('.accordion.sliderSortable');
+                    SortableWrapper.insertAdjacentHTML('afterbegin', data.template);
+                    setInitAppSortable();
                     carousel_autosave_events();
-                    return false;
+                    load_color_pickr();
+                    break;
+                case 'button':
+                    let btnWrapper = document.getElementById('captionButton' + data.rand);
+                    btnWrapper.insertAdjacentHTML('beforeend', data.template);
+                    let addId = document.getElementById('btnParrent' + data.rand_id);
+                    //btnParrent2093872245
+                    load_color_pickr(addId);
+                    break;
             }
         }
     }
 }
 
-//document.addEventListener('DOMContentLoaded',loadPickrColor);
+function load_color_pickr(addId = false) {
 
+    let clrPickrContainer;
+    if (addId) {
+        clrPickrContainer = addId.querySelectorAll('.colorPickers');
+    } else {
+        clrPickrContainer = document.querySelectorAll('.colorPickers');
+    }
+    if (clrPickrContainer) {
+        let colorNode = Array.prototype.slice.call(clrPickrContainer, 0);
+        colorNode.forEach(function (colorNode) {
+            let setColor = colorNode.getAttribute('data-color');
+            let containerId = colorNode.getAttribute('data-id');
+            const newPickr = document.createElement('div');
+            colorNode.appendChild(newPickr);
+            const pickr = new Pickr({
+                el: newPickr,
+                default: '#42445a',
+                useAsButton: false,
+                defaultRepresentation: 'RGBA',
+                position: 'left',
+                swatches: [
+                    '#2271b1',
+                    '#3c434a',
+                    '#e11d2a',
+                    '#198754',
+                    '#F44336',
+                    '#adff2f',
+                    '#E91E63',
+                    '#9C27B0',
+                    '#673AB7',
+                    '#3F51B5',
+                    '#2196F3',
+                    '#03A9F4',
+                    '#00BCD4',
+                    '#009688',
+                    '#4CAF50',
+                    '#8BC34A',
+                    '#CDDC39',
+                    '#FFEB3B',
+                    '#FFC107',
+                    'rgba(244, 67, 54, 1)',
+                    'rgba(233, 30, 99, 0.95)',
+                    'rgba(156, 39, 176, 0.9)',
+                    'rgba(103, 58, 183, 0.85)',
+                    'rgba(63, 81, 181, 0.8)',
+                    'rgba(33, 150, 243, 0.75)',
+                    'rgba(3, 169, 244, 0.7)',
+                    'rgba(0, 188, 212, 0.7)',
+                    'rgba(0, 150, 136, 0.75)',
+                    'rgba(76, 175, 80, 0.8)',
+                    'rgba(139, 195, 74, 0.85)',
+                    'rgba(205, 220, 57, 0.9)',
+                    'rgba(255, 235, 59, 0.95)',
+                    'rgba(255, 193, 7, 1)'
+                ],
+
+                components: {
+
+                    // Main components
+                    preview: true,
+                    opacity: true,
+                    hue: true,
+
+                    // Input / output Options
+                    interaction: {
+                        hex: true,
+                        rgba: true,
+                        hsla: true,
+                        hsva: true,
+                        cmyk: false,
+                        input: true,
+                        clear: false,
+                        save: true,
+                        cancel: true,
+                    }
+                },
+                i18n: {
+
+                    // Strings visible in the UI
+                    'ui:dialog': 'color picker dialog',
+                    'btn:toggle': 'toggle color picker dialog',
+                    'btn:swatch': 'color swatch',
+                    'btn:last-color': 'use previous color',
+                    'btn:save': 'Speichern',
+                    'btn:cancel': 'Abbrechen',
+                    'btn:clear': 'Löschen',
+
+                    // Strings used for aria-labels
+                    'aria:btn:save': 'save and close',
+                    'aria:btn:cancel': 'cancel and close',
+                    'aria:btn:clear': 'clear and close',
+                    'aria:input': 'color input field',
+                    'aria:palette': 'color selection area',
+                    'aria:hue': 'hue selection slider',
+                    'aria:opacity': 'selection slider'
+                }
+            }).on('init', pickr => {
+                pickr.setColor(setColor)
+                pickr.setColorRepresentation(setColor);
+            }).on('save', color => {
+                pickr.hide();
+            }).on('changestop', (instance, color, pickr) => {
+                let colorInput = colorNode.childNodes[1];
+                colorInput.value = pickr._color.toHEXA().toString(0);
+                send_xhr_carousel_data(colorInput.form);
+            }).on('cancel', (instance) => {
+                let colorInput = colorNode.childNodes[1];
+                colorInput.value = instance._lastColor.toHEXA().toString(0);
+                send_xhr_carousel_data(colorInput.form);
+                pickr.hide();
+            }).on('swatchselect', (color, instance) => {
+                let colorInput = colorNode.childNodes[1];
+                colorInput.value = color.toHEXA().toString(0);
+                send_xhr_carousel_data(colorInput.form);
+            });
+        });
+    }
+}
 
 function reset_formular_input() {
     let inputs = document.querySelectorAll('.sendAjaxCarouselBtnForm input.form-control');
@@ -104,52 +279,6 @@ function reset_formular_input() {
         inputs.forEach(input => input.value = '');
     }
 }
-
-/*=================================================
-========== TOGGLE SETTINGS COLLAPSE BTN  ==========
-===================================================
-*/
-function change_collapse_btn(e) {
-    e.blur();
-    let siteTitle = document.getElementById("currentSideTitle");
-    let parentHeader = e.parentNode.parentElement.getElementsByClassName('carousel-header');
-    if (e.classList.contains("active")) {
-        e.classList.remove('active');
-        siteTitle.innerText = 'Settings';
-        parentHeader[0].classList.add('bg-custom-gray');
-        parentHeader[0].classList.remove('carousel-aktiv');
-        return false;
-    }
-
-    let cardHeader = document.querySelectorAll(".carousel-header");
-    remove_carousel_header();
-
-    let colCarouselBtn = document.querySelectorAll("button.btn-collapse");
-    let CollapseEvent = Array.prototype.slice.call(colCarouselBtn, 0);
-    CollapseEvent.forEach(function (CollapseEvent) {
-        remove_active_btn();
-    });
-
-    parentHeader[0].classList.remove('bg-custom-gray');
-    parentHeader[0].classList.add('carousel-aktiv');
-    e.classList.add('active');
-    siteTitle.innerText = e.getAttribute('data-site');
-
-    function remove_active_btn() {
-        for (let i = 0; i < CollapseEvent.length; i++) {
-            CollapseEvent[i].classList.remove('active');
-            CollapseEvent[i].removeAttribute('disabled');
-        }
-    }
-
-    function remove_carousel_header() {
-        for (let i = 0; i < cardHeader.length; i++) {
-            cardHeader[i].classList.remove('carousel-aktiv');
-            cardHeader[i].classList.add('bg-custom-gray');
-        }
-    }
-}
-
 
 /*=========================================
 ========== WP MEDIA IMAGE UPLOAD ==========
@@ -230,21 +359,6 @@ function changeCarouselTitle(event, id) {
     });
 }
 
-function accordion_slider_handle(event, id){
-
-    clearTimeout(carouselSendFormTimeout);
-    carouselSendFormTimeout = setTimeout(function () {
-        let handleWrapper = event.parentNode.children;
-        let current =  document.getElementById("collapseSlider" + id);
-        if (current.classList.contains("show")) {
-           // handleWrapper[0].classList.add('d-none');
-        } else {
-           // handleWrapper[0].classList.remove('d-none');
-        }
-    }, 500);
-
-    //console.log(handleWrapper);
-}
 
 /*=========================================
 ========== AJAX FORMS AUTO SAVE  ==========
@@ -270,8 +384,16 @@ function carousel_autosave_events() {
         }
     });
     changeRangeUpdate();
+}
 
+let CarouselData = document.getElementById('theme-carousel-data');
+if (CarouselData) {
+    carousel_autosave_events();
+    setInitAppSortable();
+    load_color_pickr();
+}
 
+function setInitAppSortable() {
     let carouselSortable = document.querySelectorAll(".sliderSortable");
     if (carouselSortable) {
         let sortNodes = Array.prototype.slice.call(carouselSortable, 0);
@@ -302,7 +424,7 @@ function carousel_autosave_events() {
     }
 }
 
-function add_carousel_slider(event, id){
+function add_carousel_slider(event, id) {
     const loadMethod = {
         'method': 'add_carousel_slider',
         'id': id
@@ -330,7 +452,111 @@ function change_animate_select(id, event) {
     if (animateOut.hasAttribute("class")) {
         animateOut.removeAttribute("class");
     }
-    // console.log(animate)
+
     animate.classList.remove('hide');
     animateOut.classList.add('animate__animated', 'animate__' + value);
+}
+
+function delete_slider_button(e) {
+    let form = e.childNodes[0].parentNode.form;
+    let btnWrapper = e.parentNode.parentNode;
+    btnWrapper.remove();
+    send_xhr_carousel_data(form);
+}
+
+function toggle_hover_btn(e) {
+    e.classList.toggle('active');
+}
+
+function delete_slider_icon(id, e) {
+    let iconContainer = document.getElementById('btn_icon' + id);
+    document.getElementById('inputIcon' + id).value = '';
+    iconContainer.innerHTML = '';
+    let iconButton = document.querySelectorAll('.btnSelectIcon' + id);
+    let formNodes = Array.prototype.slice.call(iconButton, 0);
+    formNodes.forEach(function (formNodes) {
+        formNodes.classList.toggle('d-none');
+    });
+
+    let form = e.childNodes[0].parentNode.form;
+    send_xhr_carousel_data(form);
+}
+
+function change_select_btn_url(id, e) {
+
+    e.blur();
+    let inputUrl = document.getElementById('inputBtnURL' + id);
+    if (e.value) {
+        inputUrl.setAttribute('disabled', 'disabled');
+        inputUrl.classList.remove('is-invalid');
+    } else {
+        inputUrl.removeAttribute('disabled');
+        inputUrl.classList.add('is-invalid');
+    }
+}
+
+let iconModal = document.getElementById('dialog-modal-add-icon');
+if (iconModal) {
+    iconModal.addEventListener('show.bs.modal', function (event) {
+        let button = event.relatedTarget;
+        let type = button.getAttribute('data-bs-type');
+        let formId = button.getAttribute('data-bs-id');
+        let xhr = new XMLHttpRequest();
+        let formData = new FormData();
+
+
+        formData.append('action', 'HupaStarterHandle');
+        formData.append('method', 'get_fa_slider_icons');
+        formData.append('type', type);
+        formData.append('formId', formId);
+
+        xhr.open('POST', theme_ajax_obj.ajax_url, true);
+        formData.append('_ajax_nonce', theme_ajax_obj.nonce);
+        xhr.send(formData);
+
+        //Response
+        xhr.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                let data = JSON.parse(this.responseText);
+                if (data.status) {
+                    let iconGrid = document.getElementById('icon-grid');
+                    let icons = data.record;
+                    let html = '<div class="icon-wrapper">';
+                    icons.forEach(function (icons) {
+                        html += `<div onclick="set_select_slide_icon(this, '${icons.code}', '${icons.icon}', '${data.formId}');"
+                              data-bs-dismiss="modal"  class="info-icon-item" title="${icons.code} | ${icons.title}">`;
+                        html += `<i  class="${icons.icon}"></i><small class="sm-icon">${icons.icon}</small>`;
+                        html += '</div>';
+                    });
+                    html += '</div>';
+                    iconGrid.innerHTML = html;
+                }
+            }
+        }
+    });
+}
+
+function set_select_slide_icon(e, iconCode, icon, formId) {
+    let iconContainer = document.getElementById('btn_icon' + formId);
+    let iconInput = document.getElementById('inputIcon' + formId);
+    iconInput.value = icon + '#' + iconCode;
+    iconContainer.innerHTML = `<i  class="${icon}"></i>`;
+    let iconButton = document.querySelectorAll('.btnSelectIcon' + formId);
+    let formNodes = Array.prototype.slice.call(iconButton, 0);
+    formNodes.forEach(function (formNodes) {
+
+        formNodes.classList.toggle('d-none');
+    });
+    send_xhr_carousel_data(iconInput.form);
+}
+
+function btn_link_change(e) {
+    e.addEventListener("keyup", function () {
+        let res = e.value.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+        if (e.value && res) {
+            e.classList.remove('is-invalid');
+        } else {
+            e.classList.add('is-invalid');
+        }
+    });
 }

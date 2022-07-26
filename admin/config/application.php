@@ -33,7 +33,19 @@ if (file_exists(THEME_ADMIN_DIR . '.env')) {
             'HUPA_TOOLS',
             'HUPA_CAROUSEL',
             'HUPA_MAPS',
-            'THEME_AJAX_TEMPLATE_DIR'
+            'THEME_AJAX_TEMPLATE_DIR',
+            'ALWAYS_ISSUE_NEW_REFRESH_TOKEN',
+            'AUTH_CODE_LIFETIME',
+            'ACCESS_LIFETIME',
+            'REFRESH_TOKEN_LIFETIME',
+            'ENFORCE_STATE',
+            'ALLOW_IMPLICIT',
+            'UNSET_REFRESH_TOKEN_AFTER_USE',
+            'USE_JWT_ACCESS_TOKEN',
+            'ALLOW_JWT_IMPLICIT',
+            'ACCESS_JWT_LIFETIME',
+            'OAUTH_PUBLIC_CLIENT_SECRET',
+            'USE_JWT_MEMORY_ACCESS_TOKEN'
         ]
     );
 }
@@ -51,7 +63,6 @@ is_plugin_active('hupa-minify/hupa-minify.php') ? $hupaMinify = true : $hupaMini
 Config::define('WP_POST_SELECTOR_AKTIV', $postSelect);
 Config::define('BS_FORM_AKTIV', $bsFormular);
 Config::define('HUPA_MINIFY_AKTIV', $hupaMinify);
-
 
 /**
  * theme_capabilities
@@ -190,3 +201,27 @@ Config::define('HUPA_CAROUSEL', (int) env('HUPA_CAROUSEL'));
  * HUPA MAPS
  */
 Config::define('HUPA_MAPS', (int) env('HUPA_MAPS'));
+
+/**
+ * oAuth2 SERVER
+ */
+Config::define('ALWAYS_ISSUE_NEW_REFRESH_TOKEN', (int) env('ALWAYS_ISSUE_NEW_REFRESH_TOKEN'));
+Config::define('AUTH_CODE_LIFETIME', (int) env('AUTH_CODE_LIFETIME'));
+Config::define('ACCESS_LIFETIME', (int) env('ACCESS_LIFETIME'));
+Config::define('REFRESH_TOKEN_LIFETIME', (int) env('REFRESH_TOKEN_LIFETIME'));
+Config::define('ENFORCE_STATE', (int) env('ENFORCE_STATE'));
+Config::define('ALLOW_IMPLICIT', (int) env('ALLOW_IMPLICIT'));
+Config::define('UNSET_REFRESH_TOKEN_AFTER_USE', (int) env('UNSET_REFRESH_TOKEN_AFTER_USE'));
+
+/**
+ * oAuth2 JWT-SERVER
+ */
+Config::define('USE_JWT_ACCESS_TOKEN', (int) env('USE_JWT_ACCESS_TOKEN'));
+Config::define('ALLOW_JWT_IMPLICIT', (int) env('ALLOW_JWT_IMPLICIT'));
+Config::define('ACCESS_JWT_LIFETIME', (int) env('ACCESS_JWT_LIFETIME'));
+
+/**
+ * oAuth2 JWT-MEMORY-SERVER
+ */
+Config::define('OAUTH_PUBLIC_CLIENT_SECRET', (int) env('OAUTH_PUBLIC_CLIENT_SECRET'));
+Config::define('USE_JWT_MEMORY_ACCESS_TOKEN', (int) env('USE_JWT_MEMORY_ACCESS_TOKEN'));

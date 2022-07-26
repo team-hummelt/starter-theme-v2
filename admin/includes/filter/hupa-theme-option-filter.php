@@ -481,10 +481,11 @@ class HupaStarterOptionFilter
                     'post_check' => $val->post_check,
                     'top_check' => $val->top_check,
                     'share_txt' => $val->share_txt,
+                    'url_check' => $val->url_check,
                     'url' => $val->url,
                 ),
                 array('slug' => $val->slug),
-                array('%d', '%d', '%s', '%s'),
+                array('%d', '%d', '%s', '%d', '%s'),
                 array('%s')
             );
         }
@@ -526,6 +527,7 @@ class HupaStarterOptionFilter
                     'slug' => $tmp->slug,
                     'post_check' => $tmp->post_check,
                     'top_check' => $tmp->top_check,
+                    'url_check' => $tmp->url_check,
                     'btn' => $tmp->btn,
                     'icon' => $tmp->icon,
                     'position' => $tmp->position,
@@ -533,7 +535,7 @@ class HupaStarterOptionFilter
                     'url' => $url
                 ),
                 array('slug' => $tmp->slug),
-                array('%s', '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%s'),
+                array('%s', '%s', '%d', '%d', '%d', '%s', '%s', '%d', '%s', '%s'),
                 array('%s')
             );
         }
@@ -1150,6 +1152,16 @@ class HupaStarterOptionFilter
                 }
             }
 
+            //TODO Social ICONS Custom Header ShortCode
+            $regEx = '@\[social-icon.*]@m';
+            preg_match_all($regEx, $record->custum_header, $matches, PREG_SET_ORDER, 0);
+            if (isset($matches)) {
+                foreach ($matches as $tmp) {
+                    $doShortcode = do_shortcode($tmp[0]);
+                    $record->custum_header = str_replace($tmp[0], $doShortcode, $record->custum_header);
+                }
+            }
+
         } else {
             $record->custum_header = false;
         }
@@ -1262,6 +1274,16 @@ class HupaStarterOptionFilter
                 }
             }
 
+            //TODO Social-ICONS Custom Footer ShortCode
+            $regEx = '@\[social-icon.*]@m';
+            preg_match_all($regEx, $record->custum_footer, $matches, PREG_SET_ORDER, 0);
+            if (isset($matches)) {
+                foreach ($matches as $tmp) {
+                    $doShortcode = do_shortcode($tmp[0]);
+                    $record->custum_footer = str_replace($tmp[0], $doShortcode, $record->custum_footer);
+                }
+            }
+
         } else {
             $record->custum_footer = false;
         }
@@ -1270,6 +1292,13 @@ class HupaStarterOptionFilter
 
     public function hupa_get_social_button_url($data): string
     {
+
+        $args = sprintf('WHERE btn="%s" AND url_check=1 AND url !=""', $data->btn);
+        $socialMedia = apply_filters('get_social_media', $args, 'get_row');
+        if($socialMedia->status){
+            return $socialMedia->record->url;
+        }
+
         switch ($data->btn) {
             case 'btn-twitter':
                 return 'https://twitter.com/intent/tweet?text=' . $data->share_subject . ' ' . $data->share_title . '&amp;url=' . $data->share_url;

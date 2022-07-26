@@ -1,0 +1,265 @@
+<div class="wp-bs-starter-wrapper my3">
+    <div class="container">
+        <div class="card shadow-sm">
+            <h5 class="card-header d-flex align-items-center bg-hupa py-4">
+                <i class="icon-hupa-white d-block mt-2" style="font-size: 2rem"></i>&nbsp;
+                {{ 'Social Media'|__ }} </h5>
+            <div class="card-body pb-4" style="min-height: 72vh">
+                <div class="d-flex align-items-center">
+                    <h5 class="card-title">
+                        <i class="hupa-color fa fa-arrow-circle-right"></i> {{ 'Theme Tools'|__ }}
+                        / <span id="currentSideTitle">{{ 'Top Area'|__ }}</span>
+                    </h5>
+                    <div class="ajax-status-spinner ms-auto d-inline-block mb-2 pe-2"></div>
+                </div>
+                <hr>
+                <div class="settings-btn-group d-flex">
+                    <button data-site="{{ 'Social Media'|__ }}" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapseSettingsSocialStart"
+                            aria-expanded="true" aria-controls="collapseSettingsSocialStart"
+                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm active" disabled>
+                        <i class="fa fa-share-square-o"></i>&nbsp;
+                        {{ 'Social Media'|__ }}
+                    </button>
+                    <button data-site="{{ 'Top Area'|__ }}" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapseSettingsTopArea"
+                            aria-expanded="true" aria-controls="collapseSettingsTopArea"
+                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm">
+                        <i class="fa fa-th-list"></i>&nbsp;
+                        {{ 'Top Area'|__ }}
+                    </button>
+                    <button data-site="{{ 'Preloader'|__ }}" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapseSettingsPreloader"
+                            aria-expanded="true" aria-controls="collapseSettingsPreloader"
+                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm">
+                        <i class="fa fa-dot-circle-o"></i>&nbsp;
+                        {{ 'Preloader'|__ }}
+                    </button>
+                </div>
+                <hr>
+                <div id="settings_display_data">
+                    {# TODO JOB WARNING Social Media STARTSEITE #}
+                    <div class="collapse show" id="collapseSettingsSocialStart"
+                         data-bs-parent="#settings_display_data">
+                        <div class="border rounded mt-1 shadow-sm p-3 bg-custom-gray">
+                            <div id="share-buttons" class="mb-3">
+                                <div class="container">
+                                    <form class="sendAjaxThemeForm" action="#" method="post">
+                                        <input type="hidden" name="method" value="theme_form_handle">
+                                        <input type="hidden" name="handle" value="theme_social">
+                                        <div data-type="hupa_social"
+                                             class="hupaSortable row row-cols-1 row-cols-md-2 g-md-1 row-cols-lg-2 g-2 g-lg-3 row-cols-xl-3 g-xl-2">
+                                            {# //TODO JOB SOCIAL MEDIA #}
+                                            {% if media.status %}
+                                                {% set continue = false %}
+                                                {% for m in media.record %}
+                                                    {% if m.bezeichnung == 'Buffer' or m.bezeichnung == 'Mix' %}
+                                                        {% set continue = true %}
+                                                    {% else %}
+                                                        {% set continue = false %}
+                                                    {% endif %}
+                                                    {% if not continue %}
+                                                        <div class="media{{ m.id }} col">
+                                                            <div class="p-3 bg-light border shadow-sm py-2 h-100">
+                                                                <h5 class="text-center text-muted py-2 mb-0">{{ m.bezeichnung }}
+                                                                    <i class="sortableArrow float-start fa fa-arrows"></i>
+                                                                </h5>
+                                                                <hr class="mt-1 mb-3">
+                                                                <div class="d-flex align-items-center">
+                                                                    <span class="{{ m.btn }} justify-content-center d-flex align-items-center btn-xxl rounded"><i
+                                                                                class="{{ m.icon }}"></i></span>
+                                                                    <div class="d-flex flex-column justify-content-center px-3">
+                                                                        <div class="form-check form-switch py-1">
+                                                                            <input class="form-check-input"
+                                                                                   name="{{ m.slug }}post_check"
+                                                                                   type="checkbox"
+                                                                                   id="PostCheck{{ m.id }}"
+                                                                                   {% if m.post_check %}checked{% endif %}>
+                                                                            <label class="form-check-label"
+                                                                                   for="PostCheck{{ m.id }}">{{ 'Posts'|__ }}</label>
+                                                                        </div>
+                                                                        <div class="form-check form-switch py-1">
+                                                                            <input class="form-check-input"
+                                                                                   name="{{ m.slug }}top_check"
+                                                                                   type="checkbox"
+                                                                                   id="TopCheck{{ m.id }}"
+                                                                                   {% if m.top_check %}checked{% endif %}>
+                                                                            <label class="form-check-label"
+                                                                                   for="TopCheck{{ m.id }}">{{ 'Top Area | Widget'|__ }}</label>
+                                                                        </div>
+                                                                        {% if  m.slug == 'print_' or m.slug == 'whatsapp_'  %}
+                                                                            {% else %}
+                                                                            <div class="form-check form-switch py-1">
+                                                                                <input data-bs-toggle="collapse" data-bs-target="#UrlCollapse{{ m.id }}"
+                                                                                        class="form-check-input"
+                                                                                       name="{{ m.slug }}url_check"
+                                                                                       type="checkbox"
+                                                                                       id="UrlCheck{{ m.id }}"
+                                                                                       {% if m.url_check %}checked{% endif %}>
+                                                                                <label class="form-check-label"
+                                                                                       for="UrlCheck{{ m.id }}">{{ 'URL'|__ }}</label>
+                                                                            </div>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                                {% if m.slug != 'print_' %}
+                                                                    <div class=" {% if m.slug == 'whatsapp_' %}mt-3 mb-1{% else %}pt-1 my-1{% endif %}">
+                                                                        <div class="form-floating w-100">
+                                                                            <input type="text"
+                                                                                   class="form-control no-blur"
+                                                                                   id="Share{{ m.id }}"
+                                                                                   name="{{ m.slug }}share_txt"
+                                                                                   value="{{ m.share_txt }}"
+                                                                                   placeholder="{{ 'Look what I found:'|__ }}">
+                                                                            <label for="Share{{ m.id }}">{{ 'Share subject'|__ }} | URL</label>
+                                                                        </div>
+                                                                    </div>
+                                                                {% endif %}
+                                                                <div id="UrlCollapse{{ m.id }}" class="collapse {% if m.url_check %}show{% endif %}">
+                                                                    <div class=" pt-1 my-1">
+                                                                        <div class="form-floating w-100">
+                                                                            <input type="text"
+                                                                                   class="form-control no-blur"
+                                                                                   id="URL{{ m.id }}"
+                                                                                   name="{{ m.slug }}url"
+                                                                                   value="{{ m.url }}"
+                                                                                   placeholder="URL">
+                                                                            <label for="URL{{ m.id }}">URL</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="form-text">
+                                <hr>
+                               <i class="bi bi-info-circle me-1"></i> Ist "URL" aktiv, wird die "URL" als LINK verwendet und der <b class="font-weight">Shortcode</b> <code>[social_icon type="Bezeichnung"]</code>
+                                <small>( z.B. <code>[social_icon type="E-Mail"]</code> )</small> ist aktiv.
+                                <b class="font-weight pb-1 pt-2 d-block"> Weitere Shortcode Optionen:</b>
+                                <ul style="list-style: circle">
+                                    <li><b>text=""</b> <br> default -> NULL</li>
+                                    <li><b>before="1"</b> <br> default -> 1 <br> <small><i>mögliche Werte 1 oder 0</i></small></li>
+                                    <li><b>class=""</b> <br> default -> NULL</li>
+                                    <li><b>icon=""</b> <br> default -> NULL</li>
+                                </ul>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>{# collapse  #}
+
+                    {# TODO JOB WARNING TOP AREA #}
+                    <div class="collapse" id="collapseSettingsTopArea"
+                         data-bs-parent="#settings_display_data">
+                        <form class="sendAjaxThemeForm" action="#" method="post">
+                            <input type="hidden" name="method" value="theme_form_handle">
+                            <input type="hidden" name="handle" value="theme_tools">
+                            {# TODO JOB TOP SEKTIONEN #}
+                            <div class="border rounded mt-1 shadow-sm p-3 bg-custom-gray">
+                                <hr>
+                                <h5 class="card-title mb-0">
+                                    <i class="font-blue fa fa-gears"></i>&nbsp; {{ 'Top Area'|__ }} {{ 'sections'|__ }}
+                                </h5>
+                                <hr>
+                                <div class="form-text">{% autoescape false %}{{ 'The position or order of the individual sections can be changed by <b>moving</b> the boxes.'|__ }}{% endautoescape %}
+                                </div>
+                                <hr>
+                                <div class="col-lg-12 pt-2">
+                                    <div data-type="hupa_tools"
+                                         class="hupaSortable row row-cols-1 row-cols-md-2 row-cols-xl-4 g-2">
+                                        {% if tools.status %}
+                                            {% for t in tools.record %}
+                                                <div class="menu{{ t.id }} col">
+                                                    <div class="p-3 bg-light border shadow-sm py-2 h-100">
+                                                        <h5 class="text-muted py-2 mb-0 text-center"> {{ t.bezeichnung }}
+                                                            <i class="sortableArrow float-start fa fa-arrows"></i>
+                                                        </h5>
+                                                        <fieldset
+                                                                {% if t.slug == 'areamenu_' and 'top-area-menu'|has_nav_menu %}disabled{% endif %}>
+                                                            <small class="d-block form-text text-center mt-0">
+                                                                {% if t.slug == 'areamenu_' %}{{ 'Top Menu'|__ }}{% else %}{{ 'Widget Box'|__ }}{% endif %}
+                                                            </small>
+                                                            <hr class="mt-2 mb-3">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input"
+                                                                       name="{{ t.slug }}aktiv"
+                                                                       type="checkbox"
+                                                                       id="flexSwitchAktiv{{ t.id }}"
+                                                                       {% if t.aktiv %}checked{% endif %}>
+                                                                <label class="form-check-label"
+                                                                       for="flexSwitchAktiv{{ t.id }}">{{ 'show'|__ }}</label>
+                                                            </div>
+                                                            <hr>
+                                                            <div class="input-group">
+                                                                <div class="form-floating w-100">
+                                                                    <input type="text" class="form-control no-blur"
+                                                                           id="InputCssClass{{ t.id }}"
+                                                                           name="{{ t.slug }}css_class"
+                                                                           value="{{ t.css_class }}"
+                                                                           aria-describedby="InputCssClassHelp{{ t.id }}"
+                                                                           placeholder="{{ 'Box CSS Class'|__ }}">
+                                                                    <label for="InputCssClass{{ t.id }}">{{ 'Box CSS Class'|__ }}</label>
+                                                                </div>
+                                                                <div id="InputCssClassHelp{{ t.id }}"
+                                                                     class="form-text mb-3">
+                                                                    {% autoescape false %}{{ 'Enter CSS class <b>without</b> point.'|__ }} {% endautoescape %}
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="ajax-status-spinner ms-auto d-inline-block pt-3 mb-2 pe-2"></div>
+                    </div>
+                    {#  TODO JOB WARNING PRELOADER #}
+                    <div class="collapse" id="collapseSettingsPreloader"
+                         data-bs-parent="#settings_display_data">
+                        <div class="border rounded mt-1 shadow-sm p-3 bg-custom-gray">
+                            <hr>
+                            <h5 class="card-title mb-0">
+                                <i class="font-blue fa fa-gears"></i>&nbsp; {{ 'Preloader'|__ }} {{ 'settings'|__ }}
+                            </h5>
+                            <hr>
+                            <div class="container py-3">
+                                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-5 row-cols-lg-4 g-3">
+                                    {% for d in dots %}
+                                        <div id="preloaderSettings" class="col">
+                                            <form id="preloader-wrapper"
+                                                  class="dot-box dot-box{{ d.id }} {% if 'theme_preloader'|get_option == d.id %}active{% endif %} rounded shadow-sm">
+                                                <div class="dot-header text-center pt-1 pb-0 px-2">{{ d.name }}</div>
+                                                <div class="dot-wrapper">
+                                                    <div class="{{ d.class }}"></div>
+                                                </div>
+                                                <div class="form-check form-switch position-relative">
+                                                    <div class="form-dot-wrapper p-2">
+                                                        <input data-id="{{ d.id }}" onchange="set_theme_preloader(this)"
+                                                               class="form-check-input" type="checkbox" role="switch"
+                                                               id="dotPreChecked{{ d.id }}"
+                                                               {% if 'theme_preloader'|get_option == d.id %}checked{% endif %}>
+                                                        <label class="form-check-label" for="dotPreChecked{{ d.id }}">auswählen</label>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> {# display-data #}
+            </div>
+        </div>
+    </div>
+</div>
+<div id="snackbar-success"></div>
+<div id="snackbar-warning"></div>

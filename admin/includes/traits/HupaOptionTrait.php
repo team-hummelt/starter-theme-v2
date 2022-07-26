@@ -292,6 +292,7 @@ trait HupaOptionTrait
     protected string $social_post_check = 'post_check';
     protected string $social_top_check = 'top_check';
     protected string $social_share_txt = 'share_txt';
+    protected string $social_url_check = 'url_check';
     protected string $social_url = 'url';
     protected string $social_btn = 'btn';
     protected string $social_icon = 'icon';
@@ -732,6 +733,7 @@ trait HupaOptionTrait
                     'slug' => 'facebook_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 1,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-facebook',
@@ -743,6 +745,7 @@ trait HupaOptionTrait
                     'slug' => 'twitter_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 1,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-twitter',
@@ -754,6 +757,7 @@ trait HupaOptionTrait
                     'slug' => 'whatsapp_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 1,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-whatsapp',
@@ -765,6 +769,7 @@ trait HupaOptionTrait
                     'slug' => 'pinterest_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 0,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-pinterest',
@@ -776,6 +781,7 @@ trait HupaOptionTrait
                     'slug' => 'linkedin_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 1,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-linkedin',
@@ -787,6 +793,7 @@ trait HupaOptionTrait
                     'slug' => 'reddit_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 0,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-reddit',
@@ -798,6 +805,7 @@ trait HupaOptionTrait
                     'slug' => 'tumblr_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 0,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-tumblr',
@@ -809,6 +817,7 @@ trait HupaOptionTrait
                     'slug' => 'buffer_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 0,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-buffer',
@@ -820,6 +829,7 @@ trait HupaOptionTrait
                     'slug' => 'mix_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 0,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-mix',
@@ -831,6 +841,7 @@ trait HupaOptionTrait
                     'slug' => 'vk_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 0,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-vk',
@@ -842,6 +853,7 @@ trait HupaOptionTrait
                     'slug' => 'email_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 0,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-mail',
@@ -853,6 +865,7 @@ trait HupaOptionTrait
                     'slug' => 'print_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 0,
+                    $this->social_url_check => 0,
                     $this->social_btn => 'btn-print',
                     $this->social_icon => 'fa fa-print',
                     $this->position => 12

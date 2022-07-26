@@ -35,14 +35,14 @@ class HupaSocialButtonShortCode
      * @access   private
      * @var HupaStarterThemeV2 $main The main class.
      */
-    protected  HupaStarterThemeV2 $main;
+    protected HupaStarterThemeV2 $main;
 
     /**
      * The ID of this theme.
      *
      * @since    2.0.0
      * @access   private
-     * @var      string    $basename    The ID of this theme.
+     * @var      string $basename The ID of this theme.
      */
     protected string $basename;
 
@@ -51,14 +51,14 @@ class HupaSocialButtonShortCode
      *
      * @since    2.0.0
      * @access   private
-     * @var      string    $theme_version    The current version of this theme.
+     * @var      string $theme_version The current version of this theme.
      */
     protected string $theme_version;
 
     /**
      * @return static
      */
-    public static function init(string  $theme_name, string  $theme_version, HupaStarterThemeV2  $main): self
+    public static function init(string $theme_name, string $theme_version, HupaStarterThemeV2 $main): self
     {
         if (is_null(self::$social_shortcode_instance)) {
             self::$social_shortcode_instance = new self($theme_name, $theme_version, $main);
@@ -67,25 +67,26 @@ class HupaSocialButtonShortCode
         return self::$social_shortcode_instance;
     }
 
-    public function __construct(string  $theme_name, string  $theme_version, HupaStarterThemeV2  $main)
+    public function __construct(string $theme_name, string $theme_version, HupaStarterThemeV2 $main)
     {
         $this->basename = $theme_name;
         $this->theme_version = $theme_version;
         $this->main = $main;
 
         add_shortcode('social-share-button', array($this, 'hupa_social_button_shortcode'));
+        add_shortcode('social-icon', array($this, 'hupa_social_icon_shortcode'));
     }
 
     public function hupa_social_button_shortcode($atts, $content, $tag)
     {
-        $a = shortcode_atts(array(
+        $atts = shortcode_atts(array(
             'id' => ''
         ), $atts);
 
-        if (!$a['id']) {
+        if (!$atts['id']) {
             return '';
         }
-
+        ob_start();
         global $post;
         if (is_singular() || is_home()) {
             $share_url = urlencode(get_permalink());
@@ -93,7 +94,7 @@ class HupaSocialButtonShortCode
             // Get Post Thumbnail for pinterest
             $share_thumb = $this->get_the_post_thumbnail_src(get_the_post_thumbnail());
 
-            $ifShareButton = get_post_meta($a['id'], '_hupa_show_social_media', true);
+            $ifShareButton = get_post_meta($atts['id'], '_hupa_show_social_media', true);
             if (!$ifShareButton) {
                 return '';
             }
@@ -122,11 +123,45 @@ class HupaSocialButtonShortCode
                 $html .= '<a class="btn-widget  ' . $tmp->btn . ' ' . $color . ' ' . $cssClass . ' " title="' . $tmp->bezeichnung . '" href="' . $href . '" target="_blank" rel="nofollow"><i class="' . $tmp->icon . '"></i></a> ';
             }
             $html .= '</div>';
-            echo $html;
-
+            echo apply_filters('compress_template', $html);
         } else {
             return '';
         }
+        return ob_get_clean();
+    }
+
+    public function hupa_social_icon_shortcode($atts, $content, $tag): string
+    {
+        $atts = shortcode_atts(array(
+            'type' => '',
+            'text' => '',
+            'before' => 1,
+            'class' => '',
+            'icon' => ''
+        ), $atts);
+
+        if (!$atts['type']) {
+            return '';
+        }
+
+        $args = sprintf('WHERE bezeichnung="%s" AND url_check=1 AND url !=""', $atts['type']);
+        $socialMedia = apply_filters('get_social_media', $args, 'get_row');
+        if (!$socialMedia->status) {
+            return '';
+        }
+        $media = $socialMedia->record;
+
+        ob_start();
+        $before = '';
+        $after = $atts['text'];
+        if ((int) $atts['before'] == 0) {
+            $before = $atts['text'];
+            $after = '';
+        }
+        $atts['icon'] ? $icon = $atts['icon'] : $icon = $media->icon;
+        ?>
+        <span class="social_media_icon"> <a class="<?=$atts['class'] ?>" href="<?= $media->url ?>" target="_blank"> <?=$before?> <i class="<?= $icon ?>"></i> <?=$after?></a></span>
+        <?php return ob_get_clean();
     }
 
     private function get_the_post_thumbnail_src($img)

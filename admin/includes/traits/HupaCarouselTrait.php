@@ -9,7 +9,6 @@ defined('ABSPATH') or die();
  * @package Hummelt & Partner WordPress Theme
  * Copyright 2021, Jens Wiecker
  * License: Commercial - goto https://www.hummelt-werbeagentur.de/
- * https://www.hummelt-werbeagentur.de/
  */
 trait HupaCarouselTrait
 {
@@ -58,6 +57,7 @@ trait HupaCarouselTrait
     protected string $slider_second_caption = '';
     protected int $second_selector = 1;
     protected string $slider_second_css = '';
+    protected int $data_stop_hover = 1;
 
 
     protected function get_carousel_default_settings(): array
@@ -75,7 +75,8 @@ trait HupaCarouselTrait
                 'caption_bg' => $this->carousel_caption_bg,
                 'container_height' => $this->carousel_container_height,
                 'carousel_image_size' => $this->carousel_image_size,
-                'carousel_lazy_load' => $this->carousel_lazy_load
+                'carousel_lazy_load' => $this->carousel_lazy_load,
+                'data_stop_hover' => $this->data_stop_hover
             ],
             'slider' => [
                 'slider_position' => $this->slider_position,

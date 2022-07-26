@@ -18,7 +18,11 @@ use Hupa\StarterThemeV2\HupaCarouselTrait;
 use Hupa\StarterThemeV2\HupaOptionTrait;
 use HupaStarterThemeV2;
 use Puc_v4_Factory;
+use Throwable;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use WP_User;
 
 
@@ -296,27 +300,52 @@ final class HupaRegisterStarterTheme
     {
         wp_enqueue_media();
         require 'partials/admin-starter-theme-home.php';
-        /*  try {
-            echo $this->twig->render( 'admin-starter-theme-home.twig',  $data  );
-          } catch ( LoaderError | SyntaxError | RuntimeError $e ) {
-              echo $e->getMessage();
-          } catch ( Throwable $e ) {
-              echo $e->getMessage();
-          }*/
-
     }
 
     public function hupa_admin_starter_theme_media_tools(): void {
-        require 'partials/admin-starter-theme-tools.php';
+        $data = [
+            'media' => apply_filters('get_social_media', ''),
+            'tools' => apply_filters('get_hupa_tools_by_args', 'WHERE type="top_area" ORDER BY position ASC'),
+            'dots' => apply_filters('get_theme_preloader', 'all')
+        ];
+        $data = apply_filters('hupaObject2array', $data);
+        $data['admin_url'] = Config::get('WP_THEME_ADMIN_URL');
+
+        try {
+            $template =  $this->twig->render( '@partials-templates/admin-starter-theme-tools.twig',  $data );
+            echo apply_filters('compress_template', $template);
+        } catch ( LoaderError | SyntaxError | RuntimeError $e ) {
+            echo $e->getMessage();
+        } catch ( Throwable $e ) {
+            echo $e->getMessage();
+        }
     }
 
     public function hupa_admin_starter_theme_carousel(): void {
         wp_enqueue_media();
-        require 'partials/admin-starter-theme-carousel.php';
+        $carousel = apply_filters('get_carousel_komplett_data', false);
+        $data = apply_filters('hupaObject2array', $carousel);
+        $data['admin_url'] = Config::get('WP_THEME_ADMIN_URL');
+
+        try {
+            $template = $this->twig->render( '@partials-templates/carousel-template.twig',  $data );
+            echo apply_filters('compress_template', $template);
+        } catch ( LoaderError | SyntaxError | RuntimeError $e ) {
+            echo $e->getMessage();
+        } catch ( Throwable $e ) {
+            echo $e->getMessage();
+        }
     }
 
     public function hupa_admin_starter_theme_install_font(): void {
-        require 'partials/admin-install-from-api.php';
+        try {
+           $template = $this->twig->render( '@partials-templates/admin-install-from-api.twig',  [] );
+            echo apply_filters('compress_template', $template);
+        } catch ( LoaderError | SyntaxError | RuntimeError $e ) {
+            echo $e->getMessage();
+        } catch ( Throwable $e ) {
+            echo $e->getMessage();
+        }
     }
 
     //Lizenzen
@@ -656,6 +685,10 @@ final class HupaRegisterStarterTheme
         // TODO ANIMATE
         wp_enqueue_style('hupa-starter-admin-animate', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/css/tools/animate.min.css', array(), $this->theme_version, false);
 
+        // TODO Swal2
+        wp_enqueue_style('hupa-starter-swal2', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/css/tools/sweetalert2.min.css', array(), $this->theme_version, false);
+
+
         //TODO DASHBOARD ADMIN JS FILES
         // TODO ADMIN localize Script
         wp_register_script('hupa-starter-admin-js-localize', '', [], '', true);
@@ -694,6 +727,9 @@ final class HupaRegisterStarterTheme
 
         // TODO JS CAROUSEL
         wp_enqueue_script('js-hupa-carousel-script', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/js/admin-carousel.js', array(), $this->theme_version, true);
+
+        // TODO JS Sweet Alert
+        wp_enqueue_script('js-hupa-swal2-script', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/js/tools/sweetalert2.all.min.js', array(), $this->theme_version, true);
 
         if ($page == 'hupa-starter-iframe-maps' || $page == 'hupa-starter-maps-settings') {
             wp_enqueue_style('hupa-starter-admin-bs-data-table', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/css/tools/dataTables.bootstrap5.min.css', array(), $this->theme_version, false);

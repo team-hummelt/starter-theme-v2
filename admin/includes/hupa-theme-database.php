@@ -11,7 +11,6 @@ defined('ABSPATH') or die();
  * @package Hummelt & Partner WordPress Theme
  * Copyright 2022, Jens Wiecker
  * License: Commercial - goto https://www.hummelt-werbeagentur.de/
- * https://www.hummelt-werbeagentur.de/
  */
 class HupaStarterDataBaseHandle
 {
@@ -65,9 +64,10 @@ class HupaStarterDataBaseHandle
         $sql = "CREATE TABLE {$table} (
     		`id` int(11) NOT NULL AUTO_INCREMENT,
             `bezeichnung` varchar(64) NOT NULL,
-            `slug` varchar (24) NOT NULL UNIQUE,
+            `slug` varchar (24) NOT NULL,
             `post_check` tinyint(1) NOT NULL DEFAULT  0,
             `top_check` tinyint(1) NOT NULL DEFAULT 0,
+            `url_check` tinyint(1) NOT NULL DEFAULT 0,
             `share_txt` varchar (255) NULL,
             `url` varchar (128) NULL,
             `btn` varchar(62) NOT NULL,
@@ -103,7 +103,11 @@ class HupaStarterDataBaseHandle
        		margin_aktiv mediumint(1) NOT NULL DEFAULT  0,
        		full_width mediumint(1) NOT NULL DEFAULT 0,
        		select_bg mediumint(1) NOT NULL DEFAULT 0,
-       		caption_bg mediumint(1) NOT NULL DEFAULT 0,
+       		caption_bg mediumint(1) NOT NULL DEFAULT 0, 
+       		data_touch_active mediumint(1) NOT NULL DEFAULT 1, 
+       		data_keyboard_active mediumint(1) NOT NULL DEFAULT 1, 
+       		data_stop_hover mediumint(1) NOT NULL DEFAULT 1, 
+       		data_static_text text NULL,
        		container_height varchar(16) NOT NULL DEFAULT '65vh',
        		carousel_image_size varchar(64) NOT NULL DEFAULT 'large',	
        		carousel_lazy_load mediumint(1) NOT NULL DEFAULT 1,
@@ -124,13 +128,15 @@ class HupaStarterDataBaseHandle
        		caption_aktiv tinyint(1) NOT NULL,
        		data_interval int(9) NOT NULL,
        		data_alt text NULL,
+       		data_title_tag text NULL,
+       		data_title_active tinyint(1) NOT NULL DEFAULT 0,
        		first_ani varchar(50) NULL,
        		first_font varchar (62) NULL,
        		first_style tinyint(3) NULL,
        		first_size int(6) NOT NULL,
        		first_height varchar(6) NULL,
        		first_caption text NULL,
-       		first_selector tinyint(2) NOT NULL DEFAULT 1 ,
+       		first_selector tinyint(2) NOT NULL DEFAULT 1,
        		first_css varchar(255) NULL,
        		second_ani varchar(50) NULL,
        		second_font varchar(62) NULL,

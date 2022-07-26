@@ -181,6 +181,10 @@ class HupaCarouselShortCode
 
         $slider = $sliderData->record;
 
+        $carousel->data_stop_hover ? $data_stop_hover = 'hover' : $data_stop_hover = 'false';
+        $carousel->data_touch_active ? $data_touch_active = 'true' : $data_touch_active = 'false';
+        $carousel->data_keyboard_active ? $data_keyboard_active = 'true' : $data_keyboard_active = 'false';
+
         $carousel->data_autoplay ? $ride = 'carousel' : $ride = 'false';
         $carousel->data_animate == 2 ? $slide = ' carousel-fade' : $slide = '';
         $carousel->full_width ? $full_width = ' hupa-full-row ' : $full_width = '';
@@ -220,7 +224,7 @@ class HupaCarouselShortCode
         ?>
         <div id="hupaCarousel<?= $carousel->id ?>"
              class="<?= $full_width ?>carousel<?= $carouselClass ?><?= $marginTop ?> slide<?= $slide ?>"
-             data-bs-ride="<?= $ride ?>">
+             data-bs-ride="<?= $ride ?>" data-bs-pause="<?= $data_stop_hover ?>" data-bs-touch="<?= $data_touch_active ?>" data-bs-keyboard="<?= $data_keyboard_active ?>">
             <?php if ($countS > 1): ?>
                 <div class="<?= $carousel->indicator ? '' : 'd-none' ?> carousel-indicators">
                     <?php for ($i = 0; $i < count((array)$slider); $i++) :
@@ -233,6 +237,11 @@ class HupaCarouselShortCode
                 </div>
             <?php endif; ?>
             <div class="carousel-inner">
+                <?php if ($carousel->data_static_text):?>
+                    <div class="z-index-1050 position-relative">
+                     <?=html_entity_decode($carousel->data_static_text);?>
+                    </div>
+                <?php endif ?>
                 <?php $x = 0;
                 foreach ($slider
 
@@ -246,6 +255,8 @@ class HupaCarouselShortCode
                 $attach = apply_filters('wp_get_attachment', $tmp->img_id);
                 $image = wp_get_attachment_image_src($tmp->img_id, $carousel->carousel_image_size);
 
+                $tmp->data_title_tag ? $data_title_tag = $tmp->data_title_tag : $data_title_tag = $attach->title;
+                $tmp->data_title_active ? $dataTitleTag = $data_title_tag : $dataTitleTag = '';
                 $tmp->data_alt ? $data_alt = $tmp->data_alt : $data_alt = $attach->alt;
                 $tmp->caption_aktiv ? $caption_aktiv = '' : $caption_aktiv = 'd-none d-md-block';
                 $firstFont = $this->get_slider_fonts($tmp->first_font, $tmp->first_style);
@@ -274,17 +285,17 @@ class HupaCarouselShortCode
                     <?php
 
                     if ($carousel->carousel_lazy_load && $active) :?>
-                        <img data-src="<?= $image[0] ?>" class="bgImage <?= $lazy ?>" alt="<?= $data_alt ?>"
+                        <img data-src="<?= $image[0] ?>" class="bgImage <?= $lazy ?>" alt="<?= $data_alt ?>" title="<?=$dataTitleTag?>"
                              style="height: <?= $carousel->container_height ?>;">
 
                     <?php endif;
                     if ($carousel->carousel_lazy_load && !$active) :?>
-                        <img data-src="<?= $image[0] ?>" class="bgImage" alt="<?= $data_alt ?>"
+                        <img data-src="<?= $image[0] ?>" class="bgImage" alt="<?= $data_alt ?>" title="<?=$dataTitleTag?>"
                              style="height: <?= $carousel->container_height ?>;">
                     <?php endif;
 
                     if (!$carousel->carousel_lazy_load) :?>
-                        <img src="<?= $image[0] ?>" class="bgImage" alt="<?= $data_alt ?>"
+                        <img src="<?= $image[0] ?>" class="bgImage" alt="<?= $data_alt ?>" title="<?=$dataTitleTag?>"
                              style="height: <?= $carousel->container_height ?>;">
                     <?php endif; ?>
 

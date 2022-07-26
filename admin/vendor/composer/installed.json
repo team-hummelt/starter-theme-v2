@@ -1,6 +1,72 @@
 {
     "packages": [
         {
+            "name": "bshaffer/oauth2-server-php",
+            "version": "v1.12.1",
+            "version_normalized": "1.12.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bshaffer/oauth2-server-php.git",
+                "reference": "2bfaf9d7bbebe2ba1c1deb48e756ba0b3af4e985"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bshaffer/oauth2-server-php/zipball/2bfaf9d7bbebe2ba1c1deb48e756ba0b3af4e985",
+                "reference": "2bfaf9d7bbebe2ba1c1deb48e756ba0b3af4e985",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "aws/aws-sdk-php": "^2.8",
+                "firebase/php-jwt": "^2.2",
+                "mongodb/mongodb": "^1.1",
+                "phpunit/phpunit": "^7.5||^8.0",
+                "predis/predis": "^1.1",
+                "thobbs/phpcassa": "dev-master",
+                "yoast/phpunit-polyfills": "^1.0"
+            },
+            "suggest": {
+                "aws/aws-sdk-php": "~2.8 is required to use DynamoDB storage",
+                "firebase/php-jwt": "~2.2 is required to use JWT features",
+                "mongodb/mongodb": "^1.1 is required to use MongoDB storage",
+                "predis/predis": "Required to use Redis storage",
+                "thobbs/phpcassa": "Required to use Cassandra storage"
+            },
+            "time": "2022-05-31T16:12:58+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-0": {
+                    "OAuth2": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brent Shaffer",
+                    "email": "bshafs@gmail.com",
+                    "homepage": "http://brentertainment.com"
+                }
+            ],
+            "description": "OAuth2 Server for PHP",
+            "homepage": "http://github.com/bshaffer/oauth2-server-php",
+            "keywords": [
+                "auth",
+                "oauth",
+                "oauth2"
+            ],
+            "support": {
+                "issues": "https://github.com/bshaffer/oauth2-server-php/issues",
+                "source": "https://github.com/bshaffer/oauth2-server-php/tree/v1.12.1"
+            },
+            "install-path": "../bshaffer/oauth2-server-php"
+        },
+        {
             "name": "components/font-awesome",
             "version": "4.7.0",
             "version_normalized": "4.7.0.0",
@@ -1193,20 +1259,20 @@
         },
         {
             "name": "twbs/bootstrap-icons",
-            "version": "v1.8.3",
-            "version_normalized": "1.8.3.0",
+            "version": "v1.9.1",
+            "version_normalized": "1.9.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/icons.git",
-                "reference": "9bcba3efe7fae552f6425f6f4aaf70590d835482"
+                "reference": "f7f6f61194419dcf4447dbe05b78a72601646490"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/icons/zipball/9bcba3efe7fae552f6425f6f4aaf70590d835482",
-                "reference": "9bcba3efe7fae552f6425f6f4aaf70590d835482",
+                "url": "https://api.github.com/repos/twbs/icons/zipball/f7f6f61194419dcf4447dbe05b78a72601646490",
+                "reference": "f7f6f61194419dcf4447dbe05b78a72601646490",
                 "shasum": ""
             },
-            "time": "2022-05-25T17:57:16+00:00",
+            "time": "2022-07-16T23:30:40+00:00",
             "type": "library",
             "installation-source": "dist",
             "notification-url": "https://packagist.org/downloads/",
@@ -1229,7 +1295,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twbs/icons/issues",
-                "source": "https://github.com/twbs/icons/tree/v1.8.3"
+                "source": "https://github.com/twbs/icons/tree/v1.9.1"
             },
             "install-path": "../twbs/bootstrap-icons"
         },
@@ -1397,29 +1463,29 @@
         },
         {
             "name": "yahnis-elsts/plugin-update-checker",
-            "version": "v4.11",
-            "version_normalized": "4.11.0.0",
+            "version": "v4.12",
+            "version_normalized": "4.12.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/YahnisElsts/plugin-update-checker.git",
-                "reference": "3155f2d3f1ca5e7ed3f25b256f020e370515af43"
+                "reference": "ae5789b5a767195161ff7172964c901a1e112c52"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/YahnisElsts/plugin-update-checker/zipball/3155f2d3f1ca5e7ed3f25b256f020e370515af43",
-                "reference": "3155f2d3f1ca5e7ed3f25b256f020e370515af43",
+                "url": "https://api.github.com/repos/YahnisElsts/plugin-update-checker/zipball/ae5789b5a767195161ff7172964c901a1e112c52",
+                "reference": "ae5789b5a767195161ff7172964c901a1e112c52",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "php": ">=5.2.0"
             },
-            "time": "2021-03-15T16:07:52+00:00",
+            "time": "2022-07-24T21:33:05+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
                 "files": [
-                    "load-v4p11.php"
+                    "load-v4p12.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1444,7 +1510,7 @@
             ],
             "support": {
                 "issues": "https://github.com/YahnisElsts/plugin-update-checker/issues",
-                "source": "https://github.com/YahnisElsts/plugin-update-checker/tree/v4.11"
+                "source": "https://github.com/YahnisElsts/plugin-update-checker/tree/v4.12"
             },
             "install-path": "../yahnis-elsts/plugin-update-checker"
         }

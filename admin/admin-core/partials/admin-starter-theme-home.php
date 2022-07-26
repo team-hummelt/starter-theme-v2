@@ -15,7 +15,7 @@ global $hupa_api_handle;
         <div class="card shadow-sm">
             <h5 class="card-header d-flex align-items-center bg-hupa py-4">
                 <i class="icon-hupa-white d-block mt-2"
-                   style="font-size: 2rem"></i>&nbsp; <?= __('Theme Settings', 'bootscore') ?></h5>
+                   style="font-size: 2rem"></i>&nbsp; <?= __('Theme Settings', 'bootscore') ?> V2</h5>
             <div class="card-body pb-4" style="min-height: 72vh">
                 <div class="d-flex align-items-center">
                     <h5 class="card-title"><i
@@ -117,8 +117,11 @@ global $hupa_api_handle;
                         </div>
                         <small class="card-body-bottom">DB: <i
                                     class="hupa-color"> <?= $this->main->get_db_version()?></i> | THEME: <i
-                                    class="hupa-color"><?= $this->main->get_theme_version()?></i> | CHILD: <i
-                                    class="hupa-color"><?= $this->main->get_child_version()?></i></small>
+                                    class="hupa-color"><?= $this->main->get_theme_version()?></i>
+                            <?php if($this->main->get_child_version()): ?>| CHILD:
+                            <i class="hupa-color"><?= $this->main->get_child_version()?></i>
+                        <?php endif; ?>
+                        </small>
                     </div>
 
                     <!--  TODO JOB WARNING GENERAL ALLGEMEIN -->

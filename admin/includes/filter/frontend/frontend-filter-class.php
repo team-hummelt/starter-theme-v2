@@ -97,11 +97,14 @@ defined( 'ABSPATH' ) or die();
 					$imgLogo = '';
 					$imgId   = get_hupa_option( 'logo_image' );
 					if ( $imgId ) {
-						$loadImg     = wp_get_attachment_image_src( $imgId, 'large' );
+						$loadImg   = wp_get_attachment_image_src( $imgId, 'large' );
 						$return = (object) [
 							'url' =>  $loadImg[0],
 							'width' => get_hupa_option( 'logo_size' ),
-							'alt' => get_bloginfo('name')
+                            'width_mobil' => get_hupa_option( 'logo_size_mobil' ),
+                            'width_scroll' => get_hupa_option( 'logo_size_scroll' ),
+                            'width_login' => get_hupa_option( 'logo_size_login' ),
+							'alt' => get_bloginfo('name'),
 						];
 					} else {
 						$return = false;

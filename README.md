@@ -34,12 +34,16 @@ Header-, Footer- und 404-Widgets.
    - Image Title Tag hinzugefügt
    - Image Title Tag aktiv hinzugefügt
    - Carousel static Text hinzugefügt
+   - Bootsrap-Icons hinzugefügt
 ####
- - Einstellungen (HUPA Theme)
-   - Automatik WordPress-Update Option hinzugefügt
-   - WP-Cron Option hinzugefügt
-   - DISALLOW FILE EDIT Option hinzugefügt
-   - DISALLOW FILE MODS Option hinzugefügt
+- Theme Settings Allgemein
+   - Header-Logo Bildgröße "Scroll" und "Mobil" hinzugefügt
+   - Login-Logo Bildgröße hinzugefügt
+- Einstellungen (HUPA Theme)
+  - Automatik WordPress-Update Option hinzugefügt
+  - WP-Cron Option hinzugefügt
+  - DISALLOW FILE EDIT Option hinzugefügt
+  - DISALLOW FILE MODS Option hinzugefügt
 ####
  - Twig Template-Engine hinzugefügt
  - oAuth2-Server hinzugefügt 

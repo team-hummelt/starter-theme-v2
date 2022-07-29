@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: _s 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/tags/_s\n"
-"POT-Creation-Date: 2022-07-26 22:58+0200\n"
-"PO-Revision-Date: 2022-07-26 23:01+0200\n"
+"POT-Creation-Date: 2022-07-28 13:04+0200\n"
+"PO-Revision-Date: 2022-07-28 13:05+0200\n"
 "Last-Translator: \n"
 "Language-Team: Deutsch\n"
 "Language: de_DE\n"
@@ -28,16 +28,16 @@ msgstr "Theme Google Maps"
 #: admin-core/partials/admin-gmaps-settings.php:21
 #: admin-core/partials/admin-gmaps-settings.php:26
 #: admin-core/partials/admin-gmaps-settings.php:31
-#: admin-core/register-hupa-starter-optionen.php:221
 #: admin-core/register-hupa-starter-optionen.php:222
+#: admin-core/register-hupa-starter-optionen.php:223
 msgid "Google Maps Settings"
 msgstr "Google Maps Settings"
 
 #: admin-core/partials/admin-iframe-maps.php:20
 #: admin-core/partials/admin-iframe-maps.php:26
 #: admin-core/partials/admin-iframe-maps.php:31
-#: admin-core/register-hupa-starter-optionen.php:211
 #: admin-core/register-hupa-starter-optionen.php:212
+#: admin-core/register-hupa-starter-optionen.php:213
 #, fuzzy
 #| msgid "Google Maps"
 msgid "Google Maps I-Frame"
@@ -45,8 +45,8 @@ msgstr "Google Maps"
 
 #: admin-core/partials/admin-starter-theme-home.php:18
 #: admin-core/partials/hupa-options-page.php:15
-#: admin-core/register-hupa-starter-optionen.php:134
 #: admin-core/register-hupa-starter-optionen.php:135
+#: admin-core/register-hupa-starter-optionen.php:136
 msgid "Theme Settings"
 msgstr "Theme Settings"
 
@@ -302,8 +302,6 @@ msgstr ""
 #: includes/hupa-gutenberg-sidebar/js/index.js:1
 #: includes/hupa-gutenberg-sidebar/sidebar-dev/build/index.js:4684
 #: includes/hupa-gutenberg-sidebar/sidebar-dev/src/index.js:750
-#, fuzzy
-#| msgid "Social Media"
 msgid "Soziale Medien"
 msgstr "Soziale Medien"
 
@@ -526,7 +524,7 @@ msgstr "Menü"
 
 #: admin-core/partials/admin-starter-theme-home.php:2272
 #: admin-core/partials/admin-starter-theme-home.php:3770
-#: includes/filter/hupa-theme-option-filter.php:759
+#: includes/filter/hupa-theme-option-filter.php:758
 #: includes/traits/HupaOptionTrait.php:717
 msgid "Button"
 msgstr ""
@@ -557,7 +555,7 @@ msgstr "Top Footer"
 #: admin-core/partials/admin-starter-theme-home.php:2824
 #: admin-core/partials/admin-starter-theme-home.php:2928
 #: admin-core/partials/admin-starter-theme-home.php:3047
-#: admin-core/register-hupa-starter-optionen.php:480
+#: admin-core/register-hupa-starter-optionen.php:482
 #: includes/hupa-gutenberg-sidebar/js/index-old.js:1
 #: includes/hupa-gutenberg-sidebar/js/index.js:1
 #: includes/hupa-gutenberg-sidebar/sidebar-dev/build/index.js:4693
@@ -911,8 +909,8 @@ msgstr "Theme Tools"
 
 #: admin-core/partials/admin-starter-theme-home.php:4288
 #: includes/traits/HupaOptionTrait.php:699
-#: includes/widgets/social-media-widget.php:110
-#: includes/widgets/social-media-widget.php:113
+#: includes/widgets/social-media-widget.php:111
+#: includes/widgets/social-media-widget.php:114
 msgid "Social Media"
 msgstr "Soziale Medien"
 
@@ -1030,13 +1028,13 @@ msgstr "Beiträge | Seiten Sortieren"
 
 #: admin-core/partials/hupa-options-page.php:406
 #: admin-core/partials/hupa-options-page.php:533
-#: includes/filter/hupa-theme-option-filter.php:705
+#: includes/filter/hupa-theme-option-filter.php:704
 msgid "show"
 msgstr "anzeigen"
 
 #: admin-core/partials/hupa-options-page.php:407
 #: admin-core/partials/hupa-options-page.php:534
-#: includes/filter/hupa-theme-option-filter.php:709
+#: includes/filter/hupa-theme-option-filter.php:708
 msgid "hide"
 msgstr "ausblenden"
 
@@ -1161,129 +1159,129 @@ msgstr "Lizenz verwalten"
 msgid "Lizenzen"
 msgstr ""
 
-#: admin-core/register-hupa-starter-optionen.php:122
 #: admin-core/register-hupa-starter-optionen.php:123
-#: admin-core/register-hupa-starter-optionen.php:231
-#: admin-core/register-hupa-starter-optionen.php:255
+#: admin-core/register-hupa-starter-optionen.php:124
+#: admin-core/register-hupa-starter-optionen.php:232
+#: admin-core/register-hupa-starter-optionen.php:256
 msgid "HUPA Theme"
 msgstr "HUPA Theme"
 
-#: admin-core/register-hupa-starter-optionen.php:144
 #: admin-core/register-hupa-starter-optionen.php:145
+#: admin-core/register-hupa-starter-optionen.php:146
 msgid "Theme Tools"
 msgstr "Theme Tools"
 
-#: admin-core/register-hupa-starter-optionen.php:155
 #: admin-core/register-hupa-starter-optionen.php:156
+#: admin-core/register-hupa-starter-optionen.php:157
 #: includes/gutenberg-tools/theme-carousel/src/index.js:24
 msgid "Carousel"
 msgstr "Carousel"
 
-#: admin-core/register-hupa-starter-optionen.php:166
 #: admin-core/register-hupa-starter-optionen.php:167
+#: admin-core/register-hupa-starter-optionen.php:168
 msgid "Installation"
 msgstr ""
 
-#: admin-core/register-hupa-starter-optionen.php:177
+#: admin-core/register-hupa-starter-optionen.php:178
 msgid "Licences"
 msgstr "Lizenzen"
 
-#: admin-core/register-hupa-starter-optionen.php:178
+#: admin-core/register-hupa-starter-optionen.php:179
 msgid "<b class=\"green_submenue\"> Licences ➤</b>"
 msgstr "<b class=\"green_submenue\"> Lizenzen ➤</b>"
 
-#: admin-core/register-hupa-starter-optionen.php:191
 #: admin-core/register-hupa-starter-optionen.php:192
+#: admin-core/register-hupa-starter-optionen.php:193
 #: includes/gutenberg-tools/google-maps/src/index.js:24
 msgid "Google Maps"
 msgstr "Google Maps"
 
-#: admin-core/register-hupa-starter-optionen.php:201
 #: admin-core/register-hupa-starter-optionen.php:202
+#: admin-core/register-hupa-starter-optionen.php:203
 #, fuzzy
 #| msgid "Google Maps"
 msgid "Google Maps API"
 msgstr "Google Maps"
 
-#: admin-core/register-hupa-starter-optionen.php:266
+#: admin-core/register-hupa-starter-optionen.php:267
 msgid "Theme Einstellungen"
 msgstr ""
 
-#: admin-core/register-hupa-starter-optionen.php:273
+#: admin-core/register-hupa-starter-optionen.php:274
 msgid "Contact"
 msgstr "Kontakt"
 
-#: admin-core/register-hupa-starter-optionen.php:283
+#: admin-core/register-hupa-starter-optionen.php:284
 msgid "Website"
 msgstr "Webseite"
 
-#: admin-core/register-hupa-starter-optionen.php:479
+#: admin-core/register-hupa-starter-optionen.php:481
 msgid "Custom Footer"
 msgstr "Custom Footer"
 
-#: admin-core/register-hupa-starter-optionen.php:481
+#: admin-core/register-hupa-starter-optionen.php:483
 msgid "Edit Footer"
 msgstr "Footer bearbeiten"
 
-#: admin-core/register-hupa-starter-optionen.php:482
+#: admin-core/register-hupa-starter-optionen.php:484
 msgid "Footer list navigation"
 msgstr "Footer-Listennavigation"
 
-#: admin-core/register-hupa-starter-optionen.php:484
+#: admin-core/register-hupa-starter-optionen.php:486
 msgid "Footer Archives"
 msgstr "Footer Archive"
 
-#: admin-core/register-hupa-starter-optionen.php:548
+#: admin-core/register-hupa-starter-optionen.php:550
 msgid "Custom Header"
 msgstr "Custom Header"
 
-#: admin-core/register-hupa-starter-optionen.php:549
+#: admin-core/register-hupa-starter-optionen.php:551
 msgid "Header"
 msgstr "Header"
 
-#: admin-core/register-hupa-starter-optionen.php:550
+#: admin-core/register-hupa-starter-optionen.php:552
 msgid "Edit Header"
 msgstr "Header bearbeiten"
 
-#: admin-core/register-hupa-starter-optionen.php:551
+#: admin-core/register-hupa-starter-optionen.php:553
 msgid "Header list navigation"
 msgstr "Header-Listennavigation"
 
-#: admin-core/register-hupa-starter-optionen.php:552
+#: admin-core/register-hupa-starter-optionen.php:554
 msgid "Create new header"
 msgstr "Neuen Header erstellen"
 
-#: admin-core/register-hupa-starter-optionen.php:553
+#: admin-core/register-hupa-starter-optionen.php:555
 msgid "Header Archives"
 msgstr "Header Archive"
 
-#: admin-core/register-hupa-starter-optionen.php:620
+#: admin-core/register-hupa-starter-optionen.php:622
 #, fuzzy
 #| msgid "Top Menu Info text"
 msgid "Top Area Menu Info text"
 msgstr "Top Menü Infotext"
 
-#: admin-core/register-hupa-starter-optionen.php:622
+#: admin-core/register-hupa-starter-optionen.php:624
 msgid "Area for info or contact information."
 msgstr "Bereich für Infos oder Kontaktinformationen."
 
-#: admin-core/register-hupa-starter-optionen.php:630
+#: admin-core/register-hupa-starter-optionen.php:632
 #, fuzzy
 #| msgid "Top Menu Social media"
 msgid "Top Area Menu Social media"
 msgstr "Top Menü soziale Medien"
 
-#: admin-core/register-hupa-starter-optionen.php:632
+#: admin-core/register-hupa-starter-optionen.php:634
 msgid "Area for social media icons."
 msgstr "Bereich für soziale Medien Icons."
 
-#: admin-core/register-hupa-starter-optionen.php:640
+#: admin-core/register-hupa-starter-optionen.php:642
 #, fuzzy
 #| msgid "Top Menu Button"
 msgid "Top Area Menu Button"
 msgstr "Top Menü Button"
 
-#: admin-core/register-hupa-starter-optionen.php:642
+#: admin-core/register-hupa-starter-optionen.php:644
 msgid "Area for button or search field."
 msgstr "Bereich für Button oder Suchfeld."
 
@@ -1294,7 +1292,7 @@ msgstr ""
 "Speichern <b class=\"text-danger\" > fehlgeschlagen</b> (Übertragungsfehler) "
 "- %s"
 
-#: includes/Ajax/starter-backend-ajax.php:1249
+#: includes/Ajax/starter-backend-ajax.php:1266
 msgid "Duplicate failed, could not find the original post: "
 msgstr ""
 
@@ -1320,7 +1318,6 @@ msgid "Read more"
 msgstr "mehr"
 
 #: includes/action/social-media-hook.php:61
-#: includes/widgets/social-media-widget.php:70
 msgid "Look what I found: "
 msgstr "Schau mal was ich gefunden habe: "
 
@@ -1769,48 +1766,91 @@ msgstr "kein Hintergrund"
 msgid "light theme"
 msgstr "helles Thema"
 
-#: includes/filter/hupa-theme-option-filter.php:664
-#: includes/filter/hupa-theme-option-filter.php:685
-#: includes/filter/hupa-theme-option-filter.php:701
-#: includes/filter/hupa-theme-option-filter.php:717
-#: includes/filter/hupa-theme-option-filter.php:735
-#: includes/filter/hupa-theme-option-filter.php:751
-#: includes/filter/hupa-theme-option-filter.php:767
+#: includes/filter/hupa-theme-option-filter.php:663
+#: includes/filter/hupa-theme-option-filter.php:684
+#: includes/filter/hupa-theme-option-filter.php:700
+#: includes/filter/hupa-theme-option-filter.php:716
+#: includes/filter/hupa-theme-option-filter.php:734
+#: includes/filter/hupa-theme-option-filter.php:750
+#: includes/filter/hupa-theme-option-filter.php:766
 msgid "Preset"
 msgstr "Voreinstellung"
 
-#: includes/filter/hupa-theme-option-filter.php:668
+#: includes/filter/hupa-theme-option-filter.php:667
 msgid "Standard Menu"
 msgstr "Standard Menü"
 
-#: includes/filter/hupa-theme-option-filter.php:721
+#: includes/filter/hupa-theme-option-filter.php:720
 msgid "aktiv"
 msgstr ""
 
-#: includes/filter/hupa-theme-option-filter.php:725
+#: includes/filter/hupa-theme-option-filter.php:724
 msgid "nicht aktiv"
 msgstr ""
 
-#: includes/filter/hupa-theme-option-filter.php:739
+#: includes/filter/hupa-theme-option-filter.php:738
 msgid "Container"
 msgstr "Container"
 
-#: includes/filter/hupa-theme-option-filter.php:743
+#: includes/filter/hupa-theme-option-filter.php:742
 #, fuzzy
 #| msgid "container-fluid"
 msgid "Container-Fluid"
 msgstr "container-fluid"
 
-#: includes/filter/hupa-theme-option-filter.php:755
+#: includes/filter/hupa-theme-option-filter.php:754
 msgid "Symbole"
 msgstr ""
 
-#: includes/filter/hupa-theme-option-filter.php:771
+#: includes/filter/hupa-theme-option-filter.php:770
 msgid "farbig"
 msgstr ""
 
-#: includes/filter/hupa-theme-option-filter.php:775
+#: includes/filter/hupa-theme-option-filter.php:774
 msgid "neutral"
+msgstr ""
+
+#: includes/filter/theme-helper.php:306
+#, fuzzy
+#| msgid "Designation"
+msgid "Position"
+msgstr "Bezeichnung"
+
+#: includes/filter/theme-helper.php:308 includes/filter/theme-helper.php:315
+#: includes/filter/theme-helper.php:322 includes/filter/theme-helper.php:329
+#: includes/filter/theme-helper.php:336 includes/filter/theme-helper.php:343
+#: includes/filter/theme-helper.php:350 includes/filter/theme-helper.php:357
+#: includes/filter/theme-helper.php:364
+msgid "Icon"
+msgstr "Icon"
+
+#: includes/filter/theme-helper.php:313 includes/traits/HupaOptionTrait.php:883
+msgid "Name"
+msgstr "Name"
+
+#: includes/filter/theme-helper.php:320 includes/filter/theme-helper.php:327
+#: includes/traits/HupaOptionTrait.php:882
+msgid "Address"
+msgstr "Adresse"
+
+#: includes/filter/theme-helper.php:334 includes/traits/HupaOptionTrait.php:884
+msgid "Department"
+msgstr "Abteilung"
+
+#: includes/filter/theme-helper.php:341 includes/traits/HupaOptionTrait.php:887
+msgid "E-Mail"
+msgstr "E-Mail"
+
+#: includes/filter/theme-helper.php:348 includes/traits/HupaOptionTrait.php:885
+msgid "Phone"
+msgstr "Telefon"
+
+#: includes/filter/theme-helper.php:355 includes/traits/HupaOptionTrait.php:886
+msgid "Mobile"
+msgstr "Handy"
+
+#: includes/filter/theme-helper.php:362 includes/traits/HupaOptionTrait.php:888
+msgid "Fax"
 msgstr ""
 
 #: includes/gutenberg-tools/google-maps/src/index.js:41
@@ -2210,30 +2250,51 @@ msgstr "Top Area Menü"
 #: includes/traits/HupaOptionTrait.php:833
 #: includes/traits/HupaOptionTrait.php:845
 #: includes/traits/HupaOptionTrait.php:857
+#: includes/widgets/social-media-widget.php:71
 msgid "Look what I found:"
 msgstr "Schau mal was ich gefunden habe:"
+
+#: includes/traits/HupaOptionTrait.php:880
+msgid "sections"
+msgstr "Sektionen"
+
+#: includes/traits/HupaOptionTrait.php:881
+msgid ""
+"The position or order of the individual sections can be changed by "
+"<b>moving</b> the boxes."
+msgstr ""
+"Die Position bzw. Reihenfolge der einzelnen Sektionen, kann durch "
+"<b>verschieben</b> der Boxen geändert werden."
+
+#: includes/traits/HupaOptionTrait.php:889
+msgid "delete"
+msgstr "löschen"
+
+#: includes/traits/HupaOptionTrait.php:890
+msgid "Contact details"
+msgstr "Kontaktdaten"
 
 #: includes/widgets/social-media-widget.php:19
 msgid "Hupa Social Media"
 msgstr "Hupa Soziale Medien"
 
-#: includes/widgets/social-media-widget.php:120
+#: includes/widgets/social-media-widget.php:121
 msgid "Title"
 msgstr "Titel"
 
-#: includes/widgets/social-media-widget.php:132
+#: includes/widgets/social-media-widget.php:133
 msgid "Show icon"
 msgstr "Symbol anzeigen"
 
-#: includes/widgets/social-media-widget.php:137
+#: includes/widgets/social-media-widget.php:138
 msgid "Show button"
 msgstr "Button anzeigen"
 
-#: includes/widgets/social-media-widget.php:145
+#: includes/widgets/social-media-widget.php:146
 msgid "Show coloured symbols"
 msgstr "Farbige symbole anzeigen?"
 
-#: includes/widgets/social-media-widget.php:150
+#: includes/widgets/social-media-widget.php:151
 msgid "Add extra CSS class"
 msgstr "Extra CSS Klasse hinzufügen"
 
@@ -2278,16 +2339,6 @@ msgstr "Es ist kein Change Log verfügbar."
 #~| msgid "Top Area | Widget"
 #~ msgid "Url for Top Area or Widget"
 #~ msgstr "Top Area | Widget"
-
-#~ msgid "sections"
-#~ msgstr "Sektionen"
-
-#~ msgid ""
-#~ "The position or order of the individual sections can be changed by "
-#~ "<b>moving</b> the boxes."
-#~ msgstr ""
-#~ "Die Position bzw. Reihenfolge der einzelnen Sektionen, kann durch "
-#~ "<b>verschieben</b> der Boxen geändert werden."
 
 #, fuzzy
 #~| msgid "Top Area Menu"
@@ -2420,9 +2471,6 @@ msgstr "Es ist kein Change Log verfügbar."
 
 #~ msgid "Start typing..."
 #~ msgstr "Kommentar"
-
-#~ msgid "Name*"
-#~ msgstr "Name*"
 
 #~ msgid "Email* (will not be published)"
 #~ msgstr "Email* (wird nicht veröffentlicht)"

@@ -192,7 +192,6 @@ final class RegisterHupaStarter
 
             update_option('ssl_login_aktiv', 0);
             update_option('admin_ssl_login_aktiv', 0);
-
             update_option('mu_plugin', 0);
 
         }
@@ -229,6 +228,8 @@ final class RegisterHupaStarter
         delete_option('hupa_wp_disable_wp_cron');
         delete_option('hupa_wp_disallow_file_edit');
         delete_option('hupa_wp_disallow_file_mods');
+
+        delete_option('tools_hupa_address');
 
 
     }

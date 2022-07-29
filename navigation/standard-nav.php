@@ -36,8 +36,7 @@ get_hupa_option( 'handy' ) == 1 ? $handyMenu = 'menu1' : $handyMenu = 'menu2';
         <?php if(get_hupa_frontend('nav-img') && $menu->show_img): ?>
             <a class="navbar-brand d-none d-xl-flex <?=$menu->logo?>" href="<?php echo esc_url( home_url() ); ?>">
                 <img src="<?= get_hupa_frontend('nav-img')->url?>"
-                     alt="<?=get_bloginfo('name')?>" class="logo md"
-                     width="<?= get_hupa_frontend('nav-img')->width?>">
+                     alt="<?=get_bloginfo('name')?>" class="logo md">
             </a>
             <a class="navbar-brand  ps-2 img-fluid d-lg-flex d-xl-none <?=$menu->logo?>" href="<?php echo esc_url( home_url() ); ?>">
                 <img src="<?=get_hupa_frontend('nav-img')->url?>"

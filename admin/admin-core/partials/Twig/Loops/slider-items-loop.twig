@@ -68,7 +68,6 @@
 
                     {# JOB PARENT SECTIONS Start #}
                     <div id="ParentSettings{{ rand }}">
-
                         <div class="row settings-box option first-box align-items-center">
                             <h5 class="px-3 py-3 m-0 border-tb" style="background-color: #fff">
                                 <i class="font-blue fa fa-gears"></i>&nbsp;
@@ -212,8 +211,8 @@
                                 <hr>
                                 <button type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collButton{{ collRandom }}"
-                                        class="set-collapse-active d-block btn btn-outline-primary btn-sm"><i
-                                            class="bi bi-arrows-collapse"></i>
+                                        class="set-collapse-active d-block btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-arrows-collapse"></i>
                                     Details
                                 </button>
                             </h5>
@@ -235,7 +234,7 @@
 
                                     <div id="captionButton{{ rand }}" class="ms-2">
                                         {% for slideBtn in sl.slide_button %}
-                                            {% set btnRandom = random() %}
+                                          {#   {% set btnRandom = random() %} #}
                                             {{ include('@partials-loops/carousel-btn-loop.twig') }}
                                         {% endfor %}
                                     </div>

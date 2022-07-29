@@ -232,6 +232,23 @@ class Hupa_Starter_V2_Admin_Ajax
                         $responseJson->spinner = true;
                         break;
 
+                    case'theme_address':
+                        $icons = apply_filters('hupa_address_fields', null);
+                        $dataArr = [];
+                        foreach ($icons as $key => $val) {
+                            $data_item = [
+                              'id' => $key,
+                              'shortcode' => esc_html($val['shortcode']),
+                              'value' => apply_filters('cleanWhitespace', esc_html($_POST[$val['shortcode']])),
+                              'icon' => esc_html($_POST['icon_' . $val['shortcode']])
+                            ];
+                            $dataArr[] = $data_item;
+                        }
+                        update_option('tools_hupa_address', $dataArr);
+                        $responseJson->spinner = true;
+
+                        break;
+
                     case'smtp_settings':
                         $email_abs_name = filter_input(INPUT_POST, 'email_abs_name', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                         $email_adresse = filter_input(INPUT_POST, 'email_adresse', FILTER_VALIDATE_EMAIL);
@@ -275,6 +292,10 @@ class Hupa_Starter_V2_Admin_Ajax
                         $record->main_container = filter_input(INPUT_POST, 'main_container', FILTER_SANITIZE_NUMBER_INT);
 
                         $record->logo_size = filter_input(INPUT_POST, 'logo_size', FILTER_SANITIZE_NUMBER_INT);
+                        $record->logo_size_scroll = filter_input(INPUT_POST, 'logo_size_scroll', FILTER_SANITIZE_NUMBER_INT);
+                        $record->logo_size_mobil = filter_input(INPUT_POST, 'logo_size_mobil', FILTER_SANITIZE_NUMBER_INT);
+                        //$record->logo_size_login = filter_input(INPUT_POST, 'logo_size_login', FILTER_SANITIZE_NUMBER_INT);
+
                         $record->menu = filter_input(INPUT_POST, 'menu', FILTER_SANITIZE_NUMBER_INT);
                         $record->handy = filter_input(INPUT_POST, 'handy', FILTER_SANITIZE_NUMBER_INT);
 

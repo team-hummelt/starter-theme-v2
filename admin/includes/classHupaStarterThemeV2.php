@@ -30,6 +30,7 @@ use Hupa\StarterThemeV2\HupaStarterFrontEndFilter;
 use Hupa\StarterThemeV2\HupaStarterHelper;
 use Hupa\StarterThemeV2\HupaStarterLanguageFilter;
 use Hupa\StarterThemeV2\HupaStarterOptionFilter;
+use Hupa\StarterThemeV2\HupaStarterRenderBlock;
 use Hupa\StarterThemeV2\HupaStarterToolsFilter;
 use Hupa\StarterThemeV2\StarterThemeUpdateAction;
 use Hupa\StarterThemeV2\StarterThemeWPOptionen;
@@ -177,24 +178,39 @@ class HupaStarterThemeV2
 
         $this->twig = new Environment($twig_loader);
         $this->twig->getExtension(CoreExtension::class)->setTimezone('Europe/Berlin');
+
         // JOB Twig Filter
         $wpGetText = new TwigFilter('__', function ($text) {
             return __($text, 'bootscore');
         });
+
+        $htmlEncode = new TwigFilter('html_entity_decode', function ($value) {
+            $return = htmlspecialchars_decode($value);
+            return stripslashes_deep($return);
+        });
+
         $hasNavMenu = new TwigFilter('has_nav_menu', function ($hasMenu){
             return has_nav_menu($hasMenu);
         });
+
         $getOption = new TwigFilter('get_option', function ($option){
             return get_option($option);
         });
+
+        $getCurrentUser = new TwigFilter('get_current_user', function (){
+            return new WP_User(get_current_user_id());
+        });
+
         $this->twig->addFilter($wpGetText);
+        $this->twig->addFilter($htmlEncode);
         $this->twig->addFilter($hasNavMenu);
         $this->twig->addFilter($getOption);
+        $this->twig->addFilter($getCurrentUser);
         // JOB Twig Filter End
 
         $this->define_create_database_hooks();
         $this->define_theme_helper_hooks();
-
+        $this->define_hupa_render_block();
         $this->define_theme_options_hooks();
         $this->define_theme_carousel_filter_hooks();
         $this->define_theme_tools_filter_hooks();
@@ -250,6 +266,7 @@ class HupaStarterThemeV2
          */
         require(Config::get('THEME_ADMIN_INCLUDES') . 'class-hupa-starter-v2-loader.php');
 
+
         /**
          * The class responsible for defining option trait admin area.
          */
@@ -259,6 +276,11 @@ class HupaStarterThemeV2
          * The class responsible for defining carousel trait admin area.
          */
         require(Config::get('THEME_ADMIN_INCLUDES') . 'traits/HupaCarouselTrait.php');
+
+        /**
+         * The class responsible for defining option Render-Block admin area.
+         */
+        require(Config::get('THEME_ADMIN_INCLUDES') . 'filter/hupa-theme-render-block.php');
 
         /**
          * The class responsible for defining database admin area.
@@ -533,6 +555,8 @@ class HupaStarterThemeV2
         $this->loader->add_filter('clean_white_space', $hupa_register_theme_helper, 'cleanWhitespace');
         $this->loader->add_filter('oauth_set_error_message', $hupa_register_theme_helper, 'api_set_error_message');
         $this->loader->add_filter('compress_template', $hupa_register_theme_helper, 'html_compress_template');
+        $this->loader->add_filter('hupa_address_fields', $hupa_register_theme_helper, 'tools_address_fields');
+
     }
 
     /**
@@ -851,6 +875,21 @@ class HupaStarterThemeV2
         HupaIconsShortCode::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
         HupaSocialButtonShortCode::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
         HupaGoogleMapsShortCode::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
+    }
+
+    /**
+     * Register all the hooks related to the admin area functionality
+     * of the theme.
+     *
+     * @since    2.0.0
+     * @access   private
+     */
+    private function define_hupa_render_block()
+    {
+        global $hupa_render_block;
+        $hupa_render_block = HupaStarterRenderBlock::init($this->main);
+        $this->loader->add_filter('render_block', $hupa_render_block, 'custom_render_block_core_group', 0, 2);
+
     }
 
     /** Register all the hooks related to the admin options area functionality

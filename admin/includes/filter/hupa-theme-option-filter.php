@@ -14,7 +14,6 @@ defined('ABSPATH') or die();
  * @package Hummelt & Partner WordPress Theme
  * Copyright 2021, Jens Wiecker
  * License: Commercial - goto https://www.hummelt-werbeagentur.de/
- * https://www.hummelt-werbeagentur.de/
  */
 class HupaStarterOptionFilter
 {
@@ -1162,6 +1161,16 @@ class HupaStarterOptionFilter
                 }
             }
 
+            //TODO Kontaktdaten Header ShortCode
+            $regEx = '@\[kontakt.*]@m';
+            preg_match_all($regEx, $record->custum_header, $matches, PREG_SET_ORDER, 0);
+            if (isset($matches)) {
+                foreach ($matches as $tmp) {
+                    $doShortcode = do_shortcode($tmp[0]);
+                    $record->custum_header = str_replace($tmp[0], $doShortcode, $record->custum_header);
+                }
+            }
+
         } else {
             $record->custum_header = false;
         }
@@ -1276,6 +1285,16 @@ class HupaStarterOptionFilter
 
             //TODO Social-ICONS Custom Footer ShortCode
             $regEx = '@\[social-icon.*]@m';
+            preg_match_all($regEx, $record->custum_footer, $matches, PREG_SET_ORDER, 0);
+            if (isset($matches)) {
+                foreach ($matches as $tmp) {
+                    $doShortcode = do_shortcode($tmp[0]);
+                    $record->custum_footer = str_replace($tmp[0], $doShortcode, $record->custum_footer);
+                }
+            }
+
+            //TODO Kontaktdaten Footer ShortCode
+            $regEx = '@\[kontakt.*]@m';
             preg_match_all($regEx, $record->custum_footer, $matches, PREG_SET_ORDER, 0);
             if (isset($matches)) {
                 foreach ($matches as $tmp) {
@@ -1499,6 +1518,26 @@ class HupaStarterOptionFilter
                 }
             }
 
+            //TODO ICONS Custom Header ShortCode
+            $regEx = '@\[social_icon.*]@m';
+            preg_match_all($regEx, $record->custum_header, $matches, PREG_SET_ORDER, 0);
+            if (isset($matches)) {
+                foreach ($matches as $tmp) {
+                    $doShortcode = do_shortcode($tmp[0]);
+                    $record->custum_header = str_replace($tmp[0], $doShortcode, $record->custum_header);
+                }
+            }
+
+            //TODO ICONS Custom Header ShortCode
+            $regEx = '@\[kontakt.*]@m';
+            preg_match_all($regEx, $record->custum_header, $matches, PREG_SET_ORDER, 0);
+            if (isset($matches)) {
+                foreach ($matches as $tmp) {
+                    $doShortcode = do_shortcode($tmp[0]);
+                    $record->custum_header = str_replace($tmp[0], $doShortcode, $record->custum_header);
+                }
+            }
+
         } else {
             $record->custum_header = false;
         }
@@ -1589,6 +1628,26 @@ class HupaStarterOptionFilter
 
             //TODO ICONS Custom Footer ShortCode
             $regEx = '@\[icon.*]@m';
+            preg_match_all($regEx, $record->custum_footer, $matches, PREG_SET_ORDER, 0);
+            if (isset($matches)) {
+                foreach ($matches as $tmp) {
+                    $doShortcode = do_shortcode($tmp[0]);
+                    $record->custum_footer = str_replace($tmp[0], $doShortcode, $record->custum_footer);
+                }
+            }
+
+            //TODO ICONS Custom Footer ShortCode
+            $regEx = '@\[social_icon.*]@m';
+            preg_match_all($regEx, $record->custum_footer, $matches, PREG_SET_ORDER, 0);
+            if (isset($matches)) {
+                foreach ($matches as $tmp) {
+                    $doShortcode = do_shortcode($tmp[0]);
+                    $record->custum_footer = str_replace($tmp[0], $doShortcode, $record->custum_footer);
+                }
+            }
+
+            //TODO ICONS Custom Footer ShortCode
+            $regEx = '@\[kontakt.*]@m';
             preg_match_all($regEx, $record->custum_footer, $matches, PREG_SET_ORDER, 0);
             if (isset($matches)) {
                 foreach ($matches as $tmp) {

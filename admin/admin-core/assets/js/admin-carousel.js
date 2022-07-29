@@ -144,9 +144,8 @@ function send_xhr_carousel_data(data, is_formular = true) {
                 case 'button':
                     let btnWrapper = document.getElementById('captionButton' + data.rand);
                     btnWrapper.insertAdjacentHTML('beforeend', data.template);
-                    let addId = document.getElementById('btnParrent' + data.rand_id);
-                    //btnParrent2093872245
-                    load_color_pickr(addId);
+                    let addId = document.querySelector('div#captionButton'+data.rand);
+                    load_color_pickr(addId.lastChild);
                     break;
             }
         }

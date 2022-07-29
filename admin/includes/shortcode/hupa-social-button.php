@@ -75,6 +75,7 @@ class HupaSocialButtonShortCode
 
         add_shortcode('social-share-button', array($this, 'hupa_social_button_shortcode'));
         add_shortcode('social-icon', array($this, 'hupa_social_icon_shortcode'));
+        add_shortcode('kontakt', array($this, 'hupa_kontakt_shortcode'));
     }
 
     public function hupa_social_button_shortcode($atts, $content, $tag)
@@ -154,14 +155,69 @@ class HupaSocialButtonShortCode
         ob_start();
         $before = '';
         $after = $atts['text'];
-        if ((int) $atts['before'] == 0) {
+        if ((int)$atts['before'] == 0) {
             $before = $atts['text'];
             $after = '';
         }
         $atts['icon'] ? $icon = $atts['icon'] : $icon = $media->icon;
         ?>
-        <span class="social_media_icon"> <a class="<?=$atts['class'] ?>" href="<?= $media->url ?>" target="_blank"> <?=$before?> <i class="<?= $icon ?>"></i> <?=$after?></a></span>
+        <span class="social_media_icon"> <a class="<?= $atts['class'] ?>" href="<?= $media->url ?>"
+                                            target="_blank"> <?= $before ?> <i
+                        class="<?= $icon ?>"></i> <?= $after ?></a></span>
         <?php return ob_get_clean();
+    }
+
+    public function hupa_kontakt_shortcode($atts, $content, $tag): string
+    {
+        $atts = shortcode_atts(array(
+            'type' => '',
+            'before' => 1,
+            'class' => '',
+            'icon' => '',
+            'url' => '',
+            'url_type' => ''
+        ), $atts);
+
+        if (!$atts['type']) {
+            return '';
+        }
+
+        ob_start();
+
+        $adressen = get_option('tools_hupa_address');
+        $addressData = [];
+        foreach ($adressen as $tmp) {
+            if ($tmp['shortcode'] == apply_filters('cleanWhitespace', $atts['type'])) {
+                $value = htmlspecialchars_decode($tmp['value']);
+                $addressData = [
+                    'icon' => $tmp['icon'],
+                    'value' => stripslashes_deep($value)
+                ];
+                break;
+            }
+        }
+        $atts['icon'] ? $icon = '<i class="'.$atts['icon'].'"></i>' : $icon = '<i class="'.$addressData['icon'].'"></i>';
+
+
+        if ($atts['url_type']) {
+            $atts['url_type'] == 'url' ? $urlType = '' : $urlType = str_replace(':','',$atts['url_type']) . ':';
+            $url = '<a href="' . $urlType . $addressData['value'] . '" target="_blank">';
+            $url_end = '</a>';
+        } else {
+            $url = '';
+            $url_end = '';
+        }
+
+        if($atts['before'] == 1) {
+            $iconBefore = $icon . ' ' . $addressData['value'];
+            $iconAfter =  '';
+        } else {
+            $iconBefore = '';
+            $iconAfter =  $addressData['value'] . ' ' .$icon;
+        }?>
+        <span class="hupa_kontakt <?=$atts['class']?>"><?=$url?><?=$iconBefore?><?=$iconAfter?><?=$url_end?></span>
+    <?php
+        return ob_get_clean();
     }
 
     private function get_the_post_thumbnail_src($img)

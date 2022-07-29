@@ -118,7 +118,7 @@ class HupaStarterCssGenerator
         file_put_contents($path . '/css/hupa-theme/auto-generate-login-style.css', $loginStyle, LOCK_EX);
     }
 
-    private function create_css_style(): string
+    protected function create_css_style(): string
     {
         //Body
         $bodyFont = $this->css_styles_by_type('font', 'body_font');
@@ -130,6 +130,17 @@ class HupaStarterCssGenerator
         $html .= $bodyFont->fontWeight . "\r\n";
         $html .= $bodyFont->fontHeight . "\r\n";
         $html .= $bodyFont->fontColor . "\r\n";
+        $html .= '}' . "\r\n";
+
+        //HEADER LOGO SIZE
+        $html .= '.logo.md {' . "\r\n";
+        $html .= 'max-height: ' . get_hupa_frontend('nav-img')->width . 'px;' . "\r\n";
+        $html .= 'width: 100%'  ."\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '.logo.sm {' . "\r\n";
+        $html .= 'max-height: ' . get_hupa_frontend('nav-img')->width_mobil . 'px;' . "\r\n";
+        $html .= 'width: 100%'  ."\r\n";
         $html .= '}' . "\r\n";
 
 

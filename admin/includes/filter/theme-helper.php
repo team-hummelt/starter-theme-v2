@@ -26,12 +26,12 @@ class HupaStarterHelper
      * @access   private
      * @var HupaStarterThemeV2 $main The main class.
      */
-    protected  HupaStarterThemeV2 $main;
+    protected HupaStarterThemeV2 $main;
 
     /**
      * @return static
      */
-    public static function init( HupaStarterThemeV2  $main): self
+    public static function init(HupaStarterThemeV2 $main): self
     {
         if (is_null(self::$theme_helper_instance)) {
             self::$theme_helper_instance = new self($main);
@@ -225,14 +225,15 @@ class HupaStarterHelper
         return json_decode(json_encode($object), true);
     }
 
-    public function changeBeitragsListenTemplate($id, $type) {
+    public function changeBeitragsListenTemplate($id, $type)
+    {
 
         $newList = '';
         $template = '';
-        switch ($type){
+        switch ($type) {
             case'kategorie':
-                $template = get_template_directory().'/category.php';
-                switch ($id){
+                $template = get_template_directory() . '/category.php';
+                switch ($id) {
                     case 1:
                         $newList = 'listen-templates/category.php';
                         break;
@@ -251,8 +252,8 @@ class HupaStarterHelper
                 }
                 break;
             case'archiv':
-                $template = get_template_directory().'/archive.php';
-                switch ($id){
+                $template = get_template_directory() . '/archive.php';
+                switch ($id) {
                     case 1:
                         $newList = 'listen-templates/archive.php';
                         break;
@@ -271,8 +272,8 @@ class HupaStarterHelper
                 }
                 break;
             case'autor':
-                $template = get_template_directory().'/author.php';
-                switch ($id){
+                $template = get_template_directory() . '/author.php';
+                switch ($id) {
                     case 1:
                         $newList = 'listen-templates/author.php';
                         break;
@@ -292,14 +293,93 @@ class HupaStarterHelper
                 break;
         }
 
-        if($newList && $template){
+        if ($newList && $template) {
             $file = file_get_contents($newList, true);
             file_put_contents($template, $file, LOCK_EX);
         }
     }
 
+    public function tools_address_fields($type = null): array
+    {
+        $fields = [
+            '0' => [
+                'label' => __('Position', 'bootscore'),
+                'shortcode' => 'position',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collPosition',
+                'type' => 'text'
+            ],
+            '1' => [
+                'label' => __('Name', 'bootscore'),
+                'shortcode' => 'name',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collName',
+                'type' => 'text'
+            ],
+            '2' => [
+                'label' => __('Address', 'bootscore') . ' 1',
+                'shortcode' => 'adresse1',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collAddress1',
+                'type' => 'text'
+            ],
+            '3' => [
+                'label' => __('Address', 'bootscore') . ' 2',
+                'shortcode' => 'adresse2',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collAddress2',
+                'type' => 'text'
+            ],
+            '4' => [
+                'label' => __('Department', 'bootscore'),
+                'shortcode' => 'abteilung',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collAbteilung',
+                'type' => 'text'
+            ],
+            '5' => [
+                'label' => __('E-Mail', 'bootscore'),
+                'shortcode' => 'email',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collEmail',
+                'type' => 'email'
+            ],
+            '6' => [
+                'label' => __('Phone', 'bootscore'),
+                'shortcode' => 'telefon',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collTelefon',
+                'type' => 'text'
+            ],
+            '7' => [
+                'label' => __('Mobile', 'bootscore'),
+                'shortcode' => 'handy',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collHandy',
+                'type' => 'text'
+            ],
+            '8' => [
+                'label' => __('Fax', 'bootscore'),
+                'shortcode' => 'fax',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collFax',
+                'type' => 'text'
+            ],
+        ];
 
-    public function api_set_error_message($type):array
+        if($type){
+            foreach ($fields as $tmp){
+                if($type == $tmp['shortcode']){
+                    return $tmp;
+                }
+            }
+        }
+
+        return $fields;
+    }
+
+
+    public function api_set_error_message($type): array
     {
 
         switch ($type) {
@@ -321,12 +401,12 @@ class HupaStarterHelper
             default:
                 $return = [400, 'api_error', 'API unknown error'];
         }
-        return  $return;
+        return $return;
     }
 
-    public function html_compress_template(string $string):string
+    public function html_compress_template(string $string): string
     {
-        if(!$string){
+        if (!$string) {
             return $string;
         }
         return preg_replace(['/<!--(.*)-->/Uis', "/[[:blank:]]+/"], ['', ' '], str_replace(["\n", "\r", "\t"], '', $string));

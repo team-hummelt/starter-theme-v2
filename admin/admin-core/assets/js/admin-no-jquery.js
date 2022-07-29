@@ -92,9 +92,9 @@ if (settingsColBtn) {
 
 
 /**=========================================
-========== AJAX FORMS AUTO SAVE  ===========
-============================================
-*/
+ ========== AJAX FORMS AUTO SAVE  ===========
+ ============================================
+ */
 
 let themeSendFormTimeout;
 let themeSendFormular = document.querySelectorAll(".sendAjaxThemeForm:not([type='button'])");
@@ -149,7 +149,7 @@ function btn_install_fonts(e) {
     let demoBtn = e.form.querySelector('#fontDemo');
     let select = e.form.querySelector('#inputInstallFont');
     let inputFontName = e.form.querySelector('.selectFontName');
-    inputFontName.value=select.options[select.selectedIndex].text;
+    inputFontName.value = select.options[select.selectedIndex].text;
     demoBtn.classList.add('disabled');
     e.setAttribute('disabled', true);
     send_xhr_form_data(e.form);
@@ -167,7 +167,6 @@ function change_font_install_select(e) {
         demoBtn.classList.add('disabled');
     }
 }
-
 
 
 function change_wp_debug_log_aktiv(e) {
@@ -254,12 +253,12 @@ if (capabilities) {
     }
 }
 
-if(capabilitySelect){
+if (capabilitySelect) {
     capabilitySelect.addEventListener("change", function (e) {
 
         let formData = {
             'method': 'update_capability',
-            'type' : this.getAttribute('data-type'),
+            'type': this.getAttribute('data-type'),
             'value': this.value
         }
         send_xhr_form_data(formData, false, update_capabilities_callback);
@@ -483,9 +482,9 @@ function send_xhr_form_data(data, is_formular = true, callback = '') {
 }
 
 /**===========================================
-========== WordPress Image Upload  ===========
-==============================================
-*/
+ ========== WordPress Image Upload  ===========
+ ==============================================
+ */
 
 let themeUploadMediaImg = document.querySelectorAll(".theme_upload_media_img");
 if (themeUploadMediaImg) {
@@ -499,7 +498,7 @@ if (themeUploadMediaImg) {
                 data_multiple = imgContainer.getAttribute('data-multiple'),
                 defaultImg = document.querySelector("#" + data_container + " .theme-default-image"),
                 multiple = data_multiple === '1',
-                imgSizeRange = document.querySelector("#" + data_container + " .sizeRange"),
+                imgSizeRange = document.querySelectorAll("#" + data_container + " .sizeRange"),
                 img_type = this.getAttribute('data-type'),
                 delImgBtn = document.querySelector("#" + data_container + " .theme_delete_media_img");
 
@@ -523,8 +522,10 @@ if (themeUploadMediaImg) {
                 imgContainer.classList.remove('d-none');
                 addImgBtn.classList.add('d-none');
                 delImgBtn.classList.remove('d-none');
-                if (imgSizeRange) {
-                    imgSizeRange.removeAttribute('disabled');
+                if (imgSizeRange.length) {
+                    for (let i = 0; i < imgSizeRange.length; i++) {
+                        imgSizeRange[i].removeAttribute('disabled');
+                    }
                 }
                 defaultImg.classList.add('d-none');
 
@@ -548,11 +549,13 @@ if (themeUploadMediaImg) {
             let data_container = this.getAttribute('data-container'),
                 imgContainer = document.querySelector("#" + data_container + " .admin-wp-media-container"),
                 defaultImg = document.querySelector("#" + data_container + " .theme-default-image"),
-                imgSizeRange = document.querySelector("#" + data_container + " .sizeRange"),
+                imgSizeRange = document.querySelectorAll("#" + data_container + " .sizeRange"),
                 addImgBtn = document.querySelector("#" + data_container + " .theme_upload_media_img");
 
-            if (imgSizeRange) {
-                imgSizeRange.setAttribute('disabled', true);
+            if (imgSizeRange.length) {
+                for (let i = 0; i < imgSizeRange.length; i++) {
+                    imgSizeRange[i].setAttribute('disabled', 'disabled');
+                }
             }
             imgContainer.innerHTML = '';
             addImgBtn.classList.remove('d-none');
@@ -597,11 +600,16 @@ function changeRangeUpdate(event = false) {
 function range_update_input_value(range) {
     let rangeContainer = range.getAttribute('data-container');
     let showRange = document.querySelector("#" + rangeContainer + " .show-range-value");
-    let rangeImage = document.querySelector("#" + rangeContainer + " .range-image");
-    if (rangeImage) {
-        //* 0.5
-        rangeImage.style.width = range.value + 'px';
-    }
+
+    if(range.hasAttribute('data-range-image')){
+        //let rangeImage = document.querySelector("#" + rangeContainer + " .range-image");
+        let rangeImage = document.querySelector('.range-image')
+        if (rangeImage) {
+            //* 0.5
+            rangeImage.style.width = range.value + 'px';
+        }
+      }
+
     showRange.innerHTML = range.value;
 }
 
@@ -936,8 +944,6 @@ if (smallThemeSendModalBtn) {
 }
 
 
-
-
 let iconSettingsInfoModal = document.getElementById('dialog-add-icon');
 if (iconSettingsInfoModal) {
     iconSettingsInfoModal.addEventListener('show.bs.modal', function (event) {
@@ -945,9 +951,14 @@ if (iconSettingsInfoModal) {
         let type = button.getAttribute('data-bs-type');
         let shortCode = '';
         let uri = '';
+        let handle = '';
+        let destination = '';
+        button.hasAttribute('data-bs-handle') ? handle = button.getAttribute('data-bs-handle') : handle = 'icon';
+        button.hasAttribute('data-bs-destination') ? destination = button.getAttribute('data-bs-destination') : destination = '';
+
         switch (type) {
             case'fa-info':
-                uri ='fa-icons.json';
+                uri = 'fa-icons.json';
                 shortCode = 'fa';
                 break;
             case'bi-info':
@@ -962,9 +973,9 @@ if (iconSettingsInfoModal) {
             .then(data => {
                 let html = '<div class="icon-wrapper">';
                 data.forEach(function (data) {
-                    html += `<div onclick="set_select_info_icon('${data.title}', '${data.code}', '${data.icon}' , '${shortCode}');"
-                              data-bs-dismiss="modal"   class="info-icon-item" title="${data.code} | ${data.title}">`;
-                    html += `<i  class="${data.icon}"></i><small class="sm-icon">${data.icon}</small>`;
+                    html += `<div onclick="set_select_info_icon('${data.title}', '${data.code}', '${data.icon}', '${shortCode}', '${handle}', '${destination}');"
+                              data-bs-dismiss="modal" class="info-icon-item" title="${data.code} | ${data.title}">`;
+                    html += `<i class="${data.icon}"></i><small class="sm-icon">${data.icon}</small>`;
                     html += '</div>';
                 });
                 html += '</div>';
@@ -974,10 +985,13 @@ if (iconSettingsInfoModal) {
     });
 }
 
-function set_select_info_icon(title, unicode, icon, shortcode) {
-    let size = 'fa-2x';
-    //shortcode == 'fas' ? size = '' : size = 'fa-2x';
-    document.getElementById('shortcode-info').innerHTML = `
+
+function set_select_info_icon(title, unicode, icon, shortcode, handle, destination = '') {
+
+    switch (handle) {
+        case'icon':
+            let size = 'fa-2x';
+            document.getElementById('shortcode-info').innerHTML = `
         <i class="${icon} fa-4x d-block mb-2"></i>
        <span class="d-block mb-1 mt-2"><b class="text-danger d-inline-block" style="min-width: 6rem;">Shortcode:</b> [icon ${shortcode}="${title}"]</span>
        <span class="d-block"><b class="text-danger d-inline-block" style="min-width: 6rem;">Unicode:</b> ${unicode}</span> 
@@ -1003,8 +1017,50 @@ function set_select_info_icon(title, unicode, icon, shortcode) {
                [icon ${shortcode}="${title}" code="true"]     
             </div>
         </div>`;
-    document.getElementById('resetIcons').classList.remove('d-none');
-    //shortWrapper.innerHTML = html;
+            document.getElementById('resetIcons').classList.remove('d-none');
+            break;
+        case'address':
+            let btnDestination = document.getElementById('btn'+destination);
+            let inputDestination = document.getElementById('icon'+destination);
+            inputDestination.value = `${icon}`;
+            btnDestination.innerHTML = `<i class="${icon}"</i>`;
+            let formData = document.getElementById('addressForm');
+            let spinner = document.querySelector('.ajax-status-spinner')
+            spinner.innerHTML = '<i class="fa fa-spinner fa-spin"></i>&nbsp; Saving...';
+            send_xhr_form_data(formData, true);
+            break;
+        case'carousel':
+            let html = '<div class="icon-wrapper">';
+                html += `<div onclick="set_select_slide_icon(this, '${unicode}', '${icon}', '${destination}');"
+                              class="info-icon-item" title="${unicode} | ${title}">`;
+                html += `<i  class="${icon}"></i><small class="sm-icon">${icon}</small>`;
+                html += '</div>';
+            html += '</div>';
+            let iconContainer = document.getElementById('btn_icon' + destination);
+            let iconInput = document.getElementById('inputIcon' + destination);
+            iconInput.value = icon + '#' + unicode;
+            iconContainer.innerHTML = `<i  class="${icon}"></i>`;
+            let iconButton = document.querySelectorAll('.btnSelectIcon' + destination);
+            let formNodes = Array.prototype.slice.call(iconButton, 0);
+            formNodes.forEach(function (formNodes) {
+                formNodes.classList.toggle('d-none');
+            });
+            send_xhr_carousel_data(iconInput.form);
+            console.log(destination);
+            break;
+    }
+}
+
+function delete_address_icon(target) {
+    let btnDestination = document.getElementById('btn'+target);
+    let inputDestination = document.getElementById('icon'+target);
+    btnDestination.innerHTML='Icon';
+    inputDestination.value = '';
+    let formData = document.getElementById('addressForm');
+    let spinner = document.querySelector('.ajax-status-spinner')
+    spinner.innerHTML = '<i class="fa fa-spinner fa-spin"></i>&nbsp; Saving...';
+    send_xhr_form_data(formData, true);
+
 }
 
 function reset_show_theme_icons(e, id) {

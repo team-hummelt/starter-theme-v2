@@ -2,7 +2,6 @@
 
 namespace Hupa\StarterThemeV2;
 
-use stdClass;
 
 defined('ABSPATH') or die();
 
@@ -42,6 +41,9 @@ trait HupaOptionTrait
     protected string $edit_link = 'edit_link';
     protected string $login_img_aktiv = 'login_img_aktiv';
     protected string $logo_size = 'logo_size';
+    protected string $logo_size_scroll = 'logo_size_scroll';
+    protected string $logo_size_mobil = 'logo_size_mobil';
+    protected string $logo_size_login = 'logo_size_login';
     protected string $menu = 'menu';
     protected string $handy = 'handy';
     protected string $fw_top = 'fw_top';
@@ -323,13 +325,16 @@ trait HupaOptionTrait
                 $this->main_container => 1,
                 $this->login_image => 0,
                 $this->fix_header => 1,
-                $this->fix_footer => 1,
+                $this->fix_footer => 0,
                 $this->scroll_top => 1,
                 $this->login_img_aktiv => 1,
-                $this->logo_size => 200,
+                $this->logo_size => 50,
+                $this->logo_size_scroll => 40,
+                $this->logo_size_mobil => 35,
+                $this->logo_size_login => 200,
                 $this->menu => 1,
                 $this->handy => 1,
-                $this->edit_link => 1,
+                $this->edit_link => 0,
                 $this->fw_top => 0,
                 $this->fw_bottom => 0,
                 $this->fw_left => 0,
@@ -872,5 +877,23 @@ trait HupaOptionTrait
                 ]
             ]
         ];
+    }
+
+    protected function theme_language():array
+    {
+       return  [
+           __('sections', 'bootscore'),
+           __('The position or order of the individual sections can be changed by <b>moving</b> the boxes.', 'bootscore'),
+           __('Address', 'bootscore'),
+           __('Name', 'bootscore'),
+           __('Department', 'bootscore'),
+           __('Phone', 'bootscore'),
+           __('Mobile', 'bootscore'),
+           __('E-Mail', 'bootscore'),
+           __('Fax', 'bootscore'),
+           __('delete', 'bootscore'),
+           __('Contact details', 'bootscore'),
+       ];
+
     }
 }

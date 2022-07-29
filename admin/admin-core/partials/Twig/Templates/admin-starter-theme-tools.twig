@@ -3,21 +3,28 @@
         <div class="card shadow-sm">
             <h5 class="card-header d-flex align-items-center bg-hupa py-4">
                 <i class="icon-hupa-white d-block mt-2" style="font-size: 2rem"></i>&nbsp;
-                {{ 'Social Media'|__ }} </h5>
+                {{ 'Theme Tools'|__ }} </h5>
             <div class="card-body pb-4" style="min-height: 72vh">
                 <div class="d-flex align-items-center">
                     <h5 class="card-title">
                         <i class="hupa-color fa fa-arrow-circle-right"></i> {{ 'Theme Tools'|__ }}
-                        / <span id="currentSideTitle">{{ 'Top Area'|__ }}</span>
+                        / <span id="currentSideTitle">{{ 'Contact details'|__ }}</span>
                     </h5>
                     <div class="ajax-status-spinner ms-auto d-inline-block mb-2 pe-2"></div>
                 </div>
                 <hr>
                 <div class="settings-btn-group d-flex">
+                    <button data-site="{{ 'Contact details'|__ }}" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapseHomeStart"
+                            aria-expanded="true" aria-controls="collapseHomeStar"
+                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm active" disabled>
+                        <i class="bi bi-person-fill"></i>&nbsp;
+                        {{ 'Contact details'|__ }}
+                    </button>
                     <button data-site="{{ 'Social Media'|__ }}" type="button"
                             data-bs-toggle="collapse" data-bs-target="#collapseSettingsSocialStart"
                             aria-expanded="true" aria-controls="collapseSettingsSocialStart"
-                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm active" disabled>
+                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm">
                         <i class="fa fa-share-square-o"></i>&nbsp;
                         {{ 'Social Media'|__ }}
                     </button>
@@ -38,8 +45,87 @@
                 </div>
                 <hr>
                 <div id="settings_display_data">
-                    {# TODO JOB WARNING Social Media STARTSEITE #}
-                    <div class="collapse show" id="collapseSettingsSocialStart"
+                    {# TODO JOB WARNING Adresse STARTSEITE #}
+                    <div class="collapse show" id="collapseHomeStart"
+                         data-bs-parent="#settings_display_data">
+                        <div class="border rounded mt-1 shadow-sm p-3 bg-custom-gray">
+                            {% set tool_address = 'tools_hupa_address'|get_option %}
+
+                            <hr>
+                            <h5 class="card-title mb-0">
+                                <i class="font-blue bi bi-person-fill me-1"></i>{{ 'Contact details'|__ }}
+                            </h5>
+                            <hr>
+                            <div id="addressParent" class="container">
+                                <form id="addressForm" class="sendAjaxThemeForm" action="#" method="post">
+                                    <input type="hidden" name="method" value="theme_form_handle">
+                                    <input type="hidden" name="handle" value="theme_address">
+                                    {% for a in address_form %}
+                                        <div class="col-xxl-6 col-12 mx-auto mb-3">
+                                            <div class="input-group">
+                                                <button id="btn{{ a.shortcode|capitalize }}"
+                                                        data-bs-toggle="collapse" data-bs-target="#{{ a.collTarget }}"
+                                                        class="btn btn-outline-secondary min-w4r" type="button">
+                                                    {% if tool_address[loop.index0].icon %}<i class="{{ tool_address[loop.index0].icon}}"></i>{% else %}{{ a.icon }}{% endif %}
+                                                </button>
+                                                <div class="form-floating flex-fill">
+                                                    <input type="{{ a.type }}" name="{{ a.shortcode }}" class="form-control no-blur"
+                                                           id="Input{{ a.shortcode|capitalize }}" value="{{ tool_address[loop.index0].value|html_entity_decode }}"
+                                                           placeholder="{{ a.label }}">
+                                                    <label for="Input{{ a.shortcode|capitalize }}">{{ a.label }}
+                                                        <small class="small-lg">[{{ a.shortcode }}]</small>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div id="{{ a.collTarget }}" class="collapse" data-bs-parent="#addressParent">
+                                                <button data-bs-toggle="modal" data-bs-target="#dialog-add-icon" data-bs-type="fa-info"
+                                                        data-bs-handle="address" data-bs-destination="{{ a.shortcode|capitalize }}"
+                                                        type="button"
+                                                        class="show-theme-icons btn btn-blue-outline btn-sm mt-2">
+                                                    <i class="fa fa-th me-1"></i>Font-Awesome
+                                                </button>
+                                                <button data-bs-toggle="modal" data-bs-target="#dialog-add-icon" data-bs-type="bi-info"
+                                                        data-bs-handle="address" data-bs-destination="{{ a.shortcode|capitalize }}"
+                                                        type="button"
+                                                        class="show-theme-icons btn btn-blue-outline btn-sm mt-2">
+                                                    <i class="bi bi-bootstrap me-1"></i>Bootstrap
+                                                </button>
+                                                <button type="button" onclick="delete_address_icon('{{ a.shortcode|capitalize }}')"
+                                                        class="btn btn-outline-danger btn-sm mt-2">
+                                                    <i class="bi bi-trash me-1"></i> {{ 'delete'|__ }}
+                                                </button>
+                                                <input id="icon{{ a.shortcode|capitalize }}" value="{{ tool_address[loop.index0].icon }}" type="hidden" name="icon_{{ a.shortcode }}">
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </form>
+                            </div>
+
+                            <div class="form-text pt-3">
+                                <hr>
+                                <b class="font-bold-light d-block">Shortcode:</b>
+                                <code>[kontakt type="bezeichnung"]</code>
+                                <p>
+                                    Die Bezeichnung steht in eckige Klammern. z.B. <code>[kontakt type="adresse1"]</code>
+                                </p>
+                                <b class="font-weight pb-1 pt-2 d-block"> Weitere Shortcode Optionen:</b>
+                                <ul style="list-style: circle">
+                                    <li><b>iconBefore="1"</b> <br> default -> 1 <br>
+                                        <small><i>mögliche Werte 1 oder 0</i></small>
+                                    </li>
+                                    <li><b>class=""</b> <br> default -> NULL</li>
+                                    <li><b>icon=""</b> <br> default -> NULL</li>
+                                    <li><b>url_type=""</b> <br> default -> NULL<br>
+                                        <small><i>mögliche Werte "url", "mailto" oder "tel"</i></small>
+                                    </li>
+                                </ul>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+
+                    {# TODO JOB WARNING Social Media #}
+                    <div class="collapse" id="collapseSettingsSocialStart"
                          data-bs-parent="#settings_display_data">
                         <div class="border rounded mt-1 shadow-sm p-3 bg-custom-gray">
                             <div id="share-buttons" class="mb-3">
@@ -87,11 +173,12 @@
                                                                             <label class="form-check-label"
                                                                                    for="TopCheck{{ m.id }}">{{ 'Top Area | Widget'|__ }}</label>
                                                                         </div>
-                                                                        {% if  m.slug == 'print_' or m.slug == 'whatsapp_'  %}
-                                                                            {% else %}
+                                                                        {% if  m.slug == 'print_' or m.slug == 'whatsapp_' %}
+                                                                        {% else %}
                                                                             <div class="form-check form-switch py-1">
-                                                                                <input data-bs-toggle="collapse" data-bs-target="#UrlCollapse{{ m.id }}"
-                                                                                        class="form-check-input"
+                                                                                <input data-bs-toggle="collapse"
+                                                                                       data-bs-target="#UrlCollapse{{ m.id }}"
+                                                                                       class="form-check-input"
                                                                                        name="{{ m.slug }}url_check"
                                                                                        type="checkbox"
                                                                                        id="UrlCheck{{ m.id }}"
@@ -111,11 +198,13 @@
                                                                                    name="{{ m.slug }}share_txt"
                                                                                    value="{{ m.share_txt }}"
                                                                                    placeholder="{{ 'Look what I found:'|__ }}">
-                                                                            <label for="Share{{ m.id }}">{{ 'Share subject'|__ }} | URL</label>
+                                                                            <label for="Share{{ m.id }}">{{ 'Share subject'|__ }}
+                                                                                | URL</label>
                                                                         </div>
                                                                     </div>
                                                                 {% endif %}
-                                                                <div id="UrlCollapse{{ m.id }}" class="collapse {% if m.url_check %}show{% endif %}">
+                                                                <div id="UrlCollapse{{ m.id }}"
+                                                                     class="collapse {% if m.url_check %}show{% endif %}">
                                                                     <div class=" pt-1 my-1">
                                                                         <div class="form-floating w-100">
                                                                             <input type="text"
@@ -139,12 +228,15 @@
                             </div>
                             <div class="form-text">
                                 <hr>
-                               <i class="bi bi-info-circle me-1"></i> Ist "URL" aktiv, wird die "URL" als LINK verwendet und der <b class="font-weight">Shortcode</b> <code>[social_icon type="Bezeichnung"]</code>
+                                <i class="bi bi-info-circle me-1"></i> Ist "URL" aktiv, wird die "URL" als LINK
+                                verwendet und der <b class="font-weight">Shortcode</b> <code>[social_icon
+                                    type="Bezeichnung"]</code>
                                 <small>( z.B. <code>[social_icon type="E-Mail"]</code> )</small> ist aktiv.
                                 <b class="font-weight pb-1 pt-2 d-block"> Weitere Shortcode Optionen:</b>
                                 <ul style="list-style: circle">
                                     <li><b>text=""</b> <br> default -> NULL</li>
-                                    <li><b>before="1"</b> <br> default -> 1 <br> <small><i>mögliche Werte 1 oder 0</i></small></li>
+                                    <li><b>before="1"</b> <br> default -> 1 <br> <small><i>mögliche Werte 1 oder
+                                                0</i></small></li>
                                     <li><b>class=""</b> <br> default -> NULL</li>
                                     <li><b>icon=""</b> <br> default -> NULL</li>
                                 </ul>
@@ -260,6 +352,7 @@
             </div>
         </div>
     </div>
+    {{ include('@partials-modal/icon-modal.twig') }}
 </div>
 <div id="snackbar-success"></div>
 <div id="snackbar-warning"></div>

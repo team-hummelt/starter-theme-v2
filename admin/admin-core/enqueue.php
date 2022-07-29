@@ -137,7 +137,10 @@ final class HupaEnqueueStarterTheme
         isset($_SESSION['gmaps']) && $_SESSION['gmaps'] ? $isGmaps = true : $isGmaps = false;
         isset($post->ID) ? $postID = $post->ID : $postID = '';
         isset($post->post_type) ? $post_type = $post->post_type : $post_type = '';
+
         get_hupa_frontend('nav-img') ? $navImg = get_hupa_frontend('nav-img')->width : $navImg = false;
+        get_hupa_frontend('nav-img') ? $navScrollImg = get_hupa_frontend('nav-img')->width_scroll : $navScrollImg = false;
+        get_hupa_frontend('nav-img') ? $navMobilImg = get_hupa_frontend('nav-img')->width_mobil : $navMobilImg = false;
         wp_register_script('hupa-starter-public-js-localize', '', [], $this->theme_version, true);
         wp_enqueue_script('hupa-starter-public-js-localize');
         wp_localize_script('hupa-starter-public-js-localize',
@@ -151,8 +154,11 @@ final class HupaEnqueueStarterTheme
                 'site_url' => get_bloginfo('url'),
                 'key' => base64_encode(get_hupa_option('map_apikey')),
                 'img_width' => $navImg,
+                'img_scroll_width' => $navScrollImg,
+                'img_mobil_width' => $navMobilImg,
                 'img' => $img,
-                'src_url' => get_template_directory_uri()
+                'src_url' => get_template_directory_uri(),
+                'img_size' => ''
             )
         );
     }

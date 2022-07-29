@@ -1,4 +1,5 @@
-<div id="btnWrapper{{ btnRandom }}" class="col-12 p-2">
+{% set btnRandom = random() %}
+<div class="btnWrapper" data-id="{{ btnRandom }}" id="btnWrapper{{ btnRandom }}" class="col-12 p-2">
     <hr>
     <h5><i class="fa fa-link"></i> <span class="font-blue">Button</span></h5>
     <hr>
@@ -42,7 +43,7 @@
             <div class="color-select-wrapper d-flex mb-2">
                 <div data-color="{% if slideBtn.border_color %}{{ slideBtn.border_color }}{% else %}#ffffff{% endif %}"
                      data-id="{{ rand }}" class="colorPickers">
-                    <input id="InputBorderColor${btnRandom}" type="hidden"
+                    <input id="InputBorderColor{{ btnRandom }}" type="hidden"
                            value="{% if slideBtn.border_color %}{{ slideBtn.border_color }}{% else %}#ffffff{% endif %}"
                            name="border_color_{{ btnRandom }}">
                 </div>
@@ -95,20 +96,30 @@
             <hr>
             <h6 class="mt-2"><b>Button </b>| Icon | Beschriftung | Url</h6>
             {# BUTTON TEXT #}
-            <div class="mb-0">
-                <label for="inputBtnLink{{ btnRandom }}"
-                       class="form-label">Button Beschriftung
-                </label>
-                <input type="text"
-                       value="{% if slideBtn.btn_text %}{{ slideBtn.btn_text }}{% else %}Button Text{% endif %}"
-                       class="form-control no-blur"
-                       name="btn_text_{{ btnRandom }}" id="inputBtnLink{{ btnRandom }}">
+            <div class="mb-0 mt-3">
+                <div class="form-floating">
+                    <input type="text"
+                           value="{% if slideBtn.btn_text %}{{ slideBtn.btn_text }}{% else %}Button Text{% endif %}"
+                           class="form-control no-blur"
+                           name="btn_text_{{ btnRandom }}" id="inputBtnLink{{ btnRandom }}">
+                    <label for="inputBtnLink{{ btnRandom }}"
+                           class="form-label">Button Beschriftung
+                    </label>
+                </div>
                 <div class="d-flex align-items-center mb-4">
 
-                    <button type="button" data-bs-toggle="modal" data-bs-id="{{ btnRandom }}"
-                            data-bs-target="#dialog-modal-add-icon" data-bs-type="slider"
-                            class="btn btn-sm btn-add-slider-icon mt-2 btnSelectIcon{{ btnRandom }} {% if slideBtn.icon_value %}d-none{% endif %}">
-                        Button Icon
+                    <button type="button" data-bs-id="{{ btnRandom }}"
+                            data-bs-toggle="modal" data-bs-target="#dialog-add-icon"
+                            data-bs-type="fa-info" data-bs-handle="carousel" data-bs-destination="{{ btnRandom }}"
+                            class="btn btn-sm btn-add-slider-icon me-1 mt-2 btnSelectIcon{{ btnRandom }} {% if slideBtn.icon_value %}d-none{% endif %}">
+                        Button Icon Font-Awesome
+                    </button>
+
+                    <button type="button" data-bs-id="{{ btnRandom }}"
+                            data-bs-toggle="modal" data-bs-target="#dialog-add-icon"
+                            data-bs-type="bi-info" data-bs-handle="carousel" data-bs-destination="{{ btnRandom }}"
+                            class="show-theme-icons btn btn-sm btn-add-slider-icon me-1 mt-2 btnSelectIcon{{ btnRandom }} {% if slideBtn.icon_value %}d-none{% endif %}">
+                        Button Icon Bootstrap
                     </button>
 
                     <button onclick="delete_slider_icon('{{ btnRandom }}', this);"
@@ -125,38 +136,45 @@
             </div>
             {# Select PAGES POSTS #}
             <div class="mb-3">
-                <label for="selectUrl{{ btnRandom }}"
-                       class="form-label">Seite / Beitrag auswählen</label>
-                <select onchange="change_select_btn_url('{{ btnRandom }}', this);" style="max-width: 100%"
-                        id="selectUrl{{ btnRandom }}"
-                        class="form-select" name="select_btn_url_{{ btnRandom }}">
-                    {% if selectPages %}
-                        <option value="">auswählen ...</option>
-                        {% for selPage in selectPages %}
-                            {% set setSelPage = selPage.type~"#"~selPage.id %}
-                            {% set x = ( x|default(0) ) + 1 %}
-                            {% if x == 1 and selPage.type == 'page' %}
-                                <option value="-" disabled="" class="SelectSeparator">---------Pages--------</option>
-                            {% endif %}
-                            {% if selPage.first and selPage.type == 'post' %}
-                                <option value="-" disabled="" class="SelectSeparator">---------Posts---------</option>
-                            {% endif %}
-                            <option value="{{ selPage.type }}#{{ selPage.id }}"
-                                    {% if slideBtn and slideBtn.btn_link == setSelPage %}selected{% endif %}>{{ selPage.name }}</option>
+                <div class="form-floating">
+                    <select onchange="change_select_btn_url('{{ btnRandom }}', this);" style="max-width: 100%"
+                            id="selectUrl{{ btnRandom }}"
+                            class="form-select no-blur" name="select_btn_url_{{ btnRandom }}">
+                        {% if selectPages %}
+                            <option value="">auswählen ...</option>
+                            {% for selPage in selectPages %}
+                                {% set setSelPage = selPage.type~"#"~selPage.id %}
+                                {% set x = ( x|default(0) ) + 1 %}
+                                {% if x == 1 and selPage.type == 'page' %}
+                                    <option value="-" disabled="" class="SelectSeparator">---------Pages--------
+                                    </option>
+                                {% endif %}
+                                {% if selPage.first and selPage.type == 'post' %}
+                                    <option value="-" disabled="" class="SelectSeparator">---------Posts---------
+                                    </option>
+                                {% endif %}
+                                <option value="{{ selPage.type }}#{{ selPage.id }}"
+                                        {% if slideBtn and slideBtn.btn_link == setSelPage %}selected{% endif %}>{{ selPage.name }}</option>
 
-                        {% endfor %}
-                    {% endif %}
-                </select>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                    <label for="selectUrl{{ btnRandom }}"
+                           class="form-label">Seite / Beitrag auswählen</label>
+                </div>
             </div>
             {# Individuelle URL #}
             <div class="mb-3">
-                <label for="inputBtnURL{{ btnRandom }}"
-                       class="form-label">URL:
-                </label>
-                <input onclick="btn_link_change(this);" type="url"
-                       value="{% if slideBtn.if_url %}{{ slideBtn.btn_link }}{% endif %}" class="form-control {% if btn_add == 1 %}is-invalid{% endif %}"
-                       name="url_{{ btnRandom }}" id="inputBtnURL{{ btnRandom }}"
-                       {% if btn_add != 1 and not slideBtn.if_url %}disabled{% endif %}>
+                <div class="form-floating">
+                    <input onclick="btn_link_change(this);" type="url"
+                           value="{% if slideBtn.if_url %}{{ slideBtn.btn_link }}{% endif %}"
+                           class="form-control no-blur {% if btn_add == 1 %}is-invalid{% endif %}"
+                           name="url_{{ btnRandom }}" id="inputBtnURL{{ btnRandom }}"
+                           {% if btn_add != 1 and not slideBtn.if_url %}disabled{% endif %}>
+                    <label for="inputBtnURL{{ btnRandom }}"
+                           class="form-label">URL:
+                    </label>
+                </div>
             </div>
             <div class="form-check form-switch mt-3 pb-3">
                 <input onclick="this.blur();" class="form-check-input " name="check_target_{{ btnRandom }}"

@@ -80,10 +80,18 @@ body .wp-bs-starter-wrapper {
 
 //WRAPPER
 .wp-bs-starter-wrapper {
-
+ .min-w4r {
+   min-width: 4rem;
+ }
+  .small-lg {
+    font-size: 75%!important;
+  }
   #accordionSliderParent h2:first-child {
     border-top-left-radius: .25rem !important;
+  }
 
+  .font-bold-light {
+    font-weight: 500!important;
   }
 
   .no-blur:focus, .no-blur:active, .no-blur:focus {

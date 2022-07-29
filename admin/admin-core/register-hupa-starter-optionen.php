@@ -23,6 +23,7 @@ use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
+use Twig\TwigFilter;
 use WP_User;
 
 
@@ -306,7 +307,8 @@ final class HupaRegisterStarterTheme
         $data = [
             'media' => apply_filters('get_social_media', ''),
             'tools' => apply_filters('get_hupa_tools_by_args', 'WHERE type="top_area" ORDER BY position ASC'),
-            'dots' => apply_filters('get_theme_preloader', 'all')
+            'dots' => apply_filters('get_theme_preloader', 'all'),
+            'address_form' => apply_filters('hupa_address_fields', null)
         ];
         $data = apply_filters('hupaObject2array', $data);
         $data['admin_url'] = Config::get('WP_THEME_ADMIN_URL');

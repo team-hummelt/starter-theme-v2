@@ -5,3 +5,5 @@ admin/includes/hupa-gutenberg-sidebar/sidebar-dev
 admin/includes/gutenberg-tools/theme-carousel/src/
 admin/includes/gutenberg-tools/menu-select/src/
 admin/includes/gutenberg-tools/google-maps/src/
+/admin/vendor/twbs/bootstrap-icons/icons/
+/admin/vendor/twbs/bootstrap-icons/docs/

@@ -26,6 +26,7 @@ let clickAdminBarOptions = document.getElementById("wp-admin-bar-hupa_options_pa
 //RESET MESSAGE ALERT
 let resetMsgAlert = document.getElementById("reset-msg-alert");
 
+
 /*=================================================
 ========== TOGGLE SETTINGS COLLAPSE BTN  ==========
 ===================================================
@@ -90,10 +91,10 @@ if (settingsColBtn) {
 }
 
 
-/*=========================================
-========== AJAX FORMS AUTO SAVE  ==========
-===========================================
-*/
+/**=========================================
+ ========== AJAX FORMS AUTO SAVE  ===========
+ ============================================
+ */
 
 let themeSendFormTimeout;
 let themeSendFormular = document.querySelectorAll(".sendAjaxThemeForm:not([type='button'])");
@@ -116,27 +117,6 @@ if (themeSendFormular) {
         }
     });
 }
-
-/**====================================================
- ================ BTN DELETE FONT MODAL================
- ======================================================*/
-let fontDeleteModal = document.getElementById('fontDeleteModal');
-if (fontDeleteModal) {
-    fontDeleteModal.addEventListener('show.bs.modal', function (event) {
-        let button = event.relatedTarget
-        let id = button.getAttribute('data-bs-id');
-        document.querySelector('.btn_delete_font').setAttribute('data-id', id);
-    })
-}
-
-function delete_install_font(e) {
-    const data = {
-        'method': 'delete_font',
-        'id': e.getAttribute('data-id')
-    }
-    send_xhr_form_data(data, false);
-}
-
 
 /*=====================================
 ========== SYNC FONT FOLDER  ==========
@@ -169,7 +149,7 @@ function btn_install_fonts(e) {
     let demoBtn = e.form.querySelector('#fontDemo');
     let select = e.form.querySelector('#inputInstallFont');
     let inputFontName = e.form.querySelector('.selectFontName');
-    inputFontName.value=select.options[select.selectedIndex].text;
+    inputFontName.value = select.options[select.selectedIndex].text;
     demoBtn.classList.add('disabled');
     e.setAttribute('disabled', true);
     send_xhr_form_data(e.form);
@@ -187,7 +167,6 @@ function change_font_install_select(e) {
         demoBtn.classList.add('disabled');
     }
 }
-
 
 
 function change_wp_debug_log_aktiv(e) {
@@ -218,6 +197,78 @@ function message_fadeIn_opacity(collapseId) {
                 show_message_collapse(collapseId);
             }, 20000);
         });
+    }
+}
+
+
+let capabilities = document.querySelectorAll('.capabilities .btn');
+let capabilitySelect = document.getElementById('capabilitySelect');
+if (capabilities) {
+    let collWrapper = document.getElementById('capabilities_settings');
+    let nodes = Array.prototype.slice.call(capabilities, 0);
+    nodes.forEach(function (nodes) {
+        nodes.addEventListener("click", function (e) {
+            let bsCollapse = new bootstrap.Collapse(collWrapper, {
+                toggle: false
+            });
+            let type = nodes.getAttribute('data-type');
+            let formData = {
+                'type': type,
+                'method': 'get_capabilities_settings'
+            }
+            send_xhr_form_data(formData, false, set_capabilities_callback);
+            if (nodes.classList.contains('active')) {
+                nodes.classList.remove('active');
+                bsCollapse.hide();
+            } else {
+                for (let i = 0; i < capabilities.length; i++) {
+                    capabilities[i].classList.remove('active');
+                }
+                nodes.classList.add('active');
+                bsCollapse.show();
+            }
+        });
+    });
+
+
+    function set_capabilities_callback() {
+        let data = JSON.parse(this.responseText);
+        if (data.status) {
+            let value = '';
+            capabilitySelect.innerHTML = '';
+            let rolleType = document.getElementById('rolleType');
+            rolleType.innerHTML = '';
+            capabilitySelect.setAttribute('data-type', data.type);
+            let html = ``;
+            let sel = '';
+            for (const [key, val] of Object.entries(data.select)) {
+                value = key.substr(2, key.length);
+                value == data.active ? sel = 'selected' : sel = '';
+                html += `<option value="${value}"${sel}>${val}</option>`;
+            }
+
+            rolleType.insertAdjacentHTML('afterbegin', data.type);
+            capabilitySelect.insertAdjacentHTML('afterbegin', html);
+        }
+    }
+}
+
+if (capabilitySelect) {
+    capabilitySelect.addEventListener("change", function (e) {
+
+        let formData = {
+            'method': 'update_capability',
+            'type': this.getAttribute('data-type'),
+            'value': this.value
+        }
+        send_xhr_form_data(formData, false, update_capabilities_callback);
+    })
+}
+
+function update_capabilities_callback() {
+    let data = JSON.parse(this.responseText);
+    if (!data.status) {
+        warning_message(data.msg);
     }
 }
 
@@ -254,7 +305,7 @@ function set_theme_preloader(e) {
 ========================================
 */
 
-function send_xhr_form_data(data, is_formular = true) {
+function send_xhr_form_data(data, is_formular = true, callback = '') {
 
     let xhr = new XMLHttpRequest();
     let formData = new FormData();
@@ -277,6 +328,10 @@ function send_xhr_form_data(data, is_formular = true) {
     //Response
     xhr.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
+            if (typeof callback === 'function') {
+                xhr.addEventListener("load", callback);
+                return false;
+            }
             let data = JSON.parse(this.responseText);
             if (data.spinner) {
                 show_ajax_spinner(data);
@@ -316,7 +371,9 @@ function send_xhr_form_data(data, is_formular = true) {
                     break;
                 case'load_install_fonts':
                     if (data.status) {
-                        get_install_fonts_template(data.record)
+                        document.getElementById('installFontsContainer').innerHTML = data.template;
+                    } else {
+                        warning_message(data.msg);
                     }
                     break;
                 case'load_install_list_api_data':
@@ -424,10 +481,10 @@ function send_xhr_form_data(data, is_formular = true) {
     }
 }
 
-/*===========================================
-========== WordPress Image Upload  ==========
-=============================================
-*/
+/**===========================================
+ ========== WordPress Image Upload  ===========
+ ==============================================
+ */
 
 let themeUploadMediaImg = document.querySelectorAll(".theme_upload_media_img");
 if (themeUploadMediaImg) {
@@ -441,7 +498,7 @@ if (themeUploadMediaImg) {
                 data_multiple = imgContainer.getAttribute('data-multiple'),
                 defaultImg = document.querySelector("#" + data_container + " .theme-default-image"),
                 multiple = data_multiple === '1',
-                imgSizeRange = document.querySelector("#" + data_container + " .sizeRange"),
+                imgSizeRange = document.querySelectorAll("#" + data_container + " .sizeRange"),
                 img_type = this.getAttribute('data-type'),
                 delImgBtn = document.querySelector("#" + data_container + " .theme_delete_media_img");
 
@@ -465,8 +522,10 @@ if (themeUploadMediaImg) {
                 imgContainer.classList.remove('d-none');
                 addImgBtn.classList.add('d-none');
                 delImgBtn.classList.remove('d-none');
-                if (imgSizeRange) {
-                    imgSizeRange.removeAttribute('disabled');
+                if (imgSizeRange.length) {
+                    for (let i = 0; i < imgSizeRange.length; i++) {
+                        imgSizeRange[i].removeAttribute('disabled');
+                    }
                 }
                 defaultImg.classList.add('d-none');
 
@@ -490,11 +549,13 @@ if (themeUploadMediaImg) {
             let data_container = this.getAttribute('data-container'),
                 imgContainer = document.querySelector("#" + data_container + " .admin-wp-media-container"),
                 defaultImg = document.querySelector("#" + data_container + " .theme-default-image"),
-                imgSizeRange = document.querySelector("#" + data_container + " .sizeRange"),
+                imgSizeRange = document.querySelectorAll("#" + data_container + " .sizeRange"),
                 addImgBtn = document.querySelector("#" + data_container + " .theme_upload_media_img");
 
-            if (imgSizeRange) {
-                imgSizeRange.setAttribute('disabled', true);
+            if (imgSizeRange.length) {
+                for (let i = 0; i < imgSizeRange.length; i++) {
+                    imgSizeRange[i].setAttribute('disabled', 'disabled');
+                }
             }
             imgContainer.innerHTML = '';
             addImgBtn.classList.remove('d-none');
@@ -539,11 +600,16 @@ function changeRangeUpdate(event = false) {
 function range_update_input_value(range) {
     let rangeContainer = range.getAttribute('data-container');
     let showRange = document.querySelector("#" + rangeContainer + " .show-range-value");
-    let rangeImage = document.querySelector("#" + rangeContainer + " .range-image");
-    if (rangeImage) {
-        //* 0.5
-        rangeImage.style.width = range.value + 'px';
-    }
+
+    if(range.hasAttribute('data-range-image')){
+        //let rangeImage = document.querySelector("#" + rangeContainer + " .range-image");
+        let rangeImage = document.querySelector('.range-image')
+        if (rangeImage) {
+            //* 0.5
+            rangeImage.style.width = range.value + 'px';
+        }
+      }
+
     showRange.innerHTML = range.value;
 }
 
@@ -877,47 +943,57 @@ if (smallThemeSendModalBtn) {
     });
 }
 
+
 let iconSettingsInfoModal = document.getElementById('dialog-add-icon');
 if (iconSettingsInfoModal) {
     iconSettingsInfoModal.addEventListener('show.bs.modal', function (event) {
         let button = event.relatedTarget;
         let type = button.getAttribute('data-bs-type');
-        let formId = button.getAttribute('data-bs-id');
-        let xhr = new XMLHttpRequest();
-        let formData = new FormData();
-        xhr.open('POST', theme_ajax_obj.ajax_url, true);
-        formData.append('_ajax_nonce', theme_ajax_obj.nonce);
-        formData.append('action', 'HupaStarterHandle');
-        formData.append('method', 'get_fa_icons');
-        formData.append('type', type);
-        xhr.send(formData);
+        let shortCode = '';
+        let uri = '';
+        let handle = '';
+        let destination = '';
+        button.hasAttribute('data-bs-handle') ? handle = button.getAttribute('data-bs-handle') : handle = 'icon';
+        button.hasAttribute('data-bs-destination') ? destination = button.getAttribute('data-bs-destination') : destination = '';
 
-        //Response
-        xhr.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                let data = JSON.parse(this.responseText);
-                if (data.status) {
-                    let iconGrid = document.getElementById('icon-grid');
-                    let icons = data.record;
-                    let html = '<div class="icon-wrapper">';
-                    icons.forEach(function (icons) {
-                        html += `<div onclick="set_select_info_icon('${icons.title}', '${icons.code}', '${icons.icon}');"
-                              data-bs-dismiss="modal"   class="info-icon-item" title="${icons.code} | ${icons.title}">`;
-                        html += `<i  class="${icons.icon}"></i><small class="sm-icon">${icons.icon}</small>`;
-                        html += '</div>';
-                    });
-                    html += '</div>';
-                    iconGrid.innerHTML = html;
-                }
-            }
+        switch (type) {
+            case'fa-info':
+                uri = 'fa-icons.json';
+                shortCode = 'fa';
+                break;
+            case'bi-info':
+                uri = 'bs-icons.json';
+                shortCode = 'bi';
+                break;
         }
+
+        let url = hupa_starter.admin_url;
+        fetch(`${url}includes/Ajax/tools/${uri}`)
+            .then(response => response.json(shortCode))
+            .then(data => {
+                let html = '<div class="icon-wrapper">';
+                data.forEach(function (data) {
+                    html += `<div onclick="set_select_info_icon('${data.title}', '${data.code}', '${data.icon}', '${shortCode}', '${handle}', '${destination}');"
+                              data-bs-dismiss="modal" class="info-icon-item" title="${data.code} | ${data.title}">`;
+                    html += `<i class="${data.icon}"></i><small class="sm-icon">${data.icon}</small>`;
+                    html += '</div>';
+                });
+                html += '</div>';
+                let iconGrid = document.getElementById('icon-grid');
+                iconGrid.innerHTML = html;
+            });
     });
 }
 
-function set_select_info_icon(title, unicode, icon) {
-    document.getElementById('shortcode-info').innerHTML = `
+
+function set_select_info_icon(title, unicode, icon, shortcode, handle, destination = '') {
+
+    switch (handle) {
+        case'icon':
+            let size = 'fa-2x';
+            document.getElementById('shortcode-info').innerHTML = `
         <i class="${icon} fa-4x d-block mb-2"></i>
-       <span class="d-block mb-1 mt-2"><b class="text-danger d-inline-block" style="min-width: 6rem;">Shortcode:</b> [icon i="${title}"]</span>
+       <span class="d-block mb-1 mt-2"><b class="text-danger d-inline-block" style="min-width: 6rem;">Shortcode:</b> [icon ${shortcode}="${title}"]</span>
        <span class="d-block"><b class="text-danger d-inline-block" style="min-width: 6rem;">Unicode:</b> ${unicode}</span> 
         <hr class="mt-2 mb-1">
         <div class="form-text my-2"><i class="font-blue fa fa-info-circle"></i>
@@ -928,25 +1004,63 @@ function set_select_info_icon(title, unicode, icon) {
         <b class="d-block">Beispiele</b>
         <hr class="mt-2 mb-2">
         <div class="d-flex flex-wrap">
-           <div class="d-block text-center me-2">
-               <i class="${icon} fa-2x d-block mb-1"></i>
-               [icon i="${title}"]     
-            </div>
              <div class="d-block text-center me-2">
-               <i class="${icon} fa-spin fa-2x d-block mb-1"></i>
-               [icon i="${title} fa-spin"]  
+               <i class="${icon} fa-spin ${size} d-block mb-1"></i>
+               [icon ${shortcode}="${title} fa-spin"]  
             </div>
               <div class="d-block text-center me-2">
-               <i class="${icon} text-danger fa-spin fa-2x d-block mb-1"></i>
-               [icon i="${title} fa-spin text-danger"]     
+               <i class="${icon} text-danger fa-spin ${size} d-block mb-1"></i>
+               [icon ${shortcode}="${title} fa-spin text-danger"]     
             </div>
              <div class="d-block mt-2 text-center me-2">
                <b class="d-block" style="margin-bottom: .65rem">${unicode}</b>
-               [icon i="${title}" code="true"]     
+               [icon ${shortcode}="${title}" code="true"]     
             </div>
         </div>`;
-    document.getElementById('resetIcons').classList.remove('d-none');
-    //shortWrapper.innerHTML = html;
+            document.getElementById('resetIcons').classList.remove('d-none');
+            break;
+        case'address':
+            let btnDestination = document.getElementById('btn'+destination);
+            let inputDestination = document.getElementById('icon'+destination);
+            inputDestination.value = `${icon}`;
+            btnDestination.innerHTML = `<i class="${icon}"</i>`;
+            let formData = document.getElementById('addressForm');
+            let spinner = document.querySelector('.ajax-status-spinner')
+            spinner.innerHTML = '<i class="fa fa-spinner fa-spin"></i>&nbsp; Saving...';
+            send_xhr_form_data(formData, true);
+            break;
+        case'carousel':
+            let html = '<div class="icon-wrapper">';
+                html += `<div onclick="set_select_slide_icon(this, '${unicode}', '${icon}', '${destination}');"
+                              class="info-icon-item" title="${unicode} | ${title}">`;
+                html += `<i  class="${icon}"></i><small class="sm-icon">${icon}</small>`;
+                html += '</div>';
+            html += '</div>';
+            let iconContainer = document.getElementById('btn_icon' + destination);
+            let iconInput = document.getElementById('inputIcon' + destination);
+            iconInput.value = icon + '#' + unicode;
+            iconContainer.innerHTML = `<i  class="${icon}"></i>`;
+            let iconButton = document.querySelectorAll('.btnSelectIcon' + destination);
+            let formNodes = Array.prototype.slice.call(iconButton, 0);
+            formNodes.forEach(function (formNodes) {
+                formNodes.classList.toggle('d-none');
+            });
+            send_xhr_carousel_data(iconInput.form);
+            console.log(destination);
+            break;
+    }
+}
+
+function delete_address_icon(target) {
+    let btnDestination = document.getElementById('btn'+target);
+    let inputDestination = document.getElementById('icon'+target);
+    btnDestination.innerHTML='Icon';
+    inputDestination.value = '';
+    let formData = document.getElementById('addressForm');
+    let spinner = document.querySelector('.ajax-status-spinner')
+    spinner.innerHTML = '<i class="fa fa-spinner fa-spin"></i>&nbsp; Saving...';
+    send_xhr_form_data(formData, true);
+
 }
 
 function reset_show_theme_icons(e, id) {
@@ -960,41 +1074,6 @@ function get_install_fonts_overview() {
         'method': 'load_install_fonts',
     }
     send_xhr_form_data(installFonts, false);
-}
-
-function get_install_fonts_template(data = false) {
-    let html = '';
-    for (const [keyFamily, valFamily] of Object.entries(data)) {
-        html += `
-            <div id="installFont-${valFamily.family}" class="col-xl-4 col-lg-6 col-12 p-2">
-            <div class="d-flex overflow-hidden position-relative border h-100 w-100 shadow-sm">
-                <div class="p-3 d-flex flex-column w-100 h-100">
-                    <div class="header-font">
-                        <h5 class="strong-font-weight "><i class="font-blue fa fa-arrow-circle-right"></i>&nbsp; ${valFamily.family}</h5>
-                        <hr class="mt-0">
-                    </div>
-                    <div class="font-body">
-                        <h6>Schriftstile:</h6>
-                        <ul class="li-font-list list-unstyled mb-2">`;
-        for (const [keyStyle, valStyle] of Object.entries(valFamily.styles)) {
-            html += `<li>${valStyle}</li>`;
-        }
-        html += `</ul>
-                    </div>
-                    <div class="mt-auto font-footer">
-                        <hr class="mt-1">
-                        <button data-bs-id="${valFamily.family}" data-bs-toggle="modal"
-                                data-bs-target="#fontDeleteModal"
-                                class="btn btn-hupa btn-outline-secondary btn-sm">
-                            <i class="fa fa-trash"></i>&nbsp; Schrift löschen
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>`;
-
-    }
-    document.getElementById('installFontsContainer').innerHTML = html;
 }
 
 if (current_page == 'hupa-install-font') {

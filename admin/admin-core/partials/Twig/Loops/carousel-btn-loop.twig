@@ -1,0 +1,188 @@
+{% set btnRandom = random() %}
+<div class="btnWrapper" data-id="{{ btnRandom }}" id="btnWrapper{{ btnRandom }}" class="col-12 p-2">
+    <hr>
+    <h5><i class="fa fa-link"></i> <span class="font-blue">Button</span></h5>
+    <hr>
+    <h6><i class="font-blue fa fa-caret-down"></i>&nbsp; <b>Button</b> Einstellungen</h6>
+    {# HOVER #}
+    <div class="d-xl-flex d-block flex-wrap">
+        <button onclick="toggle_hover_btn(this)" data-bs-toggle="collapse"
+                data-bs-target="#collapseBTNSettings{{ btnRandom }}" type="button"
+                class="showColorPicker btn btn-outline-success btn-sm me-1 mt-2 d-md-block">
+            <i class="fa fa-caret-right"></i>&nbsp; Button Einstellungen
+        </button>
+
+        <button onclick="toggle_hover_btn(this)" data-bs-toggle="collapse"
+                data-bs-target="#collapseHoverSettings{{ btnRandom }}" type="button"
+                class="showColorPicker btn btn-blue-outline btn-sm me-1 mt-2">
+            <i class="fa fa-caret-right"></i>&nbsp; Button Farbeinstellungen
+        </button>
+
+        <button onclick="delete_slider_button(this);" type="button"
+                class="btn btn-outline-danger ms-auto me-1 mx-1 btn-sm mt-2">
+            <i class="fa fa-trash-o"></i> Button löschen
+        </button>
+    </div>
+    <div id="btnParrent{{ btnRandom }}">
+        <div class="collapse mb-3" data-bs-parent="#btnParrent{{ btnRandom }}"
+             id="collapseHoverSettings{{ btnRandom }}">
+            <hr>
+            <h6 class="font-blue"><i class="fa fa-paint-brush"></i> <b>Button</b> Color</h6>
+
+            <div class="color-select-wrapper d-flex mb-2">
+                <div data-color="{% if slideBtn.button_color %}{{ slideBtn.button_color }}{% else %}#ffffff{% endif %}"
+                     data-id="{{ rand }}" class="colorPickers">
+                    <input id="InputButtonColor{{ btnRandom }}" type="hidden"
+                           value="{% if slideBtn.button_color %}{{ slideBtn.button_color }}{% else %}#ffffff{% endif %}"
+                           name="button_color_{{ btnRandom }}">
+                </div>
+                <h6 class="ms-2 mt-1"><b>Schrift </b>Farbe</h6>
+            </div>
+
+            {# Border Color #}
+            <div class="color-select-wrapper d-flex mb-2">
+                <div data-color="{% if slideBtn.border_color %}{{ slideBtn.border_color }}{% else %}#ffffff{% endif %}"
+                     data-id="{{ rand }}" class="colorPickers">
+                    <input id="InputBorderColor{{ btnRandom }}" type="hidden"
+                           value="{% if slideBtn.border_color %}{{ slideBtn.border_color }}{% else %}#ffffff{% endif %}"
+                           name="border_color_{{ btnRandom }}">
+                </div>
+                <h6 class="ms-2 mt-1"><b>Border </b>Farbe</h6>
+            </div>
+            {# Background-Color #}
+            <div class="color-select-wrapper d-flex mb-2">
+                <div data-color="{% if slideBtn.bg_color %}{{ slideBtn.bg_color }}{% else %}#ffffff00{% endif %}"
+                     data-id="{{ rand }}" class="colorPickers">
+                    <input id="InputBGButtonColor{{ btnRandom }}" type="hidden"
+                           value="{% if slideBtn.bg_color %}{{ slideBtn.bg_color }}{% else %}#ffffff00{% endif %}"
+                           name="button_bg_color_{{ btnRandom }}">
+                </div>
+                <h6 class="ms-2 mt-1"><b>Hintergrund </b>Farbe</h6>
+            </div>
+            <hr>
+            <h6 class="font-blue"><i class="fa fa-paint-brush"></i> <b>Hover</b> Color</h6>
+            <div class="color-select-wrapper d-flex mb-2">
+                <div data-color="{% if slideBtn.hover_color %}{{ slideBtn.hover_color }}{% else %}#3c434a{% endif %}"
+                     data-id="{{ rand }}" class="colorPickers">
+                    <input id="inputColorHover{{ btnRandom }}" type="hidden"
+                           value="{% if slideBtn.hover_color %}{{ slideBtn.hover_color }}{% else %}#3c434a{% endif %}"
+                           name="color_hover_{{ btnRandom }}">
+                </div>
+                <h6 class="ms-2 mt-1"><b>Font Color </b>Hover</h6>
+            </div>
+
+            <div class="color-select-wrapper d-flex mb-2">
+                <div data-color="{% if slideBtn.hover_border %}{{ slideBtn.hover_border }}{% else %}#ffffff{% endif %}"
+                     data-id="{{ rand }}" class="colorPickers">
+                    <input id="inputBorderHover{{ btnRandom }}" type="hidden"
+                           value="{% if slideBtn.hover_border %}{{ slideBtn.hover_border }}{% else %}#ffffff{% endif %}"
+                           name="border_hover_{{ btnRandom }}">
+                </div>
+                <h6 class="ms-2 mt-1"><b>Border </b>Hover</h6>
+            </div>
+
+            <div class="color-select-wrapper d-flex mb-2">
+                <div data-color="{% if slideBtn.bg_hover %}{{ slideBtn.bg_hover }}{% else %}#ffffff{% endif %}"
+                     data-id="{{ rand }}" class="colorPickers">
+                    <input id="inputBGHover{{ btnRandom }}" type="hidden"
+                           value="{% if slideBtn.bg_hover %}{{ slideBtn.bg_hover }}{% else %}#ffffff{% endif %}"
+                           name="bg_hover_{{ btnRandom }}">
+                </div>
+                <h6 class="ms-2 mt-1"><b>Background </b>Hover</h6>
+            </div>
+        </div>{# collapse #}
+
+        <div class="collapse" data-bs-parent="#btnParrent{{ btnRandom }}" id="collapseBTNSettings{{ btnRandom }}">
+            <hr>
+            <h6 class="mt-2"><b>Button </b>| Icon | Beschriftung | Url</h6>
+            {# BUTTON TEXT #}
+            <div class="mb-0 mt-3">
+                <div class="form-floating">
+                    <input type="text"
+                           value="{% if slideBtn.btn_text %}{{ slideBtn.btn_text }}{% else %}Button Text{% endif %}"
+                           class="form-control no-blur"
+                           name="btn_text_{{ btnRandom }}" id="inputBtnLink{{ btnRandom }}">
+                    <label for="inputBtnLink{{ btnRandom }}"
+                           class="form-label">Button Beschriftung
+                    </label>
+                </div>
+                <div class="d-flex align-items-center mb-4">
+
+                    <button type="button" data-bs-id="{{ btnRandom }}"
+                            data-bs-toggle="modal" data-bs-target="#dialog-add-icon"
+                            data-bs-type="fa-info" data-bs-handle="carousel" data-bs-destination="{{ btnRandom }}"
+                            class="btn btn-sm btn-add-slider-icon me-1 mt-2 btnSelectIcon{{ btnRandom }} {% if slideBtn.icon_value %}d-none{% endif %}">
+                        Button Icon Font-Awesome
+                    </button>
+
+                    <button type="button" data-bs-id="{{ btnRandom }}"
+                            data-bs-toggle="modal" data-bs-target="#dialog-add-icon"
+                            data-bs-type="bi-info" data-bs-handle="carousel" data-bs-destination="{{ btnRandom }}"
+                            class="show-theme-icons btn btn-sm btn-add-slider-icon me-1 mt-2 btnSelectIcon{{ btnRandom }} {% if slideBtn.icon_value %}d-none{% endif %}">
+                        Button Icon Bootstrap
+                    </button>
+
+                    <button onclick="delete_slider_icon('{{ btnRandom }}', this);"
+                            type="button"
+                            class="btn btn-sm btn-outline-danger remove-slider-icon mt-2 btnSelectIcon{{ btnRandom }} {% if not slideBtn.icon_value %}d-none{% endif %}">
+                        <i class="fa fa-trash-o"></i>&nbsp; Icon löschen
+                    </button>
+                    <span id="btn_icon{{ btnRandom }}"
+                          class="slider-icon-wrapper d-inline-block mt-2 ms-2">{% if slideBtn.icon %}{% autoescape false %}{{ slideBtn.icon }}{% endautoescape %}{% endif %}</span>
+                    <input id="inputIcon{{ btnRandom }}"
+                           value="{% if slideBtn.icon_value %}{{ slideBtn.icon_value }}{% endif %}" type="hidden"
+                           name="btn_icon_{{ btnRandom }}">
+                </div>
+            </div>
+            {# Select PAGES POSTS #}
+            <div class="mb-3">
+                <div class="form-floating">
+                    <select onchange="change_select_btn_url('{{ btnRandom }}', this);" style="max-width: 100%"
+                            id="selectUrl{{ btnRandom }}"
+                            class="form-select no-blur" name="select_btn_url_{{ btnRandom }}">
+                        {% if selectPages %}
+                            <option value="">auswählen ...</option>
+                            {% for selPage in selectPages %}
+                                {% set setSelPage = selPage.type~"#"~selPage.id %}
+                                {% set x = ( x|default(0) ) + 1 %}
+                                {% if x == 1 and selPage.type == 'page' %}
+                                    <option value="-" disabled="" class="SelectSeparator">---------Pages--------
+                                    </option>
+                                {% endif %}
+                                {% if selPage.first and selPage.type == 'post' %}
+                                    <option value="-" disabled="" class="SelectSeparator">---------Posts---------
+                                    </option>
+                                {% endif %}
+                                <option value="{{ selPage.type }}#{{ selPage.id }}"
+                                        {% if slideBtn and slideBtn.btn_link == setSelPage %}selected{% endif %}>{{ selPage.name }}</option>
+
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                    <label for="selectUrl{{ btnRandom }}"
+                           class="form-label">Seite / Beitrag auswählen</label>
+                </div>
+            </div>
+            {# Individuelle URL #}
+            <div class="mb-3">
+                <div class="form-floating">
+                    <input onclick="btn_link_change(this);" type="url"
+                           value="{% if slideBtn.if_url %}{{ slideBtn.btn_link }}{% endif %}"
+                           class="form-control no-blur {% if btn_add == 1 %}is-invalid{% endif %}"
+                           name="url_{{ btnRandom }}" id="inputBtnURL{{ btnRandom }}"
+                           {% if btn_add != 1 and not slideBtn.if_url %}disabled{% endif %}>
+                    <label for="inputBtnURL{{ btnRandom }}"
+                           class="form-label">URL:
+                    </label>
+                </div>
+            </div>
+            <div class="form-check form-switch mt-3 pb-3">
+                <input onclick="this.blur();" class="form-check-input " name="check_target_{{ btnRandom }}"
+                       type="checkbox"
+                       id="checkUrlTarget{{ btnRandom }}" {% if slideBtn.btn_target %}checked{% endif %}>
+                <label class="form-check-label"
+                       for="checkUrlTarget{{ btnRandom }}">Link im neuen Fenster öffnen</label>
+            </div>
+        </div>
+    </div>
+</div>

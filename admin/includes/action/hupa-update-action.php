@@ -90,12 +90,16 @@ use Hupa\Starter\Config;
         public function hupaValidateInstallOptionen()
         {
             global $wpdb;
+            global $hupa_css_generator_hooks;
+            global $hupa_register_theme_options;
             $table = $wpdb->prefix . $this->table_settings;
             $result = $wpdb->get_row("SELECT google_maps_placeholder FROM {$table} ");
 
             if (!$result->google_maps_placeholder) {
-                apply_filters('update_hupa_options', 'reset_gmaps_settings', 'reset_settings');
-                apply_filters('generate_theme_css', '');
+                //apply_filters('update_hupa_options', 'reset_gmaps_settings', 'reset_settings');
+                //apply_filters('generate_theme_css', '');
+                $hupa_register_theme_options->hupa_update_hupa_options('reset_gmaps_settings', 'reset_settings');
+                $hupa_css_generator_hooks->hupa_generate_theme_css();
             }
 
             if(!is_dir(Config::get('THEME_FONTS_DIR'). 'Roboto')){
@@ -111,7 +115,10 @@ use Hupa\Starter\Config;
 
                 $css = file_get_contents(Config::get('THEME_ADMIN_INCLUDES') . 'theme-fonts' . DIRECTORY_SEPARATOR .'Roboto.css', true);
                 file_put_contents(Config::get('THEME_FONTS_DIR') . 'Roboto.css', $css);
-                apply_filters('update_hupa_options', 'no-data', 'sync_font_folder');
+                //apply_filters('update_hupa_options', 'no-data', 'sync_font_folder');
+                //apply_filters('generate_theme_css', '');
+                $hupa_register_theme_options->hupa_update_hupa_options('no-data', 'sync_font_folder');
+                $hupa_css_generator_hooks->hupa_generate_theme_css();
             }
         }
 

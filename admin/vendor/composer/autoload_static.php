@@ -15,7 +15,7 @@ class ComposerStaticInit7f99dd6ddeeab86f07475e4f78df199b
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'd24932181e8483081b47b64b5b06065a' => __DIR__ . '/..' . '/oscarotero/env/src/env_function.php',
-        '49a1299791c25c6fd83542c6fedacddd' => __DIR__ . '/..' . '/yahnis-elsts/plugin-update-checker/load-v4p11.php',
+        '3b48c7d670fd1def4262ee0da383f2e4' => __DIR__ . '/..' . '/yahnis-elsts/plugin-update-checker/load-v4p12.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -116,6 +116,16 @@ class ComposerStaticInit7f99dd6ddeeab86f07475e4f78df199b
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'O' => 
+        array (
+            'OAuth2' => 
+            array (
+                0 => __DIR__ . '/..' . '/bshaffer/oauth2-server-php/src',
+            ),
+        ),
+    );
+
     public static $classMap = array (
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
@@ -130,6 +140,7 @@ class ComposerStaticInit7f99dd6ddeeab86f07475e4f78df199b
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit7f99dd6ddeeab86f07475e4f78df199b::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit7f99dd6ddeeab86f07475e4f78df199b::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit7f99dd6ddeeab86f07475e4f78df199b::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit7f99dd6ddeeab86f07475e4f78df199b::$classMap;
 
         }, null, ClassLoader::class);

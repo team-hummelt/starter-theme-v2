@@ -38,12 +38,12 @@ defined('ABSPATH') or die();
                         <?= __('Beiträge | Seiten Sortieren', 'bootscore') ?>
                     </button>
 
-                    <button data-site="<?=__('Posts | Pages Duplicate', 'bootscore')?> " type="button"
+                    <button data-site="<?= __('Posts | Pages Duplicate', 'bootscore') ?> " type="button"
                             data-load=""
                             data-bs-toggle="collapse" data-bs-target="#PostsCopySettings"
                             aria-expanded="false" aria-controls="PostsCopySettings"
                             class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-copy"></i>&nbsp;
-                        <?=__('Posts | Pages Duplicate', 'bootscore')?>
+                        <?= __('Posts | Pages Duplicate', 'bootscore') ?>
                     </button>
                 </div>
                 <hr>
@@ -62,6 +62,52 @@ defined('ABSPATH') or die();
                                     </h5>
                                     <div class="ajax-status-spinner ms-auto d-inline-block mb-2 pe-2"></div>
                                 </div>
+                                <hr>
+                                <h6>WP-Optionen</h6>
+                                <hr>
+                                <div class="d-flex flex-wrap">
+                                    <div class="form-check form-switch me-3">
+                                        <input class="form-check-input"
+                                               name="hupa_wp_automatic_update" type="checkbox" role="switch"
+                                               id="SwitchWPAutoUpdate" <?= !get_option('hupa_wp_automatic_update') ?: ' checked' ?>>
+                                        <label class="form-check-label" for="SwitchWPAutoUpdate">WP Automatic Update
+                                            disabled</label>
+                                    </div>
+
+                                    <div class="form-check form-switch me-3">
+                                        <input class="form-check-input"
+                                               name="hupa_wp_disable_wp_cron" type="checkbox" role="switch"
+                                               id="SwitchWPDisableCron" <?= !get_option('hupa_wp_disable_wp_cron') ?: ' checked' ?>>
+                                        <label class="form-check-label" for="SwitchWPDisableCron">WP-CRON
+                                            disabled</label>
+                                    </div>
+
+                                    <div class="form-check form-switch me-3">
+                                        <input class="form-check-input"
+                                               name="hupa_wp_disallow_file_edit" type="checkbox" role="switch"
+                                               id="SwitchWP_DISALLOW_FILE_EDIT" <?= !get_option('hupa_wp_disallow_file_edit') ?: ' checked' ?>>
+                                        <label class="form-check-label" for="SwitchWP_DISALLOW_FILE_EDIT">DISALLOW FILE EDIT
+                                            <sup class="text-danger fw-bold">A*</sup></label>
+                                    </div>
+
+                                    <div class="form-check form-switch me-3">
+                                        <input class="form-check-input"
+                                               name="hupa_wp_disallow_file_mods" type="checkbox" role="switch"
+                                               id="SwitchWP_DISALLOW_FILE_MODS" <?= !get_option('hupa_wp_disallow_file_mods') ?: ' checked' ?>>
+                                        <label class="form-check-label" for="SwitchWP_DISALLOW_FILE_MODS">DISALLOW FILE MODS
+                                            <sup class="text-danger fw-bold">B*</sup></label>
+                                    </div>
+
+                                </div>
+                                <div class="form-text mt-3">
+                                    <b class="text-danger strong-font-weight me-1"> A*</b>
+                                    Deaktivieren Sie den Plugin- und Theme-Datei-Editor in der Verwaltung.
+                                </div>
+                                <div class="form-text">
+                                    <b class="text-danger strong-font-weight me-1"> B*</b>
+                                    Deaktivieren Sie Plugin- und Theme-Updates und Installationen vom Admin aus.
+                                </div>
+
                                 <hr>
                                 <h6>WP-Cache</h6>
                                 <hr>
@@ -85,12 +131,14 @@ defined('ABSPATH') or die();
                                 <hr>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="debug"
-                                           id="inlineRadio1" value="1" <?=get_option('wp_debug_radio') == '1' ? 'checked' : '' ?>>
+                                           id="inlineRadio1"
+                                           value="1" <?= get_option('wp_debug_radio') == '1' ? 'checked' : '' ?>>
                                     <label class="form-check-label" for="inlineRadio1">WP-Debug aktiv</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="debug"
-                                           id="inlineRadio2" value="2" <?=get_option('wp_debug_radio') == '2' ? 'checked' : '' ?>>
+                                           id="inlineRadio2"
+                                           value="2" <?= get_option('wp_debug_radio') == '2' ? 'checked' : '' ?>>
                                     <label class="form-check-label" for="inlineRadio2">WP-Debug nicht aktiv</label>
                                 </div>
                                 <hr>
@@ -336,7 +384,7 @@ defined('ABSPATH') or die();
                                 global $hupa_menu_helper;
                                 $options = $hupa_menu_helper->hupa_get_sort_options();
                                 $post_types = get_post_types();
-                                $ignore_post_types = ['reply','topic','report','status','wp_block'];
+                                $ignore_post_types = ['reply', 'topic', 'report', 'status', 'wp_block'];
 
                                 foreach ($post_types as $post_type_name):
                                     if (in_array($post_type_name, $ignore_post_types)) {
@@ -352,7 +400,9 @@ defined('ABSPATH') or die();
                                     <div class="mb-3">
                                         <label for="postTypeSelect"
                                                class="form-label mb-1 strong-font-weight"><?= esc_html($post_type_data->labels->singular_name) ?></label>
-                                        <select id="postTypeSelect" name="show_reorder_interfaces[<?=esc_attr($post_type_name)?>]" class="form-select">
+                                        <select id="postTypeSelect"
+                                                name="show_reorder_interfaces[<?= esc_attr($post_type_name) ?>]"
+                                                class="form-select">
                                             <option value="show" <?= isset($options['show_reorder_interfaces'][$post_type_name]) && $options['show_reorder_interfaces'][$post_type_name] == 'show' ? ' selected' : ''; ?>><?= esc_html__("show", 'bootscore') ?></option>
                                             <option value="hide" <?= isset($options['show_reorder_interfaces'][$post_type_name]) && $options['show_reorder_interfaces'][$post_type_name] == 'hide' ? ' selected' : '' ?>><?= esc_html__("hide", 'bootscore') ?></option>
                                         </select>
@@ -366,20 +416,21 @@ defined('ABSPATH') or die();
                                 <label for="capabilitySelect"
                                        class="form-label mb-1 strong-font-weight"><?= esc_html__('User Role', 'bootscore') ?></label>
                                 <select id="capabilitySelect" name="capability" class="form-select mb-3">
-                                    <option value="read" <?=isset($options['capability']) && $options['capability'] == "read" ? 'selected' : '' ?>><?= esc_html__('Subscriber', 'bootscore') ?></option>
-                                    <option value="edit_posts" <?=isset($options['capability']) && $options['capability'] == "edit_posts" ? 'selected' : '' ?>><?= esc_html__('Contributor', 'bootscore') ?></option>
-                                    <option value="publish_posts" <?=isset($options['capability']) && $options['capability'] == "publish_posts" ? 'selected' : '' ?>><?= esc_html__('Author', 'bootscore') ?></option>
-                                    <option value="publish_pages" <?=isset($options['capability']) && $options['capability'] == "publish_pages" ? 'selected' : '' ?>><?= esc_html__('Editor', 'bootscore') ?></option>
-                                    <option value="manage_options" <?=!isset($options['capability']) || empty($options['capability']) || (isset($options['capability']) && $options['capability'] == "manage_options") ? 'selected' : '' ?>><?= esc_html__('Administrator', 'bootscore') ?></option>
+                                    <option value="read" <?= isset($options['capability']) && $options['capability'] == "read" ? 'selected' : '' ?>><?= esc_html__('Subscriber', 'bootscore') ?></option>
+                                    <option value="edit_posts" <?= isset($options['capability']) && $options['capability'] == "edit_posts" ? 'selected' : '' ?>><?= esc_html__('Contributor', 'bootscore') ?></option>
+                                    <option value="publish_posts" <?= isset($options['capability']) && $options['capability'] == "publish_posts" ? 'selected' : '' ?>><?= esc_html__('Author', 'bootscore') ?></option>
+                                    <option value="publish_pages" <?= isset($options['capability']) && $options['capability'] == "publish_pages" ? 'selected' : '' ?>><?= esc_html__('Editor', 'bootscore') ?></option>
+                                    <option value="manage_options" <?= !isset($options['capability']) || empty($options['capability']) || (isset($options['capability']) && $options['capability'] == "manage_options") ? 'selected' : '' ?>><?= esc_html__('Administrator', 'bootscore') ?></option>
                                 </select>
                                 <hr>
 
                                 <div class="form-check form-switch mb-1">
                                     <input class="form-check-input" type="checkbox" role="switch"
-                                           id="AutoSortChecked" name="autosort" <?=!$options['autosort'] ?: 'checked' ?>>
+                                           id="AutoSortChecked"
+                                           name="autosort" <?= !$options['autosort'] ?: 'checked' ?>>
                                     <label class="form-check-label"
                                            for="AutoSortChecked"><?= esc_html__('Automatic sorting', 'bootscore') ?>
-                                        </label>
+                                    </label>
                                 </div>
                                 <div class="form-text mb-3">
                                     <?= esc_html__('If selected, the plugin will automatically change the WordPress queries to use the new order (no code update is required). If only certain queries should use the custom sorting, do not select this and add "orderby" => \'menu_order\' as a parameter to the queries.', 'bootscore') ?>
@@ -387,18 +438,19 @@ defined('ABSPATH') or die();
                                 <hr>
                                 <div class="form-check form-switch mb-1">
                                     <input class="form-check-input" name="adminsort" type="checkbox" role="switch"
-                                           id="AdminSortChecked" <?=!$options['adminsort'] ?:'checked'?>>
+                                           id="AdminSortChecked" <?= !$options['adminsort'] ?: 'checked' ?>>
                                     <label class="form-check-label"
                                            for="AdminSortChecked"><?= esc_html__('Admin sorting', 'bootscore') ?>
-                                        </label>
+                                    </label>
                                 </div>
                                 <div class="form-text mb-3">
                                     <?= esc_html__('This tick must be set so that the entries are displayed in the standard list view according to the set order.', 'bootscore') ?>
                                 </div>
                                 <hr>
                                 <div class="form-check form-switch mb-1">
-                                    <input class="form-check-input" name="use_query_asc_desc" type="checkbox" role="switch"
-                                           id="AscDescChecked" <?=!$options['use_query_ASC_DESC']?:'checked'?>>
+                                    <input class="form-check-input" name="use_query_asc_desc" type="checkbox"
+                                           role="switch"
+                                           id="AscDescChecked" <?= !$options['use_query_ASC_DESC'] ?: 'checked' ?>>
                                     <label class="form-check-label"
                                            for="AscDescChecked"><?= esc_html__('Use ASC/DESC parameters in query', 'bootscore') ?>
                                     </label>
@@ -408,8 +460,9 @@ defined('ABSPATH') or die();
                                 </div>
                                 <hr>
                                 <div class="form-check form-switch mb-1">
-                                    <input class="form-check-input" name="archive_drag_drop" type="checkbox" role="switch"
-                                           id="ArchiveDragDropChecked" <?=!$options['archive_drag_drop']?:'checked'?>>
+                                    <input class="form-check-input" name="archive_drag_drop" type="checkbox"
+                                           role="switch"
+                                           id="ArchiveDragDropChecked" <?= !$options['archive_drag_drop'] ?: 'checked' ?>>
                                     <label class="form-check-label"
                                            for="ArchiveDragDropChecked"><?= esc_html__('Archive Drag & Drop', 'bootscore') ?>
                                     </label>
@@ -419,8 +472,9 @@ defined('ABSPATH') or die();
                                 </div>
                                 <hr>
                                 <div class="form-check form-switch mb-1">
-                                    <input class="form-check-input" name="navigation_sort_apply" type="checkbox" role="switch"
-                                           id="NextPreviousChecked" <?=!$options['navigation_sort_apply']?:'checked'?>>
+                                    <input class="form-check-input" name="navigation_sort_apply" type="checkbox"
+                                           role="switch"
+                                           id="NextPreviousChecked" <?= !$options['navigation_sort_apply'] ?: 'checked' ?>>
                                     <label class="form-check-label"
                                            for="NextPreviousChecked"><?= esc_html__('Next / Apply Previous Next / Previous Apply', 'bootscore') ?>
                                     </label>
@@ -441,39 +495,41 @@ defined('ABSPATH') or die();
                                 <input type="hidden" name="handle" value="theme_options_duplicate">
                                 <div class="d-flex align-items-center flex-wrap">
                                     <h5 class="card-title">
-                                        <i class="font-blue fa fa-wordpress"></i>&nbsp; <?=__('Posts | Pages Duplicate', 'bootscore')?>
+                                        <i class="font-blue fa fa-wordpress"></i>&nbsp; <?= __('Posts | Pages Duplicate', 'bootscore') ?>
                                     </h5>
                                     <div class="ajax-status-spinner ms-auto d-inline-block mb-2 pe-2"></div>
                                 </div>
                                 <hr>
                                 <h6>
                                     <i class="font-blue fa fa-arrow-circle-down"></i>
-                                    <?=__('Show or hide duplicate for existing post types', 'bootscore')?></h6>
+                                    <?= __('Show or hide duplicate for existing post types', 'bootscore') ?></h6>
                                 <hr>
 
                                 <?php
                                 global $hupa_menu_helper;
                                 $options = $hupa_menu_helper->hupa_get_duplicate_options();
                                 $post_types = get_post_types();
-                                $ignore_post_types = ['reply','attachment','topic','report','status','wp_block'];
+                                $ignore_post_types = ['reply', 'attachment', 'topic', 'report', 'status', 'wp_block'];
 
                                 foreach ($post_types as $post_type_name):
 
-                                if (in_array($post_type_name, $ignore_post_types)) {
-                                    continue;
-                                }
+                                    if (in_array($post_type_name, $ignore_post_types)) {
+                                        continue;
+                                    }
 
-                                if (is_post_type_hierarchical($post_type_name)) {
-                                    //continue;
-                                }
-                                $post_type_data = get_post_type_object($post_type_name);
-                                if ($post_type_data->show_ui === FALSE) {
-                                    continue;
-                                } ?>
+                                    if (is_post_type_hierarchical($post_type_name)) {
+                                        //continue;
+                                    }
+                                    $post_type_data = get_post_type_object($post_type_name);
+                                    if ($post_type_data->show_ui === FALSE) {
+                                        continue;
+                                    } ?>
                                     <div class="mb-3">
                                         <label for="postTypeDuplicatorSelect"
                                                class="form-label mb-1 strong-font-weight"><?= esc_html($post_type_data->labels->singular_name) ?></label>
-                                        <select id="postTypeDuplicatorSelect" name="show_duplicate_interfaces[<?=esc_attr($post_type_name)?>]" class="form-select">
+                                        <select id="postTypeDuplicatorSelect"
+                                                name="show_duplicate_interfaces[<?= esc_attr($post_type_name) ?>]"
+                                                class="form-select">
                                             <option value="show" <?= isset($options['show_duplicate_interfaces'][$post_type_name]) && $options['show_duplicate_interfaces'][$post_type_name] == 'show' ? ' selected' : ''; ?>><?= esc_html__("show", 'bootscore') ?></option>
                                             <option value="hide" <?= isset($options['show_duplicate_interfaces'][$post_type_name]) && $options['show_duplicate_interfaces'][$post_type_name] == 'hide' ? ' selected' : '' ?>><?= esc_html__("hide", 'bootscore') ?></option>
                                         </select>
@@ -487,16 +543,16 @@ defined('ABSPATH') or die();
                                 <label for="capabilityDuplicatorSelect"
                                        class="form-label mb-1 strong-font-weight"><?= esc_html__('User Role', 'bootscore') ?></label>
                                 <select id="capabilityDuplicatorSelect" name="capability" class="form-select mb-3">
-                                    <option value="read" <?=isset($options['capability']) && $options['capability'] == "read" ? 'selected' : '' ?>><?= esc_html__('Subscriber', 'bootscore') ?></option>
-                                    <option value="edit_posts" <?=isset($options['capability']) && $options['capability'] == "edit_posts" ? 'selected' : '' ?>><?= esc_html__('Contributor', 'bootscore') ?></option>
-                                    <option value="publish_posts" <?=isset($options['capability']) && $options['capability'] == "publish_posts" ? 'selected' : '' ?>><?= esc_html__('Author', 'bootscore') ?></option>
-                                    <option value="publish_pages" <?=isset($options['capability']) && $options['capability'] == "publish_pages" ? 'selected' : '' ?>><?= esc_html__('Editor', 'bootscore') ?></option>
-                                    <option value="manage_options" <?=!isset($options['capability']) || empty($options['capability']) || (isset($options['capability']) && $options['capability'] == "manage_options") ? 'selected' : '' ?>><?= esc_html__('Administrator', 'bootscore') ?></option>
+                                    <option value="read" <?= isset($options['capability']) && $options['capability'] == "read" ? 'selected' : '' ?>><?= esc_html__('Subscriber', 'bootscore') ?></option>
+                                    <option value="edit_posts" <?= isset($options['capability']) && $options['capability'] == "edit_posts" ? 'selected' : '' ?>><?= esc_html__('Contributor', 'bootscore') ?></option>
+                                    <option value="publish_posts" <?= isset($options['capability']) && $options['capability'] == "publish_posts" ? 'selected' : '' ?>><?= esc_html__('Author', 'bootscore') ?></option>
+                                    <option value="publish_pages" <?= isset($options['capability']) && $options['capability'] == "publish_pages" ? 'selected' : '' ?>><?= esc_html__('Editor', 'bootscore') ?></option>
+                                    <option value="manage_options" <?= !isset($options['capability']) || empty($options['capability']) || (isset($options['capability']) && $options['capability'] == "manage_options") ? 'selected' : '' ?>><?= esc_html__('Administrator', 'bootscore') ?></option>
                                 </select>
                                 <hr>
-                                 <div class="form-check form-switch mb-1">
+                                <div class="form-check form-switch mb-1">
                                     <input class="form-check-input" name="copy_draft" type="checkbox" role="switch"
-                                           id="KopieDraftChecked" <?=!$options['copy_draft']?:'checked'?> disabled>
+                                           id="KopieDraftChecked" <?= !$options['copy_draft'] ?: 'checked' ?> disabled>
                                     <label class="form-check-label"
                                            for="KopieDraftChecked"><?= esc_html__('Set copy to draft', 'bootscore') ?>
                                     </label>

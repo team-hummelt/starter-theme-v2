@@ -1,7 +1,7 @@
 <?php
 defined('ABSPATH') or die();
 /**
- * HUPA INIT OPTIONEN
+ * HUPA INIT Admin Dashboard
  * @package Hummelt & Partner WordPress Theme
  * Copyright 2022, Jens Wiecker
  * License: Commercial - goto https://www.hummelt-werbeagentur.de/

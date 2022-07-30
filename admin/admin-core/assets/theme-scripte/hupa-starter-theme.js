@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
 
         $(window).on("resize", function (event) {
-          //  console.log( $(this).width() );
+            //  console.log( $(this).width() );
             let scroll = $(window).scrollTop();
             carouselMargin = header.innerHeight() - header.innerHeight();
             if (topArea[0] && carouselWrapper.hasClass('carousel-margin-top')) {
@@ -162,12 +162,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
             if (scroll > 200) {
                 header.addClass("navbar-small");
                 if (navLogo) {
-                    navLogo.css('max-height', '25px')
+                    navLogo.css('max-height', get_hupa_option.img_scroll_width +'px')
                 }
             } else {
                 header.removeClass("navbar-small");
                 if (navLogo) {
-                    navLogo.css('max-height', '45px')
+                    navLogo.css('max-height', get_hupa_option.img_width+'px')
                     middleLogo.removeClass('middle-img-sm')
                 }
             }

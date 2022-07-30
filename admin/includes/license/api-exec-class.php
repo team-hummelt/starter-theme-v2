@@ -74,14 +74,7 @@ class HupaStarterLicenseExecAPI
         $this->main = $main;
 
         if (is_user_logged_in() && is_admin()) {
-            if (!get_option('hupa_theme_server_api')) {
-                $serverApi = [
-                    'update_aktiv' => true,
-                    'update_type' => 1,
-                    'update_url' => 'https://github.com/team-hummelt/' . Config::get('HUPA_THEME_SLUG')
-                ];
-                update_option('hupa_theme_server_api', $serverApi);
-            }
+
         }
     }
 
@@ -180,9 +173,9 @@ class HupaStarterLicenseExecAPI
                 if($getJob->update_type == '1' || $getJob->update_type == '2'){
                     $updateUrl =  apply_filters('post_scope_resource', 'hupa-update/url');
                     $url = $updateUrl->url;
-                    $update_aktiv = true;
+                    $update_aktiv = 1;
                 } else {
-                    $update_aktiv = false;
+                    $update_aktiv = 0;
                     $url = '';
                 }
                 $serverApi = [
@@ -191,16 +184,26 @@ class HupaStarterLicenseExecAPI
                     'update_url' => $url
                 ];
 
-                update_option('hupa_theme_server_api', $serverApi);
+                $jsonConfig = $this->main->get_license_config();
+                $jsonConfig->update->update_aktiv = $update_aktiv;
+                $jsonConfig->update->update_type = $getJob->update_type;
+                $jsonConfig->update->update_url_git = $url;
+                $config_file = Config::get('THEME_ADMIN_INCLUDES') . 'license/config.json';
+                file_put_contents($config_file, json_encode($jsonConfig));
+
+                //update_option('hupa_theme_server_api', $serverApi);
                 $status = true;
                 $msg = 'Update Methode aktualisiert.';
                 break;
             case'11':
                 $updateUrl = apply_filters('post_scope_resource', 'hupa-update/url');
                 $updOption = get_option('hupa_theme_server_api');
-                $updOption['update_url'] = $updateUrl->url;
-                update_option('hupa_theme_server_api', $updOption);
-
+                //$updOption['update_url'] = $updateUrl->url;
+                //update_option('hupa_theme_server_api', $updOption);
+                $jsonConfig = $this->main->get_license_config();
+                $jsonConfig->update->update_url_git = $updateUrl->url;
+                $config_file = Config::get('THEME_ADMIN_INCLUDES') . 'license/config.json';
+                file_put_contents($config_file, json_encode($jsonConfig));
                 $status = true;
                 $msg = 'URL Token aktualisiert.';
                 break;

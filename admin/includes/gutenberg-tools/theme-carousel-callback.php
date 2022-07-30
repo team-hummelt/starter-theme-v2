@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) or die();
 /**
  * Gutenberg TOOLS REST API CALLBACK
  * @package Hummelt & Partner WordPress Theme
- * Copyright 2021, Jens Wiecker
+ * Copyright 2022, Jens Wiecker
  * https://www.hummelt-werbeagentur.de/
  */
 

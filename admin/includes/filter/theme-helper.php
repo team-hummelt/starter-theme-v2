@@ -13,7 +13,6 @@ defined('ABSPATH') or die();
  * @package Hummelt & Partner WordPress Theme
  * Copyright 2022, Jens Wiecker
  * License: Commercial - goto https://www.hummelt-werbeagentur.de/
- * https://www.hummelt-werbeagentur.de/
  */
 class HupaStarterHelper
 {
@@ -27,12 +26,12 @@ class HupaStarterHelper
      * @access   private
      * @var HupaStarterThemeV2 $main The main class.
      */
-    protected  HupaStarterThemeV2 $main;
+    protected HupaStarterThemeV2 $main;
 
     /**
      * @return static
      */
-    public static function init( HupaStarterThemeV2  $main): self
+    public static function init(HupaStarterThemeV2 $main): self
     {
         if (is_null(self::$theme_helper_instance)) {
             self::$theme_helper_instance = new self($main);
@@ -84,9 +83,16 @@ class HupaStarterHelper
         return str_pad($opacity, 2, 0, STR_PAD_RIGHT);
     }
 
+    public function cleanWhitespace($string): string
+    {
+        if (!$string) {
+            return '';
+        }
+        return trim(preg_replace('/\s+/', ' ', $string));
+    }
+
     final public function hupa_wp_get_attachment($attachment_id): object
     {
-
         $attachment = get_post($attachment_id);
         $attach = array(
             'alt' => get_post_meta($attachment->ID, '_wp_attachment_image_alt', true),
@@ -190,7 +196,7 @@ class HupaStarterHelper
         $jsonArr = json_encode($jsonArr, JSON_UNESCAPED_SLASHES);
         file_put_contents($bs_json, $jsonArr);
 
-        $cheatSet = $reg_bs_json = THEME_ADMIN_DIR . 'admin-core/ajax/tools/FontAwesomeCheats.txt';
+        $cheatSet = THEME_ADMIN_DIR . 'admin-core/ajax/tools/FontAwesomeCheats.txt';
         $fa_json = THEME_ADMIN_DIR . 'admin-core/ajax/tools/fa-icons.json';
         $cheatSet = file_get_contents($cheatSet);
 
@@ -219,14 +225,15 @@ class HupaStarterHelper
         return json_decode(json_encode($object), true);
     }
 
-    public function changeBeitragsListenTemplate($id, $type) {
+    public function changeBeitragsListenTemplate($id, $type)
+    {
 
         $newList = '';
         $template = '';
-        switch ($type){
+        switch ($type) {
             case'kategorie':
-                $template = get_template_directory().'/category.php';
-                switch ($id){
+                $template = get_template_directory() . '/category.php';
+                switch ($id) {
                     case 1:
                         $newList = 'listen-templates/category.php';
                         break;
@@ -245,8 +252,8 @@ class HupaStarterHelper
                 }
                 break;
             case'archiv':
-                $template = get_template_directory().'/archive.php';
-                switch ($id){
+                $template = get_template_directory() . '/archive.php';
+                switch ($id) {
                     case 1:
                         $newList = 'listen-templates/archive.php';
                         break;
@@ -265,8 +272,8 @@ class HupaStarterHelper
                 }
                 break;
             case'autor':
-                $template = get_template_directory().'/author.php';
-                switch ($id){
+                $template = get_template_directory() . '/author.php';
+                switch ($id) {
                     case 1:
                         $newList = 'listen-templates/author.php';
                         break;
@@ -286,9 +293,122 @@ class HupaStarterHelper
                 break;
         }
 
-        if($newList && $template){
+        if ($newList && $template) {
             $file = file_get_contents($newList, true);
             file_put_contents($template, $file, LOCK_EX);
         }
+    }
+
+    public function tools_address_fields($type = null): array
+    {
+        $fields = [
+            '0' => [
+                'label' => __('Position', 'bootscore'),
+                'shortcode' => 'position',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collPosition',
+                'type' => 'text'
+            ],
+            '1' => [
+                'label' => __('Name', 'bootscore'),
+                'shortcode' => 'name',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collName',
+                'type' => 'text'
+            ],
+            '2' => [
+                'label' => __('Address', 'bootscore') . ' 1',
+                'shortcode' => 'adresse1',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collAddress1',
+                'type' => 'text'
+            ],
+            '3' => [
+                'label' => __('Address', 'bootscore') . ' 2',
+                'shortcode' => 'adresse2',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collAddress2',
+                'type' => 'text'
+            ],
+            '4' => [
+                'label' => __('Department', 'bootscore'),
+                'shortcode' => 'abteilung',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collAbteilung',
+                'type' => 'text'
+            ],
+            '5' => [
+                'label' => __('E-Mail', 'bootscore'),
+                'shortcode' => 'email',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collEmail',
+                'type' => 'email'
+            ],
+            '6' => [
+                'label' => __('Phone', 'bootscore'),
+                'shortcode' => 'telefon',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collTelefon',
+                'type' => 'text'
+            ],
+            '7' => [
+                'label' => __('Mobile', 'bootscore'),
+                'shortcode' => 'handy',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collHandy',
+                'type' => 'text'
+            ],
+            '8' => [
+                'label' => __('Fax', 'bootscore'),
+                'shortcode' => 'fax',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collFax',
+                'type' => 'text'
+            ],
+        ];
+
+        if($type){
+            foreach ($fields as $tmp){
+                if($type == $tmp['shortcode']){
+                    return $tmp;
+                }
+            }
+        }
+
+        return $fields;
+    }
+
+
+    public function api_set_error_message($type): array
+    {
+
+        switch ($type) {
+            case'no_plugins_found':
+                $return = [403, 'no_method_found', 'Method data is unknown.'];
+                break;
+            case'invalid_key':
+                $return = [403, 'invalid_key', 'Client access data is unknown.'];
+                break;
+            case 'Login_locked':
+                $return = [403, 'Login_locked', 'Login for this account locked.'];
+                break;
+            case'unable_sign':
+                $return = [403, 'unable_sign', 'Client access data is unknown.'];
+                break;
+            case'unknown_route':
+                $return = [404, 'unknown_route', 'Route Not found.'];
+                break;
+            default:
+                $return = [400, 'api_error', 'API unknown error'];
+        }
+        return $return;
+    }
+
+    public function html_compress_template(string $string): string
+    {
+        if (!$string) {
+            return $string;
+        }
+        return preg_replace(['/<!--(.*)-->/Uis', "/[[:blank:]]+/"], ['', ' '], str_replace(["\n", "\r", "\t"], '', $string));
     }
 }

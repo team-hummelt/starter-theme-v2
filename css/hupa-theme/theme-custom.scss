@@ -1,4 +1,8 @@
 @import "theme-tools";
+@import "custom-icon";
+@import "navbar-menu";
+@import "handy-menu-eins";
+
 
 body .bs-formular-wrapper {
   i.fa {
@@ -6,57 +10,149 @@ body .bs-formular-wrapper {
   }
 }
 
-@media (max-width: 1200px) {
+.z-index-1050 {
+  z-index: 1050;
+}
+
+.img-archive-left {
+  //max-width: 300px;
+  height: 265px;
+  object-fit: cover;
+}
+
+.pagination {
+  a:focus,a:active, a.active{
+    outline: none !important;
+    box-shadow: none;
+  }
+}
+
+.btn:focus, .btn:active, .active.btn:active, .active.btn:focus {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.top-button {
+  pointer-events: none;
+}
+
+.tags-links.hupa-tags {
+  font-weight: 500;
+  font-style: normal;
+  a.badge {
+    font-style: normal;
+    font-weight: 500;
+    background-color: transparent!important;
+    transition: all 350ms;
+    padding:.45em .65em!important;
+    &:hover {
+      background-color: #0a58ca!important;
+      color: #fff!important;
+    }
+  }
+}
+
+#nav-main-starter {
+  z-index: 1030;
+}
+
+.archive-wrapper {
+  .blog-post-title {
+    font-style: normal!important;
+    font-weight: initial;
+    a {
+      text-decoration: none!important;
+    }
+  }
+  .author.vcard a, .comments-link a{
+    text-decoration: none;
+    font-weight: normal;
+  }
+
+  .archive-card-txt {
+    a {
+      text-decoration: none;
+    }
+  }
+}
+
+#preloader-wrapper {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, .95);
+  z-index: 99999;
+ .hupa-preloader {
+   transform: scale(3);
+   flex: 1 1 auto;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+ }
+}
+
+#nav-main-starter.navbar-root {
+  @media (max-width: 1200px) {
+    .dropdown-menu-slide {
+      animation-duration: 2.3s;
+      -webkit-animation-duration: 0.3s;
+      animation-fill-mode: both;
+      -webkit-animation-fill-mode: both;
+    }
+  }
+
+  @keyframes slideIn {
+    0% {
+      transform: translateY(1rem);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateY(0rem);
+      opacity: 1;
+    }
+
+    0% {
+      transform: translateY(1rem);
+      opacity: 0;
+    }
+  }
+
+  @-webkit-keyframes slideIn {
+    0% {
+      -webkit-opacity: 0;
+    }
+
+    100% {
+      -webkit-transform: translateY(0);
+      -webkit-opacity: 1;
+    }
+
+    0% {
+      -webkit-transform: translateY(1rem);
+      -webkit-opacity: 0;
+    }
+  }
+
+  .slideIn {
+    -webkit-animation-name: slideIn;
+    animation-name: slideIn;
+  }
+
   .dropdown-menu-slide {
-    animation-duration: 2.3s;
-    -webkit-animation-duration: 0.3s;
-    animation-fill-mode: both;
-    -webkit-animation-fill-mode: both;
+    -webkit-animation-name: slideIn;
+    animation-name: slideIn;
+    animation-duration: 450ms;
   }
 }
 
-@keyframes slideIn {
-  0% {
-    transform: translateY(1rem);
-    opacity: 0;
-  }
-
-  100% {
-    transform: translateY(0rem);
-    opacity: 1;
-  }
-
-  0% {
-    transform: translateY(1rem);
-    opacity: 0;
-  }
-}
-
-@-webkit-keyframes slideIn {
-  0% {
-    -webkit-opacity: 0;
-  }
-
-  100% {
-    -webkit-transform: translateY(0);
-    -webkit-opacity: 1;
-  }
-
-  0% {
-    -webkit-transform: translateY(1rem);
-    -webkit-opacity: 0;
-  }
-}
-
-.slideIn {
-  -webkit-animation-name: slideIn;
-  animation-name: slideIn;
-}
-
-.dropdown-menu-slide {
-  -webkit-animation-name: slideIn;
-  animation-name: slideIn;
-  animation-duration: 450ms;
+.top-button.visible {
+  pointer-events: auto;
 }
 
 
@@ -64,6 +160,7 @@ body .bs-formular-wrapper {
 #nav-main-starter .menu-item:last-child .nav-link {
   padding-right: .5rem;
 }
+
 
 img.map-placeholder-img {
   position: absolute;
@@ -86,33 +183,34 @@ img.map-placeholder-img {
   background-color: #00000080;
   border: 1px solid #cbcbcb;
   border-radius: .25rem;
-  z-index: 1;
-  .btn-maps:not(.disabled) {
-    z-index: 1;
-    background-color:#5192cd ;
-    border-color: #8faec9;
-    transition: all 250ms ease-in-out;
+  z-index: 0;
+
+  .hupa-gmaps-ds-btn {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    &:not(:disabled) {
+      //z-index: 1;
+      background-color: #5192cd;
+      border-color: #8faec9;
+      transition: all 250ms ease-in-out;
+    }
     &:hover {
       background-color: #4175a4;
     }
   }
 
-  .btn-maps {
-    &.disabled {
-      background-color: #5192cd;
-      color: #ffffff;
-      cursor: not-allowed!important;
-    }
+  .hupa-gmaps-ds-btn:disabled {
+    background-color: #5192cd;
+    color: #ffffff;
+    pointer-events: auto;
+    cursor: not-allowed !important;
   }
 
   /*============================= CHECKBOX =========================*/
-  .ds-karte-check {
-    display: flex;
-    position: relative;
-    padding-left: 35px;
+  .form-check label {
     cursor: pointer;
     font-size: 16px;
-    text-align: left;
     //color: #fff;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -120,84 +218,25 @@ img.map-placeholder-img {
     user-select: none;
   }
 
-  a.ds-link{
+  a.ds-link {
     color: #FFFFFFE5;
     text-decoration: none;
     transition: all 250ms ease-in-out;
     font-weight: 400;
+
     &:hover {
       color: #fff;
     }
   }
-
   .ds-karte-check a {
     color: #fff;
     font-weight: 500;
   }
-
   .datenschutz-check {
     background-color: rgba(181, 181, 181, 0);
-    padding: 1rem .5rem ;
-  }
-
-  /* Hide the browser's default checkbox */
-  .ds-karte-check input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-  }
-
-  /* Create a custom checkbox */
-  .checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 25px;
-    width: 25px;
-    background-color: #cbcbcb;
-    transition: all 250ms !important;
-    -o-transition: all 250ms !important;
-    -webkit-transition: all 250ms !important;
-  }
-
-  /* On mouse-over, add a grey background color */
-  .ds-karte-check:hover input~.checkmark {
-    background-color: #eeeeee;
-  }
-
-  /* When the checkbox is checked, add a blue background */
-  .ds-karte-check input:checked~.checkmark {
-    background-color: #318dd7;
-  }
-
-  /* Create the checkmark/indicator (hidden when not checked) */
-  .checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-  }
-
-  /* Show the checkmark when checked */
-  .ds-karte-check input:checked~.checkmark:after {
-    display: block;
-  }
-
-  /* Style the checkmark/indicator */
-  .ds-karte-check .checkmark:after {
-    left: 9px;
-    top: 4px;
-    width: 7px;
-    height: 13px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+    padding: 1rem .5rem;
   }
 }
-
 
 .loader-wrapper {
   position: fixed;
@@ -214,14 +253,6 @@ img.map-placeholder-img {
   .fa {
     color: #e2e2e2;
   }
-}
-
-#nav-main-starter  .offcanvas.menu1.show {
-  background-color: rgba(255,255,255,.9);
-}
-
-#nav-main-starter  .offcanvas.menu1 .offcanvas-header {
-  background-color: rgba(221,221,221,.95);
 }
 
 #nav-main-starter  .offcanvas.menu2.show {
@@ -276,26 +307,20 @@ img.map-placeholder-img {
   padding-top: 2.5rem;
 }
 
-.navbar-root .logo.md {
-  max-width: 100%;
-  transition: all 450ms;
+.logo.md{
+  //max-height: 45px;
+  transition: max-height 450ms ease-in-out;
 }
 
+
 .top-nav.main-widget {
-  right: 20px;
+  right: 25px;
   z-index: 1021;
 }
 
-.navbar-root .logo.md {
-  transition: all 450ms;
-}
 
-.navbar-root .logo.md.small-logo {
-  //max-width: 90%;
-  height: 46px;
- // -o-object-fit: cover;
- // object-fit: cover;
-  transition: all 450ms;
+a.navbar-brand {
+  z-index: 1021;
 }
 
 .carousel-caption {
@@ -318,7 +343,7 @@ img.map-placeholder-img {
 .navbar-root .logo.sm {
   //width: 70%;
   //transform: scale(.65);
-  height: 46px;
+  //height: 30px;
   -o-object-fit: cover;
   object-fit: cover
 }
@@ -439,6 +464,84 @@ img.map-placeholder-img {
   //transition: opacity 450ms;
 }
 
+#theme-pagination {
+  padding-top: 2.5rem;
+
+  .page-item {
+    transition: all 250ms linear;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem !important;
+    height: 2rem !important;
+    margin: 0 .05rem;
+
+    .page-link {
+      display: block;
+      text-align: center;
+    }
+
+    &.disabled {
+      .page-link {
+        color: #d0d0d0 !important;
+      }
+    }
+  }
+
+  a.page-link {
+    position: relative;
+    display: block;
+    color: $blue;
+    text-decoration: none;
+    background-color: transparent !important;
+    border: unset !important;
+    //border: 1px solid #dee2e6;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  }
+
+  .page-item.active {
+    background-color: #f8f8f8 !important;
+    border-radius: 9999px;
+
+    .page-link {
+      z-index: 3;
+      color: $blue !important;
+      font-weight: 500 !important;
+      background-color: unset !important;
+      border: unset !important;
+    }
+  }
+
+  .page-item:not(.disabled):not(.active) {
+    &:hover {
+      background-color: #f0f0f0 !important;
+      border-radius: 9999px;
+    }
+  }
+
+  .pagination {
+    justify-content: start !important;
+  }
+}
+
+
+.single-pagination .page-item {
+  font-weight: 600;
+  a {
+    background-color: transparent !important;
+    border: unset !important;
+    color: #3b3b3b !important;
+    &:after {
+      content: '';
+    }
+
+    &:before {
+      content: '';
+    }
+  }
+}
+
+
 @media (max-width: 768px) {
   .bgImage {
     height: 30vh
@@ -447,6 +550,12 @@ img.map-placeholder-img {
 
 .middle-image-nav-sm{
   display: none;
+}
+
+.menu-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 978px) {
@@ -622,6 +731,14 @@ img.map-placeholder-img {
     transform: translate(15px);
   }
 }
+
+.carousel-control-next:not(:hover):focus, .carousel-control-prev:not(:hover):focus {
+  color: #fff;
+  text-decoration: none;
+  outline: 0;
+  opacity: 0.5;
+}
+
 
 
 

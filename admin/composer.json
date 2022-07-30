@@ -8,6 +8,7 @@
     "php": "~7.4",
     "vlucas/phpdotenv": "^5.4",
     "oscarotero/env": "^2.1",
+    "bshaffer/oauth2-server-php": "^1.11",
     "components/font-awesome": "4.7.0",
     "twbs/bootstrap-icons": "^1.8.3",
     "guzzlehttp/guzzle": "^7.3",

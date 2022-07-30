@@ -139,7 +139,7 @@ final class HUPA_WP_HTML_Compression
         $compressed = strlen($compressed);
         $savings = ($raw - $compressed) / $raw * 100;
         $savings = round($savings, 2);
-         return '<!--HUMMELT & PARTNER THEME HTML compressed, size saved ' . $savings . '%. From ' . $raw . ' bytes, now ' . $compressed . ' bytes-->';
+         return '<!--hummelt und partner Theme HTML compressed, size saved ' . $savings . '%. From ' . $raw . ' bytes, now ' . $compressed . ' bytes-->';
     }
 }
 
@@ -155,6 +155,6 @@ function hupa_starter_wp_html_compression_finish($html): string
 function hupa_starter_wp_html_compression_start()
 {
 
-    ob_start('hupa_starter_wp_html_compression_finish');
+    ob_start('Hupa\\StarterThemeV2\\hupa_starter_wp_html_compression_finish');
 }
 

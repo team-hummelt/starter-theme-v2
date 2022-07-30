@@ -44,6 +44,8 @@ class HupaSocialMediaWidget extends WP_Widget {
             case '2':
                 $btnId = 'share-buttons';
                 break;
+            default:
+                $btnId = '';
         }
 
         $shareData = new stdClass();
@@ -66,7 +68,7 @@ class HupaSocialMediaWidget extends WP_Widget {
 			if ( ! $tmp->top_check ) {
 				continue;
 			}
-            $tmp->share_txt ? $shareData->share_subject = $tmp->share_txt : $shareData->share_subject = __( 'Look what I found: ', 'bootscore' );
+            $tmp->share_txt ? $shareData->share_subject = $tmp->share_txt : $shareData->share_subject = __( 'Look what I found:', 'bootscore' );
             $shareData->btn = $tmp->btn;
             $url = apply_filters('get_social_button_url', $shareData);
 			$tmp->slug === 'print_' ? $href = 'javascript:;" onclick="window.print()' : $href = $url;

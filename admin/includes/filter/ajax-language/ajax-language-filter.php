@@ -173,7 +173,11 @@ use HupaStarterThemeV2;
 					break;
 				case'carousel':
 					$message = [
-						'btn_add_slider'          => __( 'add new slider', 'bootscore' ),
+                        'overview'               => __('Overview', 'bootscore'),
+                        'create_new_carousel'    => __('Create new carousel', 'bootscore'),
+                        'help-add_carousel'      => __( 'Enter carousel name (max 50 characters)', 'bootscore'),
+                        'btn_add_carousel'         => __( 'Create carousel', 'bootscore' ),
+						'btn_add_slider'         => __( 'add new slider', 'bootscore' ),
 						'lbl_bezeichnung'        => __( 'Designation', 'bootscore' ),
 						'help_bezeichnung'       => __( 'Change the name of the carousel.', 'bootscore' ),
 						'help_shortcode'         => __( 'the following options are also available:', 'bootscore' ),
@@ -239,8 +243,13 @@ use HupaStarterThemeV2;
 						'h5_baseline'   => __( 'Slider Baseline', 'bootscore' ),
 						'lbl_selector'  => __( 'Selector', 'bootscore' ),
 						'lbl_extra_css' => __( 'extra CSS class', 'bootscore' ),
-
-					];
+                        'help_mouse_hover' => __( 'If set to "hover", pauses the cycling of the carousel on mouseenter and resumes the cycling of the carousel on mouseleave. If set to false, hovering over the carousel won’t pause it. On touch-enabled devices, when set to "hover", cycling will pause on touchend (once the user finished interacting with the carousel) for two intervals, before automatically resuming. This is in addition to the mouse behavior.', 'bootscore' ),
+                        'lbl_static_txt' => __( 'The entered text is displayed with each slider. CSS can be used.', 'bootscore' ),
+                        'help_touch_active' => __( 'Whether the carousel should support left/right swipe interactions on touchscreen devices.', 'bootscore' ),
+                        'help_keyboard_active' => __( 'Whether the carousel should react to keyboard events.', 'bootscore' ),
+                        'lbl_touch_active'  => __( 'Touch active', 'bootscore' ),
+                        'lbl_keyboard_active'  => __( 'Keyboard active', 'bootscore' ),
+                        ];
 
 					break;
 			}

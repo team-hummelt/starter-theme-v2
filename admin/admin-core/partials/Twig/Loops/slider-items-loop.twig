@@ -1,0 +1,521 @@
+{% set cid =  r.id~"_"~sl.id %}
+<div id="sliderWrapper{{ cid }}" class="sliderWrapper wrapper{{ sl.id }} sort{{ cid }}">
+    <div class="border-bottom shadow-sm">
+        <form id="sendCarousel{{ rand }}" class="sendAjaxCarouselForm" action="#" method="post">
+            <input type="hidden" name="method" value="update_slider">
+            <input type="hidden" name="id" value="{{ cid }}">
+            <h2 class="accordion-header">
+                    <span class="sliderHandle">
+                    <i class="sortableArrow fa fa-arrows"></i>
+                       <i data-id="{{ cid }}" data-method="delete_carousel_item" data-type="slider"
+                          class="sweet-alert2 text-danger fa fa-trash">
+                     </i>
+                       <i class="fa fa-trash hide cursor-default"></i>
+                       </span>
+                <button class="accordion-button bg-custom-gray collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseSlider{{ cid }}" aria-expanded="false"
+                        aria-controls="collapseSlider{{ cid }}">
+                    <b class="mx-1">Carousel:</b> <span class="carouselName">{{ sl.carousel }}</span>&nbsp; ->
+                    &nbsp;
+                    <b class="mx-1">ID:</b> {{ sl.id }}
+                </button>
+            </h2>
+            <div id="collapseSlider{{ cid }}" class="accordion-collapse collapse"
+                 aria-labelledby="collapseSlider{{ cid }}"
+                 data-bs-parent="#accordionSliderParent">
+                <div class="p-4">
+                    <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option first-box align-items-center">
+                        <div class="col">
+                            <div class="col-xl-6 col-lg-8 col-12 p-2">
+                                <div class="mb-3">
+                                    <div id="imageContainer{{ rand }}">
+                                        {% if sl.img_id %}
+                                           {% autoescape false %} {{ sl.img }} {% endautoescape %}
+                                        {% else %}
+                                            <img class="img-fluid carousel-image"
+                                                 src="{{ admin_url }}admin-core/assets/images/hupa-logo.svg"
+                                                 alt=""
+                                                 width="200">
+                                        {% endif %}
+                                    </div>{# imageContainer #}
+
+
+                                    <button id="btn-add{{ rand }}" type="button"
+                                            onclick="add_slider_img(this, '{{ rand }}');"
+                                            class="{% if sl.img %}d-none{% endif %} btn btn-outline-secondary btn-sm d-block mx-auto mt-4">
+                                        <i class="fa fa-image"></i>
+                                        &nbsp; {{ 'Select image'|__ }}
+                                    </button>
+
+                                    <button id="btn-delete{{ rand }}" type="button"
+                                            onclick="delete_slider_img(this, '{{ rand }}');"
+                                            class="{% if not sl.img %}d-none{% endif %} btn btn-outline-danger btn-sm d-block mx-auto mt-4">
+                                        <i class="fa fa-trash"></i>
+                                        &nbsp; {{ 'Delete image'|__ }}
+                                    </button>
+                                    <input id="inputID{{ rand }}" type="hidden" name="img_id"
+                                           value="{{ sl.img_id }}">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <small class="small d-block p-2">{{ 'Select image for slider.'|__ }}</small>
+                        </div>
+                    </div>
+
+                    {# JOB PARENT SECTIONS Start #}
+                    <div id="ParentSettings{{ rand }}">
+                        <div class="row settings-box option first-box align-items-center">
+                            <h5 class="px-3 py-3 m-0 border-tb" style="background-color: #fff">
+                                <i class="font-blue fa fa-gears"></i>&nbsp;
+                                {{ 'Slider Settings'|__ }}
+                                <hr>
+                                <button type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collSettings{{ collRandom }}"
+                                        class="set-collapse-active d-block btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-arrows-collapse"></i>
+                                    Details
+                                </button>
+                            </h5>
+                        </div>
+                        <div data-bs-parent="#ParentSettings{{ rand }}" id="collSettings{{ collRandom }}" class="collapse">
+                            <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option align-items-center">
+                                <div class="col">
+                                    <div class="col-xxl-8 col-xl-10 col-12 ms-2 p-2">
+                                        <div class="form-check form-switch py-3">
+                                            <input class="form-check-input" name="aktiv"
+                                                   type="checkbox"
+                                                   id="checkAktiv{{ cid }}" {% if sl.aktiv %}checked{% endif %}>
+                                            <label class="form-check-label"
+                                                   for="checkAktiv{{ cid }}">{{ 'active'|__ }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <small class="small d-block p-2">{{ 'Enable or disable sliders.'|__ }}</small>
+                                </div>
+                            </div>
+                            <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option align-items-center">
+                                <div class="col">
+                                    <div class="col-xxl-8 col-xl-10 col-12 p-2">
+                                        <div class="form-floating">
+                                            <input type="number" class="form-control no-blur"
+                                                   value="{{ sl.data_interval }}"
+                                                   name="data_interval"
+                                                   id="inputInterval{{ cid }}"
+                                                   placeholder="{{ 'Slider Interval'|__ }}">
+                                            <label for="inputInterval{{ cid }}">{{ 'Slider Interval'|__ }} <small
+                                                        class="small">(msec)</small></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <small class="small d-block p-2">
+                                        {% autoescape false %}
+                                            {{ 'Time elapses between <b>automatic</b> advance to the next element. The specification is in <b class="text-danger">milliseconds</b>.'|__ }}
+                                        {% endautoescape %}
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option align-items-center">
+                                <div class="col">
+                                    <div class="col-xxl-8 col-xl-10 col-12 p-2">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control no-blur" value="{{ sl.data_alt }}"
+                                                   name="data_alt"
+                                                   id="inputAlt{{ cid }}"
+                                                   placeholder="{{ 'Alt Tag'|__ }}">
+                                            <label for="inputAlt{{ cid }}">{{ 'Alt Tag'|__ }} </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <small class="small d-block p-2">{{ 'This entry overwrites the WordPress Image alt tag.'|__ }}</small>
+                                </div>
+                            </div>
+
+                            <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option align-items-center">
+                                <div class="col">
+                                    <div class="col-xxl-8 col-xl-10 col-12 p-2">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control no-blur" value="{{ sl.data_title_tag }}"
+                                                   name="data_title_tag"
+                                                   id="inputTitle{{ cid }}"
+                                                   placeholder="{{ 'Title Tag'|__ }}" {% if not sl.data_title_active %}disabled{% endif %}>
+                                            <label for="inputTitle{{ cid }}">{{ 'Title Tag'|__ }} </label>
+                                        </div>
+
+                                        <div class="form-check form-switch py-3">
+                                            <input data-type="switch-title-tag"
+                                                    class="btn-carousel-action form-check-input" name="data_title_active"
+                                                   type="checkbox"
+                                                   id="checkTitleAktiv{{ cid }}"
+                                                   {% if sl.data_title_active %}checked{% endif %}>
+                                            <label class="form-check-label"
+                                                   for="checkTitleAktiv{{ cid }}">{{ 'Show title on hover'|__ }}</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <small class="small d-block p-2">{{ 'This entry overwrites the WordPress Image title tag.'|__ }}</small>
+                                </div>
+                            </div>
+
+                            <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option align-items-center">
+                                <div class="col">
+                                    <div class="col-xxl-8 col-xl-10 col-12 ms-2 p-2">
+                                        <div class="form-check form-switch py-3">
+                                            <input class="form-check-input" name="caption_aktiv"
+                                                   type="checkbox"
+                                                   id="checkCaptionAktiv{{ cid }}"
+                                                   {% if sl.caption_aktiv %}checked{% endif %}>
+                                            <label class="form-check-label"
+                                                   for="checkCaptionAktiv{{ cid }}">{{ 'Display caption on mobile devices'|__ }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <small class="small d-block p-2">{{ 'If active, the captions entered will be displayed on mobile devices.'|__ }}</small>
+                                </div>
+                            </div>
+                            <div class="row row-cols-1 row-cols-lg-2 py-4 settings-box option align-items-center">
+                                <div class="col">
+                                    <div class="col-xl-6 col-lg-8 col-12 p-2">
+                                        <div class="color-select-wrapper align-items-center d-flex mb-2">
+                                            <div data-color="{{ sl.font_color }}" class="colorPickers">
+                                                <input id="InputButtonColor{{ cid }}" type="hidden"
+                                                       value="{{ sl.font_color }}"
+                                                       name="font_color">
+                                            </div>
+                                            <h6 class="ms-2 mt-1"><b>Schrift und Symbol</b>
+                                                <small class="small d-block"> Farbe</small>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <small class="small d-block p-2">{{ 'Here you can change the font color for the texts, controls and idicators.'|__ }}</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        {# JOB Button Settings Start #}
+                        <div class="row settings-box option first-box align-items-center">
+                            <h5 class="px-3 py-3 m-0 border-tb" style="background-color: #f3f3f3">
+                                <i class="font-blue fa fa-gears"></i>&nbsp;
+                                {{ 'Button Settings'|__ }}
+                                <hr>
+                                <button type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collButton{{ collRandom }}"
+                                        class="set-collapse-active d-block btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-arrows-collapse"></i>
+                                    Details
+                                </button>
+                            </h5>
+                        </div>
+                        <div data-bs-parent="#ParentSettings{{ rand }}" id="collButton{{ collRandom }}" class="collapse">
+                            <div class="row row-cols-1 row-cols-xl-2 py-2 settings-box option align-items-center">
+                                <div class="col flex-fill p-2">
+
+                                    <label class="input-color-label fw-light fs-5 d-block mb-3 ms-2">
+                                        <b class="fw-normal">Button</b> hinzufügen
+                                    </label>
+
+                                    <button data-type="add_caption_btn" data-sl-id="{{ sl.id }}"
+                                            data-rand-id="{{ randId }}" data-rand="{{ rand }}"
+                                            type="button"
+                                            class="btn-carousel-action btn btn-success text-light ms-2 btn-sm">
+                                        <i class="fa fa-link"></i>&nbsp; Button hinzufügen
+                                    </button>
+
+                                    <div id="captionButton{{ rand }}" class="ms-2">
+                                        {% for slideBtn in sl.slide_button %}
+                                          {#   {% set btnRandom = random() %} #}
+                                            {{ include('@partials-loops/carousel-btn-loop.twig') }}
+                                        {% endfor %}
+                                    </div>
+                                </div><!--form-wrapper-ende-->
+                            </div>
+                        </div>{# Collapse End #}
+                        {# JOB Button Settings END #}
+
+                        {% set collRandom = random() %}
+                        <div class="row settings-box option first-box  align-items-center">
+                            <h5 class=" px-3 py-3 mb-0 border-tb" style="background-color: #fff">
+                                <i class="font-blue fa fa-header"></i>&nbsp;
+                                {{ 'Slider Headline'|__ }}
+                                <hr>
+                                <button type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collHeadline{{ collRandom }}"
+                                        class="set-collapse-active d-block btn btn-outline-primary btn-sm"><i
+                                            class="bi bi-arrows-collapse"></i>
+                                    Details
+                                </button>
+                            </h5>
+                            <div data-bs-parent="#ParentSettings{{ rand }}" id="collHeadline{{ collRandom }}" class="collapse">
+                                <hr>
+                                <div class="d-lg-flex d-md-block p-2">
+                                    <div class="col-xl-6 col-lg-12 px-2 pt-3">
+                                        <div class="form-floating my-1">
+                                    <textarea class="form-control no-blur" name="first_caption"
+                                              placeholder="{{ 'First caption'|__ }}"
+                                              id="firstCaptionText{{ cid }}"
+                                              style="height: 100px">{{ sl.first_caption }}</textarea>
+                                            <label for="firstCaptionText{{ cid }}">
+                                                {% autoescape false %}
+                                                    {{ 'First caption <small class="small">(top)</small>'|__ }}
+                                                {% endautoescape %}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-lg-flex d-md-block flex-wrap p-2">
+                                    <div class="col-xl-6 col-12 px-2">
+                                        <div class="form-floating my-1">
+                                            <select class="form-select no-blur mw-100" id="selectFirstSelector{{ cid }}"
+                                                    aria-label="{{ 'Selector'|__ }}"
+                                                    name="first_selector">
+                                                {% for firstSelector in selector %}
+                                                    <option value="{{ loop.index }}"
+                                                            {% if sl.first_selector == loop.index %}selected{% endif %}>{{ firstSelector }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <label for="selectFirstSelector{{ cid }}">{{ 'Selector'|__ }}</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-6 col-12 px-2">
+                                        <div class="form-floating my-1">
+                                            <input type="text" class="form-control no-blur" value="{{ sl.first_css }}"
+                                                   name="first_css"
+                                                   id="firstCss{{ cid }}"
+                                                   placeholder="{{ 'extra CSS class'|__ }}">
+                                            <label for="firstCss{{ cid }}">{{ 'extra CSS class'|__ }} </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-lg-flex d-md-block flex-wrap p-2">
+                                    <div class="col-xl-6 col-12 px-2 mb-3">
+                                        <div class="form-floating my-1">
+                                            <select class="form-select no-blur mw-100" id="selectFirstFont{{ cid }}"
+                                                    onchange="font_family_change(this, 'selectFirstStyle{{ cid }}');"
+                                                    aria-label="{{ 'Font family'|__ }}"
+                                                    name="first_font">
+                                                {% for firstFamVal in familySelect %}
+                                                    <option value="{{ firstFamVal.family }}"
+                                                            {% if sl.first_font == firstFamVal.family %}selected{% endif %}>{{ firstFamVal.family }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <label for="selectFirstFont{{ cid }}">{{ 'Font family'|__ }}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-12 col-12 px-2 mb-3">
+                                        <div class="form-floating my-1">
+                                            <select class="form-select no-blur mw-100" id="selectFirstStyle{{ cid }}"
+                                                    aria-label="{{ 'Font style'|__ }}"
+                                                    name="first_style">
+                                                {% for firstStyleVal in sl.first_style_select %}
+                                                    <option value="{{ loop.index }}"
+                                                            {% if sl.first_style == loop.index %}selected{% endif %}>{{ firstStyleVal }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <label for="selectFirstStyle{{ cid }}">{{ 'Font style'|__ }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="d-lg-flex d-md-block flex-wrap p-2">
+                                    <div class="col-xl-6 col-12 p-2">
+                                        <div id="first-font-size{{ cid }}" class="p-2">
+                                            <label for="RangeFontFirstSize{{ cid }}"
+                                                   class="form-label"><b>{{ 'Font size'|__ }}
+                                                    <span class="show-range-value">{{ sl.first_size }}</span>
+                                                    (Px)</b></label>
+                                            <input data-container="first-font-size{{ cid }}" type="range"
+                                                   name="first_size" class="form-range sizeRange"
+                                                   min="10"
+                                                   max="100" step="1"
+                                                   value="{{ sl.first_size }}"
+                                                   id="RangeFontFirstSize{{ cid }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-12 p-2">
+                                        <div id="first-font-height{{ cid }}" class="p-2">
+                                            <label for="RangeFontFirstHeight{{ cid }}"
+                                                   class="form-label"><b>{{ 'row height'|__ }}
+                                                    <span class="show-range-value">{{ sl.first_height }}</span></b>
+                                            </label>
+                                            <input data-container="first-font-height{{ cid }}" type="range"
+                                                   class="form-range sizeRange" name="first_height"
+                                                   min="0"
+                                                   max="5"
+                                                   value="{{ sl.first_height }}"
+                                                   step="0.1" id="RangeFontFirstHeight{{ cid }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-lg-flex d-md-block flex-wrap px-2">
+                                    <div class="col-xl-6 col-12 p-2">
+                                        {% set aniFirstRandom = random() %}
+                                        <div class="form-floating my-1">
+                                            <select class="form-select no-blur mw-100" id="selectFirstAni{{ cid }}"
+                                                    aria-label="{{ 'animation'|__ }}"
+                                                    onchange="change_animate_select('{{ aniFirstRandom }}', this)"
+                                                    name="first_ani">
+                                                <option value="">{{ 'select'|__ }} ...</option>
+                                                {% for firstAniVal in animate %}
+                                                    <option {% if firstAniVal.divider %}disabled
+                                                            class="SelectSeparator" {% endif %}
+                                                            value="{% if firstAniVal.divider %}{{ firstAniVal.value }}{% else %}{{ firstAniVal.animate }}{% endif %}"
+                                                            {% if sl.first_ani == firstAniVal.animate %}selected{% endif %}>{{ firstAniVal.animate }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                            <label for="selectFirstAni{{ cid }}">{{ 'animation'|__ }}</label>
+                                        </div>
+
+                                        <span id="ani_preview{{ aniFirstRandom }}"
+                                              class="hide ani_preview ps-2 py-3 fs-6 d-inline-block text-danger"><b>animate</b></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row settings-box option first-box  align-items-center"
+                             style="background-color: #f3f3f3">
+                            <h5 class="px-3 py-3 m-0 border-tb">
+                                <i class="font-blue fa fa-text-width"></i>&nbsp;
+                                {{ 'Slider Baseline'|__ }}
+                                <hr>
+                                <button type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collSubline{{ collRandom }}"
+                                        class="set-collapse-active d-block btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-arrows-collapse"></i>
+                                    Details
+                                </button>
+                            </h5>
+                            <div data-bs-parent="#ParentSettings{{ rand }}" id="collSubline{{ collRandom }}" class="collapse">
+                                <hr>
+                                <div class="d-lg-flex d-md-block p-2">
+                                    <div class="col-xl-6 col-lg-12 px-2 pt-3">
+                                        <div class="form-floating my-1">
+                                    <textarea class="form-control no-blur" name="second_caption"
+                                              placeholder="{{ 'Baseline Text'|__ }}"
+                                              id="secondCaptionText{{ cid }}"
+                                              style="height: 100px">{{ sl.second_caption }}</textarea>
+                                            <label for="secondCaptionText{{ cid }}">
+                                                {{ 'Baseline Text'|__ }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-lg-flex flex-wrap p-2 d-md-block">
+                                    <div class="col-xl-6 col-12 px-2">
+
+                                        <div class="form-floating my-1">
+                                            <input type="text" class="form-control no-blur" value="{{ sl.second_css }}"
+                                                   name="second_css"
+                                                   id="secondCss{{ cid }}"
+                                                   placeholder="{{ 'extra CSS class'|__ }}">
+                                            <label for="secondCss{{ cid }}">{{ 'extra CSS class'|__ }} </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-lg-flex d-md-block flex-wrap p-2">
+                                    <div class="col-xl-6 col-12 px-2 mb-3">
+                                        <div class="form-floating my-1">
+                                            <select class="form-select no-blur mw-100" id="selectSecondFont{{ cid }}"
+                                                    aria-label="{{ 'Font family'|__ }}"
+                                                    onchange="font_family_change(this, 'selectSecondStyle{{ cid }}');"
+                                                    name="second_font">
+                                                {% for secondFamVal in familySelect %}
+                                                    <option value="{{ secondFamVal.family }}"
+                                                            {% if sl.second_font == secondFamVal.family %}selected{% endif %}>{{ secondFamVal.family }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <label for="selectSecondFont{{ cid }}">{{ 'Font family'|__ }}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-12 col-12 px-2 mb-3">
+                                        <div class="form-floating my-1">
+                                            <select class="form-select no-blur mw-100" id="selectSecondStyle{{ cid }}"
+                                                    aria-label="{{ 'Font style'|__ }}"
+                                                    name="second_style">
+                                                {% for secondStyleVal in sl.first_style_select %}
+                                                    <option value="{{ loop.index0 }}"
+                                                            {% if sl.second_style == loop.index0 %}selected{% endif %}>{{ secondStyleVal }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <label for="selectSecondStyle{{ cid }}">{{ 'Font style'|__ }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+
+                                <div class="d-lg-flex d-md-block flex-wrap p-2">
+                                    <div class="col-xl-6 col-12 p-2">
+                                        <div id="first-font-size{{ cid }}" class="p-2">
+                                            <label for="RangeFontSecondSize{{ cid }}"
+                                                   class="form-label"><b>{{ 'Font size'|__ }}
+                                                    <span class="show-range-value">{{ sl.second_size }}</span>
+                                                    (Px)</b></label>
+                                            <input data-container="second-font-size{{ cid }}" type="range"
+                                                   name="second_size" class="form-range sizeRange"
+                                                   min="10"
+                                                   max="100" step="1"
+                                                   value="{{ sl.second_size }}"
+                                                   id="RangeFontSecondSize{{ cid }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-12 p-2">
+                                        <div id="second-font-height{{ cid }}" class="p-2">
+                                            <label for="RangeFontSecondHeight{{ cid }}"
+                                                   class="form-label"><b>{{ 'row height'|__ }}
+                                                    <span class="show-range-value">{{ sl.second_height }}</span></b>
+                                            </label>
+                                            <input data-container="second-font-height{{ cid }}" type="range"
+                                                   class="form-range sizeRange" name="second_height"
+                                                   min="0"
+                                                   max="5"
+                                                   value="{{ sl.second_height }}"
+                                                   step="0.1" id="RangeFontSecondHeight{{ cid }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                {% set aniSecondRandom = random() %}
+                                <div class="d-lg-flex d-md-block flex-wrap px-2">
+                                    <div class="col-xl-6 col-12 p-2">
+                                        <div class="form-floating my-1">
+                                            <select class="form-select no-blur mw-100" id="selectSecondAni{{ cid }}"
+                                                    aria-label="{{ 'animation'|__ }}"
+                                                    onchange="change_animate_select('{{ aniSecondRandom }}', this)"
+                                                    name="second_ani">
+                                                <option value="">{{ 'select'|__ }} ...</option>
+                                                {% for secondAniVal in animate %}
+                                                    <option {% if secondAniVal.divider %}disabled
+                                                            class="SelectSeparator" {% endif %}
+                                                            value="{% if secondAniVal.divider %}{{ secondAniVal.value }}{% else %}{{ secondAniVal.animate }}{% endif %}"
+                                                            {% if sl.second_ani == secondAniVal.animate %}selected{% endif %}>{{ secondAniVal.animate }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                            <label for="selectSecondAni{{ cid }}">{{ 'animation'|__ }}</label>
+                                        </div>
+                                        <span id="ani_preview{{ aniSecondRandom }}"
+                                              class="hide ani_preview ps-2 py-3 fs-6 d-inline-block text-danger"><b>animate</b></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>{# JOB PARENT SECTIONS END #}
+                </div>
+            </div>
+        </form>
+    </div><!--item-->
+</div>

@@ -58,7 +58,7 @@ class Hupa_Starter_V2_Admin_Ajax
      * @access   private
      * @var      array|object $data The AJAX DATA.
      */
-    private $data;
+    protected $data;
 
 
     private static $hupa_admin_ajax_instance;
@@ -131,15 +131,9 @@ class Hupa_Starter_V2_Admin_Ajax
         $this->theme_version = $theme_version;
         $this->main = $main;
         $this->twig = $twig;
-
-        $this->method     = '';
+        $this->method = $_POST['method'];
         if ( isset( $_POST['daten'] ) ) {
             $this->data   = $_POST['daten'];
-            $this->method = filter_var( $this->data['method'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH );
-        }
-
-        if ( ! $this->method ) {
-            $this->method = $_POST['method'];
         }
     }
 
@@ -152,9 +146,9 @@ class Hupa_Starter_V2_Admin_Ajax
 
         global $hupa_api_handle;
         global $hupa_optionen_class;
-        global $hupa_menu_helper;
         global $hupa_register_theme_options;
         global $wpdb;
+
         $record               = new stdClass();
         $responseJson         = new stdClass();
         $responseJson->status = false;
@@ -187,6 +181,11 @@ class Hupa_Starter_V2_Admin_Ajax
                         filter_input(INPUT_POST, 'show_uhr_aktive', FILTER_SANITIZE_STRING) ? $record->show_uhr_aktive = 1 : $record->show_uhr_aktive = 0;
                         filter_input(INPUT_POST, 'news_api_aktiv', FILTER_SANITIZE_STRING) ? $record->news_api_aktiv = 1 : $record->news_api_aktiv = 0;
 
+                        //$record->update_aktiv
+                        $apiJson = $this->main->get_license_config();
+                        $apiJson->update->update_aktiv=$record->update_aktiv;
+                        $config_file = Config::get('THEME_ADMIN_INCLUDES') . 'license/config.json';
+                        file_put_contents($config_file, json_encode( $apiJson) );
 
                         apply_filters('update_hupa_options', $record, 'wp_optionen');
                         $responseJson->spinner = true;
@@ -233,6 +232,23 @@ class Hupa_Starter_V2_Admin_Ajax
                         $responseJson->spinner = true;
                         break;
 
+                    case'theme_address':
+                        $icons = apply_filters('hupa_address_fields', null);
+                        $dataArr = [];
+                        foreach ($icons as $key => $val) {
+                            $data_item = [
+                              'id' => $key,
+                              'shortcode' => esc_html($val['shortcode']),
+                              'value' => apply_filters('cleanWhitespace', esc_html($_POST[$val['shortcode']])),
+                              'icon' => esc_html($_POST['icon_' . $val['shortcode']])
+                            ];
+                            $dataArr[] = $data_item;
+                        }
+                        update_option('tools_hupa_address', $dataArr);
+                        $responseJson->spinner = true;
+
+                        break;
+
                     case'smtp_settings':
                         $email_abs_name = filter_input(INPUT_POST, 'email_abs_name', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                         $email_adresse = filter_input(INPUT_POST, 'email_adresse', FILTER_VALIDATE_EMAIL);
@@ -276,6 +292,10 @@ class Hupa_Starter_V2_Admin_Ajax
                         $record->main_container = filter_input(INPUT_POST, 'main_container', FILTER_SANITIZE_NUMBER_INT);
 
                         $record->logo_size = filter_input(INPUT_POST, 'logo_size', FILTER_SANITIZE_NUMBER_INT);
+                        $record->logo_size_scroll = filter_input(INPUT_POST, 'logo_size_scroll', FILTER_SANITIZE_NUMBER_INT);
+                        $record->logo_size_mobil = filter_input(INPUT_POST, 'logo_size_mobil', FILTER_SANITIZE_NUMBER_INT);
+                        //$record->logo_size_login = filter_input(INPUT_POST, 'logo_size_login', FILTER_SANITIZE_NUMBER_INT);
+
                         $record->menu = filter_input(INPUT_POST, 'menu', FILTER_SANITIZE_NUMBER_INT);
                         $record->handy = filter_input(INPUT_POST, 'handy', FILTER_SANITIZE_NUMBER_INT);
 
@@ -489,65 +509,88 @@ class Hupa_Starter_V2_Admin_Ajax
                         filter_input(INPUT_POST, 'twitter_top_check', FILTER_SANITIZE_STRING) ? $twitter_top_check = 1 : $twitter_top_check = 0;
                         $twitter_share_txt = filter_input(INPUT_POST, 'twitter_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                         $twitter_url = filter_input(INPUT_POST, 'twitter_url', FILTER_VALIDATE_URL);
+                        filter_input(INPUT_POST, 'twitter_url_check', FILTER_SANITIZE_STRING) ? $twitter_url_check = 1 : $twitter_url_check = 0;
 
                         filter_input(INPUT_POST, 'facebook_post_check', FILTER_SANITIZE_STRING) ? $facebook_post_check = 1 : $facebook_post_check = 0;
                         filter_input(INPUT_POST, 'facebook_top_check', FILTER_SANITIZE_STRING) ? $facebook_top_check = 1 : $facebook_top_check = 0;
                         $facebook_share_txt = filter_input(INPUT_POST, 'facebook_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                         $facebook_url = filter_input(INPUT_POST, 'facebook_url', FILTER_VALIDATE_URL);
+                        filter_input(INPUT_POST, 'facebook_url_check', FILTER_SANITIZE_STRING) ? $facebook_url_check = 1 : $facebook_url_check = 0;
 
                         filter_input(INPUT_POST, 'whatsapp_post_check', FILTER_SANITIZE_STRING) ? $whatsapp_post_check = 1 : $whatsapp_post_check = 0;
                         filter_input(INPUT_POST, 'whatsapp_top_check', FILTER_SANITIZE_STRING) ? $whatsapp_top_check = 1 : $whatsapp_top_check = 0;
                         $whatsapp_share_txt = filter_input(INPUT_POST, 'whatsapp_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                         $whatsapp_url = filter_input(INPUT_POST, 'whatsapp_url', FILTER_VALIDATE_URL);
+                        filter_input(INPUT_POST, 'whatsapp_url_check', FILTER_SANITIZE_STRING) ? $whatsapp_url_check = 1 : $whatsapp_url_check = 0;
 
                         filter_input(INPUT_POST, 'pinterest_post_check', FILTER_SANITIZE_STRING) ? $pinterest_post_check = 1 : $pinterest_post_check = 0;
                         filter_input(INPUT_POST, 'pinterest_top_check', FILTER_SANITIZE_STRING) ? $pinterest_top_check = 1 : $pinterest_top_check = 0;
                         $pinterest_share_txt = filter_input(INPUT_POST, 'pinterest_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                         $pinterest_url = filter_input(INPUT_POST, 'pinterest_url', FILTER_VALIDATE_URL);
+                        filter_input(INPUT_POST, 'pinterest_url_check', FILTER_SANITIZE_STRING) ? $pinterest_url_check = 1 : $pinterest_url_check = 0;
 
                         filter_input(INPUT_POST, 'linkedin_post_check', FILTER_SANITIZE_STRING) ? $linkedin_post_check = 1 : $linkedin_post_check = 0;
                         filter_input(INPUT_POST, 'linkedin_top_check', FILTER_SANITIZE_STRING) ? $linkedin_top_check = 1 : $linkedin_top_check = 0;
                         $linkedin_share_txt = filter_input(INPUT_POST, 'linkedin_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                         $linkedin_url = filter_input(INPUT_POST, 'linkedin_url', FILTER_VALIDATE_URL);
+                        filter_input(INPUT_POST, 'linkedin_url_check', FILTER_SANITIZE_STRING) ? $linkedin_url_check = 1 : $linkedin_url_check = 0;
 
                         filter_input(INPUT_POST, 'reddit_post_check', FILTER_SANITIZE_STRING) ? $reddit_post_check = 1 : $reddit_post_check = 0;
                         filter_input(INPUT_POST, 'reddit_top_check', FILTER_SANITIZE_STRING) ? $reddit_top_check = 1 : $reddit_top_check = 0;
                         $reddit_share_txt = filter_input(INPUT_POST, 'reddit_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                         $reddit_url = filter_input(INPUT_POST, 'reddit_url', FILTER_VALIDATE_URL);
+                        filter_input(INPUT_POST, 'reddit_url_check', FILTER_SANITIZE_STRING) ? $reddit_url_check = 1 : $reddit_url_check = 0;
 
                         filter_input(INPUT_POST, 'tumblr_post_check', FILTER_SANITIZE_STRING) ? $tumblr_post_check = 1 : $tumblr_post_check = 0;
                         filter_input(INPUT_POST, 'tumblr_top_check', FILTER_SANITIZE_STRING) ? $tumblr_top_check = 1 : $tumblr_top_check = 0;
                         $tumblr_share_txt = filter_input(INPUT_POST, 'tumblr_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                         $tumblr_url = filter_input(INPUT_POST, 'tumblr_url', FILTER_VALIDATE_URL);
+                        filter_input(INPUT_POST, 'tumblr_url_check', FILTER_SANITIZE_STRING) ? $tumblr_url_check = 1 : $tumblr_url_check = 0;
 
                         filter_input(INPUT_POST, 'buffer_post_check', FILTER_SANITIZE_STRING) ? $buffer_post_check = 1 : $buffer_post_check = 0;
                         filter_input(INPUT_POST, 'buffer_top_check', FILTER_SANITIZE_STRING) ? $buffer_top_check = 1 : $buffer_top_check = 0;
                         $buffer_share_txt = filter_input(INPUT_POST, 'buffer_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                         $buffer_url = filter_input(INPUT_POST, 'buffer_url', FILTER_VALIDATE_URL);
+                        filter_input(INPUT_POST, 'buffer_url_check', FILTER_SANITIZE_STRING) ? $buffer_url_check = 1 : $buffer_url_check = 0;
 
                         filter_input(INPUT_POST, 'mix_post_check', FILTER_SANITIZE_STRING) ? $mix_post_check = 1 : $mix_post_check = 0;
                         filter_input(INPUT_POST, 'mix_top_check', FILTER_SANITIZE_STRING) ? $mix_top_check = 1 : $mix_top_check = 0;
                         $mix_share_txt = filter_input(INPUT_POST, 'mix_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                         $mix_url = filter_input(INPUT_POST, 'mix_url', FILTER_VALIDATE_URL);
+                        filter_input(INPUT_POST, 'mix_url_check', FILTER_SANITIZE_STRING) ? $mix_url_check = 1 : $mix_url_check = 0;
 
                         filter_input(INPUT_POST, 'vk_post_check', FILTER_SANITIZE_STRING) ? $vk_post_check = 1 : $vk_post_check = 0;
                         filter_input(INPUT_POST, 'vk_top_check', FILTER_SANITIZE_STRING) ? $vk_top_check = 1 : $vk_top_check = 0;
                         $vk_share_txt = filter_input(INPUT_POST, 'vk_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                         $vk_url = filter_input(INPUT_POST, 'vk_url', FILTER_VALIDATE_URL);
+                        filter_input(INPUT_POST, 'vk_url_check', FILTER_SANITIZE_STRING) ? $vk_url_check = 1 : $vk_url_check = 0;
 
                         filter_input(INPUT_POST, 'email_post_check', FILTER_SANITIZE_STRING) ? $email_post_check = 1 : $email_post_check = 0;
                         filter_input(INPUT_POST, 'email_top_check', FILTER_SANITIZE_STRING) ? $email_top_check = 1 : $email_top_check = 0;
                         $email_share_txt = filter_input(INPUT_POST, 'email_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                         $email_url = filter_input(INPUT_POST, 'email_url', FILTER_VALIDATE_URL);
+                        filter_input(INPUT_POST, 'email_url_check', FILTER_SANITIZE_STRING) ? $email_url_check = 1 : $email_url_check = 0;
 
                         filter_input(INPUT_POST, 'print_post_check', FILTER_SANITIZE_STRING) ? $print_post_check = 1 : $print_post_check = 0;
                         filter_input(INPUT_POST, 'print_top_check', FILTER_SANITIZE_STRING) ? $print_top_check = 1 : $print_top_check = 0;
+
+                        $facebook_url_check && $facebook_url ? $facebookUrlCheck = true : $facebookUrlCheck = false;
+                        $twitter_url_check && $twitter_url ? $twitterUrlCheck = true : $twitterUrlCheck = false;
+                        $whatsapp_url_check && $whatsapp_url ? $whatsappUrlCheck = true : $whatsappUrlCheck = false;
+                        $pinterest_url_check && $pinterest_url ? $pinterestUrlCheck = true : $pinterestUrlCheck = false;
+                        $linkedin_url_check && $linkedin_url ? $linkedinUrlCheck = true : $linkedinUrlCheck = false;
+                        $reddit_url_check && $reddit_url ? $redditUrlCheck = true : $redditUrlCheck = false;
+                        $tumblr_post_check && $tumblr_url ? $tumblrUrlCheck = true : $tumblrUrlCheck = false;
+                        $buffer_url_check && $buffer_url ? $bufferUrlCheck = true : $bufferUrlCheck = false;
+                        $mix_url_check &&  $mix_url ?  $mixUrlCheck = true : $mixUrlCheck = false;
+                        $vk_url_check &&  $vk_url ?  $vkUrlCheck = true : $vkUrlCheck = false;
 
                         $media = [
                             'social_media' => [
                                 'facebook' => [
                                     'slug' => 'facebook_',
                                     'post_check' => $facebook_post_check,
+                                    'url_check' => $facebookUrlCheck,
                                     'top_check' => $facebook_top_check,
                                     'share_txt' => $facebook_share_txt,
                                     'url' => $facebook_url,
@@ -555,6 +598,7 @@ class Hupa_Starter_V2_Admin_Ajax
                                 'twitter' => [
                                     'slug' => 'twitter_',
                                     'post_check' => $twitter_post_check,
+                                    'url_check' => $twitterUrlCheck,
                                     'top_check' => $twitter_top_check,
                                     'share_txt' => $twitter_share_txt,
                                     'url' => $twitter_url,
@@ -562,6 +606,7 @@ class Hupa_Starter_V2_Admin_Ajax
                                 'whatsapp' => [
                                     'slug' => 'whatsapp_',
                                     'post_check' => $whatsapp_post_check,
+                                    'url_check' => $whatsappUrlCheck,
                                     'top_check' => $whatsapp_top_check,
                                     'share_txt' => $whatsapp_share_txt,
                                     'url' => $whatsapp_url,
@@ -569,6 +614,7 @@ class Hupa_Starter_V2_Admin_Ajax
                                 'pinterest' => [
                                     'slug' => 'pinterest_',
                                     'post_check' => $pinterest_post_check,
+                                    'url_check' => $pinterestUrlCheck,
                                     'top_check' => $pinterest_top_check,
                                     'share_txt' => $pinterest_share_txt,
                                     'url' => $pinterest_url,
@@ -576,6 +622,7 @@ class Hupa_Starter_V2_Admin_Ajax
                                 'linkedin' => [
                                     'slug' => 'linkedin_',
                                     'post_check' => $linkedin_post_check,
+                                    'url_check' => $linkedinUrlCheck,
                                     'top_check' => $linkedin_top_check,
                                     'share_txt' => $linkedin_share_txt,
                                     'url' => $linkedin_url,
@@ -583,6 +630,7 @@ class Hupa_Starter_V2_Admin_Ajax
                                 'reddit' => [
                                     'slug' => 'reddit_',
                                     'post_check' => $reddit_post_check,
+                                    'url_check' => $redditUrlCheck,
                                     'top_check' => $reddit_top_check,
                                     'share_txt' => $reddit_share_txt,
                                     'url' => $reddit_url,
@@ -590,6 +638,7 @@ class Hupa_Starter_V2_Admin_Ajax
                                 'tumblr' => [
                                     'slug' => 'tumblr_',
                                     'post_check' => $tumblr_post_check,
+                                    'url_check' => $tumblrUrlCheck,
                                     'top_check' => $tumblr_top_check,
                                     'share_txt' => $tumblr_share_txt,
                                     'url' => $tumblr_url,
@@ -597,6 +646,7 @@ class Hupa_Starter_V2_Admin_Ajax
                                 'buffer' => [
                                     'slug' => 'buffer_',
                                     'post_check' => $buffer_post_check,
+                                    'url_check' => $bufferUrlCheck,
                                     'top_check' => $buffer_top_check,
                                     'share_txt' => $buffer_share_txt,
                                     'url' => $buffer_url,
@@ -604,6 +654,7 @@ class Hupa_Starter_V2_Admin_Ajax
                                 'mix' => [
                                     'slug' => 'mix_',
                                     'post_check' => $mix_post_check,
+                                    'url_check' => $mixUrlCheck,
                                     'top_check' => $mix_top_check,
                                     'share_txt' => $mix_share_txt,
                                     'url' => $mix_url,
@@ -611,6 +662,7 @@ class Hupa_Starter_V2_Admin_Ajax
                                 'vk' => [
                                     'slug' => 'vk_',
                                     'post_check' => $vk_post_check,
+                                    'url_check' => $vkUrlCheck,
                                     'top_check' => $vk_top_check,
                                     'share_txt' => $vk_share_txt,
                                     'url' => $vk_url,
@@ -618,6 +670,7 @@ class Hupa_Starter_V2_Admin_Ajax
                                 'email' => [
                                     'slug' => 'email_',
                                     'post_check' => $email_post_check,
+                                    'url_check' => $email_url_check,
                                     'top_check' => $email_top_check,
                                     'share_txt' => $email_share_txt,
                                     'url' => $email_url,
@@ -625,6 +678,7 @@ class Hupa_Starter_V2_Admin_Ajax
                                 'print' => [
                                     'slug' => 'print_',
                                     'post_check' => $print_post_check,
+                                    'url_check' => false,
                                     'top_check' => $print_top_check,
                                     'share_txt' => '',
                                     'url' => '',
@@ -745,6 +799,12 @@ class Hupa_Starter_V2_Admin_Ajax
                         filter_input(INPUT_POST, 'wp_debug_log', FILTER_SANITIZE_STRING) ? $wp_debug_log = 1 : $wp_debug_log = 0;
                         filter_input(INPUT_POST, 'hupa_wp_script_debug', FILTER_SANITIZE_STRING) ? $hupa_wp_script_debug = 1 : $hupa_wp_script_debug = 0;
 
+                        //Optionen
+                        filter_input(INPUT_POST, 'hupa_wp_automatic_update', FILTER_SANITIZE_STRING) ? $hupa_wp_automatic_update = 1 : $hupa_wp_automatic_update = 0;
+                        filter_input(INPUT_POST, 'hupa_wp_disable_wp_cron', FILTER_SANITIZE_STRING) ? $hupa_wp_disable_wp_cron = 1 : $hupa_wp_disable_wp_cron = 0;
+                        filter_input(INPUT_POST, 'hupa_wp_disallow_file_edit', FILTER_SANITIZE_STRING) ? $hupa_wp_disallow_file_edit = 1 : $hupa_wp_disallow_file_edit = 0;
+                        filter_input(INPUT_POST, 'hupa_wp_disallow_file_mods', FILTER_SANITIZE_STRING) ? $hupa_wp_disallow_file_mods = 1 : $hupa_wp_disallow_file_mods = 0;
+
                         $wp_debug_radio = filter_input(INPUT_POST, 'debug', FILTER_VALIDATE_INT);
 
                         filter_input(INPUT_POST, 'show_fatal_error', FILTER_SANITIZE_STRING) ? $show_fatal_error = 1 : $show_fatal_error = 0;
@@ -770,6 +830,12 @@ class Hupa_Starter_V2_Admin_Ajax
                         update_option('wp_debug_display', $wp_debug_display);
                         update_option('hupa_wp_script_debug', $hupa_wp_script_debug);
 
+                        //Optionen
+                        update_option('hupa_wp_automatic_update', $hupa_wp_automatic_update);
+                        update_option('hupa_wp_disable_wp_cron', $hupa_wp_disable_wp_cron);
+                        update_option('hupa_wp_disallow_file_edit', $hupa_wp_disallow_file_edit);
+                        update_option('hupa_wp_disallow_file_mods', $hupa_wp_disallow_file_mods);
+
                         update_option('hupa_show_fatal_error', $show_fatal_error);
                         update_option('hupa_db_repair', $db_repair);
 
@@ -794,6 +860,67 @@ class Hupa_Starter_V2_Admin_Ajax
                             }
                         } else {
                             $hupa_optionen_class->theme_deactivate_mu_plugin();
+                        }
+
+
+                        //JOB AUTOMATIC_UPDATER_DISABLED
+                        if ($hupa_wp_automatic_update) {
+                            $create = $hupa_optionen_class->add_create_config_put('AUTOMATIC_UPDATER_DISABLED', 'AUTOMATIC UPDATER DISABLED CACHE', 1);
+                            if (!$create->status) {
+                                $responseJson->msg = $create->msg;
+                                return $responseJson;
+                            }
+                        } else {
+                            $delete = $hupa_optionen_class->delete_config_put('AUTOMATIC_UPDATER_DISABLED', 'AUTOMATIC UPDATER DISABLED', 1);
+                            if (!$delete->status) {
+                                $responseJson->msg = $delete->msg;
+                                return $responseJson;
+                            }
+                        }
+
+                        //JOB DISABLE_WP_CRON
+                        if ($hupa_wp_disable_wp_cron) {
+                            $create = $hupa_optionen_class->add_create_config_put('DISABLE_WP_CRON', 'DISABLE WP CRON', 1);
+                            if (!$create->status) {
+                                $responseJson->msg = $create->msg;
+                                return $responseJson;
+                            }
+                        } else {
+                            $delete = $hupa_optionen_class->delete_config_put('DISABLE_WP_CRON', 'DISABLE WP CRON', 1);
+                            if (!$delete->status) {
+                                $responseJson->msg = $delete->msg;
+                                return $responseJson;
+                            }
+                        }
+
+                        //JOB DISALLOW_FILE_EDIT
+                        if ($hupa_wp_disallow_file_edit) {
+                            $create = $hupa_optionen_class->add_create_config_put('DISALLOW_FILE_EDIT', 'DISALLOW FILE EDIT', 1);
+                            if (!$create->status) {
+                                $responseJson->msg = $create->msg;
+                                return $responseJson;
+                            }
+                        } else {
+                            $delete = $hupa_optionen_class->delete_config_put('DISALLOW_FILE_EDIT', 'DISALLOW FILE EDIT', 1);
+                            if (!$delete->status) {
+                                $responseJson->msg = $delete->msg;
+                                return $responseJson;
+                            }
+                        }
+
+                        //JOB DISALLOW_FILE_MODS
+                        if ($hupa_wp_disallow_file_mods) {
+                            $create = $hupa_optionen_class->add_create_config_put('DISALLOW_FILE_MODS', 'DISALLOW FILE MODS', 1);
+                            if (!$create->status) {
+                                $responseJson->msg = $create->msg;
+                                return $responseJson;
+                            }
+                        } else {
+                            $delete = $hupa_optionen_class->delete_config_put('DISALLOW_FILE_MODS', 'DISALLOW FILE MODS', 1);
+                            if (!$delete->status) {
+                                $responseJson->msg = $delete->msg;
+                                return $responseJson;
+                            }
                         }
 
                         //JOB WP CACHE
@@ -1019,7 +1146,7 @@ class Hupa_Starter_V2_Admin_Ajax
                         update_option('hupa_sort_options', $options);
                         $responseJson->status = true;
                         $responseJson->spinner = true;
-                        break;
+                        return $responseJson;
 
                     case 'theme_options_duplicate':
                         $show_duplicate_interfaces = array($_POST['show_duplicate_interfaces']);
@@ -1036,7 +1163,7 @@ class Hupa_Starter_V2_Admin_Ajax
                         update_option('hupa_duplicate_options', $options);
                         $responseJson->status = true;
                         $responseJson->spinner = true;
-                        break;
+                        return $responseJson;
                 }
 
                 $responseJson->status = true;
@@ -1315,8 +1442,8 @@ class Hupa_Starter_V2_Admin_Ajax
 
 
             case'theme_google_maps':
-                $data = json_decode(stripslashes_deep($_POST['daten']));
 
+                $data = json_decode(stripslashes_deep($_POST['daten']));
                 $record->map_apikey = filter_var($data->map_apikey, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                 filter_var($data->map_datenschutz, FILTER_SANITIZE_STRING) ? $record->map_datenschutz = 1 : $record->map_datenschutz = 0;
                 filter_var($data->map_colorcheck, FILTER_SANITIZE_STRING) ? $record->map_colorcheck = 1 : $record->map_colorcheck = 0;
@@ -1404,10 +1531,8 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
             case 'get_google_maps_pins':
                 $handle = filter_input(INPUT_POST, 'handle', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-                 $dbPins = get_hupa_option('map_pins');
+                $dbPins = get_hupa_option('map_pins');
 
-
-              /*
 
                 $retArr = [];
                 foreach ($dbPins as $tmp) {
@@ -1417,17 +1542,17 @@ class Hupa_Starter_V2_Admin_Ajax
                             $imdId = $tmp->custom_pin_img;
                             $img = wp_get_attachment_image_src($tmp->custom_pin_img);
                             $imgUrl = $img[0];
-                            $imgStPin = '<img class="range-image img-fluid" src="' . $img[0] . '" width="' . $tmp->custom_width + $factor . '" height="' . $tmp->custom_height + $factor . '">';
+                            $imgStPin = '<img class="range-image img-fluid" src="'.$img[0].'" alt="" width="'.($tmp->custom_width + $factor).'" height="'.($tmp->custom_height + $factor).'">';
                         } else {
                             if (get_hupa_option('map_standard_pin')) {
                                 $imdId = get_hupa_option('map_standard_pin');
                                 $img = wp_get_attachment_image_src($imdId);
                                 $imgUrl = $img[0];
-                                $imgStPin = '<img class="range-image img-fluid" src="' . $img[0] . '" width="' . get_hupa_option('map_pin_width') + $factor . '" height="' . get_hupa_option('map_pin_height') + $factor . '">';
+                                $imgStPin = '<img class="range-image img-fluid" src="'.$img[0].'" alt="" width="'.(get_hupa_option('map_pin_width') + $factor).'" height="'.(get_hupa_option('map_pin_height') + $factor).'">';
                             } else {
                                 $imdId = false;
                                 $imgUrl = Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/img-placeholder.svg';
-                                $imgStPin = '<img class="img-fluid" src="' . Config::get('WP_THEME_ADMIN_URL') . '\'admin-core/assets/images/img-placeholder.svg\'" alt="" width="' . $factor + 25 . '">';
+                                $imgStPin = '<img class="img-fluid" src="'.Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/img-placeholder.svg'.'" alt="" width="'.($factor + 25).'">';
                             }
                         }
                     } else {
@@ -1435,11 +1560,11 @@ class Hupa_Starter_V2_Admin_Ajax
                         if ($imdId) {
                             $img = wp_get_attachment_image_src($imdId);
                             $imgUrl = $img[0];
-                            $imgStPin = '<img class="range-image img-fluid" src="' . $img[0] . '" width="' . get_hupa_option('map_pin_width') + $factor . '" height="' . get_hupa_option('map_pin_height') + $factor . '">';
+                            $imgStPin = '<img class="range-image img-fluid" src="'.$img[0].'" alt="" width="'.(get_hupa_option('map_pin_width') + $factor).'" height="'.(get_hupa_option('map_pin_height') + $factor).'">';
                         } else {
                             $imdId = false;
                             $imgUrl = Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/img-placeholder.svg';
-                            $imgStPin = '<img class="img-fluid" src="' . Config::get('WP_THEME_ADMIN_URL') . '\'admin-core/assets/images/img-placeholder.svg\'" alt="" width="' . $factor + 25 . '">';
+                            $imgStPin = '<img class="img-fluid" src="'.Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/img-placeholder.svg'.'" alt="" width="'.($factor + 25).'">';
                         }
                     }
                     $retItem = [
@@ -1456,7 +1581,8 @@ class Hupa_Starter_V2_Admin_Ajax
                     $retArr[] = $retItem;
                 }
                 $responseJson->pins = $retArr;
-                $responseJson->maps_template = true;*/
+                $responseJson->maps_template = true;
+                $responseJson->msg = '';
                 break;
 
             case 'change_sortable_position':
@@ -1480,6 +1606,7 @@ class Hupa_Starter_V2_Admin_Ajax
 
             case'add_carousel':
                 $bezeichnung = filter_input(INPUT_POST, 'bezeichnung', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                $not_carousel = filter_input(INPUT_POST, 'not_carousel', FILTER_SANITIZE_NUMBER_INT);
                 if (!$bezeichnung) {
                     $responseJson->status = false;
                     $responseJson->msg = apply_filters('get_theme_language', 'ajax-return-msg')->language->error;
@@ -1518,9 +1645,25 @@ class Hupa_Starter_V2_Admin_Ajax
                 }
 
                 $args = sprintf('WHERE id=%d', $setCarousel->id);
-                $responseJson->renderData = apply_filters('get_carousel_komplett_data', $args);
+                $carousel = apply_filters('get_carousel_komplett_data', $args);
+                $data = apply_filters('hupaObject2array', $carousel);
+
+                $data['r'] = $data['record'][0];
+                $data['admin_url'] = Config::get('WP_THEME_ADMIN_URL');
+                $twigTemplate = '@partials-loops/carousel-loop.twig';
+                unset($data['record']);
+
+                try {
+                    $template = $this->twig->render( $twigTemplate,  $data );
+                    $responseJson->template = apply_filters('compress_template', $template);
+                } catch ( LoaderError | SyntaxError | RuntimeError $e ) {
+                    echo $e->getMessage();
+                } catch ( Throwable $e ) {
+                    echo $e->getMessage();
+                }
+
                 $responseJson->render = 'carousel';
-                $responseJson->status = '';
+                $responseJson->status = true;
                 $responseJson->reset_form = true;
                 break;
 
@@ -1545,6 +1688,13 @@ class Hupa_Starter_V2_Admin_Ajax
 
                 $container_height = filter_input(INPUT_POST, 'container_height', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                 $record->carousel_image_size = filter_input(INPUT_POST, 'carousel_image_size', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+
+                filter_input(INPUT_POST, 'data_stop_hover', FILTER_SANITIZE_STRING) ? $record->data_stop_hover = 1 : $record->data_stop_hover = 0;
+                $data_static_text = filter_input(INPUT_POST, 'data_static_text');
+                $record->data_static_text = esc_html(apply_filters('clean_white_space', $data_static_text));
+
+                filter_input(INPUT_POST, 'data_touch_active', FILTER_SANITIZE_STRING) ? $record->data_touch_active = 1 : $record->data_touch_active = 0;
+                filter_input(INPUT_POST, 'data_keyboard_active', FILTER_SANITIZE_STRING) ? $record->data_keyboard_active = 1 : $record->data_keyboard_active = 0;
 
                 $containerHeight = preg_replace('/\s+/', '', $container_height);
 
@@ -1588,9 +1738,12 @@ class Hupa_Starter_V2_Admin_Ajax
                 filter_input(INPUT_POST, 'caption_aktiv', FILTER_SANITIZE_STRING) ? $record->caption_aktiv = 1 : $record->caption_aktiv = 0;
                 $data_interval = filter_input(INPUT_POST, 'data_interval', FILTER_SANITIZE_NUMBER_INT);
                 $record->data_alt = filter_input(INPUT_POST, 'data_alt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-
+                $record->data_title_tag = filter_input(INPUT_POST, 'data_title_tag', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                filter_input(INPUT_POST, 'data_title_active', FILTER_SANITIZE_STRING) ? $record->data_title_active = 1 : $record->data_title_active = 0;
                 $record->font_color = filter_input(INPUT_POST, 'font_color', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-                $record->first_caption = filter_input(INPUT_POST, 'first_caption', FILTER_SANITIZE_STRING);
+
+                $first_caption = filter_input(INPUT_POST, 'first_caption');
+
                 $record->first_selector = filter_input(INPUT_POST, 'first_selector', FILTER_SANITIZE_NUMBER_INT);
                 $record->first_css = filter_input(INPUT_POST, 'first_css', FILTER_SANITIZE_STRING);
                 $first_font = filter_input(INPUT_POST, 'first_font', FILTER_SANITIZE_STRING);
@@ -1599,7 +1752,8 @@ class Hupa_Starter_V2_Admin_Ajax
                 $record->first_height = filter_input(INPUT_POST, 'first_height', FILTER_SANITIZE_STRING);
                 $record->first_ani = filter_input(INPUT_POST, 'first_ani', FILTER_SANITIZE_STRING);
 
-                $record->second_caption = filter_input(INPUT_POST, 'second_caption', FILTER_SANITIZE_STRING);
+                $second_caption = filter_input(INPUT_POST, 'second_caption');
+
                 $record->second_css = filter_input(INPUT_POST, 'second_css', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                 $second_font = filter_input(INPUT_POST, 'second_font', FILTER_SANITIZE_STRING);
                 $second_style = filter_input(INPUT_POST, 'second_style', FILTER_SANITIZE_NUMBER_INT);
@@ -1610,9 +1764,10 @@ class Hupa_Starter_V2_Admin_Ajax
                 $cid = explode('_', $id);
                 $record->id = $cid[1];
                 $record->carousel_id = $cid[0];
+                $record->first_caption = esc_html(apply_filters('clean_white_space', $first_caption));
+                $record->second_caption = esc_html(apply_filters('clean_white_space', $second_caption));
 
-
-                $regEx = '/\d{5}/is';
+                $regEx = '/\d{5,10}/is';
                 $btnCount = 0;
                 $btnArg = [];
                 $btnId = [];
@@ -1707,7 +1862,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 $responseJson->msg = date('H:i:s', current_time('timestamp'));
                 break;
 
-            case'get_fa_icons':
+            case'get_fa_slider_icons':
                 $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
                 $formId = filter_input(INPUT_POST, 'formId', FILTER_SANITIZE_STRING);
                 $status = false;
@@ -1722,7 +1877,6 @@ class Hupa_Starter_V2_Admin_Ajax
                 $regEx = '/fa.*?\s/m';
                 preg_match_all($regEx, $cheatSet, $matches, PREG_SET_ORDER, 0);
                 if (!isset($matches)) {
-                    $responseJson->status = $status;
                     return $responseJson;
                 }
 
@@ -1789,14 +1943,66 @@ class Hupa_Starter_V2_Admin_Ajax
                 $recordData['animate'] = apply_filters('get_animate_option', false);
                 $recordData['selector'] = apply_filters('get_container_selector', false);
                 $recordData['familySelect'] = apply_filters('get_font_family_select', false);
-                $sliderArr[] = $slider;
+                $recordData['id'] = $id;
 
-                $responseJson->record = $recordData;
-                $responseJson->lang = apply_filters('get_theme_language', 'carousel')->language;
-                $responseJson->carouselId = $id;
-                $responseJson->slider = $sliderArr;
+                $data = apply_filters('hupaObject2array', $recordData);
+                $data['r'] = $data;
+                $data['sl'] = apply_filters('hupaObject2array', $slider);
+                $data['admin_url'] = Config::get('WP_THEME_ADMIN_URL');
+                unset($data['r']['animate']);
+                unset($data['r']['selector']);
+                unset($data['r']['familySelect']);
+
+                try {
+                    $template = $this->twig->render( '@partials-loops/slider-items-loop.twig',  $data );
+                    $responseJson->template = apply_filters('compress_template', $template);
+                } catch ( LoaderError | SyntaxError | RuntimeError $e ) {
+                    echo $e->getMessage();
+                } catch ( Throwable $e ) {
+                    echo $e->getMessage();
+                }
+                $responseJson->id = $id;
                 $responseJson->status = true;
                 $responseJson->render = 'slider';
+                break;
+
+            case'add_caption_btn':
+                $rand = filter_input(INPUT_POST, 'rand', FILTER_SANITIZE_NUMBER_INT);
+                $slider_id = filter_input(INPUT_POST, 'slider_id', FILTER_SANITIZE_NUMBER_INT);
+                $rand_id = filter_input(INPUT_POST, 'rand-id', FILTER_SANITIZE_NUMBER_INT);
+
+                $pages = apply_filters('get_theme_pages', false);
+                $post = apply_filters('get_theme_posts', false);
+                if ($post) {
+                    $selectPages = array_merge_recursive($pages, $post);
+                } else {
+                    $selectPages = $pages;
+                }
+
+                $data = [];
+                $data['rand'] = $rand;
+                $data['btnRandom'] = $rand_id;
+                $data['id'] = $slider_id;
+                $data['slideBtn'] = [];
+                $data['selectPages'] = $selectPages;
+                $data['btn_add'] = 1;
+
+                try {
+                    $template = $this->twig->render( '@partials-loops/carousel-btn-loop.twig',  $data );
+                    $responseJson->template = apply_filters('compress_template', $template);
+                } catch ( LoaderError | SyntaxError | RuntimeError $e ) {
+                    $responseJson->msg = $e->getMessage();
+                    return $responseJson;
+                } catch ( Throwable $e ) {
+                    $responseJson->msg = $e->getMessage();
+                    return $responseJson;
+                }
+                $responseJson->id = $slider_id;
+                $responseJson->rand = $rand;
+                $responseJson->rand_id = $rand_id;
+                $responseJson->status = true;
+                $responseJson->render = 'button';
+
                 break;
 
             case 'install_api_font':
@@ -1929,7 +2135,6 @@ class Hupa_Starter_V2_Admin_Ajax
 
             case 'load_install_fonts';
                 $family = apply_filters('get_font_family_select', false);
-                $style = apply_filters('get_font_style_select', 'Roboto');
                 $fontsArr = [];
                 foreach ($family as $tmp) {
                     if ($tmp->family == 'Roboto') {
@@ -1941,7 +2146,20 @@ class Hupa_Starter_V2_Admin_Ajax
                     ];
                     $fontsArr[] = $fonts_item;
                 }
-                $responseJson->record = $fontsArr;
+
+                $data['fonts'] = apply_filters('hupaObject2array', $fontsArr);
+
+                try {
+                    $template = $this->twig->render( '@partials-loops/install-fonts-loop.twig',  $data );
+                    $responseJson->template = apply_filters('compress_template', $template);
+                } catch ( LoaderError | SyntaxError | RuntimeError $e ) {
+                    $responseJson->msg = $e->getMessage();
+                    return $responseJson;
+                } catch ( Throwable $e ) {
+                    $responseJson->msg = $e->getMessage();
+                    return $responseJson;
+                }
+
                 $responseJson->method = $this->method;
                 $responseJson->status = true;
 

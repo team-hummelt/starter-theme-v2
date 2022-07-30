@@ -1,7 +1,15 @@
 <?php
 
 namespace Hupa\Optionen;
-
+/**
+ * The admin-specific Admin functionality of the theme.
+ *
+ * @link       https://wwdh.de
+ * @since      2.0.0
+ *
+ * @package    Hupa_Starterter_v2
+ * @subpackage Hupa_Starterter_v2/includes/Class
+ */
 use Hupa\StarterThemeV2\HupaCarouselTrait;
 use Hupa\StarterThemeV2\HupaOptionTrait;
 use HupaStarterThemeV2;
@@ -106,7 +114,7 @@ class HupaStarterThemeOptionen
             'message' => $message
         ];
 
-        $remoteApi = HupaApiServerHandle::init();
+        $remoteApi = HupaApiServerHandle::init($this->basename, $this->theme_version, $this->main);
         $sendErr = $remoteApi->hupaPOSTApiResource('error-log', $body);
     }
 
@@ -229,7 +237,7 @@ class HupaStarterThemeOptionen
         $linecontent = " ";
         $contents = file($file);
         $linenumber = sizeof($file)-1;
-        $linecontet = $contents[$linenumber];
+        $linecontent = $contents[$linenumber];
         unset($contents,$linenumber);
         return $linecontent;
     }

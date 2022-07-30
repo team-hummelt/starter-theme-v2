@@ -1,0 +1,6 @@
+{% extends "@partials-layout/carousel-layout.twig" %}
+{% block content %}
+    {% for r in record %}
+        {{ include('@partials-loops/carousel-loop.twig') }}
+    {% endfor %}
+{% endblock %}

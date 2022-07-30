@@ -2,7 +2,6 @@
 
 namespace Hupa\StarterThemeV2;
 
-use stdClass;
 
 defined('ABSPATH') or die();
 
@@ -11,7 +10,6 @@ defined('ABSPATH') or die();
  * @package Hummelt & Partner WordPress Theme
  * Copyright 2021, Jens Wiecker
  * License: Commercial - goto https://www.hummelt-werbeagentur.de/
- * https://www.hummelt-werbeagentur.de/
  */
 trait HupaOptionTrait
 {
@@ -43,6 +41,9 @@ trait HupaOptionTrait
     protected string $edit_link = 'edit_link';
     protected string $login_img_aktiv = 'login_img_aktiv';
     protected string $logo_size = 'logo_size';
+    protected string $logo_size_scroll = 'logo_size_scroll';
+    protected string $logo_size_mobil = 'logo_size_mobil';
+    protected string $logo_size_login = 'logo_size_login';
     protected string $menu = 'menu';
     protected string $handy = 'handy';
     protected string $fw_top = 'fw_top';
@@ -293,6 +294,7 @@ trait HupaOptionTrait
     protected string $social_post_check = 'post_check';
     protected string $social_top_check = 'top_check';
     protected string $social_share_txt = 'share_txt';
+    protected string $social_url_check = 'url_check';
     protected string $social_url = 'url';
     protected string $social_btn = 'btn';
     protected string $social_icon = 'icon';
@@ -317,19 +319,22 @@ trait HupaOptionTrait
             =================================================*/
             'theme_wp_general' => [
                 $this->logo_image => 0,
-                $this->top_menu_aktiv => 1,
+                $this->top_menu_aktiv => 0,
                 $this->top_area_container => 1,
                 $this->menu_container => 1,
                 $this->main_container => 1,
                 $this->login_image => 0,
                 $this->fix_header => 1,
-                $this->fix_footer => 1,
+                $this->fix_footer => 0,
                 $this->scroll_top => 1,
                 $this->login_img_aktiv => 1,
-                $this->logo_size => 200,
+                $this->logo_size => 50,
+                $this->logo_size_scroll => 40,
+                $this->logo_size_mobil => 35,
+                $this->logo_size_login => 200,
                 $this->menu => 1,
                 $this->handy => 1,
-                $this->edit_link => 1,
+                $this->edit_link => 0,
                 $this->fw_top => 0,
                 $this->fw_bottom => 0,
                 $this->fw_left => 0,
@@ -384,7 +389,6 @@ trait HupaOptionTrait
 
                 $this->hupa_select_404 = 0,
 
-
                 $this->archiv_template => 1,
                 $this->autoren_template => 1,
                 $this->post_kategorie => 1,
@@ -404,7 +408,7 @@ trait HupaOptionTrait
             ================= SETTINGS WordPress OPTIONS =================
             ==============================================================*/
             'theme_wp_optionen' => [
-                $this->update_aktiv = 1,
+                $this->update_aktiv = 0,
                 $this->svg => 1,
                 $this->gutenberg => 0,
                 $this->gb_widget => 1,
@@ -423,7 +427,7 @@ trait HupaOptionTrait
             ===============================================*/
             'theme_fonts' => [
                 $this->prefix_h1 . $this->font_family => 'Roboto',
-                $this->prefix_h1 . $this->font_style => 3,
+                $this->prefix_h1 . $this->font_style => 2,
                 $this->prefix_h1 . $this->font_size => 40,
                 $this->prefix_h1 . $this->font_height => 1.5,
                 $this->prefix_h1 . $this->font_bs_check => 0,
@@ -431,7 +435,7 @@ trait HupaOptionTrait
                 $this->prefix_h1 . $this->font_color => '#3c434a',
 
                 $this->prefix_h2 . $this->font_family => 'Roboto',
-                $this->prefix_h2 . $this->font_style => 3,
+                $this->prefix_h2 . $this->font_style => 2,
                 $this->prefix_h2 . $this->font_size => 32,
                 $this->prefix_h2 . $this->font_height => 1.5,
                 $this->prefix_h2 . $this->font_bs_check => 0,
@@ -439,7 +443,7 @@ trait HupaOptionTrait
                 $this->prefix_h2 . $this->font_color => '#3c434a',
 
                 $this->prefix_h3 . $this->font_family => 'Roboto',
-                $this->prefix_h3 . $this->font_style => 3,
+                $this->prefix_h3 . $this->font_style => 2,
                 $this->prefix_h3 . $this->font_size => 28,
                 $this->prefix_h3 . $this->font_height => 1.5,
                 $this->prefix_h3 . $this->font_bs_check => 0,
@@ -447,7 +451,7 @@ trait HupaOptionTrait
                 $this->prefix_h3 . $this->font_color => '#3c434a',
 
                 $this->prefix_h4 . $this->font_family => 'Roboto',
-                $this->prefix_h4 . $this->font_style => 3,
+                $this->prefix_h4 . $this->font_style => 2,
                 $this->prefix_h4 . $this->font_size => 24,
                 $this->prefix_h4 . $this->font_height => 1.5,
                 $this->prefix_h4 . $this->font_bs_check => 0,
@@ -455,7 +459,7 @@ trait HupaOptionTrait
                 $this->prefix_h4 . $this->font_color => '#3c434a',
 
                 $this->prefix_h5 . $this->font_family => 'Roboto',
-                $this->prefix_h5 . $this->font_style => 3,
+                $this->prefix_h5 . $this->font_style => 2,
                 $this->prefix_h5 . $this->font_size => 20,
                 $this->prefix_h5 . $this->font_height => 1.5,
                 $this->prefix_h5 . $this->font_bs_check => 0,
@@ -463,7 +467,7 @@ trait HupaOptionTrait
                 $this->prefix_h5 . $this->font_color => '#3c434a',
 
                 $this->prefix_h6 . $this->font_family => 'Roboto',
-                $this->prefix_h6 . $this->font_style => 3,
+                $this->prefix_h6 . $this->font_style => 2,
                 $this->prefix_h6 . $this->font_size => 16,
                 $this->prefix_h6 . $this->font_height => 1.5,
                 $this->prefix_h6 . $this->font_bs_check => 0,
@@ -481,7 +485,7 @@ trait HupaOptionTrait
 
                 //Top Footer Body
                 $this->prefix_top_footer_body . $this->font_family => 'Roboto',
-                $this->prefix_top_footer_body . $this->font_style => 3,
+                $this->prefix_top_footer_body . $this->font_style => 9,
                 $this->prefix_top_footer_body . $this->font_size => 16,
                 $this->prefix_top_footer_body . $this->font_height => 1.5,
                 $this->prefix_top_footer_body . $this->font_bs_check => 0,
@@ -490,7 +494,7 @@ trait HupaOptionTrait
 
                 //BODY
                 $this->prefix_body . $this->font_family => 'Roboto',
-                $this->prefix_body . $this->font_style => 3,
+                $this->prefix_body . $this->font_style => 9,
                 $this->prefix_body . $this->font_size => 16,
                 $this->prefix_body . $this->font_height => 1.5,
                 $this->prefix_body . $this->font_bs_check => 0,
@@ -499,7 +503,7 @@ trait HupaOptionTrait
 
                 //WIDGET //TODO Widget Body
                 $this->prefix_widget . $this->font_family => 'Roboto',
-                $this->prefix_widget . $this->font_style => 11,
+                $this->prefix_widget . $this->font_style => 10,
                 $this->prefix_widget . $this->font_size => 21,
                 $this->prefix_widget . $this->font_height => 1.5,
                 $this->prefix_widget . $this->font_bs_check => 0,
@@ -508,7 +512,7 @@ trait HupaOptionTrait
 
                 //UNTERTITEL
                 $this->prefix_under . $this->font_family => 'Roboto',
-                $this->prefix_under . $this->font_style => 3,
+                $this->prefix_under . $this->font_style => 9,
                 $this->prefix_under . $this->font_size => 12,
                 $this->prefix_under . $this->font_height => 1.5,
                 $this->prefix_under . $this->font_bs_check => 0,
@@ -526,7 +530,7 @@ trait HupaOptionTrait
 
                 //BUTTON
                 $this->prefix_btn . $this->font_family => 'Roboto',
-                $this->prefix_btn . $this->font_style => 3,
+                $this->prefix_btn . $this->font_style => 9,
                 $this->prefix_btn . $this->font_size => 16,
                 $this->prefix_btn . $this->font_height => 1.5,
                 $this->prefix_btn . $this->font_bs_check => 0,
@@ -536,7 +540,7 @@ trait HupaOptionTrait
                 //FOOTER
                 //TODO INFO FOOTER FONT
                 $this->prefix_footer . $this->font_family => 'Roboto',
-                $this->prefix_footer . $this->font_style => 3,
+                $this->prefix_footer . $this->font_style => 9,
                 $this->prefix_footer . $this->font_size => 16,
                 $this->prefix_footer . $this->font_height => 1.5,
                 $this->prefix_footer . $this->font_bs_check => 0,
@@ -545,7 +549,7 @@ trait HupaOptionTrait
 
                 //FOOTER WIDGET HEADLINE
                 $this->prefix_footer_headline . $this->font_family => 'Roboto',
-                $this->prefix_footer_headline . $this->font_style => 3,
+                $this->prefix_footer_headline . $this->font_style => 9,
                 $this->prefix_footer_headline . $this->font_size => 24,
                 $this->prefix_footer_headline . $this->font_height => 1.2,
                 $this->prefix_footer_headline . $this->font_bs_check => 0,
@@ -554,7 +558,7 @@ trait HupaOptionTrait
 
                 //FOOTER WIDGET
                 $this->prefix_footer_widget . $this->font_family => 'Roboto',
-                $this->prefix_footer_widget . $this->font_style => 4,
+                $this->prefix_footer_widget . $this->font_style => 2,
                 $this->prefix_footer_widget . $this->font_size => 16,
                 $this->prefix_footer_widget . $this->font_height => 1.5,
                 $this->prefix_footer_widget . $this->font_bs_check => 0,
@@ -563,7 +567,7 @@ trait HupaOptionTrait
 
                 //TOP AREA
                 $this->prefix_top_area . $this->font_family => 'Roboto',
-                $this->prefix_top_area . $this->font_style => 3,
+                $this->prefix_top_area . $this->font_style => 2,
                 $this->prefix_top_area . $this->font_size => 14,
                 $this->prefix_top_area . $this->font_height => 1.5,
                 $this->prefix_top_area . $this->font_bs_check => 0,
@@ -734,6 +738,7 @@ trait HupaOptionTrait
                     'slug' => 'facebook_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 1,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-facebook',
@@ -745,6 +750,7 @@ trait HupaOptionTrait
                     'slug' => 'twitter_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 1,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-twitter',
@@ -756,6 +762,7 @@ trait HupaOptionTrait
                     'slug' => 'whatsapp_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 1,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-whatsapp',
@@ -767,6 +774,7 @@ trait HupaOptionTrait
                     'slug' => 'pinterest_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 0,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-pinterest',
@@ -778,6 +786,7 @@ trait HupaOptionTrait
                     'slug' => 'linkedin_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 1,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-linkedin',
@@ -789,6 +798,7 @@ trait HupaOptionTrait
                     'slug' => 'reddit_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 0,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-reddit',
@@ -800,6 +810,7 @@ trait HupaOptionTrait
                     'slug' => 'tumblr_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 0,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-tumblr',
@@ -811,6 +822,7 @@ trait HupaOptionTrait
                     'slug' => 'buffer_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 0,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-buffer',
@@ -822,6 +834,7 @@ trait HupaOptionTrait
                     'slug' => 'mix_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 0,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-mix',
@@ -833,6 +846,7 @@ trait HupaOptionTrait
                     'slug' => 'vk_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 0,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-vk',
@@ -844,6 +858,7 @@ trait HupaOptionTrait
                     'slug' => 'email_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 0,
+                    $this->social_url_check => 0,
                     $this->social_share_txt => __('Look what I found:', 'bootscore'),
                     $this->social_url => '',
                     $this->social_btn => 'btn-mail',
@@ -855,11 +870,30 @@ trait HupaOptionTrait
                     'slug' => 'print_',
                     $this->social_post_check => 0,
                     $this->social_top_check => 0,
+                    $this->social_url_check => 0,
                     $this->social_btn => 'btn-print',
                     $this->social_icon => 'fa fa-print',
                     $this->position => 12
                 ]
             ]
         ];
+    }
+
+    protected function theme_language():array
+    {
+       return  [
+           __('sections', 'bootscore'),
+           __('The position or order of the individual sections can be changed by <b>moving</b> the boxes.', 'bootscore'),
+           __('Address', 'bootscore'),
+           __('Name', 'bootscore'),
+           __('Department', 'bootscore'),
+           __('Phone', 'bootscore'),
+           __('Mobile', 'bootscore'),
+           __('E-Mail', 'bootscore'),
+           __('Fax', 'bootscore'),
+           __('delete', 'bootscore'),
+           __('Contact details', 'bootscore'),
+       ];
+
     }
 }

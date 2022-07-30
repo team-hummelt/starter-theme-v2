@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  * The file that defines the core theme class
  *
@@ -14,7 +12,16 @@
  * @subpackage Hupa_Starter_Theme_v2/includes
  */
 
+use Hupa\API\HupaStarterThemeAPI;
+use Hupa\MenuOrder\HupaMenuOrder;
+use Hupa\Optionen\HupaStarterThemeOptionen;
 use Hupa\Starter\Config;
+use Hupa\StarterThemeV2\HupaCarouselShortCode;
+use Hupa\StarterThemeV2\HupaGoogleMapsShortCode;
+use Hupa\StarterThemeV2\HupaIconsShortCode;
+use Hupa\StarterThemeV2\HupaRegisterGutenbergSidebar;
+use Hupa\StarterThemeV2\HupaRegisterGutenbergTools;
+use Hupa\StarterThemeV2\HupaSocialButtonShortCode;
 use Hupa\StarterThemeV2\HupaStarterCarouselFilter;
 use Hupa\StarterThemeV2\HupaStarterCssGenerator;
 use Hupa\StarterThemeV2\HupaStarterDataBaseHandle;
@@ -23,6 +30,7 @@ use Hupa\StarterThemeV2\HupaStarterFrontEndFilter;
 use Hupa\StarterThemeV2\HupaStarterHelper;
 use Hupa\StarterThemeV2\HupaStarterLanguageFilter;
 use Hupa\StarterThemeV2\HupaStarterOptionFilter;
+use Hupa\StarterThemeV2\HupaStarterRenderBlock;
 use Hupa\StarterThemeV2\HupaStarterToolsFilter;
 use Hupa\StarterThemeV2\StarterThemeUpdateAction;
 use Hupa\StarterThemeV2\StarterThemeWPOptionen;
@@ -32,6 +40,8 @@ use Hupa\ThemeLicense\HupaApiServerHandle;
 use Hupa\ThemeLicense\RegisterHupaStarter;
 use StarterAPIExec\EXEC\HupaStarterLicenseExecAPI;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Extension\CoreExtension;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFilter;
 
@@ -123,7 +133,7 @@ class HupaStarterThemeV2
      * @since    2.0.0
      * @var object The main class.
      */
-    public object $main;
+    protected object $main;
 
     /**
      * The plugin Slug Path.
@@ -142,6 +152,7 @@ class HupaStarterThemeV2
      * Load the dependencies, define the locale, and set the hooks for the admin area and
      * the public-facing side of the site.
      *
+     * @throws LoaderError
      * @since    2.0.0
      */
     public function __construct()
@@ -157,23 +168,55 @@ class HupaStarterThemeV2
 
         $this->load_dependencies();
 
-        $tempDir = THEME_ADMIN_DIR . 'admin-core/partials/';
+        $tempDir = THEME_ADMIN_DIR . 'admin-core'.DIRECTORY_SEPARATOR.'partials'.DIRECTORY_SEPARATOR . 'Twig' . DIRECTORY_SEPARATOR;
+
         $twig_loader = new FilesystemLoader($tempDir);
+        $twig_loader->addPath($tempDir . 'Loops', 'partials-loops');
+        $twig_loader->addPath($tempDir . 'Templates', 'partials-templates');
+        $twig_loader->addPath($tempDir . 'Layout', 'partials-layout');
+        $twig_loader->addPath($tempDir . 'Modal', 'partials-modal');
+
         $this->twig = new Environment($twig_loader);
+        $this->twig->getExtension(CoreExtension::class)->setTimezone('Europe/Berlin');
+
+        // JOB Twig Filter
         $wpGetText = new TwigFilter('__', function ($text) {
             return __($text, 'bootscore');
         });
+
+        $htmlEncode = new TwigFilter('html_entity_decode', function ($value) {
+            $return = htmlspecialchars_decode($value);
+            return stripslashes_deep($return);
+        });
+
+        $hasNavMenu = new TwigFilter('has_nav_menu', function ($hasMenu){
+            return has_nav_menu($hasMenu);
+        });
+
+        $getOption = new TwigFilter('get_option', function ($option){
+            return get_option($option);
+        });
+
+        $getCurrentUser = new TwigFilter('get_current_user', function (){
+            return new WP_User(get_current_user_id());
+        });
+
         $this->twig->addFilter($wpGetText);
+        $this->twig->addFilter($htmlEncode);
+        $this->twig->addFilter($hasNavMenu);
+        $this->twig->addFilter($getOption);
+        $this->twig->addFilter($getCurrentUser);
+        // JOB Twig Filter End
 
         $this->define_create_database_hooks();
-
         $this->define_theme_helper_hooks();
-
+        $this->define_hupa_render_block();
         $this->define_theme_options_hooks();
         $this->define_theme_carousel_filter_hooks();
         $this->define_theme_tools_filter_hooks();
         $this->define_theme_fonts_handle_hooks();
 
+        //License
         $this->define_get_theme_license_hooks();
 
         $this->define_enqueue_hooks();
@@ -183,8 +226,18 @@ class HupaStarterThemeV2
         $this->define_frontend_filter_hooks();
         $this->define_get_theme_actions_hooks();
 
-        $this->define_wp_optionen_hooks();
+        $this->define_menu_hupa_order_handle();
 
+        //Gutenberg Tools
+        $this->define_gutenberg_tools_hooks();
+        //Gutenberg Sidebar
+        $this->define_gutenberg_sidebar_hooks();
+        $this->define_wp_optionen_hooks();
+        //Shortcodes
+        $this->define_theme_shortcodes_hooks();
+        // License API
+        $this->define_theme_api_handle();
+        // Admin Dashboard
         $this->define_admin_hooks();
     }
 
@@ -213,6 +266,7 @@ class HupaStarterThemeV2
          */
         require(Config::get('THEME_ADMIN_INCLUDES') . 'class-hupa-starter-v2-loader.php');
 
+
         /**
          * The class responsible for defining option trait admin area.
          */
@@ -224,14 +278,28 @@ class HupaStarterThemeV2
         require(Config::get('THEME_ADMIN_INCLUDES') . 'traits/HupaCarouselTrait.php');
 
         /**
+         * The class responsible for defining option Render-Block admin area.
+         */
+        require(Config::get('THEME_ADMIN_INCLUDES') . 'filter/hupa-theme-render-block.php');
+
+        /**
          * The class responsible for defining database admin area.
          */
         require(Config::get('THEME_ADMIN_INCLUDES') . 'hupa-theme-database.php');
+
+        //MENU ORDER
+         require(Config::get('THEME_ADMIN_INCLUDES') . 'menu-order/class/class-order-core.php');
+         require(Config::get('THEME_ADMIN_INCLUDES') . 'menu-order/hupa-menu-order-init.php');
 
         /**
          * The class responsible for defining theme options.
          */
         require(Config::get('THEME_ADMIN_INCLUDES') . 'filter/theme-helper.php');
+
+        /**
+         * The class responsible for defining oAuth2 Server options.
+         */
+        require(Config::get('THEME_ADMIN_INCLUDES') . 'oAuthServer/OauthServer.php');
 
         /**
          * The class responsible for defining theme options.
@@ -271,6 +339,30 @@ class HupaStarterThemeV2
         //TODO JOB THEME WIDGETS
         require(Config::get('THEME_ADMIN_INCLUDES') . 'widgets/social-media-widget.php');
 
+        //TODO JOB WARNING GUTENBERG TOOLS
+        require(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/register-gutenberg-tools.php');
+        require(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/google-maps-callback.php');
+        require(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/theme-carousel-callback.php');
+        require(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/menu-select-callback.php');
+
+        if (Config::get('HUPA_SIDEBAR')) {
+            //TODO JOB WARNING GUTENBERG SIDEBAR
+            //TODO GUTENBERG SIDEBAR
+            require Config::get('THEME_ADMIN_INCLUDES') . 'hupa-gutenberg-sidebar/register-hupa-gutenberg-sidebar.php';
+            //TODO SIDEBAR ENDPOINT
+            require Config::get('THEME_ADMIN_INCLUDES') . 'hupa-gutenberg-sidebar/sidebar-rest-endpoint.php';
+            //TODO JOB CLASSIC METABOX
+            require Config::get('THEME_ADMIN_INCLUDES') . 'hupa-gutenberg-sidebar/classic-meta-box/classic-meta-box.php';
+        }
+
+        //TODO JOB SHORTCODES
+        require Config::get('THEME_ADMIN_INCLUDES') . 'shortcode/hupa-carousel-shortcode.php';
+        require Config::get('THEME_ADMIN_INCLUDES') . 'shortcode/hupa-social-button.php';
+        require Config::get('THEME_ADMIN_INCLUDES') . 'shortcode/hupa-icon-shortcode.php';
+        require Config::get('THEME_ADMIN_INCLUDES') . 'shortcode/hupa-theme-google-maps.php';
+
+        //WARNING JOB MENU ORDER
+        require Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/menu-select/menu-select-nav-walker.php';
 
         //TODO WP THEME OPTIONEN
         require(Config::get('THEME_ADMIN_INCLUDES') . 'action/theme-options.php');
@@ -341,51 +433,54 @@ class HupaStarterThemeV2
         global $hupa_register_starter_options;
         $hupa_register_starter_options = HupaRegisterStarterTheme::hupa_option_instance($this->get_theme_slug(), $this->get_theme_version(), $this->main, $this->twig);
 
+        if ( is_file( THEME_ADMIN_DIR . 'admin-core' . DIRECTORY_SEPARATOR . 'register-hupa-starter-optionen.php' ) && get_option( 'hupa_starter_product_install_authorize'  )) {
+            $this->loader->add_action('init', $hupa_register_starter_options, 'set_hupa_theme_v2_update_checker');
+            //$this->loader->add_action('in_theme_update_message-', $hupa_register_starter_options, 'set_hupa_theme_v2_update_checker');
+           // $this->loader->add_action( 'in_plugin_update_message-' . $this->plugin_name . '/' . $this->plugin_name .'.php', $plugin_admin, 'post_selector_show_upgrade_notification',10,2 );
+        }
+
         $this->loader->add_action('after_setup_theme', $hupa_register_starter_options, 'hupa_starter_theme_update_db');
         $this->loader->add_action('admin_menu', $hupa_register_starter_options, 'register_hupa_starter_theme_admin_menu');
         $this->loader->add_action('admin_menu', $hupa_register_starter_options, 'register_hupa_starter_maps_menu');
-        //JOB PUBLIC SITES TRIGGER
+        // PUBLIC SITES TRIGGER
         $this->loader->add_action('template_redirect', $hupa_register_starter_options, 'hupa_starter_theme_public_one_trigger_check');
-        //JOB CUSTOM SITES
+        // CUSTOM SITES
         $this->loader->add_action('init', $hupa_register_starter_options, 'hupa_starter_theme_public_site_trigger_check');
 
-        /** JOB AJAX ADMIN AND PUBLIC RESPONSE HANDLE */
+        /** AJAX ADMIN AND PUBLIC RESPONSE HANDLE */
         $this->loader->add_action('wp_ajax_HupaStarterHandle', $hupa_register_starter_options, 'prefix_ajax_HupaStarterHandle');
         $this->loader->add_action('wp_ajax_nopriv_HupaStarterNoAdmin', $hupa_register_starter_options, 'prefix_ajax_HupaStarterNoAdmin');
         $this->loader->add_action('wp_ajax_HupaStarterNoAdmin', $hupa_register_starter_options, 'prefix_ajax_HupaStarterNoAdmin');
 
         if (Config::get('CUSTOM_HEADER')) {
-            /**JOB CREATE CUSTOM HEADER POST TYPE */
+            /**CREATE CUSTOM HEADER POST TYPE */
             $this->loader->add_action('init', $hupa_register_starter_options, 'register_starter_custom_header_post_types');
         }
 
         if (Config::get('CUSTOM_FOOTER')) {
-            // JOB CREATE CUSTOM FOOTER POST TYPE
+            // CREATE CUSTOM FOOTER POST TYPE
             $this->loader->add_action('init', $hupa_register_starter_options, 'register_starter_custom_footer_post_types');
         }
         $this->loader->add_action('admin_init', $hupa_register_starter_options, 'add_admin_capabilities');
 
         // JOB THEME ADMIN DASHBOARD BRANDING
-
-        // JOB WARNING THEME BRANDING CHANGE FAVICON
+        // THEME BRANDING CHANGE FAVICON
         $this->loader->add_action('admin_head', $hupa_register_starter_options, 'hupaStarterAdminFavicon');
-        //JOB THEME BRANDING CHANGE ADMIN FOOTER TEXT
+        // THEME BRANDING CHANGE ADMIN FOOTER TEXT
         $this->loader->add_filter('admin_footer_text', $hupa_register_starter_options, 'remove_hupa_starter_footer_admin', 9999);
-        //JOB THEME BRANDING CHANGE FOOTER VERSION
+        // THEME BRANDING CHANGE FOOTER VERSION
         $this->loader->add_filter('update_footer', $hupa_register_starter_options, 'change_starter_footer_version', 9999);
-        //JOB THEME BRANDING DELETE UPDATE FOOTER FILTER
+        // THEME BRANDING DELETE UPDATE FOOTER FILTER
         $this->loader->add_action('admin_menu', $hupa_register_starter_options, 'hupa_starter_footer_shh');
 
-        //JOB WARNING ADMIN BAR
-
-        //WARNING JOB REMOVE CUSTOM ADMIN-BAR | ADMIN-BAR ICON
+        // JOB WARNING ADMIN BAR
+        // REMOVE CUSTOM ADMIN-BAR | ADMIN-BAR ICON
         $this->loader->add_action('admin_bar_menu', $hupa_register_starter_options, 'remove_starter_wp_logo', 100);
-        //JOB ADD ADMIN-BAR HUPA ICON
+        // ADD ADMIN-BAR HUPA ICON
         $this->loader->add_action('admin_bar_menu', $hupa_register_starter_options, 'add_starter_admin_bar_logo', 1);
-        //JOB ADD ADMIN-BAR HUPA MENU
+        // ADD ADMIN-BAR HUPA MENU
         $this->loader->add_action('admin_bar_menu', $hupa_register_starter_options, 'hupa_toolbar_hupa_options', 999);
-
-        //WARNING JOB REGISTER CUSTOM SIDEBAR | WIDGETS
+        //REGISTER CUSTOM SIDEBAR | WIDGETS
         $this->loader->add_action('widgets_init', $hupa_register_starter_options, 'register_hupa_starter_widgets');
 
     }
@@ -417,7 +512,6 @@ class HupaStarterThemeV2
         global $hupa_register_frontend_filter;
         $hupa_register_frontend_filter = HupaStarterFrontEndFilter::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
         $this->loader->add_filter('get_hupa_frontend', $hupa_register_frontend_filter, 'hupa_get_hupa_frontend', 10, 2);
-
     }
 
     /**
@@ -457,7 +551,11 @@ class HupaStarterThemeV2
         $this->loader->add_filter('user_roles_select', $hupa_register_theme_helper, 'hupa_theme_user_roles_select');
         $this->loader->add_filter('hupaObject2array', $hupa_register_theme_helper, 'object2array_recursive');
         $this->loader->add_filter('make_bootstrap_icon_json', $hupa_register_theme_helper, 'create_bootstrap_icon_json');
-        $this->loader->add_action('change_beitragslisten_template', $hupa_register_theme_helper, 'changeBeitragsListenTemplate',10,2);
+        $this->loader->add_action('change_beitragslisten_template', $hupa_register_theme_helper, 'changeBeitragsListenTemplate', 10, 2);
+        $this->loader->add_filter('clean_white_space', $hupa_register_theme_helper, 'cleanWhitespace');
+        $this->loader->add_filter('oauth_set_error_message', $hupa_register_theme_helper, 'api_set_error_message');
+        $this->loader->add_filter('compress_template', $hupa_register_theme_helper, 'html_compress_template');
+        $this->loader->add_filter('hupa_address_fields', $hupa_register_theme_helper, 'tools_address_fields');
 
     }
 
@@ -504,10 +602,10 @@ class HupaStarterThemeV2
         $this->loader->add_filter('get_social_button_url', $hupa_register_theme_options, 'hupa_get_social_button_url', 10, 2);
 
         // JOB SITEMAP ERSTELLEN
-        if (get_hupa_option('sitemap_post')) {
+        if ($hupa_register_theme_options->hupa_get_hupa_option('sitemap_post')) {
             $this->loader->add_action('publish_post', $hupa_register_theme_options, 'hupa_starter_create_sitemap');
         }
-        if (get_hupa_option('sitemap_page')) {
+        if ($hupa_register_theme_options->hupa_get_hupa_option('sitemap_page')) {
             $this->loader->add_action('publish_page', $hupa_register_theme_options, 'hupa_starter_create_sitemap');
         }
 
@@ -536,13 +634,13 @@ class HupaStarterThemeV2
         //SET Carousel DEFAULTS
         $this->loader->add_filter('set_carousel_defaults', $hupa_register_carousel_filter, 'hupa_set_carousel_defaults');
         //SET Slider DEFAULTS
-        $this->loader->add_filter('set_slider_defaults', $hupa_register_carousel_filter, 'hupa_set_slider_defaults',10,2);
+        $this->loader->add_filter('set_slider_defaults', $hupa_register_carousel_filter, 'hupa_set_slider_defaults', 10, 2);
         //get Carousel defaults
         $this->loader->add_filter('get_carousel_defaults', $hupa_register_carousel_filter, 'hupa_get_carousel_defaults');
         //get Slider defaults
         $this->loader->add_filter('get_slider_defaults', $hupa_register_carousel_filter, 'hupa_get_slider_defaults');
         // get Slider data
-        $this->loader->add_filter('get_carousel_data', $hupa_register_carousel_filter, 'hupa_get_carousel_data',10,3);
+        $this->loader->add_filter('get_carousel_data', $hupa_register_carousel_filter, 'hupa_get_carousel_data', 10, 3);
         //update Carousel
         $this->loader->add_filter('update_hupa_carousel', $hupa_register_carousel_filter, 'hupa_update_hupa_carousel');
         // JOB Carousel RENDER DATA
@@ -556,7 +654,7 @@ class HupaStarterThemeV2
         // Update Slider Position
         $this->loader->add_filter('update_slider_position', $hupa_register_carousel_filter, 'hupa_update_slider_position');
         //Create Array for Slider
-        $this->loader->add_filter('create_slider_array', $hupa_register_carousel_filter, 'hupa_create_slider_array',10,3);
+        $this->loader->add_filter('create_slider_array', $hupa_register_carousel_filter, 'hupa_create_slider_array', 10, 3);
         //GET SELECTOR
         $this->loader->add_filter('get_container_selector', $hupa_register_carousel_filter, 'hupa_get_container_selector');
         //GET SELECTOR
@@ -587,13 +685,13 @@ class HupaStarterThemeV2
         //Update Iframe
         $this->loader->add_filter('update_gmaps_iframe', $hupa_register_tools_filter, 'hupaUpdateGmapsIframe');
         //Get Iframe
-        $this->loader->add_filter('get_gmaps_iframe', $hupa_register_tools_filter, 'hupaGetGmapsIframe',10,3);
+        $this->loader->add_filter('get_gmaps_iframe', $hupa_register_tools_filter, 'hupaGetGmapsIframe', 10, 3);
         //Delete Iframe
         $this->loader->add_filter('delete_gmaps_iframe', $hupa_register_tools_filter, 'hupaDeleteGmapsIframe');
         //Render Menu Select
         $this->loader->add_action('render_menu_select_output', $hupa_register_tools_filter, 'renderMenuSelectOutput');
         //Render Menu Select
-        $this->loader->add_action('get_theme_preloader', $hupa_register_tools_filter, 'getThemePreloader',10,2);
+        $this->loader->add_action('get_theme_preloader', $hupa_register_tools_filter, 'getThemePreloader', 10, 2);
     }
 
     /**
@@ -627,37 +725,36 @@ class HupaStarterThemeV2
 
         //TODO HTML OPTIMIZE
         if ($hupa_register_theme_options->hupa_get_hupa_option('optimize')) {
-            $this->loader->add_action('after_setup_theme', $theme_wp_options_handle, 'hupa_disabled_gutenberg_widget');
-            add_action('get_header', 'hupa_starter_wp_html_compression_start()');
+            add_action('get_header', 'Hupa\\StarterThemeV2\\hupa_starter_wp_html_compression_start');
         }
 
         //TODO ENABLE SVG UPLOAD
-        if ( $hupa_register_theme_options->hupa_get_hupa_option( 'svg' ) ) {
+        if ($hupa_register_theme_options->hupa_get_hupa_option('svg')) {
             $this->loader->add_filter('upload_mimes', $theme_wp_options_handle, 'hupa_starter_upload_svg_settings');
         }
 
         //TODO DISABLE GUTENBERG EDITOR
-        if ( $hupa_register_theme_options->hupa_get_hupa_option( 'gutenberg' ) ) {
-            $this->loader->add_filter('use_block_editor_for_post', $theme_wp_options_handle, '__return_false');
-            $this->loader->add_filter('use_block_editor_for_post_type', $theme_wp_options_handle, '__return_false');
+        if ($hupa_register_theme_options->hupa_get_hupa_option('gutenberg')) {
+            add_filter( 'use_block_editor_for_post', '__return_false' );
+            add_filter( 'use_block_editor_for_post_type', '__return_false' );
         }
 
         //TODO REMOVE Gutenberg Css In FrontEnd
-        if ( $hupa_register_theme_options->hupa_get_hupa_option( 'block_css' ) ) {
-            $this->loader->add_action('wp_enqueue_scripts', $theme_wp_options_handle, 'smartwp_remove_wp_block_library_css',100);
+        if ($hupa_register_theme_options->hupa_get_hupa_option('block_css')) {
+            $this->loader->add_action('wp_enqueue_scripts', $theme_wp_options_handle, 'smartwp_remove_wp_block_library_css', 100);
         }
 
         //TODO REMOVE Wordpress Information
-        if ( $hupa_register_theme_options->hupa_get_hupa_option( 'version' ) ) {
-            remove_action( 'wp_head', 'wp_generator' );
+        if ($hupa_register_theme_options->hupa_get_hupa_option('version')) {
+            remove_action('wp_head', 'wp_generator');
         }
 
         //TODO REMOVE WP EMOJI
-        if ( $hupa_register_theme_options->hupa_get_hupa_option( 'emoji' ) ) {
-            remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
-            remove_action( 'wp_print_styles', 'print_emoji_styles' );
-            remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
-            remove_action( 'admin_print_styles', 'print_emoji_styles' );
+        if ($hupa_register_theme_options->hupa_get_hupa_option('emoji')) {
+            remove_action('wp_head', 'print_emoji_detection_script', 7);
+            remove_action('wp_print_styles', 'print_emoji_styles');
+            remove_action('admin_print_scripts', 'print_emoji_detection_script');
+            remove_action('admin_print_styles', 'print_emoji_styles');
         }
     }
 
@@ -690,7 +787,7 @@ class HupaStarterThemeV2
         $this->loader->add_action('validate_install_optionen', $hupa_update_action, 'hupaValidateInstallOptionen');
 
         global $hupa_optionen_class;
-        //$hupa_optionen_class = HupaStarterThemeOptionen::instance($this->get_theme_slug(), $this->get_theme_version(), $this->main);
+        $hupa_optionen_class = HupaStarterThemeOptionen::instance($this->get_theme_slug(), $this->get_theme_version(), $this->main);
     }
 
     /** Register all the action hooks related to the admin area functionality
@@ -715,7 +812,6 @@ class HupaStarterThemeV2
         //TODO  VALIDATE SOURCE BY Authorization Code
         $this->loader->add_filter('get_resource_authorization_code', $hupa_wp_remote_action, 'hupaInstallByAuthorizationCode');
 
-
         $hupa_register_starter = RegisterHupaStarter::hupa_starter_instance($this->get_theme_slug(), $this->get_theme_version(), $this->main);
         if (!get_option('hupa_starter_product_install_authorize')) {
             $this->loader->add_action('admin_menu', $hupa_register_starter, 'register_license_hupa_starter_theme');
@@ -731,6 +827,94 @@ class HupaStarterThemeV2
         global $hupa_starter_license_exec;
         $hupa_starter_license_exec = HupaStarterLicenseExecAPI::instance($this->get_theme_slug(), $this->get_theme_version(), $this->main);
 
+    }
+
+    /**
+     * Register all the hooks related to the admin area functionality
+     * of the theme.
+     *
+     * @since    2.0.0
+     * @access   private
+     */
+    private function define_gutenberg_tools_hooks()
+    {
+        $hupa_register_gutenberg_tools = HupaRegisterGutenbergTools::tools_instance($this->get_theme_slug(), $this->get_theme_version(), $this->main);
+        $this->loader->add_action('init', $hupa_register_gutenberg_tools, 'gutenberg_block_google_maps_register');
+        $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_hupa_carousel_scripts');
+        $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_hupa_tools_scripts');
+        $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_menu_scripts');
+    }
+
+    /**
+     * Register all the hooks related to the admin area functionality
+     * of the theme.
+     *
+     * @since    2.0.0
+     * @access   private
+     */
+    private function define_gutenberg_sidebar_hooks()
+    {
+        $hupa_register_gutenberg_sidebar = HupaRegisterGutenbergSidebar::hupa_sidebar_instance($this->get_theme_slug(), $this->get_theme_version(), $this->main);
+        //TODO REGISTER META FIELDS
+        $this->loader->add_action('init', $hupa_register_gutenberg_sidebar, 'hupa_sidebar_meta_fields');
+        //TODO REGISTER SIDEBAR
+        $this->loader->add_action('init', $hupa_register_gutenberg_sidebar, 'hupa_sidebar_plugin_register');
+        $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_sidebar, 'hupa_sidebar_script_enqueue');
+    }
+
+    /**
+     * Register all the hooks related to the admin options area functionality
+     * of the theme.
+     *
+     * @since    2.0.0
+     * @access   private
+     */
+    private function define_theme_shortcodes_hooks()
+    {
+        HupaCarouselShortCode::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
+        HupaIconsShortCode::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
+        HupaSocialButtonShortCode::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
+        HupaGoogleMapsShortCode::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
+    }
+
+    /**
+     * Register all the hooks related to the admin area functionality
+     * of the theme.
+     *
+     * @since    2.0.0
+     * @access   private
+     */
+    private function define_hupa_render_block()
+    {
+        global $hupa_render_block;
+        $hupa_render_block = HupaStarterRenderBlock::init($this->main);
+        $this->loader->add_filter('render_block', $hupa_render_block, 'custom_render_block_core_group', 0, 2);
+
+    }
+
+    /** Register all the hooks related to the admin options area functionality
+     * of the theme.
+     *
+     * @since    2.0.0
+     * @access   private
+     */
+    private function define_theme_api_handle()
+    {
+        global $hupa_api_handle;
+        $hupa_api_handle = HupaStarterThemeAPI::instance($this->get_theme_slug(), $this->get_theme_version(), $this->main);
+
+    }
+
+    /** Register all the hooks related to the admin options area functionality
+     * of the theme.
+     *
+     * @since    2.0.0
+     * @access   private
+     */
+    private function define_menu_hupa_order_handle()
+    {
+        global $hupa_menu_order;
+        $hupa_menu_order = HupaMenuOrder::instance($this->get_theme_slug(), $this->get_theme_version(), $this->main, $this->twig);
     }
 
 
@@ -808,5 +992,17 @@ class HupaStarterThemeV2
     public function run()
     {
         $this->loader->run();
+    }
+
+    /**
+     * License Config for the plugin.
+     *
+     * @return    object License Config.
+     * @since     1.0.0
+     */
+    public function get_license_config():object {
+        $config_file = Config::get('THEME_ADMIN_INCLUDES') . 'license/config.json';
+
+        return json_decode(file_get_contents($config_file));
     }
 }

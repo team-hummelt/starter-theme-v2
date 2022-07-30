@@ -1,0 +1,27 @@
+{% for f in fonts %}
+<div id="installFont-{{ f.family }}" class="col-xl-4 col-lg-6 col-12 p-2">
+    <div class="d-flex overflow-hidden position-relative border h-100 w-100 shadow-sm">
+        <div class="p-3 d-flex flex-column w-100 h-100">
+            <div class="header-font">
+                <h5 class="strong-font-weight "><i class="font-blue fa fa-arrow-circle-right"></i>&nbsp; {{ f.family }}</h5>
+                <hr class="mt-0">
+            </div>
+            <div class="font-body">
+                <h6>Schriftstile:</h6>
+                <ul class="li-font-list list-unstyled mb-2">
+                    {% for fs in f.styles %}
+                        <li>{{ fs }}</li>
+                    {% endfor %}
+                   </ul>
+            </div>
+            <div class="mt-auto font-footer">
+                <hr class="mt-1">
+                <button data-type="delete_install_font" data-id="{{ f.family }}"
+                        class="sweet-alert2 btn btn-hupa btn-outline-secondary btn-sm">
+                    <i class="fa fa-trash"></i>&nbsp; Schrift löschen
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}

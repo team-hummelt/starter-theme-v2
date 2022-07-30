@@ -1,5 +1,6 @@
 <?php
 defined('ABSPATH') or die();
+
 /**
  * ADMIN HOME SITE
  * @package Hummelt & Partner WordPress Theme
@@ -8,14 +9,14 @@ defined('ABSPATH') or die();
  */
 
 use Hupa\Starter\Config;
-global $hupa_api_handle;
+
 ?>
 <div class="wp-bs-starter-wrapper">
     <div class="container">
         <div class="card shadow-sm">
             <h5 class="card-header d-flex align-items-center bg-hupa py-4">
                 <i class="icon-hupa-white d-block mt-2"
-                   style="font-size: 2rem"></i>&nbsp; <?= __('Theme Settings', 'bootscore') ?></h5>
+                   style="font-size: 2rem"></i>&nbsp; <?= __('Theme Settings', 'bootscore') ?> V2</h5>
             <div class="card-body pb-4" style="min-height: 72vh">
                 <div class="d-flex align-items-center">
                     <h5 class="card-title"><i
@@ -60,13 +61,15 @@ global $hupa_api_handle;
                             class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-magic"></i>&nbsp;
                         <?= __('Colors', 'bootscore') ?>
                     </button>
-                    <?php $user = new WP_User(get_current_user_id()); if($user->roles[0] == 'administrator'):?>
-                    <button data-site="<?= __('Theme options', 'bootscore') ?>" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#collapseSettingsOtherOption"
-                            aria-expanded="true" aria-controls="collapseSettingsOtherOption"
-                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-gears"></i>&nbsp;
-                        <?= __('Theme options', 'bootscore') ?>
-                    </button>
+                    <?php $user = new WP_User(get_current_user_id());
+                    if ($user->roles[0] == 'administrator'): ?>
+                        <button data-site="<?= __('Theme options', 'bootscore') ?>" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseSettingsOtherOption"
+                                aria-expanded="true" aria-controls="collapseSettingsOtherOption"
+                                class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i
+                                    class="fa fa-gears"></i>&nbsp;
+                            <?= __('Theme options', 'bootscore') ?>
+                        </button>
                     <?php endif; ?>
                     <div class="ms-auto">
                         <button data-site="<?= __('Infos', 'bootscore') ?>" type="button"
@@ -76,14 +79,15 @@ global $hupa_api_handle;
                                     class="fa fa-info-circle"></i>&nbsp;
                             <?= __('Infos', 'bootscore') ?>
                         </button>
-                        <?php $user = new WP_User(get_current_user_id()); if($user->roles[0] == 'administrator'):?>
-                        <button data-site="<?= __('Reset', 'bootscore') ?>" type="button"
-                                data-bs-toggle="collapse" data-bs-target="#collapseSettingsResetOption"
-                                aria-expanded="true" aria-controls="collapseSettingsResetOption"
-                                class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i
-                                    class="fa fa-random"></i>&nbsp;
-                            <?= __('Reset', 'bootscore') ?>
-                        </button>
+                        <?php $user = new WP_User(get_current_user_id());
+                        if ($user->roles[0] == 'administrator'): ?>
+                            <button data-site="<?= __('Reset', 'bootscore') ?>" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#collapseSettingsResetOption"
+                                    aria-expanded="true" aria-controls="collapseSettingsResetOption"
+                                    class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i
+                                        class="fa fa-random"></i>&nbsp;
+                                <?= __('Reset', 'bootscore') ?>
+                            </button>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -96,7 +100,8 @@ global $hupa_api_handle;
                                 <a title="Full-Service-Werbeagentur aus Magdeburg"
                                    href="https://www.hummelt-werbeagentur.de/">
                                     <img class="my-4 img-fluid" alt=""
-                                         src="<?= Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/hupa-logo.svg' ?>" width="300">
+                                         src="<?= Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/hupa-logo.svg' ?>"
+                                         width="300">
                                 </a>
                             </div>
                             <hr>
@@ -116,9 +121,12 @@ global $hupa_api_handle;
                             ?>
                         </div>
                         <small class="card-body-bottom">DB: <i
-                                    class="hupa-color"> <?= $this->main->get_db_version()?></i> | THEME: <i
-                                    class="hupa-color"><?= $this->main->get_theme_version()?></i> | CHILD: <i
-                                    class="hupa-color"><?= $this->main->get_child_version()?></i></small>
+                                    class="hupa-color"> <?= $this->main->get_db_version() ?></i> | THEME:
+                            <i class="hupa-color"><?= $this->main->get_theme_version() ?></i>
+                            <?php if ($this->main->get_child_version()): ?>| CHILD:
+                                <i class="hupa-color"><?= $this->main->get_child_version() ?></i>
+                            <?php endif; ?>
+                        </small>
                     </div>
 
                     <!--  TODO JOB WARNING GENERAL ALLGEMEIN -->
@@ -381,16 +389,17 @@ global $hupa_api_handle;
                                                     </div>
                                                     <hr>
                                                     <div class="mb-3">
-                                                        <label for="BottomTextarea" class="form-label">Bottom Footer
-                                                            Text</label>
-                                                        <textarea class="form-control" name="bottom_area_text"
-                                                                  id="BottomTextarea"
-                                                                  rows="3"><?= get_hupa_option('bottom_area_text') ?></textarea>
-                                                        <div class="form-text">Das Aktuelle Jahr kann mit den
-                                                            Platzhalter <span class="text-danger"> ###YEAR### </span>ausgegeben
-                                                            werden. Auch HTML eingaben sind möglich
+                                                        <div class="form-floating">
+                                                            <textarea class="form-control no-blur"
+                                                                      placeholder="Bottom Footer"
+                                                                      name="bottom_area_text" id="BottomTextarea"
+                                                                      style="height: 100px"><?= get_hupa_option('bottom_area_text') ?></textarea>
+                                                            <label for="BottomTextarea">Bottom Footer</label>
                                                         </div>
-
+                                                        <div class="form-text">Das aktuelle Jahr kann mit den
+                                                            Platzhalter <span class="text-danger"> ###YEAR### </span>ausgegeben
+                                                            werden. Auch HTML eingaben, sind möglich.
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -420,7 +429,7 @@ global $hupa_api_handle;
                                                     $imgId = get_hupa_option('logo_image');
                                                     if ($imgId) {
                                                         $img = wp_get_attachment_image_src($imgId, 'large');
-                                                        $imgLogo = '<img class="range-image img-fluid" src="' . $img[0] . '" width="200">';
+                                                        $imgLogo = '<img class="range-image img-fluid" src="' . $img[0] . '" width="' . get_hupa_option('logo_size') . 'px">';
                                                     } ?>
                                                     <!-- LOGO IMAGE -->
                                                     <div data-multiple="0"
@@ -448,18 +457,67 @@ global $hupa_api_handle;
                                                         <i class="fa fa-trash"></i>
                                                         &nbsp;<?= __('Remove image', 'bootscore'); ?>
                                                     </button>
+                                                    <div class="d-flex flex-wrap">
+                                                        <div id="range-image-size"
+                                                             class="col-xxl-3 col-xl-6 col-12 col pt-3 pe-3">
+                                                            <label for="imgSizeRange"
+                                                                   class="count-box form-label pb-1"><?= __('Image size', 'bootscore'); ?>
+                                                                <b class="font-bold-light">Header</b>
+                                                                :
+                                                                <span class="show-range-value"><?= get_hupa_option('logo_size') ?></span>
+                                                                (px)</label>
+                                                            <input data-container="range-image-size" type="range"
+                                                                   data-range-image="1"
+                                                                   name="logo_size" min="10" max="500"
+                                                                   value="<?= get_hupa_option('logo_size') ?>"
+                                                                   class="form-range sizeRange" id="imgSizeRange"
+                                                                <?= $imgLogo ? '' : 'disabled' ?>>
+                                                        </div>
 
-                                                    <div class="col-lg-3 col-md-6 col-sm-8 col pt-3">
-                                                        <label for="imgSizeRange"
-                                                               class="count-box form-label pb-1"><?= __('Image size', 'bootscore'); ?>
-                                                            :
-                                                            <span class="show-range-value"><?= get_hupa_option('logo_size') ?></span>
-                                                            (px)</label>
-                                                        <input data-container="theme-logo-upload" type="range"
-                                                               name="logo_size" min="10" max="500"
-                                                               value="<?= get_hupa_option('logo_size') ?>"
-                                                               class="form-range sizeRange" id="imgSizeRange"
-                                                            <?= $imgLogo ? '' : 'disabled' ?>>
+                                                        <div id="range-image-scroll-size"
+                                                             class="col-xxl-3 col-xl-6 col-12 col pt-3 pe-3">
+                                                            <label for="imgSizeScrollRange"
+                                                                   class="count-box form-label pb-1"><?= __('Image size', 'bootscore'); ?>
+                                                                <b class="font-bold-light"> Scroll</b>
+                                                                :
+                                                                <span class="show-range-value"><?= get_hupa_option('logo_size_scroll') ?></span>
+                                                                (px)</label>
+                                                            <input data-container="range-image-scroll-size" type="range"
+                                                                   name="logo_size_scroll" min="10" max="500"
+                                                                   value="<?= get_hupa_option('logo_size_scroll') ?>"
+                                                                   class="form-range sizeRange" id="imgSizeScrollRange"
+                                                                <?= $imgLogo ? '' : 'disabled' ?>>
+                                                        </div>
+
+                                                        <div id="range-image-scroll-mobil"
+                                                             class="col-xxl-3 col-xl-6 col-12 col pt-3 pe-3">
+                                                            <label for="imgSizeMobilRange"
+                                                                   class="count-box form-label pb-1"><?= __('Image size', 'bootscore'); ?>
+                                                                <b class="font-bold-light"> Mobil</b>
+                                                                :
+                                                                <span class="show-range-value"><?= get_hupa_option('logo_size_mobil') ?></span>
+                                                                (px)</label>
+                                                            <input data-container="range-image-scroll-mobil"
+                                                                   type="range"
+                                                                   name="logo_size_mobil" min="10" max="500"
+                                                                   value="<?= get_hupa_option('logo_size_mobil') ?>"
+                                                                   class="form-range sizeRange" id="imgSizeMobilRange"
+                                                                <?= $imgLogo ? '' : 'disabled' ?>>
+                                                        </div>
+
+                                                        <!--<div id="range-image-scroll-login" class="col-xxl-3 col-xl-6 col-12 col pt-3 pe-3">
+                                                            <label for="imgSizeLoginRange"
+                                                                   class="count-box form-label pb-1"><?= __('Image size', 'bootscore'); ?> <b class="font-bold-light"> Login</b>
+                                                                :
+                                                                <span class="show-range-value"><?= get_hupa_option('logo_size_login') ?></span>
+                                                                (px)</label>
+                                                            <input data-container="range-image-scroll-login" type="range"
+                                                                   name="logo_size_login" min="10" max="500"
+                                                                   value="<?= get_hupa_option('logo_size_login') ?>"
+                                                                   class="form-range sizeRange" id="imgSizeLoginRange"
+                                                                <?= $imgLogo ? '' : 'disabled' ?>>
+                                                        </div>-->
+
                                                     </div>
                                                     <hr>
                                                 </div>
@@ -522,12 +580,14 @@ global $hupa_api_handle;
                                                 </div>
                                                 <hr>
                                                 <div class="col-lg-6">
-                                                    <label for="inputLogoUrl"
-                                                           class="form-label"><?= __('URL for Login Logo', 'bootscore'); ?>
-                                                        :</label>
-                                                    <input type="url" name="login_logo_url"
-                                                           value="<?= get_hupa_option('login_logo_url') ?>"
-                                                           class="form-control" id="inputLogoUrl">
+                                                    <div class="form-floating mb-3">
+                                                        <input type="url" class="form-control no-blur"
+                                                               name="login_logo_url"
+                                                               value="<?= get_hupa_option('login_logo_url') ?>"
+                                                               id="inputLogoUrl"
+                                                               placeholder="<?= __('URL for Login Logo', 'bootscore'); ?>">
+                                                        <label for="inputLogoUrl"><?= __('URL for Login Logo', 'bootscore'); ?></label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -558,26 +618,41 @@ global $hupa_api_handle;
                                                 </div>
 
                                                 <div class="button-archive-settings d-flex flex-wrap">
-                                                    <button data-bs-toggle="collapse" href="#collapseKatSettings" type="button" role="button"
-                                                            class="btn btn-blue-outline btn-sm me-1 my-1"><i class="fa fa-gear"></i>&nbsp; Kategorie Seite</button>
-                                                    <button data-bs-toggle="collapse" href="#collapseArchiveSettings" type="button" role="button"
-                                                            class="btn btn-blue-outline btn-sm me-1 my-1"><i class="fa fa-gear"></i>&nbsp;Archiv Seite</button>
-                                                    <button data-bs-toggle="collapse" href="#collapseAuthorenSettings" type="button" role="button"
-                                                            class="btn btn-blue-outline btn-sm me-1 my-1"><i class="fa fa-gear"></i>&nbsp;Author Seite</button>
-
-                                                    <button data-bs-toggle="collapse" href="#collapseBlockSettings" type="button" role="button"
-                                                            class="btn btn-blue-outline btn-sm me-1 my-1" disabled><i class="fa fa-gear"></i>&nbsp;Block Seite</button>
-
-                                                    <button data-bs-toggle="collapse" href="#collapseSearchSettings" type="button" role="button"
-                                                            class="btn btn-blue-outline btn-sm me-1 my-1" disabled><i class="fa fa-gear"></i>&nbsp;Search Seite</button>
+                                                    <button data-bs-toggle="collapse" href="#collapseKatSettings"
+                                                            type="button" role="button"
+                                                            class="btn btn-blue-outline btn-sm me-1 my-1"><i
+                                                                class="fa fa-gear me-1"></i>Kategorie Seite
+                                                    </button>
+                                                    <button data-bs-toggle="collapse" href="#collapseArchiveSettings"
+                                                            type="button" role="button"
+                                                            class="btn btn-blue-outline btn-sm me-1 my-1"><i
+                                                                class="fa fa-gear me-1"></i>Archiv Seite
+                                                    </button>
+                                                    <button data-bs-toggle="collapse" href="#collapseAuthorenSettings"
+                                                            type="button" role="button"
+                                                            class="btn btn-blue-outline btn-sm me-1 my-1"><i
+                                                                class="fa fa-gear me-1"></i>Author Seite
+                                                    </button>
+                                                    <button data-bs-toggle="collapse" href="#collapseBlockSettings"
+                                                            type="button" role="button"
+                                                            class="btn btn-blue-outline btn-sm me-1 my-1" disabled><i
+                                                                class="fa fa-gear me-1"></i>Block Seite
+                                                    </button>
+                                                    <button data-bs-toggle="collapse" href="#collapseSearchSettings"
+                                                            type="button" role="button"
+                                                            class="btn btn-blue-outline btn-sm me-1 my-1" disabled><i
+                                                                class="fa fa-gear me-1"></i>Search Seite
+                                                    </button>
                                                 </div>
 
                                                 <div id="parent-archive-collapse">
                                                     <!--//JOB KATEGORIE Collapse-->
-                                                    <div class="collapse" id="collapseKatSettings" data-bs-parent="#parent-archive-collapse">
+                                                    <div class="collapse" id="collapseKatSettings"
+                                                         data-bs-parent="#parent-archive-collapse">
                                                         <!--//JOB NEW TEMPLATES -->
                                                         <hr>
-                                                        <h5><i class="font-blue fa fa-arrow-circle-right"></i> Einstellungen für
+                                                        <h5><i class="font-blue fa fa-arrow-circle-right"></i>
+                                                            Einstellungen für
                                                             Kategorie Beitragslisten</h5>
                                                         <div class="form-check form-switch mt-3 me-3 mb-3">
                                                             <input class="form-check-input change_template_sidebar"
@@ -588,51 +663,61 @@ global $hupa_api_handle;
                                                                 anzeigen</label>
                                                         </div>
                                                         <div class="mb-3">
-                                                            <label for="SelectSidebar" class="form-label">Sidebar
-                                                                auswählen</label>
-                                                            <select id="SelectSidebar" name="kategorie_select_sidebar"
-                                                                    class="form-select" <?= get_hupa_option('kategorie_show_sidebar') ?: 'disabled' ?>>
-                                                                <option value="">auswählen...</option>
-                                                                <?php
-                                                                $sidebarSelect = apply_filters('get_registered_sidebar', false);
-                                                                foreach ($sidebarSelect as $tmp):
-                                                                    get_hupa_option('kategorie_select_sidebar') == $tmp['value'] ? $katSideSel = 'selected' : $katSideSel = '';
-                                                                    ?>
-                                                                    <option value="<?= $tmp['value'] ?>" <?= $katSideSel ?>><?= $tmp['label'] ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur" id="SelectSidebar"
+                                                                        name="kategorie_select_sidebar"
+                                                                        aria-label="Sidebar"
+                                                                    <?= get_hupa_option('kategorie_show_sidebar') ?: 'disabled' ?>>
+                                                                    <option value="">auswählen...</option>
+                                                                    <?php
+                                                                    $sidebarSelect = apply_filters('get_registered_sidebar', false);
+                                                                    foreach ($sidebarSelect as $tmp):
+                                                                        get_hupa_option('kategorie_select_sidebar') == $tmp['value'] ? $katSideSel = 'selected' : $katSideSel = '';
+                                                                        ?>
+                                                                        <option value="<?= $tmp['value'] ?>" <?= $katSideSel ?>><?= $tmp['label'] ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="SelectSidebar">Sidebar</label>
+                                                            </div>
                                                         </div>
                                                         <hr>
                                                         <div class="mb-3">
-                                                            <label for="SelectKatCustomHeader" class="form-label">Custom Header
-                                                                auswählen</label>
-                                                            <select id="SelectKatCustomHeader" name="kategorie_select_header"
-                                                                    class="form-select">
-                                                                <option value="0">auswählen...</option>
-                                                                <?php
-                                                                $headerSelect = apply_filters('get_custom_header', false);
-                                                                foreach ($headerSelect as $tmp):
-                                                                    get_hupa_option('kategorie_select_header') == $tmp['id'] ? $katSideSel = 'selected' : $katSideSel = '';
-                                                                    ?>
-                                                                    <option value="<?= $tmp['id'] ?>" <?= $katSideSel ?>><?= $tmp['label'] ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur"
+                                                                        id="SelectKatCustomHeader"
+                                                                        name="kategorie_select_header"
+                                                                        aria-label="Custom Header">
+                                                                    <option value="">auswählen...</option>
+                                                                    <?php
+                                                                    $headerSelect = apply_filters('get_custom_header', false);
+                                                                    foreach ($headerSelect as $tmp):
+                                                                        get_hupa_option('kategorie_select_header') == $tmp['id'] ? $katSideSel = 'selected' : $katSideSel = '';
+                                                                        ?>
+                                                                        <option value="<?= $tmp['id'] ?>" <?= $katSideSel ?>><?= $tmp['label'] ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="SelectKatCustomHeader">Custom Header</label>
+                                                            </div>
                                                         </div>
                                                         <hr>
                                                         <div class="mb-3">
-                                                            <label for="SelectKatCustomFooter" class="form-label">Custom Footer
-                                                                auswählen</label>
-                                                            <select id="SelectKatCustomFooter" name="kategorie_select_footer"
-                                                                    class="form-select">
-                                                                <option value="0">auswählen...</option>
-                                                                <?php
-                                                                $footerSelect = apply_filters('get_custom_footer', false);
-                                                                foreach ($footerSelect as $tmp):
-                                                                    get_hupa_option('kategorie_select_footer') == $tmp['id'] ? $katSideSel = 'selected' : $katSideSel = '';
-                                                                    ?>
-                                                                    <option value="<?= $tmp['id'] ?>" <?= $katSideSel ?>><?= $tmp['label'] ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select id="SelectKatCustomFooter"
+                                                                        name="kategorie_select_footer"
+                                                                        class="form-select no-blur">
+                                                                    <option value="0">auswählen...</option>
+                                                                    <?php
+                                                                    $footerSelect = apply_filters('get_custom_footer', false);
+                                                                    foreach ($footerSelect as $tmp):
+                                                                        get_hupa_option('kategorie_select_footer') == $tmp['id'] ? $katSideSel = 'selected' : $katSideSel = '';
+                                                                        ?>
+                                                                        <option value="<?= $tmp['id'] ?>" <?= $katSideSel ?>><?= $tmp['label'] ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="SelectKatCustomFooter" class="form-label">Custom
+                                                                    Footer auswählen</label>
+                                                            </div>
                                                         </div>
                                                         <hr>
                                                         <div class="form-check form-switch mt-3 me-3">
@@ -650,7 +735,8 @@ global $hupa_api_handle;
                                                                 <input class="form-check-input" type="checkbox"
                                                                        name="kategorie_show_kategorie"
                                                                        id="postShowKategorieCheck" <?= !get_hupa_option('kategorie_show_kategorie') ?: 'checked' ?>>
-                                                                <label class="form-check-label" for="postShowKategorieCheck">Kategorien
+                                                                <label class="form-check-label"
+                                                                       for="postShowKategorieCheck">Kategorien
                                                                     anzeigen</label>
                                                             </div>
 
@@ -658,7 +744,8 @@ global $hupa_api_handle;
                                                                 <input class="form-check-input" type="checkbox"
                                                                        name="kategorie_show_post_date"
                                                                        id="postKatShowDateCheck" <?= !get_hupa_option('kategorie_show_post_date') ?: 'checked' ?>>
-                                                                <label class="form-check-label" for="postKatShowDateCheck">Datum
+                                                                <label class="form-check-label"
+                                                                       for="postKatShowDateCheck">Datum
                                                                     anzeigen</label>
                                                             </div>
 
@@ -666,7 +753,8 @@ global $hupa_api_handle;
                                                                 <input class="form-check-input" type="checkbox"
                                                                        name="kategorie_show_post_author"
                                                                        id="postKatAuthorCheck" <?= !get_hupa_option('kategorie_show_post_author') ?: 'checked' ?>>
-                                                                <label class="form-check-label" for="postKatAuthorCheck">Author
+                                                                <label class="form-check-label"
+                                                                       for="postKatAuthorCheck">Author
                                                                     anzeigen</label>
                                                             </div>
 
@@ -674,7 +762,8 @@ global $hupa_api_handle;
                                                                 <input class="form-check-input" type="checkbox"
                                                                        name="kategorie_show_post_kommentar"
                                                                        id="postKatKommentarCheck" <?= !get_hupa_option('kategorie_show_post_kommentar') ?: 'checked' ?>>
-                                                                <label class="form-check-label" for="postKatKommentarCheck">Kommentar
+                                                                <label class="form-check-label"
+                                                                       for="postKatKommentarCheck">Kommentar
                                                                     anzeigen</label>
                                                             </div>
                                                             <div class="form-check form-switch me-3">
@@ -689,65 +778,79 @@ global $hupa_api_handle;
                                                         <!--//JOB TEMPLATES Kategorie END -->
                                                     </div>
 
-                                                    <div class="collapse" id="collapseArchiveSettings" data-bs-parent="#parent-archive-collapse">
+                                                    <div class="collapse" id="collapseArchiveSettings"
+                                                         data-bs-parent="#parent-archive-collapse">
                                                         <!--//JOB TEMPLATES Archiv -->
                                                         <hr>
-                                                        <h5><i class="font-blue fa fa-arrow-circle-right"></i> Einstellungen für
+                                                        <h5><i class="font-blue fa fa-arrow-circle-right"></i>
+                                                            Einstellungen für
                                                             Archiv Beitragslisten</h5>
                                                         <div class="form-check form-switch mt-3 me-3 mb-3">
                                                             <input class="form-check-input change_template_sidebar"
                                                                    data-id="SelectArchivSidebar" type="checkbox"
                                                                    name="archiv_show_sidebar"
                                                                    id="showArchivSidebarCheck" <?= !get_hupa_option('archiv_show_sidebar') ?: 'checked' ?>>
-                                                            <label class="form-check-label" for="showArchivSidebarCheck">Sidebar
+                                                            <label class="form-check-label"
+                                                                   for="showArchivSidebarCheck">Sidebar
                                                                 anzeigen</label>
                                                         </div>
                                                         <div class="mb-3">
-                                                            <label for="SelectArchivSidebar" class="form-label">Sidebar
-                                                                auswählen</label>
-                                                            <select id="SelectArchivSidebar" name="archiv_select_sidebar"
-                                                                    class="form-select" <?= get_hupa_option('archiv_show_sidebar') ?: 'disabled' ?>>
-                                                                <option value="">auswählen...</option>
-                                                                <?php
-                                                                $sidebarSelect = apply_filters('get_registered_sidebar', false);
-                                                                foreach ($sidebarSelect as $tmp):
-                                                                    get_hupa_option('archiv_select_sidebar') == $tmp['value'] ? $katSideSel = 'selected' : $katSideSel = '';
-                                                                    ?>
-                                                                    <option value="<?= $tmp['value'] ?>" <?= $katSideSel ?>><?= $tmp['label'] ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select id="SelectArchivSidebar"
+                                                                        name="archiv_select_sidebar"
+                                                                        class="form-select no-blur" <?= get_hupa_option('archiv_show_sidebar') ?: 'disabled' ?>>
+                                                                    <option value="">auswählen...</option>
+                                                                    <?php
+                                                                    $sidebarSelect = apply_filters('get_registered_sidebar', false);
+                                                                    foreach ($sidebarSelect as $tmp):
+                                                                        get_hupa_option('archiv_select_sidebar') == $tmp['value'] ? $katSideSel = 'selected' : $katSideSel = '';
+                                                                        ?>
+                                                                        <option value="<?= $tmp['value'] ?>" <?= $katSideSel ?>><?= $tmp['label'] ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="SelectArchivSidebar" class="form-label">Sidebar
+                                                                    auswählen</label>
+                                                            </div>
                                                         </div>
                                                         <hr>
                                                         <div class="mb-3">
-                                                            <label for="SelectArchivCustomHeader" class="form-label">Custom
-                                                                Header auswählen</label>
-                                                            <select id="SelectArchivCustomHeader" name="archiv_select_header"
-                                                                    class="form-select">
-                                                                <option value="0">auswählen...</option>
-                                                                <?php
-                                                                $headerSelect = apply_filters('get_custom_header', false);
-                                                                foreach ($headerSelect as $tmp):
-                                                                    get_hupa_option('archiv_select_header') == $tmp['id'] ? $katSideSel = 'selected' : $katSideSel = '';
-                                                                    ?>
-                                                                    <option value="<?= $tmp['id'] ?>" <?= $katSideSel ?>><?= $tmp['label'] ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select id="SelectArchivCustomHeader"
+                                                                        name="archiv_select_header"
+                                                                        class="form-select no-blur">
+                                                                    <option value="0">auswählen...</option>
+                                                                    <?php
+                                                                    $headerSelect = apply_filters('get_custom_header', false);
+                                                                    foreach ($headerSelect as $tmp):
+                                                                        get_hupa_option('archiv_select_header') == $tmp['id'] ? $katSideSel = 'selected' : $katSideSel = '';
+                                                                        ?>
+                                                                        <option value="<?= $tmp['id'] ?>" <?= $katSideSel ?>><?= $tmp['label'] ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="SelectArchivCustomHeader"
+                                                                       class="form-label">Custom Header
+                                                                    auswählen</label>
+                                                            </div>
                                                         </div>
                                                         <hr>
                                                         <div class="mb-3">
-                                                            <label for="SelectArchivCustomFooter" class="form-label">Custom
-                                                                Footer auswählen</label>
-                                                            <select id="SelectArchivCustomFooter" name="archiv_select_footer"
-                                                                    class="form-select">
-                                                                <option value="0">auswählen...</option>
-                                                                <?php
-                                                                $footerSelect = apply_filters('get_custom_footer', false);
-                                                                foreach ($footerSelect as $tmp):
-                                                                    get_hupa_option('archiv_select_footer') == $tmp['id'] ? $katSideSel = 'selected' : $katSideSel = '';
-                                                                    ?>
-                                                                    <option value="<?= $tmp['id'] ?>" <?= $katSideSel ?>><?= $tmp['label'] ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select id="SelectArchivCustomFooter"
+                                                                        name="archiv_select_footer"
+                                                                        class="form-select no-blur">
+                                                                    <option value="0">auswählen...</option>
+                                                                    <?php
+                                                                    $footerSelect = apply_filters('get_custom_footer', false);
+                                                                    foreach ($footerSelect as $tmp):
+                                                                        get_hupa_option('archiv_select_footer') == $tmp['id'] ? $katSideSel = 'selected' : $katSideSel = '';
+                                                                        ?>
+                                                                        <option value="<?= $tmp['id'] ?>" <?= $katSideSel ?>><?= $tmp['label'] ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="SelectArchivCustomFooter"
+                                                                       class="form-label">Custom Footer
+                                                                    auswählen</label>
+                                                            </div>
                                                         </div>
                                                         <hr>
                                                         <div class="form-check form-switch mt-3 me-3">
@@ -764,7 +867,8 @@ global $hupa_api_handle;
                                                                 <input class="form-check-input" type="checkbox"
                                                                        name="archiv_show_kategorie"
                                                                        id="postShowKatArchivCheck" <?= !get_hupa_option('archiv_show_kategorie') ?: 'checked' ?>>
-                                                                <label class="form-check-label" for="postShowKatArchivCheck">Kategorien
+                                                                <label class="form-check-label"
+                                                                       for="postShowKatArchivCheck">Kategorien
                                                                     anzeigen</label>
                                                             </div>
 
@@ -772,7 +876,8 @@ global $hupa_api_handle;
                                                                 <input class="form-check-input" type="checkbox"
                                                                        name="archiv_show_post_date"
                                                                        id="postArchivShowDateCheck" <?= !get_hupa_option('archiv_show_post_date') ?: 'checked' ?>>
-                                                                <label class="form-check-label" for="postArchivShowDateCheck">Datum
+                                                                <label class="form-check-label"
+                                                                       for="postArchivShowDateCheck">Datum
                                                                     anzeigen</label>
                                                             </div>
 
@@ -780,7 +885,8 @@ global $hupa_api_handle;
                                                                 <input class="form-check-input" type="checkbox"
                                                                        name="archiv_show_post_author"
                                                                        id="postAutorAuthorCheck" <?= !get_hupa_option('archiv_show_post_author') ?: 'checked' ?>>
-                                                                <label class="form-check-label" for="postAutorAuthorCheck">Author
+                                                                <label class="form-check-label"
+                                                                       for="postAutorAuthorCheck">Author
                                                                     anzeigen</label>
                                                             </div>
 
@@ -788,14 +894,16 @@ global $hupa_api_handle;
                                                                 <input class="form-check-input" type="checkbox"
                                                                        name="archiv_show_post_kommentar"
                                                                        id="postArchivKommentarCheck" <?= !get_hupa_option('archiv_show_post_kommentar') ?: 'checked' ?>>
-                                                                <label class="form-check-label" for="postArchivKommentarCheck">Kommentar
+                                                                <label class="form-check-label"
+                                                                       for="postArchivKommentarCheck">Kommentar
                                                                     anzeigen</label>
                                                             </div>
                                                             <div class="form-check form-switch me-3">
                                                                 <input class="form-check-input" type="checkbox"
                                                                        name="archiv_show_post_tags"
                                                                        id="postArchivTagsCheck" <?= !get_hupa_option('archiv_show_post_tags') ?: 'checked' ?>>
-                                                                <label class="form-check-label" for="postArchivTagsCheck">Schlagworte
+                                                                <label class="form-check-label"
+                                                                       for="postArchivTagsCheck">Schlagworte
                                                                     anzeigen</label>
                                                             </div>
                                                         </div>
@@ -803,10 +911,12 @@ global $hupa_api_handle;
                                                         <!--//JOB TEMPLATES Archiv END -->
                                                     </div>
 
-                                                    <div class="collapse" id="collapseAuthorenSettings" data-bs-parent="#parent-archive-collapse">
+                                                    <div class="collapse" id="collapseAuthorenSettings"
+                                                         data-bs-parent="#parent-archive-collapse">
                                                         <!--//JOB TEMPLATES Author -->
                                                         <hr>
-                                                        <h5><i class="font-blue fa fa-arrow-circle-right"></i> Einstellungen für
+                                                        <h5><i class="font-blue fa fa-arrow-circle-right"></i>
+                                                            Einstellungen für
                                                             Autoren Beitragslisten</h5>
                                                         <div class="form-check form-switch mt-3 me-3 mb-3">
                                                             <input class="form-check-input change_template_sidebar"
@@ -817,51 +927,60 @@ global $hupa_api_handle;
                                                                 anzeigen</label>
                                                         </div>
                                                         <div class="mb-3">
-                                                            <label for="SelectAutorSidebar" class="form-label">Sidebar
-                                                                auswählen</label>
-                                                            <select id="SelectAutorSidebar" name="autoren_select_sidebar"
-                                                                    class="form-select" <?= get_hupa_option('autoren_show_sidebar') ?: 'disabled' ?>>
-                                                                <option value="">auswählen...</option>
-                                                                <?php
-                                                                $sidebarSelect = apply_filters('get_registered_sidebar', false);
-                                                                foreach ($sidebarSelect as $tmp):
-                                                                    get_hupa_option('autoren_select_sidebar') == $tmp['value'] ? $katSideSel = 'selected' : $katSideSel = '';
-                                                                    ?>
-                                                                    <option value="<?= $tmp['value'] ?>" <?= $katSideSel ?>><?= $tmp['label'] ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select id="SelectAutorSidebar"
+                                                                        name="autoren_select_sidebar"
+                                                                        class="form-select no-blur" <?= get_hupa_option('autoren_show_sidebar') ?: 'disabled' ?>>
+                                                                    <option value="">auswählen...</option>
+                                                                    <?php
+                                                                    $sidebarSelect = apply_filters('get_registered_sidebar', false);
+                                                                    foreach ($sidebarSelect as $tmp):
+                                                                        get_hupa_option('autoren_select_sidebar') == $tmp['value'] ? $katSideSel = 'selected' : $katSideSel = '';
+                                                                        ?>
+                                                                        <option value="<?= $tmp['value'] ?>" <?= $katSideSel ?>><?= $tmp['label'] ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="SelectAutorSidebar" class="form-label">Sidebar
+                                                                    auswählen</label>
+                                                            </div>
                                                         </div>
                                                         <hr>
                                                         <div class="mb-3">
-                                                            <label for="SelectAutorCustomHeader" class="form-label">Custom
-                                                                Header auswählen</label>
-                                                            <select id="SelectAutorCustomHeader" name="autoren_select_header"
-                                                                    class="form-select">
-                                                                <option value="0">auswählen...</option>
-                                                                <?php
-                                                                $headerSelect = apply_filters('get_custom_header', false);
-                                                                foreach ($headerSelect as $tmp):
-                                                                    get_hupa_option('autoren_select_header') == $tmp['id'] ? $katSideSel = 'selected' : $katSideSel = '';
-                                                                    ?>
-                                                                    <option value="<?= $tmp['id'] ?>" <?= $katSideSel ?>><?= $tmp['label'] ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select id="SelectAutorCustomHeader"
+                                                                        name="autoren_select_header"
+                                                                        class="form-select no-blur">
+                                                                    <option value="0">auswählen...</option>
+                                                                    <?php
+                                                                    $headerSelect = apply_filters('get_custom_header', false);
+                                                                    foreach ($headerSelect as $tmp):
+                                                                        get_hupa_option('autoren_select_header') == $tmp['id'] ? $katSideSel = 'selected' : $katSideSel = '';
+                                                                        ?>
+                                                                        <option value="<?= $tmp['id'] ?>" <?= $katSideSel ?>><?= $tmp['label'] ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="SelectAutorCustomHeader" class="form-label">Custom
+                                                                    Header auswählen</label>
+                                                            </div>
                                                         </div>
                                                         <hr>
                                                         <div class="mb-3">
-                                                            <label for="SelectAutorCustomFooter" class="form-label">Custom
-                                                                Footer auswählen</label>
-                                                            <select id="SelectAutorCustomFooter" name="autoren_select_footer"
-                                                                    class="form-select">
-                                                                <option value="0">auswählen...</option>
-                                                                <?php
-                                                                $footerSelect = apply_filters('get_custom_footer', false);
-                                                                foreach ($footerSelect as $tmp):
-                                                                    get_hupa_option('autoren_select_footer') == $tmp['id'] ? $katSideSel = 'selected' : $katSideSel = '';
-                                                                    ?>
-                                                                    <option value="<?= $tmp['id'] ?>" <?= $katSideSel ?>><?= $tmp['label'] ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select id="SelectAutorCustomFooter"
+                                                                        name="autoren_select_footer"
+                                                                        class="form-select no-blur">
+                                                                    <option value="0">auswählen...</option>
+                                                                    <?php
+                                                                    $footerSelect = apply_filters('get_custom_footer', false);
+                                                                    foreach ($footerSelect as $tmp):
+                                                                        get_hupa_option('autoren_select_footer') == $tmp['id'] ? $katSideSel = 'selected' : $katSideSel = '';
+                                                                        ?>
+                                                                        <option value="<?= $tmp['id'] ?>" <?= $katSideSel ?>><?= $tmp['label'] ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="SelectAutorCustomFooter" class="form-label">Custom
+                                                                    Footer auswählen</label>
+                                                            </div>
                                                         </div>
                                                         <hr>
                                                         <div class="form-check form-switch mt-3 me-3">
@@ -878,7 +997,8 @@ global $hupa_api_handle;
                                                                 <input class="form-check-input" type="checkbox"
                                                                        name="autoren_show_kategorie"
                                                                        id="postShowKatAutorCheck" <?= !get_hupa_option('autoren_show_kategorie') ?: 'checked' ?>>
-                                                                <label class="form-check-label" for="postShowKatAutorCheck">Kategorien
+                                                                <label class="form-check-label"
+                                                                       for="postShowKatAutorCheck">Kategorien
                                                                     anzeigen</label>
                                                             </div>
 
@@ -886,7 +1006,8 @@ global $hupa_api_handle;
                                                                 <input class="form-check-input" type="checkbox"
                                                                        name="autoren_show_post_date"
                                                                        id="postAutorShowDateCheck" <?= !get_hupa_option('autoren_show_post_date') ?: 'checked' ?>>
-                                                                <label class="form-check-label" for="postAutorShowDateCheck">Datum
+                                                                <label class="form-check-label"
+                                                                       for="postAutorShowDateCheck">Datum
                                                                     anzeigen</label>
                                                             </div>
 
@@ -894,7 +1015,8 @@ global $hupa_api_handle;
                                                                 <input class="form-check-input" type="checkbox"
                                                                        name="autoren_show_post_author"
                                                                        id="postAutAuthorCheck" <?= !get_hupa_option('autoren_show_post_author') ?: 'checked' ?>>
-                                                                <label class="form-check-label" for="postAutAuthorCheck">Author
+                                                                <label class="form-check-label"
+                                                                       for="postAutAuthorCheck">Author
                                                                     anzeigen</label>
                                                             </div>
 
@@ -902,28 +1024,31 @@ global $hupa_api_handle;
                                                                 <input class="form-check-input" type="checkbox"
                                                                        name="autoren_show_post_kommentar"
                                                                        id="postAutorKommentarCheck" <?= !get_hupa_option('autoren_show_post_kommentar') ?: 'checked' ?>>
-                                                                <label class="form-check-label" for="postAutorKommentarCheck">Kommentar
+                                                                <label class="form-check-label"
+                                                                       for="postAutorKommentarCheck">Kommentar
                                                                     anzeigen</label>
                                                             </div>
                                                             <div class="form-check form-switch me-3">
                                                                 <input class="form-check-input" type="checkbox"
                                                                        name="autoren_show_post_tags"
                                                                        id="postAutorTagsCheck" <?= !get_hupa_option('autoren_show_post_tags') ?: 'checked' ?>>
-                                                                <label class="form-check-label" for="postAutorTagsCheck">Schlagworte
+                                                                <label class="form-check-label"
+                                                                       for="postAutorTagsCheck">Schlagworte
                                                                     anzeigen</label>
                                                             </div>
                                                         </div>
 
                                                         <!--//JOB TEMPLATES Author END -->
                                                     </div>
-                                                    <div class="collapse" id="collapseBlockSettings" data-bs-parent="#parent-archive-collapse">
+                                                    <div class="collapse" id="collapseBlockSettings"
+                                                         data-bs-parent="#parent-archive-collapse">
                                                         <hr>
                                                         <!--//JOB TEMPLATES Block -->
 
                                                         <!--//JOB TEMPLATES Block END -->
                                                     </div>
-
-                                                    <div class="collapse" id="collapseSearchSettings" data-bs-parent="#parent-archive-collapse">
+                                                    <div class="collapse" id="collapseSearchSettings"
+                                                         data-bs-parent="#parent-archive-collapse">
                                                         <hr>
                                                         <!--//JOB TEMPLATES Search -->
 
@@ -950,18 +1075,21 @@ global $hupa_api_handle;
                                                     </h5>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="Select404Page" class="form-label">404 Seite auswählen</label>
-                                                    <select id="Select404Page" name="hupa_select_404"
-                                                            class="form-select">
-                                                        <option value="0">auswählen...</option>
-                                                        <?php
-                                                        $pages = apply_filters('get_theme_pages', false);
-                                                        foreach ($pages as $tmp):
-                                                            get_hupa_option('hupa_select_404') == $tmp['id'] ? $katSideSel = 'selected' : $katSideSel = '';
-                                                            ?>
-                                                            <option value="<?= $tmp['id'] ?>" <?= $katSideSel ?>><?= $tmp['name'] ?></option>
-                                                        <?php endforeach; ?>
-                                                    </select>
+                                                    <div class="form-floating">
+                                                        <select id="Select404Page" name="hupa_select_404"
+                                                                class="form-select no-blur">
+                                                            <option value="0">auswählen...</option>
+                                                            <?php
+                                                            $pages = apply_filters('get_theme_pages', false);
+                                                            foreach ($pages as $tmp):
+                                                                get_hupa_option('hupa_select_404') == $tmp['id'] ? $katSideSel = 'selected' : $katSideSel = '';
+                                                                ?>
+                                                                <option value="<?= $tmp['id'] ?>" <?= $katSideSel ?>><?= $tmp['name'] ?></option>
+                                                            <?php endforeach; ?>
+                                                        </select>
+                                                        <label for="Select404Page" class="form-label">404 Seite
+                                                            auswählen</label>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-12">
@@ -1049,12 +1177,14 @@ global $hupa_api_handle;
                                                 <hr>
                                                 <div class="col-xl-6 col-lg-8 col-12">
                                                     <div class="mb-3">
-                                                        <label for="inputSocialExtraCss" class="form-label">Extra CSS
-                                                            Klasse hinzufügen</label>
-                                                        <input type="text" class="form-control"
-                                                               name="social_extra_css"
-                                                               value="<?= get_hupa_option('social_extra_css') ?>"
-                                                               id="inputSocialExtraCss">
+                                                        <div class="form-floating">
+                                                            <input type="text" class="form-control no-blur"
+                                                                   name="social_extra_css"
+                                                                   value="<?= get_hupa_option('social_extra_css') ?>"
+                                                                   id="inputSocialExtraCss">
+                                                            <label for="inputSocialExtraCss" class="form-label no-blur">Extra
+                                                                CSS Klasse hinzufügen</label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-text">Diese Einstellungen können für jede Seite oder
@@ -1227,33 +1357,37 @@ global $hupa_api_handle;
                                             <fieldset id="fontH1">
                                                 <div class="row g-3 py-1">
                                                     <div class="col-lg-3 col-md-6 col-12">
-                                                        <label for="InputH1Family" class="form-label">
-                                                            <b><?= __('Font family', 'bootscore'); ?></b></label>
-                                                        <select class="form-select"
-                                                                onchange="font_family_change(this, 'InputH1Style');"
-                                                                id="InputH1Family" name="font_family">
-                                                            <?php
-                                                            $family = apply_filters('get_font_family_select', false);
-                                                            foreach ($family as $key => $val):
-                                                                get_hupa_option('h1_font_family') === $val->family ? $sel = 'selected' : $sel = '';
-                                                                ?>
-                                                                <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
+                                                        <div class="form-floating">
+                                                            <select class="form-select no-blur"
+                                                                    onchange="font_family_change(this, 'InputH1Style');"
+                                                                    id="InputH1Family" name="font_family">
+                                                                <?php
+                                                                $family = apply_filters('get_font_family_select', false);
+                                                                foreach ($family as $key => $val):
+                                                                    get_hupa_option('h1_font_family') === $val->family ? $sel = 'selected' : $sel = '';
+                                                                    ?>
+                                                                    <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                            <label for="InputH1Family" class="form-label">
+                                                                <?= __('Font family', 'bootscore'); ?></label>
+                                                        </div>
                                                     </div>
-
                                                     <div class="col-lg-3 col-md-6 col-12">
-                                                        <label for="InputH1Style" class="form-label">
-                                                            <b><?= __('Font style', 'bootscore'); ?></b></label>
-                                                        <select class="form-select" id="InputH1Style" name="font_style">
-                                                            <?php
-                                                            $style = apply_filters('get_font_style_select', get_hupa_option('h1_font_family'));
-                                                            foreach ($style as $key => $val):
-                                                                $key == get_hupa_option('h1_font_style') ? $sel = 'selected' : $sel = '';
-                                                                ?>
-                                                                <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
+                                                        <div class="form-floating">
+                                                            <select class="form-select no-blur" id="InputH1Style"
+                                                                    name="font_style">
+                                                                <?php
+                                                                $style = apply_filters('get_font_style_select', get_hupa_option('h1_font_family'));
+                                                                foreach ($style as $key => $val):
+                                                                    $key == get_hupa_option('h1_font_style') ? $sel = 'selected' : $sel = '';
+                                                                    ?>
+                                                                    <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                            <label for="InputH1Style" class="form-label">
+                                                                <?= __('Font style', 'bootscore'); ?></label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <hr>
@@ -1303,18 +1437,6 @@ global $hupa_api_handle;
                                                 </div>
                                             </div>
                                             <hr>
-                                            <!--<div class="d-flex align-items-center">
-                                                <div class="input-color-container">
-                                                    <input id="InputColorH1"
-                                                           value="<?= get_hupa_option('h1_font_color') ?>"
-                                                           name="font_color"
-                                                           class="input-color" type="color">
-                                                </div>
-                                                <label class="input-color-label ms-2" for="InputColorH1">
-                                                    <b>H1</b> <?= __('Font colour', 'bootscore'); ?>
-                                                </label>
-                                                <div class="ajax-status-spinner ms-auto d-inline-block mb-2 pe-2"></div>
-                                            </div>-->
                                             <div class="d-flex align-items-center">
                                                 <div class="color-select-wrapper d-flex mb-2">
                                                     <div data-color="<?= get_hupa_option('h1_font_color') ?>"
@@ -1356,33 +1478,38 @@ global $hupa_api_handle;
                                             <fieldset id="fontH2">
                                                 <div class="row g-3 py-1">
                                                     <div class="col-lg-3 col-md-6 col-12">
-                                                        <label for="InputH2Family" class="form-label">
-                                                            <b><?= __('Font family', 'bootscore'); ?></b></label>
-                                                        <select class="form-select"
-                                                                onchange="font_family_change(this, 'InputH2Style');"
-                                                                id="InputH2Family" name="font_family">
-                                                            <?php
-                                                            $family = apply_filters('get_font_family_select', false);
-                                                            foreach ($family as $key => $val):
-                                                                get_hupa_option('h2_font_family') === $val->family ? $sel = 'selected' : $sel = '';
-                                                                ?>
-                                                                <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
+                                                        <div class="form-floating">
+                                                            <select class="form-select no-blur"
+                                                                    onchange="font_family_change(this, 'InputH2Style');"
+                                                                    id="InputH2Family" name="font_family">
+                                                                <?php
+                                                                $family = apply_filters('get_font_family_select', false);
+                                                                foreach ($family as $key => $val):
+                                                                    get_hupa_option('h2_font_family') === $val->family ? $sel = 'selected' : $sel = '';
+                                                                    ?>
+                                                                    <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                            <label for="InputH2Family" class="form-label">
+                                                                <?= __('Font family', 'bootscore'); ?></label>
+                                                        </div>
                                                     </div>
 
                                                     <div class="col-lg-3 col-md-6 col-12">
-                                                        <label for="InputH2Style" class="form-label">
-                                                            <b><?= __('Font style', 'bootscore'); ?></b></label>
-                                                        <select class="form-select" id="InputH2Style" name="font_style">
-                                                            <?php
-                                                            $style = apply_filters('get_font_style_select', get_hupa_option('h2_font_family'));
-                                                            foreach ($style as $key => $val):
-                                                                $key == get_hupa_option('h2_font_style') ? $sel = 'selected' : $sel = '';
-                                                                ?>
-                                                                <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
+                                                        <div class="form-floating">
+                                                            <select class="form-select no-blur" id="InputH2Style"
+                                                                    name="font_style">
+                                                                <?php
+                                                                $style = apply_filters('get_font_style_select', get_hupa_option('h2_font_family'));
+                                                                foreach ($style as $key => $val):
+                                                                    $key == get_hupa_option('h2_font_style') ? $sel = 'selected' : $sel = '';
+                                                                    ?>
+                                                                    <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                            <label for="InputH2Style" class="form-label">
+                                                                <?= __('Font style', 'bootscore'); ?></label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <hr>
@@ -1473,33 +1600,38 @@ global $hupa_api_handle;
                                             <fieldset id="fontH3">
                                                 <div class="row g-3 py-1">
                                                     <div class="col-lg-3 col-md-6 col-12">
-                                                        <label for="InputH3Family" class="form-label">
-                                                            <b><?= __('Font family', 'bootscore'); ?></b></label>
-                                                        <select class="form-select"
-                                                                onchange="font_family_change(this, 'InputH3Style');"
-                                                                id="InputH3Family" name="font_family">
-                                                            <?php
-                                                            $family = apply_filters('get_font_family_select', false);
-                                                            foreach ($family as $key => $val):
-                                                                get_hupa_option('h3_font_family') === $val->family ? $sel = 'selected' : $sel = '';
-                                                                ?>
-                                                                <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
+                                                        <div class="form-floating">
+                                                            <select class="form-select no-blur"
+                                                                    onchange="font_family_change(this, 'InputH3Style');"
+                                                                    id="InputH3Family" name="font_family">
+                                                                <?php
+                                                                $family = apply_filters('get_font_family_select', false);
+                                                                foreach ($family as $key => $val):
+                                                                    get_hupa_option('h3_font_family') === $val->family ? $sel = 'selected' : $sel = '';
+                                                                    ?>
+                                                                    <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                            <label for="InputH3Family" class="form-label">
+                                                                <?= __('Font family', 'bootscore'); ?></label>
+                                                        </div>
                                                     </div>
 
                                                     <div class="col-lg-3 col-md-6 col-12">
-                                                        <label for="InputH3Style" class="form-label">
-                                                            <b><?= __('Font style', 'bootscore'); ?></b></label>
-                                                        <select class="form-select" id="InputH3Style" name="font_style">
-                                                            <?php
-                                                            $style = apply_filters('get_font_style_select', get_hupa_option('h3_font_family'));
-                                                            foreach ($style as $key => $val):
-                                                                $key == get_hupa_option('h3_font_style') ? $sel = 'selected' : $sel = '';
-                                                                ?>
-                                                                <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
+                                                        <div class="form-floating">
+                                                            <select class="form-select no-blur" id="InputH3Style"
+                                                                    name="font_style">
+                                                                <?php
+                                                                $style = apply_filters('get_font_style_select', get_hupa_option('h3_font_family'));
+                                                                foreach ($style as $key => $val):
+                                                                    $key == get_hupa_option('h3_font_style') ? $sel = 'selected' : $sel = '';
+                                                                    ?>
+                                                                    <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                            <label for="InputH3Style" class="form-label">
+                                                                <?= __('Font style', 'bootscore'); ?></label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <hr>
@@ -1590,33 +1722,38 @@ global $hupa_api_handle;
                                             <fieldset id="fontH4">
                                                 <div class="row g-3 py-1">
                                                     <div class="col-lg-3 col-md-6 col-12">
-                                                        <label for="InputH4Family" class="form-label">
-                                                            <b><?= __('Font family', 'bootscore'); ?></b></label>
-                                                        <select class="form-select"
-                                                                onchange="font_family_change(this, 'InputH4Style');"
-                                                                id="InputH4Family" name="font_family">
-                                                            <?php
-                                                            $family = apply_filters('get_font_family_select', false);
-                                                            foreach ($family as $key => $val):
-                                                                get_hupa_option('h4_font_family') === $val->family ? $sel = 'selected' : $sel = '';
-                                                                ?>
-                                                                <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
+                                                        <div class="form-floating">
+                                                            <select class="form-select no-blur"
+                                                                    onchange="font_family_change(this, 'InputH4Style');"
+                                                                    id="InputH4Family" name="font_family">
+                                                                <?php
+                                                                $family = apply_filters('get_font_family_select', false);
+                                                                foreach ($family as $key => $val):
+                                                                    get_hupa_option('h4_font_family') === $val->family ? $sel = 'selected' : $sel = '';
+                                                                    ?>
+                                                                    <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                            <label for="InputH4Family" class="form-label">
+                                                                <?= __('Font family', 'bootscore'); ?></label>
+                                                        </div>
                                                     </div>
 
                                                     <div class="col-lg-3 col-md-6 col-12">
-                                                        <label for="InputH4Style" class="form-label">
-                                                            <b><?= __('Font style', 'bootscore'); ?></b></label>
-                                                        <select class="form-select" id="InputH4Style" name="font_style">
-                                                            <?php
-                                                            $style = apply_filters('get_font_style_select', get_hupa_option('h4_font_family'));
-                                                            foreach ($style as $key => $val):
-                                                                $key == get_hupa_option('h4_font_style') ? $sel = 'selected' : $sel = '';
-                                                                ?>
-                                                                <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
+                                                        <div class="form-floating">
+                                                            <select class="form-select no-blur" id="InputH4Style"
+                                                                    name="font_style">
+                                                                <?php
+                                                                $style = apply_filters('get_font_style_select', get_hupa_option('h4_font_family'));
+                                                                foreach ($style as $key => $val):
+                                                                    $key == get_hupa_option('h4_font_style') ? $sel = 'selected' : $sel = '';
+                                                                    ?>
+                                                                    <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                            <label for="InputH4Style" class="form-label">
+                                                                <?= __('Font style', 'bootscore'); ?></label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <hr>
@@ -1707,33 +1844,38 @@ global $hupa_api_handle;
                                             <fieldset id="fontH5">
                                                 <div class="row g-3 py-1">
                                                     <div class="col-lg-3 col-md-6 col-12">
-                                                        <label for="InputH5Family" class="form-label">
-                                                            <b><?= __('Font family', 'bootscore'); ?></b></label>
-                                                        <select class="form-select"
-                                                                onchange="font_family_change(this, 'InputH5Style');"
-                                                                id="InputH5Family" name="font_family">
-                                                            <?php
-                                                            $family = apply_filters('get_font_family_select', false);
-                                                            foreach ($family as $key => $val):
-                                                                get_hupa_option('h5_font_family') === $val->family ? $sel = 'selected' : $sel = '';
-                                                                ?>
-                                                                <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
+                                                        <div class="form-floating">
+                                                            <select class="form-select no-blur"
+                                                                    onchange="font_family_change(this, 'InputH5Style');"
+                                                                    id="InputH5Family" name="font_family">
+                                                                <?php
+                                                                $family = apply_filters('get_font_family_select', false);
+                                                                foreach ($family as $key => $val):
+                                                                    get_hupa_option('h5_font_family') === $val->family ? $sel = 'selected' : $sel = '';
+                                                                    ?>
+                                                                    <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                            <label for="InputH5Family" class="form-label">
+                                                                <?= __('Font family', 'bootscore'); ?></label>
+                                                        </div>
                                                     </div>
 
                                                     <div class="col-lg-3 col-md-6 col-12">
-                                                        <label for="InputH5Style" class="form-label">
-                                                            <b><?= __('Font style', 'bootscore'); ?></b></label>
-                                                        <select class="form-select" id="InputH5Style" name="font_style">
-                                                            <?php
-                                                            $style = apply_filters('get_font_style_select', get_hupa_option('h5_font_family'));
-                                                            foreach ($style as $key => $val):
-                                                                $key == get_hupa_option('h5_font_style') ? $sel = 'selected' : $sel = '';
-                                                                ?>
-                                                                <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
+                                                        <div class="form-floating">
+                                                            <select class="form-select no-blur" id="InputH5Style"
+                                                                    name="font_style">
+                                                                <?php
+                                                                $style = apply_filters('get_font_style_select', get_hupa_option('h5_font_family'));
+                                                                foreach ($style as $key => $val):
+                                                                    $key == get_hupa_option('h5_font_style') ? $sel = 'selected' : $sel = '';
+                                                                    ?>
+                                                                    <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                            <label for="InputH5Style" class="form-label">
+                                                                <?= __('Font style', 'bootscore'); ?></label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <hr>
@@ -1823,33 +1965,38 @@ global $hupa_api_handle;
                                             <fieldset id="fontH6">
                                                 <div class="row g-3 py-1">
                                                     <div class="col-lg-3 col-md-6 col-12">
-                                                        <label for="InputH6Family" class="form-label">
-                                                            <b><?= __('Font family', 'bootscore'); ?></b></label>
-                                                        <select class="form-select"
-                                                                onchange="font_family_change(this, 'InputH6Style');"
-                                                                id="InputH6Family" name="font_family">
-                                                            <?php
-                                                            $family = apply_filters('get_font_family_select', false);
-                                                            foreach ($family as $key => $val):
-                                                                get_hupa_option('h6_font_family') === $val->family ? $sel = 'selected' : $sel = '';
-                                                                ?>
-                                                                <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
+                                                        <div class="form-floating">
+                                                            <select class="form-select no-blur"
+                                                                    onchange="font_family_change(this, 'InputH6Style');"
+                                                                    id="InputH6Family" name="font_family">
+                                                                <?php
+                                                                $family = apply_filters('get_font_family_select', false);
+                                                                foreach ($family as $key => $val):
+                                                                    get_hupa_option('h6_font_family') === $val->family ? $sel = 'selected' : $sel = '';
+                                                                    ?>
+                                                                    <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                            <label for="InputH6Family" class="form-label">
+                                                                <?= __('Font family', 'bootscore'); ?></label>
+                                                        </div>
                                                     </div>
 
                                                     <div class="col-lg-3 col-md-6 col-12">
-                                                        <label for="InputH6Style" class="form-label">
-                                                            <b><?= __('Font style', 'bootscore'); ?></b></label>
-                                                        <select class="form-select" id="InputH6Style" name="font_style">
-                                                            <?php
-                                                            $style = apply_filters('get_font_style_select', get_hupa_option('h6_font_family'));
-                                                            foreach ($style as $key => $val):
-                                                                $key == get_hupa_option('h6_font_style') ? $sel = 'selected' : $sel = '';
-                                                                ?>
-                                                                <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
+                                                        <div class="form-floating">
+                                                            <select class="form-select no-blur" id="InputH6Style"
+                                                                    name="font_style">
+                                                                <?php
+                                                                $style = apply_filters('get_font_style_select', get_hupa_option('h6_font_family'));
+                                                                foreach ($style as $key => $val):
+                                                                    $key == get_hupa_option('h6_font_style') ? $sel = 'selected' : $sel = '';
+                                                                    ?>
+                                                                    <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                            <label for="InputH6Style" class="form-label">
+                                                                <?= __('Font style', 'bootscore'); ?></label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <hr>
@@ -1940,34 +2087,39 @@ global $hupa_api_handle;
                                                 <fieldset id="fontWidget">
                                                     <div class="row g-3 py-1">
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputWidgetFamily" class="form-label">
-                                                                <b><?= __('Font family', 'bootscore'); ?></b></label>
-                                                            <select class="form-select"
-                                                                    onchange="font_family_change(this, 'InputWidgetStyle');"
-                                                                    id="InputWidgetFamily" name="font_family">
-                                                                <?php
-                                                                $family = apply_filters('get_font_family_select', false);
-                                                                foreach ($family as $key => $val):
-                                                                    get_hupa_option('widget_font_family') === $val->family ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur"
+                                                                        onchange="font_family_change(this, 'InputWidgetStyle');"
+                                                                        id="InputWidgetFamily" name="font_family">
+                                                                    <?php
+                                                                    $family = apply_filters('get_font_family_select', false);
+                                                                    foreach ($family as $key => $val):
+                                                                        get_hupa_option('widget_font_family') === $val->family ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputWidgetFamily" class="form-label">
+                                                                    <?= __('Font family', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
 
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputWidgetStyle" class="form-label">
-                                                                <b><?= __('Font style', 'bootscore'); ?></b></label>
-                                                            <select class="form-select" id="InputWidgetStyle"
-                                                                    name="font_style">
-                                                                <?php
-                                                                $style = apply_filters('get_font_style_select', get_hupa_option('widget_font_family'));
-                                                                foreach ($style as $key => $val):
-                                                                    $key == get_hupa_option('widget_font_style') ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur"
+                                                                        id="InputWidgetStyle"
+                                                                        name="font_style">
+                                                                    <?php
+                                                                    $style = apply_filters('get_font_style_select', get_hupa_option('widget_font_family'));
+                                                                    foreach ($style as $key => $val):
+                                                                        $key == get_hupa_option('widget_font_style') ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputWidgetStyle" class="form-label">
+                                                                    <?= __('Font style', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -2010,15 +2162,6 @@ global $hupa_api_handle;
                                                         <label class="form-check-label" for="flexSwitchCheckBSWidget">
                                                             <?= __('Use standard font', 'bootscore'); ?> </label>
                                                     </div>
-
-                                                    <!--<div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox"
-                                                               name="font_display_check"
-                                                               id="flexSwitchCheckDisplayWidget" <?= get_hupa_option('widget_font_display_check') ? 'checked' : '' ?>>
-                                                        <label class="form-check-label"
-                                                               for="flexSwitchCheckDisplayWidget">
-															<?= __('Display heading', 'bootscore'); ?> </label>
-                                                    </div>-->
                                                 </div>
                                                 <hr>
                                                 <div class="d-flex align-items-center">
@@ -2066,34 +2209,38 @@ global $hupa_api_handle;
                                                 <fieldset id="fontBody">
                                                     <div class="row g-3 py-1">
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputBodyFamily" class="form-label">
-                                                                <b><?= __('Font family', 'bootscore'); ?></b></label>
-                                                            <select class="form-select"
-                                                                    onchange="font_family_change(this, 'InputBodyStyle');"
-                                                                    id="InputBodyFamily" name="font_family">
-                                                                <?php
-                                                                $family = apply_filters('get_font_family_select', false);
-                                                                foreach ($family as $key => $val):
-                                                                    get_hupa_option('body_font_family') === $val->family ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur"
+                                                                        onchange="font_family_change(this, 'InputBodyStyle');"
+                                                                        id="InputBodyFamily" name="font_family">
+                                                                    <?php
+                                                                    $family = apply_filters('get_font_family_select', false);
+                                                                    foreach ($family as $key => $val):
+                                                                        get_hupa_option('body_font_family') === $val->family ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputBodyFamily" class="form-label">
+                                                                    <?= __('Font family', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
 
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputBodyStyle" class="form-label">
-                                                                <b><?= __('Font style', 'bootscore'); ?></b></label>
-                                                            <select class="form-select" id="InputBodyStyle"
-                                                                    name="font_style">
-                                                                <?php
-                                                                $style = apply_filters('get_font_style_select', get_hupa_option('body_font_family'));
-                                                                foreach ($style as $key => $val):
-                                                                    $key == get_hupa_option('body_font_style') ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur" id="InputBodyStyle"
+                                                                        name="font_style">
+                                                                    <?php
+                                                                    $style = apply_filters('get_font_style_select', get_hupa_option('body_font_family'));
+                                                                    foreach ($style as $key => $val):
+                                                                        $key == get_hupa_option('body_font_style') ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputBodyStyle" class="form-label">
+                                                                    <?= __('Font style', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -2178,34 +2325,38 @@ global $hupa_api_handle;
                                                 <fieldset id="fontMenu">
                                                     <div class="row g-3 py-1">
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputMenuFamily" class="form-label">
-                                                                <b><?= __('Font family', 'bootscore'); ?></b></label>
-                                                            <select class="form-select"
-                                                                    onchange="font_family_change(this, 'InputMenuStyle');"
-                                                                    id="InputMenuFamily" name="font_family">
-                                                                <?php
-                                                                $family = apply_filters('get_font_family_select', false);
-                                                                foreach ($family as $key => $val):
-                                                                    get_hupa_option('menu_font_family') === $val->family ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur"
+                                                                        onchange="font_family_change(this, 'InputMenuStyle');"
+                                                                        id="InputMenuFamily" name="font_family">
+                                                                    <?php
+                                                                    $family = apply_filters('get_font_family_select', false);
+                                                                    foreach ($family as $key => $val):
+                                                                        get_hupa_option('menu_font_family') === $val->family ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputMenuFamily" class="form-label">
+                                                                    <?= __('Font family', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
 
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputMenuStyle" class="form-label">
-                                                                <b><?= __('Font style', 'bootscore'); ?></b></label>
-                                                            <select class="form-select" id="InputMenuStyle"
-                                                                    name="font_style">
-                                                                <?php
-                                                                $style = apply_filters('get_font_style_select', get_hupa_option('menu_font_family'));
-                                                                foreach ($style as $key => $val):
-                                                                    $key == get_hupa_option('menu_font_style') ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur" id="InputMenuStyle"
+                                                                        name="font_style">
+                                                                    <?php
+                                                                    $style = apply_filters('get_font_style_select', get_hupa_option('menu_font_family'));
+                                                                    foreach ($style as $key => $val):
+                                                                        $key == get_hupa_option('menu_font_style') ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputMenuStyle" class="form-label">
+                                                                    <?= __('Font style', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -2277,34 +2428,38 @@ global $hupa_api_handle;
                                                 <fieldset id="fontBtn">
                                                     <div class="row g-3 py-1">
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputBtnFamily" class="form-label">
-                                                                <b><?= __('Font family', 'bootscore'); ?></b></label>
-                                                            <select class="form-select"
-                                                                    onchange="font_family_change(this, 'InputBtnStyle');"
-                                                                    id="InputBtnFamily" name="font_family">
-                                                                <?php
-                                                                $family = apply_filters('get_font_family_select', false);
-                                                                foreach ($family as $key => $val):
-                                                                    get_hupa_option('btn_font_family') === $val->family ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur"
+                                                                        onchange="font_family_change(this, 'InputBtnStyle');"
+                                                                        id="InputBtnFamily" name="font_family">
+                                                                    <?php
+                                                                    $family = apply_filters('get_font_family_select', false);
+                                                                    foreach ($family as $key => $val):
+                                                                        get_hupa_option('btn_font_family') === $val->family ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputBtnFamily" class="form-label">
+                                                                    <?= __('Font family', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
 
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputBtnStyle" class="form-label">
-                                                                <b><?= __('Font style', 'bootscore'); ?></b></label>
-                                                            <select class="form-select" id="InputBtnStyle"
-                                                                    name="font_style">
-                                                                <?php
-                                                                $style = apply_filters('get_font_style_select', get_hupa_option('btn_font_family'));
-                                                                foreach ($style as $key => $val):
-                                                                    $key == get_hupa_option('btn_font_style') ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur" id="InputBtnStyle"
+                                                                        name="font_style">
+                                                                    <?php
+                                                                    $style = apply_filters('get_font_style_select', get_hupa_option('btn_font_family'));
+                                                                    foreach ($style as $key => $val):
+                                                                        $key == get_hupa_option('btn_font_style') ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputBtnStyle" class="form-label">
+                                                                    <?= __('Font style', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -2379,34 +2534,39 @@ global $hupa_api_handle;
                                                 <fieldset id="fontTopArea">
                                                     <div class="row g-3 py-1">
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputFontAreaFamily" class="form-label">
-                                                                <b><?= __('Font family', 'bootscore'); ?></b></label>
-                                                            <select class="form-select"
-                                                                    onchange="font_family_change(this, 'InputTopAreaStyle');"
-                                                                    id="InputFontAreaFamily" name="font_family">
-                                                                <?php
-                                                                $family = apply_filters('get_font_family_select', false);
-                                                                foreach ($family as $key => $val):
-                                                                    get_hupa_option('top_font_family') === $val->family ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur"
+                                                                        onchange="font_family_change(this, 'InputTopAreaStyle');"
+                                                                        id="InputFontAreaFamily" name="font_family">
+                                                                    <?php
+                                                                    $family = apply_filters('get_font_family_select', false);
+                                                                    foreach ($family as $key => $val):
+                                                                        get_hupa_option('top_font_family') === $val->family ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputFontAreaFamily" class="form-label">
+                                                                    <?= __('Font family', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
 
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputTopAreaStyle" class="form-label">
-                                                                <b><?= __('Font style', 'bootscore'); ?></b></label>
-                                                            <select class="form-select" id="InputTopAreaStyle"
-                                                                    name="font_style">
-                                                                <?php
-                                                                $style = apply_filters('get_font_style_select', get_hupa_option('top_font_family'));
-                                                                foreach ($style as $key => $val):
-                                                                    $key == get_hupa_option('top_font_style') ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur"
+                                                                        id="InputTopAreaStyle"
+                                                                        name="font_style">
+                                                                    <?php
+                                                                    $style = apply_filters('get_font_style_select', get_hupa_option('top_font_family'));
+                                                                    foreach ($style as $key => $val):
+                                                                        $key == get_hupa_option('top_font_style') ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputTopAreaStyle" class="form-label">
+                                                                    <?= __('Font style', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -2481,34 +2641,38 @@ global $hupa_api_handle;
                                                 <fieldset id="fontUnder">
                                                     <div class="row g-3 py-1">
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputUnderFamily" class="form-label">
-                                                                <b><?= __('Font family', 'bootscore'); ?></b></label>
-                                                            <select class="form-select"
-                                                                    onchange="font_family_change(this, 'InputUnderStyle');"
-                                                                    id="InputUnderFamily" name="font_family">
-                                                                <?php
-                                                                $family = apply_filters('get_font_family_select', false);
-                                                                foreach ($family as $key => $val):
-                                                                    get_hupa_option('under_font_family') === $val->family ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur"
+                                                                        onchange="font_family_change(this, 'InputUnderStyle');"
+                                                                        id="InputUnderFamily" name="font_family">
+                                                                    <?php
+                                                                    $family = apply_filters('get_font_family_select', false);
+                                                                    foreach ($family as $key => $val):
+                                                                        get_hupa_option('under_font_family') === $val->family ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputUnderFamily" class="form-label">
+                                                                    <?= __('Font family', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
 
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputUnderStyle" class="form-label">
-                                                                <b><?= __('Font style', 'bootscore'); ?></b></label>
-                                                            <select class="form-select" id="InputUnderStyle"
-                                                                    name="font_style">
-                                                                <?php
-                                                                $style = apply_filters('get_font_style_select', get_hupa_option('under_font_family'));
-                                                                foreach ($style as $key => $val):
-                                                                    $key == get_hupa_option('under_font_style') ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur" id="InputUnderStyle"
+                                                                        name="font_style">
+                                                                    <?php
+                                                                    $style = apply_filters('get_font_style_select', get_hupa_option('under_font_family'));
+                                                                    foreach ($style as $key => $val):
+                                                                        $key == get_hupa_option('under_font_style') ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputUnderStyle" class="form-label">
+                                                                    <?= __('Font style', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -2586,36 +2750,42 @@ global $hupa_api_handle;
                                                 <fieldset id="fontTopFooterHeadline">
                                                     <div class="row g-3 py-1">
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputTopFooterHeadlineFamily"
-                                                                   class="form-label">
-                                                                <b><?= __('Font family', 'bootscore'); ?></b></label>
-                                                            <select class="form-select"
-                                                                    onchange="font_family_change(this, 'InputTopFooterHeadlineStyle');"
-                                                                    id="InputTopFooterHeadlineFamily"
-                                                                    name="font_family">
-                                                                <?php
-                                                                $family = apply_filters('get_font_family_select', false);
-                                                                foreach ($family as $key => $val):
-                                                                    get_hupa_option('top_footer_headline_font_family') === $val->family ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur"
+                                                                        onchange="font_family_change(this, 'InputTopFooterHeadlineStyle');"
+                                                                        id="InputTopFooterHeadlineFamily"
+                                                                        name="font_family">
+                                                                    <?php
+                                                                    $family = apply_filters('get_font_family_select', false);
+                                                                    foreach ($family as $key => $val):
+                                                                        get_hupa_option('top_footer_headline_font_family') === $val->family ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputTopFooterHeadlineFamily"
+                                                                       class="form-label">
+                                                                    <?= __('Font family', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
 
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputTopFooterHeadlineStyle" class="form-label">
-                                                                <b><?= __('Font style', 'bootscore'); ?></b></label>
-                                                            <select class="form-select" id="InputTopFooterHeadlineStyle"
-                                                                    name="font_style">
-                                                                <?php
-                                                                $style = apply_filters('get_font_style_select', get_hupa_option('top_footer_headline_font_family'));
-                                                                foreach ($style as $key => $val):
-                                                                    $key == get_hupa_option('top_footer_headline_font_style') ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur"
+                                                                        id="InputTopFooterHeadlineStyle"
+                                                                        name="font_style">
+                                                                    <?php
+                                                                    $style = apply_filters('get_font_style_select', get_hupa_option('top_footer_headline_font_family'));
+                                                                    foreach ($style as $key => $val):
+                                                                        $key == get_hupa_option('top_footer_headline_font_style') ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputTopFooterHeadlineStyle"
+                                                                       class="form-label">
+                                                                    <?= __('Font style', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -2712,34 +2882,41 @@ global $hupa_api_handle;
                                                 <fieldset id="fontTopBodyHeadline">
                                                     <div class="row g-3 py-1">
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputTopFooterBodyFamily" class="form-label">
-                                                                <b><?= __('Font family', 'bootscore'); ?></b></label>
-                                                            <select class="form-select"
-                                                                    onchange="font_family_change(this, 'InputTopFooterBodyStyle');"
-                                                                    id="InputTopFooterBodyFamily" name="font_family">
-                                                                <?php
-                                                                $family = apply_filters('get_font_family_select', false);
-                                                                foreach ($family as $key => $val):
-                                                                    get_hupa_option('top_footer_body_font_family') === $val->family ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur"
+                                                                        onchange="font_family_change(this, 'InputTopFooterBodyStyle');"
+                                                                        id="InputTopFooterBodyFamily"
+                                                                        name="font_family">
+                                                                    <?php
+                                                                    $family = apply_filters('get_font_family_select', false);
+                                                                    foreach ($family as $key => $val):
+                                                                        get_hupa_option('top_footer_body_font_family') === $val->family ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputTopFooterBodyFamily"
+                                                                       class="form-label">
+                                                                    <?= __('Font family', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
 
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputTopFooterBodyStyle" class="form-label">
-                                                                <b><?= __('Font style', 'bootscore'); ?></b></label>
-                                                            <select class="form-select" id="InputTopFooterBodyStyle"
-                                                                    name="font_style">
-                                                                <?php
-                                                                $style = apply_filters('get_font_style_select', get_hupa_option('top_footer_body_font_family'));
-                                                                foreach ($style as $key => $val):
-                                                                    $key == get_hupa_option('top_footer_body_font_style') ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur"
+                                                                        id="InputTopFooterBodyStyle"
+                                                                        name="font_style">
+                                                                    <?php
+                                                                    $style = apply_filters('get_font_style_select', get_hupa_option('top_footer_body_font_family'));
+                                                                    foreach ($style as $key => $val):
+                                                                        $key == get_hupa_option('top_footer_body_font_style') ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputTopFooterBodyStyle" class="form-label">
+                                                                    <?= __('Font style', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -2830,34 +3007,42 @@ global $hupa_api_handle;
                                                 <fieldset id="fontFooterHeadline">
                                                     <div class="row g-3 py-1">
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputFooterHeadlineFamily" class="form-label">
-                                                                <b><?= __('Font family', 'bootscore'); ?></b></label>
-                                                            <select class="form-select"
-                                                                    onchange="font_family_change(this, 'InputFooterHeadlineStyle');"
-                                                                    id="InputFooterHeadlineFamily" name="font_family">
-                                                                <?php
-                                                                $family = apply_filters('get_font_family_select', false);
-                                                                foreach ($family as $key => $val):
-                                                                    get_hupa_option('footer_headline_font_family') === $val->family ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur"
+                                                                        onchange="font_family_change(this, 'InputFooterHeadlineStyle');"
+                                                                        id="InputFooterHeadlineFamily"
+                                                                        name="font_family">
+                                                                    <?php
+                                                                    $family = apply_filters('get_font_family_select', false);
+                                                                    foreach ($family as $key => $val):
+                                                                        get_hupa_option('footer_headline_font_family') === $val->family ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputFooterHeadlineFamily"
+                                                                       class="form-label">
+                                                                    <?= __('Font family', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
 
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputFooterHeadlineStyle" class="form-label">
-                                                                <b><?= __('Font style', 'bootscore'); ?></b></label>
-                                                            <select class="form-select" id="InputFooterHeadlineStyle"
-                                                                    name="font_style">
-                                                                <?php
-                                                                $style = apply_filters('get_font_style_select', get_hupa_option('footer_headline_font_family'));
-                                                                foreach ($style as $key => $val):
-                                                                    $key == get_hupa_option('footer_headline_font_style') ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur"
+                                                                        id="InputFooterHeadlineStyle"
+                                                                        name="font_style">
+                                                                    <?php
+                                                                    $style = apply_filters('get_font_style_select', get_hupa_option('footer_headline_font_family'));
+                                                                    foreach ($style as $key => $val):
+                                                                        $key == get_hupa_option('footer_headline_font_style') ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputFooterHeadlineStyle"
+                                                                       class="form-label">
+                                                                    <?= __('Font style', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -2934,34 +3119,39 @@ global $hupa_api_handle;
                                                 <fieldset id="fontFooterWidget">
                                                     <div class="row g-3 py-1">
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputFooterWidgetFamily" class="form-label">
-                                                                <b><?= __('Font family', 'bootscore'); ?></b></label>
-                                                            <select class="form-select"
-                                                                    onchange="font_family_change(this, 'InputFooterWidgetStyle');"
-                                                                    id="InputFooterWidgetFamily" name="font_family">
-                                                                <?php
-                                                                $family = apply_filters('get_font_family_select', false);
-                                                                foreach ($family as $key => $val):
-                                                                    get_hupa_option('footer_widget_font_family') === $val->family ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur"
+                                                                        onchange="font_family_change(this, 'InputFooterWidgetStyle');"
+                                                                        id="InputFooterWidgetFamily" name="font_family">
+                                                                    <?php
+                                                                    $family = apply_filters('get_font_family_select', false);
+                                                                    foreach ($family as $key => $val):
+                                                                        get_hupa_option('footer_widget_font_family') === $val->family ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputFooterWidgetFamily" class="form-label">
+                                                                    <?= __('Font family', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
 
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputFooterWidgetStyle" class="form-label">
-                                                                <b><?= __('Font style', 'bootscore'); ?></b></label>
-                                                            <select class="form-select" id="InputFooterWidgetStyle"
-                                                                    name="font_style">
-                                                                <?php
-                                                                $style = apply_filters('get_font_style_select', get_hupa_option('footer_widget_font_family'));
-                                                                foreach ($style as $key => $val):
-                                                                    $key == get_hupa_option('footer_widget_font_style') ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur"
+                                                                        id="InputFooterWidgetStyle"
+                                                                        name="font_style">
+                                                                    <?php
+                                                                    $style = apply_filters('get_font_style_select', get_hupa_option('footer_widget_font_family'));
+                                                                    foreach ($style as $key => $val):
+                                                                        $key == get_hupa_option('footer_widget_font_style') ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputFooterWidgetStyle" class="form-label">
+                                                                    <?= __('Font style', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -3052,34 +3242,39 @@ global $hupa_api_handle;
                                                 <fieldset id="fontFooter">
                                                     <div class="row g-3 py-1">
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputFooterFamily" class="form-label">
-                                                                <b><?= __('Font family', 'bootscore'); ?></b></label>
-                                                            <select class="form-select"
-                                                                    onchange="font_family_change(this, 'InputFooterStyle');"
-                                                                    id="InputFooterFamily" name="font_family">
-                                                                <?php
-                                                                $family = apply_filters('get_font_family_select', false);
-                                                                foreach ($family as $key => $val):
-                                                                    get_hupa_option('footer_font_family') === $val->family ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur"
+                                                                        onchange="font_family_change(this, 'InputFooterStyle');"
+                                                                        id="InputFooterFamily" name="font_family">
+                                                                    <?php
+                                                                    $family = apply_filters('get_font_family_select', false);
+                                                                    foreach ($family as $key => $val):
+                                                                        get_hupa_option('footer_font_family') === $val->family ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $val->family ?>" <?= $sel ?>><?= $val->family ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputFooterFamily" class="form-label">
+                                                                    <?= __('Font family', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
 
                                                         <div class="col-lg-3 col-md-6 col-12">
-                                                            <label for="InputFooterStyle" class="form-label">
-                                                                <b><?= __('Font style', 'bootscore'); ?></b></label>
-                                                            <select class="form-select" id="InputFooterStyle"
-                                                                    name="font_style">
-                                                                <?php
-                                                                $style = apply_filters('get_font_style_select', get_hupa_option('footer_font_family'));
-                                                                foreach ($style as $key => $val):
-                                                                    $key == get_hupa_option('footer_font_style') ? $sel = 'selected' : $sel = '';
-                                                                    ?>
-                                                                    <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                            <div class="form-floating">
+                                                                <select class="form-select no-blur"
+                                                                        id="InputFooterStyle"
+                                                                        name="font_style">
+                                                                    <?php
+                                                                    $style = apply_filters('get_font_style_select', get_hupa_option('footer_font_family'));
+                                                                    foreach ($style as $key => $val):
+                                                                        $key == get_hupa_option('footer_font_style') ? $sel = 'selected' : $sel = '';
+                                                                        ?>
+                                                                        <option value="<?= $key ?>" <?= $sel ?>><?= $val ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                                <label for="InputFooterStyle" class="form-label">
+                                                                    <?= __('Font style', 'bootscore'); ?></label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -3906,44 +4101,62 @@ global $hupa_api_handle;
                     <!--  TODO JOB WARNING THEME OPTIONEN -->
                     <div class="collapse" id="collapseSettingsOtherOption" data-bs-parent="#settings_display_data">
                         <div class="border rounded mt-1 shadow-sm p-3 bg-custom-gray">
-                            <?php $user = new WP_User(get_current_user_id()); if($user->roles[0] == 'administrator'):?>
-                            <hr>
-                            <h5 class="card-title">
-                                <i class="font-blue fa fa-wordpress"></i>&nbsp; <?= __('Wordpress settings', 'bootscore') ?>
-                            </h5>
-                            <hr>
-                            <h6>
-                                <i class="font-blue fa fa-arrow-circle-down"></i>
-                                <?= esc_html__('Minimum requirement for the use of individual sections', 'bootscore') ?>
-                            </h6>
-                            <hr>
-                            <div class="d-flex flex-wrap capabilities">
-                                <button data-type="settings" type="button" class="btn btn-blue-outline btn-sm me-1">Theme Settings</button>
-                                <button data-type="tools" type="button" class="btn btn-blue-outline btn-sm me-1">Theme Tools</button>
-                                <button data-type="carousel" type="button" class="btn btn-blue-outline btn-sm me-1">Carousel</button>
-                                <button data-type="installation" type="button" class="btn btn-blue-outline btn-sm me-1">Installation</button>
-                                <button data-type="maps-api" type="button" class="btn btn-blue-outline btn-sm me-1">Google Maps API</button>
-                                <button data-type="maps-iframe" type="button" class="btn btn-blue-outline btn-sm me-1">Google Maps I-Frame</button>
-                                <button data-type="maps-settings" type="button" class="btn btn-blue-outline btn-sm me-1">Google Maps Settings</button>
-                                <!--<button data-type="header" type="button" class="btn btn-blue-outline btn-sm me-1">Custom Header</button>
-                                <button data-type="footer" type="button" class="btn btn-blue-outline btn-sm me-1">Custom Footer</button>-->
-                            </div>
+                            <?php $user = new WP_User(get_current_user_id());
+                            if ($user->roles[0] == 'administrator'): ?>
+                                <hr>
+                                <h5 class="card-title">
+                                    <i class="font-blue fa fa-wordpress"></i>&nbsp; <?= __('Wordpress settings', 'bootscore') ?>
+                                </h5>
+                                <hr>
+                                <h6>
+                                    <i class="font-blue fa fa-arrow-circle-down"></i>
+                                    <?= esc_html__('Minimum requirement for the use of individual sections', 'bootscore') ?>
+                                </h6>
+                                <hr>
+                                <div class="d-flex flex-wrap capabilities">
+                                    <button data-type="settings" type="button" class="btn btn-blue-outline btn-sm me-1">
+                                        Theme Settings
+                                    </button>
+                                    <button data-type="tools" type="button" class="btn btn-blue-outline btn-sm me-1">
+                                        Theme Tools
+                                    </button>
+                                    <button data-type="carousel" type="button" class="btn btn-blue-outline btn-sm me-1">
+                                        Carousel
+                                    </button>
+                                    <button data-type="installation" type="button"
+                                            class="btn btn-blue-outline btn-sm me-1">Installation
+                                    </button>
+                                    <button data-type="maps-api" type="button" class="btn btn-blue-outline btn-sm me-1">
+                                        Google Maps API
+                                    </button>
+                                    <button data-type="maps-iframe" type="button"
+                                            class="btn btn-blue-outline btn-sm me-1">Google Maps I-Frame
+                                    </button>
+                                    <button data-type="maps-settings" type="button"
+                                            class="btn btn-blue-outline btn-sm me-1">Google Maps Settings
+                                    </button>
+                                    <!--<button data-type="header" type="button" class="btn btn-blue-outline btn-sm me-1">Custom Header</button>
+                                    <button data-type="footer" type="button" class="btn btn-blue-outline btn-sm me-1">Custom Footer</button>-->
+                                </div>
                                 <div class="collapse pt-3" id="capabilities_settings">
-                               <div class="row g-3">
-                                    <div class="col-xl-6 col">
-                                        <div class="mb-3">
-                                            <label for="capabilitySelect"
-                                                   class="capabilitySelect form-label mb-1 strong-font-weight"><span id="rolleType"></span>  <?= esc_html__('User Role', 'bootscore') ?>
-                                            </label>
-                                            <select name="user_role"
-                                                    id="capabilitySelect" class="form-select no-blur">
-                                            </select>
+                                    <div class="row g-3">
+                                        <div class="col-xl-6 col">
+                                            <div class="mb-3">
+                                                <div class="form-floating">
+                                                    <select name="user_role"
+                                                            id="capabilitySelect" class="form-select no-blur">
+                                                    </select>
+                                                    <label for="capabilitySelect"
+                                                           class="capabilitySelect form-label mb-1">
+                                                        <span id="rolleType"></span> <?= esc_html__('User Role', 'bootscore') ?>
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                              </div>
                             <?php endif; ?>
-                              <hr>
+                            <hr>
                             <form class="sendAjaxThemeForm" action="#" method="post">
                                 <input type="hidden" name="method" value="theme_form_handle">
                                 <input type="hidden" name="handle" value="theme_optionen">
@@ -3966,7 +4179,6 @@ global $hupa_api_handle;
                                         </div>
                                     </div>
                                     <hr>
-
 
                                     <div class="col-lg-12 pt-2">
                                         <h6>
@@ -4022,7 +4234,7 @@ global $hupa_api_handle;
                                         </div>
                                     </div>
                                     <hr>
-                                    <?php if (!HUPA_MINIFY_AKTIV): ?>
+                                    <?php if (!Config::get('HUPA_MINIFY_AKTIV')): ?>
                                         <div class="col-lg-12 pt-2">
                                             <h6>
                                                 <i class="font-blue fa fa-wordpress"></i>&nbsp;<?= __('Remove WordPress Version', 'bootscore'); ?>
@@ -4154,55 +4366,122 @@ global $hupa_api_handle;
                     <div class="collapse" id="collapseSettingsInfoOption" data-bs-parent="#settings_display_data">
                         <div class="border rounded mt-1 shadow-sm p-3 bg-custom-gray">
                             <hr>
-                            <div class="d-flex align-items-center">
+                            <div class="d-flex flex-wrap align-items-center">
                                 <h5 class="card-title mb-0">
                                     <i class="font-blue fa fa-info-circle"></i>&nbsp; <?= __('Theme Info', 'bootscore') ?>
                                 </h5>
                             </div>
                             <hr>
-                            <h6 class="lh-1 mb-0"><i class="fa fa-arrow-circle-right"></i> Icon Shortcode:</h6>
-                            <div class="form-text mb-3">Icon <b>auswählen</b> und Shortcode <b>Kopieren</b>.</div>
-                            <button data-bs-toggle="modal"
-                                    data-bs-target="#dialog-add-icon" data-bs-type="fa-info"
-                                    class="show-theme-icons btn btn-outline-secondary btn-sm">
-                                <i class="fa fa-th"></i>&nbsp;
-                                Font-Awesome Übersicht
-                            </button>
-
-                            <button data-bs-toggle="modal"
-                                    data-bs-target="#dialog-add-icon" data-bs-type="bi-info"
-                                    class="show-theme-icons btn btn-outline-secondary btn-sm">
-                                <i class="bi bi-bootstrap"></i>&nbsp;
-                                Bootstrap-Icons Übersicht
-                            </button>
-                            <div class="d-block">
-                            <button id="resetIcons" onclick="reset_show_theme_icons(this,'shortcode-info')"
-                                    class="btn btn-blue-outline mt-3 btn-sm d-none">
-                                <i class="fa fa-random"></i>&nbsp;
-                                Reset
-                            </button>
-                            </div>
+                            <h6 class="d-flex flex-wrap align-items-center">
+                              <span>
+                                  <i class="fa fa-arrow-circle-right"></i> Icon Shortcode:
+                              </span>
+                                <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                   data-bs-toggle="collapse"
+                                   data-bs-target="#collIconShortcode">
+                                </i>
+                            </h6>
                             <hr>
+                            <div id="collIconShortcode" class="collapse">
+                                <div class="form-text mb-3">Icon <b>auswählen</b> und Shortcode <b>Kopieren</b>.</div>
+                                <button data-bs-toggle="modal"
+                                        data-bs-target="#dialog-add-icon" data-bs-type="fa-info"
+                                        class="show-theme-icons btn btn-outline-secondary btn-sm">
+                                    <i class="fa fa-th"></i>&nbsp;
+                                    Font-Awesome Übersicht
+                                </button>
 
-                            <div class="pb-3" id="shortcode-info"></div>
+                                <button data-bs-toggle="modal"
+                                        data-bs-target="#dialog-add-icon" data-bs-type="bi-info"
+                                        class="show-theme-icons btn btn-outline-secondary btn-sm">
+                                    <i class="bi bi-bootstrap"></i>&nbsp;
+                                    Bootstrap-Icons Übersicht
+                                </button>
+                                <div class="d-block">
+                                    <button id="resetIcons" onclick="reset_show_theme_icons(this,'shortcode-info')"
+                                            class="btn btn-blue-outline mt-3 btn-sm d-none">
+                                        <i class="fa fa-random"></i>&nbsp;
+                                        Reset
+                                    </button>
+                                </div>
+                                <hr>
+
+                                <div class="pb-3" id="shortcode-info"></div>
+                            </div>
                         </div>
 
                         <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
-                            <h6><i class="fa fa-arrow-circle-right"></i> PDF Download:</h6>
+                            <h6 class="d-flex flex-wrap align-items-center">
+                              <span>
+                                  <i class="fa fa-arrow-circle-right"></i> PDF Download:
+                              </span>
+                                <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                   data-bs-toggle="collapse"
+                                   data-bs-target="#collPdfDownload">
+                                </i>
+                            </h6>
                             <hr>
-                            <b class="d-block font-blue strong-font-weight">Download von PDF-Dateien:</b>
-                            <b class="strong-font-weight font-blue">URL:</b> <?= get_site_url() ?><span
-                                    class="font-blue">?hupa=pdf&type=1&file=test.pdf</span>
-                            <hr>
-                            <b class="d-block font-blue strong-font-weight">Stream von PDF-Dateien:</b>
-                            <b class="strong-font-weight font-blue">URL:</b> <?= get_site_url() ?><span
-                                    class="font-blue">?hupa=pdf&type=0&file=test.pdf</span>
-                            <hr>
-                            <div class="form-text mb-3">Die Variable <code>type=0</code> öffnet die PDF und
-                                <code>type=1</code> lädt die PDF runter.
-                                Der Dateiname wird bei der Variable <code>"file="</code> eingetragen.
+                            <div id="collPdfDownload" class="collapse">
+                                <b class="d-block font-blue strong-font-weight">Download von PDF-Dateien:</b>
+                                <b class="strong-font-weight font-blue">URL:</b> <?= get_site_url() ?><span
+                                        class="font-blue">?hupa=pdf&type=1&file=test.pdf</span>
+                                <hr>
+                                <b class="d-block font-blue strong-font-weight">Stream von PDF-Dateien:</b>
+                                <b class="strong-font-weight font-blue">URL:</b> <?= get_site_url() ?><span
+                                        class="font-blue">?hupa=pdf&type=0&file=test.pdf</span>
+                                <hr>
+                                <div class="form-text mb-3">Die Variable <code>type=0</code> öffnet die PDF und
+                                    <code>type=1</code> lädt die PDF runter.
+                                    Der Dateiname wird bei der Variable <code>"file="</code> eingetragen.
+                                </div>
+                                <hr>
                             </div>
+                        </div>
+
+                        <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
+                            <h6 class="d-flex flex-wrap align-items-center">
+                              <span>
+                                  <i class="fa fa-arrow-circle-right"></i>
+                                Render-Block Funktion <small class="fw-normal">(Gruppe)</small>:
+                            <small class="d-block fw-normal">
+                                Um CSS-Klassen einer Gruppe zuzuweisen muss, das "HTML-Element" auf <code><?= htmlspecialchars('<section>') ?></code> eingestellt sein.
+                            </small>
+                              </span>
+                                <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                   data-bs-toggle="collapse"
+                                   data-bs-target="#collBlockGroup">
+                                </i>
+                            </h6>
                             <hr>
+                            <div class="collapse" id="collBlockGroup">
+                                <b class="d-block font-blue strong-font-weight">Container-Fullwidth:</b>
+                                <b class="font-bold-light">
+                                    CssClass: <code>container-fullwidth</code>
+                                </b>
+                                <hr>
+                                <b class="d-block font-blue strong-font-weight">Custom-Fullwidth:</b>
+                                <b class="font-bold-light">
+                                    CssClass: <code>custom-full-width</code>
+                                </b>
+                                <hr>
+                                <b class="d-block font-blue strong-font-weight">Inner-Container entfernen:</b>
+                                <b class="font-bold-light">
+                                    CssClass: <code>no-inner</code>
+                                </b>
+                                <hr>
+                                <b class="d-block font-blue strong-font-weight">Fullwidth mit inner
+                                    Bootstrap-Container:</b>
+                                <b class="font-bold-light">
+                                    CssClass: <code>theme-fullwidth-container</code>
+                                </b>
+                                <hr>
+                                <b class="d-block font-blue strong-font-weight">Fullwidth mit inner Bootstrap-Container
+                                    und Flexbox:</b>
+                                <b class="font-bold-light">
+                                    CssClass: <code>theme-fullwidth-flex-container</code>
+                                </b>
+                                <hr>
+                            </div>
                         </div>
 
                     </div>
@@ -4352,7 +4631,8 @@ global $hupa_api_handle;
             <div class="modal-content">
                 <div class="modal-header bg-hupa">
                     <h5 class="modal-title" id="exampleModalLabel"><?= __('Icon auswählen', 'bootscore'); ?></h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div id="icon-grid"></div>

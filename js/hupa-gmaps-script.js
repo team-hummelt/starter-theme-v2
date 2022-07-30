@@ -1,9 +1,32 @@
 // GoogleMaps Ausgabe Funktion
 
-let gmaps_container = document.querySelector(".hupa-gmaps-container");
+let gmaps_container = document.querySelector(".hupa-api-gmaps-container");
+window.addEventListener("load", function (event) {
+    const url = get_hupa_option.src_url + '/js/lib/default-passive-events.js';
+    const Script = document.createElement('script');
+    Script.setAttribute('src', url);
+    Script.type = 'text/javascript';
+    document.head.appendChild(Script);
+    let api_key = window.atob(get_hupa_option.key);
+    let gmaps_container = document.querySelector(".hupa-api-gmaps-container");
+    if(gmaps_container){
+        gmaps_container.classList.remove('d-none');
+    }
+    if (sessionStorage.getItem("gmaps") == '1' && gmaps_container ) {
+        injectGoogleMapsApiScript({
+            key: api_key,
+            callback: 'hupa_gmaps_data',
+        });
+        return false;
+    }
+});//loadFunction
 
 function hupa_gmaps_data() {
     // AJAX SEND FUNKTION
+    if (!gmaps_container) {
+        return false;
+    }
+
     let xhr = new XMLHttpRequest();
     let formData = new FormData();
     xhr.open('POST', theme_ajax_obj.ajax_url, true);
@@ -15,21 +38,14 @@ function hupa_gmaps_data() {
     xhr.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             let data = JSON.parse(this.responseText);
-            if (!gmaps_container) {
-                return false;
-            }
-
             let infowindow = new google.maps.InfoWindow();
             //let geocoder = new google.maps.Geocoder();
             let output = [];
-            let map_container = document.getElementsByClassName('hupa-gmaps-container');
             let map_type_ids = ['roadmap'];
 
             //Farbshema anlegen
             if (data.farbshema_aktiv && data.farbshema_aktiv != false) {
-
                 //console.log('Benutzerdefiniertes Farbschema wird geladen.');
-
                 let farbshema = data.farbshema.replace(/&#34;/g, '"');
                 farbshema = farbshema.replace(/&#39;/g, '"');
                 farbshema = JSON.parse(farbshema);
@@ -39,7 +55,9 @@ function hupa_gmaps_data() {
 
             //Karte definieren
             let hupamap;
-            hupamap = new google.maps.Map(map_container[0], {
+            gmaps_container.innerHTML = '';
+            gmaps_container.classList.remove('d-none');
+            hupamap = new google.maps.Map(gmaps_container, {
                 center: {lat: 52.130958, lng: 11.616186},
                 zoom: 15,
                 streetViewControl: false,
@@ -57,7 +75,7 @@ function hupa_gmaps_data() {
             let stdPinImg = data.std_pin_img;
 
             if (stdPinImg == false || stdPinImg == '') {
-                stdPinImg = get_hupa_option.admin_url + 'assets/images/map-pin.png';
+                stdPinImg = get_hupa_option.admin_url + 'admin-core/assets/images/map-pin.png';
             }
 
             let stdIcon = {
@@ -102,7 +120,6 @@ function hupa_gmaps_data() {
                     });
                 }
             }
-
             if (output.length < 1) {
                 let bounds = new google.maps.LatLngBounds();
                 for (let j = 0; j < output.length; j++) {
@@ -118,55 +135,14 @@ function hupa_gmaps_data() {
     }
 }
 
-let saveSession;
-window.addEventListener("load", function (event) {
-    let api_key = window.atob(get_hupa_option.key);
-    saveSession = sessionStorage.getItem("gmaps");
-    if (!get_hupa_option.ds_maps || saveSession) {
-        injectGoogleMapsApiScript({
-            key: api_key,
-            callback: 'hupa_gmaps_data',
-        });
-    }
-
-    // Button Click Funktion
-    let clickGoogleMapsDsBtn = document.querySelectorAll(".hupa-gmaps-btn");
-    if (clickGoogleMapsDsBtn) {
-        let btnGmapsNodes = Array.prototype.slice.call(clickGoogleMapsDsBtn, 0);
-        btnGmapsNodes.forEach(function (btnGmapsNodes) {
-            btnGmapsNodes.addEventListener("click", function (e) {
-                btnGmapsNodes.blur();
-                let checkInput = btnGmapsNodes.parentNode;
-                let checkBox = checkInput.querySelector('.api-karte-check input');
-                if (checkBox.checked) {
-                    sessionStorage.setItem('gmaps', true);
-                    let xhr = new XMLHttpRequest();
-                    let formData = new FormData();
-                    xhr.open('POST', theme_ajax_obj.ajax_url, true);
-                    formData.append('_ajax_nonce', theme_ajax_obj.nonce);
-                    formData.append('action', 'HupaStarterNoAdmin');
-                    formData.append('method', 'set_gmaps_session');
-                    formData.append('status', true);
-                    xhr.send(formData);
-                     injectGoogleMapsApiScript({
-                         key: api_key,
-                         callback: 'hupa_gmaps_data',
-                     });
-                }
-            });
-        });
-    }
-});//documentReady
-
-
 let googleMapsScriptIsInjected = false;
 const injectGoogleMapsApiScript = (options = {}) => {
+
     if (googleMapsScriptIsInjected) {
         //throw new Error('Google Maps Api is already loaded.');
         //  console.log('Google Maps Api is already loaded.');
         return false;
     }
-
     const optionsQuery = Object.keys(options)
         .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(options[k])}`)
         .join('&');
@@ -179,3 +155,71 @@ const injectGoogleMapsApiScript = (options = {}) => {
     document.head.appendChild(script);
     googleMapsScriptIsInjected = true;
 };
+
+
+document.addEventListener("DOMContentLoaded", function (event) {
+    show_gmaps_iframe_card();
+    // Datenschutz Check
+    let gmDsCheck = document.querySelectorAll('.gmaps-karte-check');
+    if (gmDsCheck) {
+        let dsEvent = Array.prototype.slice.call(gmDsCheck, 0);
+        dsEvent.forEach(function (dsEvent) {
+            dsEvent.addEventListener("click", function (e) {
+                dsEvent.blur();
+                let parentButton = dsEvent.form.querySelector('button');
+                if(dsEvent.checked){
+                    parentButton.removeAttribute('disabled');
+                } else {
+                    parentButton.setAttribute('disabled','disabled');
+                }
+            });
+        });
+    }
+
+    // Button Datenschutz Click Funktion
+    let clickGoogleMapsDsBtn = document.querySelectorAll(".hupa-gmaps-ds-btn");
+    if (clickGoogleMapsDsBtn) {
+        let api_key = window.atob(get_hupa_option.key);
+        let btnGmapsNodes = Array.prototype.slice.call(clickGoogleMapsDsBtn, 0);
+        btnGmapsNodes.forEach(function (btnGmapsNodes) {
+            btnGmapsNodes.addEventListener("click", function (e) {
+                btnGmapsNodes.blur();
+                let checkBox = btnGmapsNodes.form.querySelector('.gmaps-karte-check');
+                if (!checkBox.checked) {
+                    return false;
+                }
+                sessionStorage.setItem('gmaps', '1');
+                if(gmaps_container) {
+                    injectGoogleMapsApiScript({
+                        key: api_key,
+                        callback: 'hupa_gmaps_data',
+                    });
+                }
+                show_gmaps_iframe_card();
+            });
+        });
+    }
+
+    function show_gmaps_iframe_card() {
+        let mapIframeContainer = document.querySelectorAll('.hupa-iframe-gmaps-container');
+        if(mapIframeContainer) {
+            let nodeTarget = Array.prototype.slice.call(mapIframeContainer, 0);
+            nodeTarget.forEach(function (nodeTarget) {
+                let mapContainer = nodeTarget.parentNode;
+                if(!mapContainer.getElementsByTagName('iframe').length){
+                    let uri = mapContainer.querySelector('.hupa-gmaps-ds-btn').getAttribute('data-uri');
+                    let width = mapContainer.querySelector('.hupa-gmaps-ds-btn').getAttribute('data-width');
+                    let height = mapContainer.querySelector('.hupa-gmaps-ds-btn').getAttribute('data-height');
+                    let isDs = nodeTarget.getAttribute('data-ds');
+                    if (sessionStorage.getItem("gmaps") == '1' || isDs == '0'){
+                        nodeTarget.innerHTML = get_hupa_iFrame(uri, width, height);
+                    }
+                }
+            });
+        }
+    }
+
+    function get_hupa_iFrame(uri, width, height) {
+        return `<iframe src="https://www.google.com${uri}" width="${width}"  height="${height}" style="border:0;" allowfullscreen="" loading="lazy"></iframe`;
+    }
+});

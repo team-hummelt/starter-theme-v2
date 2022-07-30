@@ -101,8 +101,8 @@ final class HupaEnqueueStarterTheme
         // TODO ANIMATE
         wp_enqueue_style('hupa-starter-public-animate', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/css/tools/animate.min.css', array(), $modificated);
         // TODO ICONS
-        wp_enqueue_style('hupa-starter-bootstrap-icons-style', get_template_directory_uri() . '/icons/bootstrap-icons/bootstrap-icons.css', array(), $modificated);
-        wp_enqueue_style('hupa-starter-font-awesome-icons-style', get_template_directory_uri() . '/icons/font-awesome-4.7.0/font-awesome.css', array(), $modificated);
+        //wp_enqueue_style('hupa-starter-bootstrap-icons-style', get_template_directory_uri() . '/icons/bootstrap-icons/bootstrap-icons.css', array(), $modificated);
+        //wp_enqueue_style('hupa-starter-font-awesome-icons-style', get_template_directory_uri() . '/icons/font-awesome-4.7.0/font-awesome.css', array(), $modificated);
         // TODO jQuery LazyLoad
         wp_enqueue_script('hupa-lazy-load', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/theme-scripte/tools/jquery.lazy.min.js', array(), $modificated, true);
         wp_enqueue_script('hupa-lazy-load-plugins', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/theme-scripte/tools/jquery.lazy.plugins.min.js', array(), $modificated, true);
@@ -118,8 +118,8 @@ final class HupaEnqueueStarterTheme
             wp_enqueue_script('hupa-theme-wow-js-script', get_template_directory_uri() . '/js/wowjs/wow.min.js', array(), $modificated, true);
         }
 
-        wp_enqueue_style('bootstrap-icons-style', Config::get('HUPA_THEME_VENDOR_URL') . 'twbs/bootstrap-icons/font/bootstrap-icons.css', array(), $this->theme_version);
-        wp_enqueue_style('font-awesome-icons-style', Config::get('HUPA_THEME_VENDOR_URL') . 'components/font-awesome/css/font-awesome.min.css', array(), $this->theme_version);
+        wp_enqueue_style('bootstrap-icons-style', Config::get('HUPA_THEME_VENDOR_URL') . 'twbs/bootstrap-icons/font/bootstrap-icons.css', array(), $modificated);
+        wp_enqueue_style('font-awesome-icons-style', Config::get('HUPA_THEME_VENDOR_URL') . 'components/font-awesome/css/font-awesome.min.css', array(), $modificated);
 
         if (get_hupa_option('menu') == 5) {
             $img = wp_get_attachment_image_src(get_hupa_option('logo_image'), 'large');
@@ -137,7 +137,10 @@ final class HupaEnqueueStarterTheme
         isset($_SESSION['gmaps']) && $_SESSION['gmaps'] ? $isGmaps = true : $isGmaps = false;
         isset($post->ID) ? $postID = $post->ID : $postID = '';
         isset($post->post_type) ? $post_type = $post->post_type : $post_type = '';
+
         get_hupa_frontend('nav-img') ? $navImg = get_hupa_frontend('nav-img')->width : $navImg = false;
+        get_hupa_frontend('nav-img') ? $navScrollImg = get_hupa_frontend('nav-img')->width_scroll : $navScrollImg = false;
+        get_hupa_frontend('nav-img') ? $navMobilImg = get_hupa_frontend('nav-img')->width_mobil : $navMobilImg = false;
         wp_register_script('hupa-starter-public-js-localize', '', [], $this->theme_version, true);
         wp_enqueue_script('hupa-starter-public-js-localize');
         wp_localize_script('hupa-starter-public-js-localize',
@@ -151,8 +154,11 @@ final class HupaEnqueueStarterTheme
                 'site_url' => get_bloginfo('url'),
                 'key' => base64_encode(get_hupa_option('map_apikey')),
                 'img_width' => $navImg,
+                'img_scroll_width' => $navScrollImg,
+                'img_mobil_width' => $navMobilImg,
                 'img' => $img,
-                'src_url' => get_template_directory_uri()
+                'src_url' => get_template_directory_uri(),
+                'img_size' => ''
             )
         );
     }

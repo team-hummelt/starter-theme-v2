@@ -128,9 +128,9 @@ function hupa_starter_rest_endpoint_get_response( $request ): WP_REST_Response {
                  $cardArr = array_reverse($cardArr);
              }
 
-            global $hupa_optionen_global;
+            global $hupa_register_theme_options;
             $gmSett     = [];
-            $gmSettings = $hupa_optionen_global->get_settings_by_args( 'google_maps_placeholder' );
+            $gmSettings = $hupa_register_theme_options->get_settings_by_args( 'google_maps_placeholder' );
 
             if ( $gmSettings->status ) {
                 foreach ( $gmSettings->google_maps_placeholder as $tmp ) {

@@ -1,7 +1,12 @@
 <?php
 
 namespace Hupa\MenuOrder;
-global $hupa_menu_helper;
+use Hupa\Starter\Config;
+use Hupa\StarterThemeV2\HupaCarouselTrait;
+use Hupa\StarterThemeV2\HupaOptionTrait;
+use Hupa\StarterV2\Hupa_Starter_V2_Admin_Ajax;
+use HupaStarterThemeV2;
+use Twig\Environment;
 
 defined('ABSPATH') or die();
 
@@ -11,27 +16,78 @@ defined('ABSPATH') or die();
  * @package Hummelt & Partner WordPress Theme
  * Copyright 2021, Jens Wiecker
  * License: Commercial - goto https://www.hummelt-werbeagentur.de/
- * https://www.hummelt-werbeagentur.de/
  */
-final class HupaMenuOrder
+class HupaMenuOrder
 {
     private static $instance;
     protected $current_post_type;
 
+    /**
+     * Store plugin main class to allow admin access.
+     *
+     * @since    2.0.0
+     * @access   private
+     * @var HupaStarterThemeV2 $main The main class.
+     */
+    protected  HupaStarterThemeV2 $main;
+
+    /**
+     * TWIG autoload for PHP-Template-Engine
+     * the plugin.
+     *
+     * @since    1.0.0
+     * @access   protected
+     * @var      Environment $twig TWIG autoload for PHP-Template-Engine
+     */
+    protected Environment $twig;
+
+    /**
+     * The ID of this theme.
+     *
+     * @since    2.0.0
+     * @access   private
+     * @var      string    $basename    The ID of this theme.
+     */
+    protected string $basename;
+
+    /**
+     * The version of this theme.
+     *
+     * @since    2.0.0
+     * @access   private
+     * @var      string    $theme_version    The current version of this theme.
+     */
+    protected string $theme_version;
+
+    /**
+     * TRAIT of Option Settings.
+     * @since    2.0.0
+     */
+    use HupaOptionTrait;
+
+    /**
+     * TRAIT of Carousel Option.
+     * @since    2.0.0
+     */
+    use HupaCarouselTrait;
 
     /**
      * @return static
      */
-    public static function instance(): self
+    public static function instance(string  $theme_name, string  $theme_version, HupaStarterThemeV2  $main, Environment $twig): self
     {
         if (is_null(self::$instance)) {
-            self::$instance = new self();
+            self::$instance = new self($theme_name, $theme_version, $main, $twig);
         }
         return self::$instance;
     }
 
-    public function __construct()
+    public function __construct(string $theme_name, string $theme_version, HupaStarterThemeV2 $main, Environment $twig)
     {
+        $this->basename = $theme_name;
+        $this->theme_version = $theme_version;
+        $this->main = $main;
+        $this->twig = $twig;
 
         add_filter('init', array($this, 'on_init'));
         add_filter('pre_get_posts', array($this, 'pre_get_posts'));
@@ -86,7 +142,7 @@ final class HupaMenuOrder
 
     public function on_init()
     {
-        include THEME_ADMIN_INC . 'hupa-optionen/menu-order/compatibility/the-events-calendar.php';
+        include Config::get('THEME_ADMIN_INCLUDES') . 'menu-order/compatibility/the-events-calendar.php';
 
         if (is_admin()) {
             return;
@@ -160,11 +216,11 @@ final class HupaMenuOrder
 
     public function menu_options_scripts($screen)
     {
-       global $userdata;
+        global $userdata;
         //load required dependencies
-        wp_enqueue_style('hupa-sortable-dd-style', THEME_ADMIN_URL . 'inc/hupa-optionen/menu-order/css/sortable-drag-and-drop-style.css');
-        wp_enqueue_script('js-hupa-sortable-script', THEME_ADMIN_URL . 'assets/admin/js/tools/Sortable.min.js', array(), THEME_VERSION, true);
-        wp_enqueue_script('hupa-dashboard-tools', THEME_ADMIN_URL . 'inc/hupa-optionen/menu-order/js/hupa-sortable-posts.js', array(), THEME_VERSION, true);
+        wp_enqueue_style('hupa-sortable-dd-style', Config::get('WP_THEME_ADMIN_URL') . 'includes/menu-order/css/sortable-drag-and-drop-style.css');
+        wp_enqueue_script('js-hupa-sortable-script', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/js/tools/Sortable.min.js', array(), $this->theme_version, true);
+        wp_enqueue_script('hupa-dashboard-tools', Config::get('WP_THEME_ADMIN_URL') . 'includes/menu-order/js/hupa-sortable-posts.js', array(), $this->theme_version, true);
 
         $title_nonce = wp_create_nonce('archive_sort_nonce_' . $userdata->ID);
         wp_register_script('hupa-starter-admin-ajax', '', [], '', true);
@@ -187,8 +243,9 @@ final class HupaMenuOrder
         $responseJson = null;
         global $userdata;
         check_ajax_referer('archive_sort_nonce_' . $userdata->ID);
-        require THEME_AJAX_DIR . 'starter-backend-ajax.php';
-        wp_send_json($responseJson);
+        require Config::get('THEME_ADMIN_INCLUDES') . 'Ajax/starter-backend-ajax.php';
+        $adminAjaxHandle = Hupa_Starter_V2_Admin_Ajax::hupa_admin_ajax_instance($this->basename, $this->theme_version, $this->main, $this->twig);
+        wp_send_json($adminAjaxHandle->hupa_starter_admin_ajax_handle());
     }
 
     public function admin_init()
@@ -199,8 +256,6 @@ final class HupaMenuOrder
                 wp_die('Invalid post type');
             }
         }
-        //add compatibility filters and code
-        //include THEME_ADMIN_INC . 'hupa-optionen/menu-order/compatibility/LiteSpeed_Cache.php';
     }
 
     public function pre_get_posts($query)
@@ -320,15 +375,6 @@ final class HupaMenuOrder
         $post_types = get_post_types();
 
         $options = $hupa_menu_helper->hupa_get_sort_options();
-        //get the required user capability
-        $capability = '';
-        if (isset($options['capability']) && !empty($options['capability'])) {
-            $capability = $options['capability'];
-        } else if (is_numeric($options['level'])) {
-            $capability = $hupa_menu_helper->get_current_user_level();
-        } else {
-            $capability = 'manage_options';
-        }
 
         foreach ($post_types as $post_type_name) {
             if ($post_type_name == 'page') {
@@ -352,7 +398,6 @@ final class HupaMenuOrder
                 continue;
             }
 
-            $required_capability = apply_filters('pto/edit_capability', $capability, $post_type_name);
 
             if ($post_type_name == 'post') {
                 $hook_suffix = add_submenu_page(

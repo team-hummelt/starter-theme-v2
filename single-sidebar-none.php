@@ -6,7 +6,7 @@
 defined('ABSPATH') or die();
 $pageId = is_singular() ? get_the_ID() : 0;
 $pageSettings = apply_filters('get_page_meta_data', (int)$pageId);
-$pageSettings->title_css ? $titleCss = 'class="' . $pageSettings->title_css . '"' : $titleCss = '';
+$pageSettings->title_css ? $titleCss = 'class="entry-title ' . $pageSettings->title_css . '"' : $titleCss = 'class="entry-title"';
 get_header(); ?>
 <div class="site-content">
     <?= $pageSettings->custum_header; ?>
@@ -32,12 +32,10 @@ get_header(); ?>
                     ?>
                     <p class="entry-meta">
                         <small class="text-muted">
-                            <?php
-                            !get_hupa_option('post_date') ?: bootscore_date();
-                            !get_hupa_option('post_date') ?: _e(' by ', 'bootscore');
-                            !get_hupa_option('post_autor') ?: the_author_posts_link();
-                            !get_hupa_option('post_kommentar') ?: bootscore_comment_count();
-                            ?>
+                            <?=  !get_hupa_option('post_date') ?: the_date()?>
+                            <?=  !get_hupa_option('post_autor') ? '' : __(' by ', 'bootscore')?>
+                            <?php !get_hupa_option('post_autor') ?: the_author_posts_link()?>
+                            <?php !get_hupa_option('post_kommentar') ?: bootscore_comment_count()?>
                         </small>
                     </p>
                     <?php bootscore_post_thumbnail(); ?>

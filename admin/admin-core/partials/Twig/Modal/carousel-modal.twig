@@ -1,0 +1,54 @@
+<!--MODAL-->
+<div class="modal fade" id="carouselModal" tabindex="-1" aria-labelledby="carouselModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="sendAjaxCarouselBtnForm" action="#" method="post">
+                <input type="hidden" name="method" value="add_carousel">
+                <div class="modal-header bg-accordion-gray">
+                    <h5 class="modal-title" id="carouselModalLabel"><i
+                                class="font-blue fa fa-tasks"></i>&nbsp; {{ 'Create new carousel'|__ }}.</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="inputCarouselName"
+                               class="col-form-label fs-5"><b>{{ 'Designation'|__ }}:</b></label>
+                        <input type="text" class="form-control" name="bezeichnung"
+                               aria-describedby="inputCarouselHelp" id="inputCarouselName" required>
+                        <div id="inputCarouselHelp"
+                             class="form-text">{{ 'Enter carousel name (max 50 characters)'|__ }}.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">
+                        <i class="text-danger fa fa-times"></i> &nbsp; {{ 'Cancel'|__ }}
+                    </button>
+                    <button type="submit" class="btn btn-blue btn-sm" data-bs-dismiss="modal">
+                        <i class="fa fa-plus"></i>
+                        &nbsp; {{ 'Create carousel'|__ }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Small Modal -->
+<div class="modal fade" id="ThemeBSModal" tabindex="-1" aria-labelledby="CmsSmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">
+                    <i class="text-danger fa fa-times me-1"></i> {{ 'Cancel'|__ }}</button>
+                <button id="smallThemeSendModalBtn" type="button" class="btn btn-sm"></button>
+            </div>
+        </div>
+    </div>
+</div>
+

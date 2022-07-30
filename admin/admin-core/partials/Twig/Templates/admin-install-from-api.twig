@@ -1,0 +1,178 @@
+<div class="wp-bs-starter-wrapper">
+    <div class="container">
+        <div class="card shadow-sm">
+            <h5 class="card-header d-flex align-items-center bg-hupa py-4">
+                <i class="icon-hupa-white d-block mt-2" style="font-size: 2rem"></i>&nbsp;
+                {{ 'Theme API Installation'|__ }} </h5>
+            <div class="card-body pb-4" style="min-height: 72vh">
+                <div class="d-flex align-items-center">
+                    <h5 class="card-title"><i
+                                class="hupa-color fa fa-arrow-circle-right me-1"></i> {{ 'Theme'|__ }}
+                        / <span id="currentSideTitle">{{ 'Installationen'|__ }} </span>
+                    </h5>
+                </div>
+                <hr>
+                <div class="settings-btn-group d-flex">
+                    <button data-site="{{ 'Installationen'|__ }}" type="button"
+                            data-load="loadInstallFormularFonts"
+                            data-bs-toggle="collapse" data-bs-target="#collapseSettingsFontInstallSite"
+                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm active" disabled>
+                        <i class="fa fa-server me-1"></i> {{ 'Installationen'|__ }}
+                    </button>
+
+                    <button data-site="{{ 'Installierte Schriften'|__ }}" type="button"
+                            data-load="loadInstallFonts"
+                            data-bs-toggle="collapse" data-bs-target="#InstallierteFonts"
+                            aria-expanded="false" aria-controls="InstallierteFonts"
+                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-font"></i>&nbsp;
+                        {{ 'Installierte Schriften'|__ }}
+                    </button>
+                </div>
+                <hr>
+                <div id="settings_display_data">
+                    {# TODO JOB WARNING Fonts Installieren #}
+                    <div class="collapse show" id="collapseSettingsFontInstallSite"
+                         data-bs-parent="#settings_display_data">
+                        <div class="border rounded mt-1 shadow-sm p-3 bg-custom-gray">
+                            <div class="d-flex align-items-center flex-wrap">
+                                <h5 class="card-title">
+                                    <i class="font-blue fa fa-font"></i>&nbsp; Schrift Installieren
+                                </h5>
+                            </div>
+                            <hr>
+                            <form id="install_font_form">
+                                <div class="col-xl-5 col-lg-6 col-12">
+                                    <input type="hidden" name="method" value="install_api_font">
+                                    <input class="selectFontName" type="hidden" name="font_name">
+                                    <div class="form-floating">
+                                        <select class="form-select no-blur" id="inputInstallFont"
+                                                name="font_install_id" onchange="change_font_install_select(this)">
+                                        </select>
+                                        <label for="inputInstallFont">Schriftart</label>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <button type="button" onclick="btn_install_fonts(this)"
+                                            class="btn btn-blue btn-sm me-2 mt-4"
+                                            disabled> Schrift Installieren
+                                    </button>
+                                    <a id="fontDemo" target="_blank" role="button" href="#" type="button"
+                                       class="me-2 disabled btn-sm btn btn-blue mt-4"> Schrift Demo
+                                    </a>
+                                    <div class="upload_spinner mt-4 d-flex align-items-center d-none">
+                                        <i class="text-muted fa fa-wordpress fa-spin fa-3x mx-2"></i>
+                                        <span class="animate-flicker"> Schrift wird Installiert...</span>
+                                    </div>
+                                </div>
+                            </form>
+                            <hr>
+                        </div><!--card-->
+                        <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
+                            <div class="d-flex align-items-center flex-wrap">
+                                <h5 class="card-title">
+                                    <i class="font-blue fa fa-download"></i>&nbsp;Tools <i class="fa fa-exchange"></i>
+                                    Plugins Installieren
+                                </h5>
+                            </div>
+                            <hr>
+                            <form id="install_plugin_form">
+                                <div class="col-xl-5 col-lg-6 col-12">
+                                    <input type="hidden" name="method" value="install_api_plugin">
+                                    <input type="hidden" name="select_container" value="inputInstallPlugins">
+                                    <div class="form-floating">
+                                        <select data-method="api_download_plugin" onchange="change_api_install_select(this)"
+                                                class="form-select no-blur" id="inputInstallPlugins"
+                                                name="plugin_install_id">
+                                        </select>
+                                        <label for="inputInstallPlugins">Plugin installieren</label>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <button type="button" onclick="btn_api_install(this)"
+                                            class="btn-download btn btn-blue-outline btn-sm me-2 mt-4" disabled>
+                                        Plugin Installieren
+                                    </button>
+                                    <div class="upload_spinner mt-4 d-flex align-items-center d-none">
+                                        <i class="text-muted fa fa-wordpress fa-spin fa-3x mx-2"></i>
+                                        <span class="animate-flicker"> Plugin wird installiert...</span>
+                                    </div>
+
+                                    <button type="button" onclick="activate_api_install_type(this)"
+                                            class="btn-activate btn btn-success btn-sm me-2 mt-4 d-none">
+                                        Plugin aktivieren
+                                    </button>
+
+                                    <div class="select_err_msg mt-4 d-flex align-items-center d-none">
+                                        <i class="text-danger fa fa-exclamation-triangle mx-2"></i>
+                                        <span class="text-danger"> Plugin schon installiert</span>
+                                    </div>
+                                </div>
+
+                            </form>
+                            <hr>
+                            <form id="install_child_form">
+                                <input class="api_method" type="hidden" name="method" value="api_download_theme">
+                                <input type="hidden" name="select_container" value="inputInstallChild">
+                                <div class="col-xl-5 col-lg-6 col-12 mb-2">
+
+                                    <div class="form-floating">
+                                        <select onchange="change_api_install_select(this)"
+                                                class="form-select no-blur" id="inputInstallChild"
+                                                name="child_install_id">
+                                        </select>
+                                        <label for="inputInstallChild">Child Theme installieren</label>
+                                    </div>
+                                </div>
+
+                                <div style="max-width: 150px">
+                                    <label for="inputDownloadPin"
+                                           class="form-label col-form-label-sm pb-0 mb-0">PIN:</label>
+                                    <input type="number" name="download_pin" id="inputDownloadPin"
+                                           class="form-control form-control-sm mt-0" disabled>
+                                </div>
+
+                                <div class="d-flex align-items-center">
+                                    <button type="button" onclick="btn_api_install(this)"
+                                            class="btn-download btn btn-blue-outline btn-sm me-2 mt-4" disabled>
+                                        Child Theme Installieren
+                                    </button>
+
+                                    <button type="button" onclick="activate_api_install_type(this)"
+                                            class="btn-activate btn btn-success btn-sm me-2 mt-4 d-none">
+                                        Theme aktivieren
+                                    </button>
+
+                                    <div class="upload_spinner mt-4 d-flex align-items-center d-none">
+                                        <i class="text-muted fa fa-wordpress fa-spin fa-3x mx-2"></i>
+                                        <span class="animate-flicker"> Theme wird Installiert...</span>
+                                    </div>
+                                    <div class="select_err_msg mt-4 d-flex align-items-center d-none">
+                                        <i class="text-danger fa fa-exclamation-triangle mx-2"></i>
+                                        <span class="text-danger"> Theme ist schon installiert</span>
+                                    </div>
+                                </div>
+                            </form>
+                            <hr>
+                        </div>
+                    </div>
+
+                    <!--  TODO JOB WARNING Installierte Fonts -->
+                    <div class="collapse" id="InstallierteFonts" data-bs-parent="#settings_display_data">
+
+                        <div class="border rounded mt-1 shadow-sm p-3 bg-custom-gray">
+                            <div class="d-flex align-items-center flex-wrap">
+                                <h5 class="card-title">
+                                    <i class="font-blue fa fa-font"></i>&nbsp; installierte Schriften
+                                </h5>
+                            </div>
+                            <hr>
+                            <div id="installFontsContainer" class="d-flex flex-wrap align-items-stretch py-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="snackbar-success"></div>
+<div id="snackbar-warning"></div>

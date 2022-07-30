@@ -19,7 +19,6 @@ get_header();
                 <!-- Hook to add something nice -->
                 <?php bs_after_primary(); ?>
                 <main id="main" class="site-main">
-
                     <header class="entry-header">
                         <?php the_post(); ?>
                         <!-- Title -->

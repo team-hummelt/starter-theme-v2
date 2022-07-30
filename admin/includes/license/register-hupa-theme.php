@@ -156,8 +156,7 @@ final class RegisterHupaStarter
         if(!get_option('hupa_starter_product_install_authorize')) {
             $file = THEME_ADMIN_DIR . 'admin-core/register-hupa-starter-optionen.php';
             if(is_file($file)) {
-
-               //unlink($file);
+               unlink($file);
             }
             delete_option('hupa_starter_product_install_authorize');
             delete_option('hupa_update_error_message');

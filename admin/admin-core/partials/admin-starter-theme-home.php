@@ -429,7 +429,7 @@ use Hupa\Starter\Config;
                                                     $imgId = get_hupa_option('logo_image');
                                                     if ($imgId) {
                                                         $img = wp_get_attachment_image_src($imgId, 'large');
-                                                        $imgLogo = '<img class="range-image img-fluid" src="' . $img[0] . '" width="'.get_hupa_option('logo_size').'px">';
+                                                        $imgLogo = '<img class="range-image img-fluid" src="' . $img[0] . '" width="' . get_hupa_option('logo_size') . 'px">';
                                                     } ?>
                                                     <!-- LOGO IMAGE -->
                                                     <div data-multiple="0"
@@ -458,22 +458,27 @@ use Hupa\Starter\Config;
                                                         &nbsp;<?= __('Remove image', 'bootscore'); ?>
                                                     </button>
                                                     <div class="d-flex flex-wrap">
-                                                        <div id="range-image-size" class="col-xxl-3 col-xl-6 col-12 col pt-3 pe-3">
+                                                        <div id="range-image-size"
+                                                             class="col-xxl-3 col-xl-6 col-12 col pt-3 pe-3">
                                                             <label for="imgSizeRange"
-                                                                   class="count-box form-label pb-1"><?= __('Image size', 'bootscore'); ?> <b class="font-bold-light">Header</b>
+                                                                   class="count-box form-label pb-1"><?= __('Image size', 'bootscore'); ?>
+                                                                <b class="font-bold-light">Header</b>
                                                                 :
                                                                 <span class="show-range-value"><?= get_hupa_option('logo_size') ?></span>
                                                                 (px)</label>
-                                                            <input data-container="range-image-size" type="range" data-range-image="1"
+                                                            <input data-container="range-image-size" type="range"
+                                                                   data-range-image="1"
                                                                    name="logo_size" min="10" max="500"
                                                                    value="<?= get_hupa_option('logo_size') ?>"
                                                                    class="form-range sizeRange" id="imgSizeRange"
                                                                 <?= $imgLogo ? '' : 'disabled' ?>>
                                                         </div>
 
-                                                        <div id="range-image-scroll-size" class="col-xxl-3 col-xl-6 col-12 col pt-3 pe-3">
+                                                        <div id="range-image-scroll-size"
+                                                             class="col-xxl-3 col-xl-6 col-12 col pt-3 pe-3">
                                                             <label for="imgSizeScrollRange"
-                                                                   class="count-box form-label pb-1"><?= __('Image size', 'bootscore'); ?> <b class="font-bold-light"> Scroll</b>
+                                                                   class="count-box form-label pb-1"><?= __('Image size', 'bootscore'); ?>
+                                                                <b class="font-bold-light"> Scroll</b>
                                                                 :
                                                                 <span class="show-range-value"><?= get_hupa_option('logo_size_scroll') ?></span>
                                                                 (px)</label>
@@ -484,13 +489,16 @@ use Hupa\Starter\Config;
                                                                 <?= $imgLogo ? '' : 'disabled' ?>>
                                                         </div>
 
-                                                        <div id="range-image-scroll-mobil" class="col-xxl-3 col-xl-6 col-12 col pt-3 pe-3">
+                                                        <div id="range-image-scroll-mobil"
+                                                             class="col-xxl-3 col-xl-6 col-12 col pt-3 pe-3">
                                                             <label for="imgSizeMobilRange"
-                                                                   class="count-box form-label pb-1"><?= __('Image size', 'bootscore'); ?> <b class="font-bold-light"> Mobil</b>
+                                                                   class="count-box form-label pb-1"><?= __('Image size', 'bootscore'); ?>
+                                                                <b class="font-bold-light"> Mobil</b>
                                                                 :
                                                                 <span class="show-range-value"><?= get_hupa_option('logo_size_mobil') ?></span>
                                                                 (px)</label>
-                                                            <input data-container="range-image-scroll-mobil" type="range"
+                                                            <input data-container="range-image-scroll-mobil"
+                                                                   type="range"
                                                                    name="logo_size_mobil" min="10" max="500"
                                                                    value="<?= get_hupa_option('logo_size_mobil') ?>"
                                                                    class="form-range sizeRange" id="imgSizeMobilRange"
@@ -4358,55 +4366,122 @@ use Hupa\Starter\Config;
                     <div class="collapse" id="collapseSettingsInfoOption" data-bs-parent="#settings_display_data">
                         <div class="border rounded mt-1 shadow-sm p-3 bg-custom-gray">
                             <hr>
-                            <div class="d-flex align-items-center">
+                            <div class="d-flex flex-wrap align-items-center">
                                 <h5 class="card-title mb-0">
                                     <i class="font-blue fa fa-info-circle"></i>&nbsp; <?= __('Theme Info', 'bootscore') ?>
                                 </h5>
                             </div>
                             <hr>
-                            <h6 class="lh-1 mb-0"><i class="fa fa-arrow-circle-right"></i> Icon Shortcode:</h6>
-                            <div class="form-text mb-3">Icon <b>auswählen</b> und Shortcode <b>Kopieren</b>.</div>
-                            <button data-bs-toggle="modal"
-                                    data-bs-target="#dialog-add-icon" data-bs-type="fa-info"
-                                    class="show-theme-icons btn btn-outline-secondary btn-sm">
-                                <i class="fa fa-th"></i>&nbsp;
-                                Font-Awesome Übersicht
-                            </button>
-
-                            <button data-bs-toggle="modal"
-                                    data-bs-target="#dialog-add-icon" data-bs-type="bi-info"
-                                    class="show-theme-icons btn btn-outline-secondary btn-sm">
-                                <i class="bi bi-bootstrap"></i>&nbsp;
-                                Bootstrap-Icons Übersicht
-                            </button>
-                            <div class="d-block">
-                                <button id="resetIcons" onclick="reset_show_theme_icons(this,'shortcode-info')"
-                                        class="btn btn-blue-outline mt-3 btn-sm d-none">
-                                    <i class="fa fa-random"></i>&nbsp;
-                                    Reset
-                                </button>
-                            </div>
+                            <h6 class="d-flex flex-wrap align-items-center">
+                              <span>
+                                  <i class="fa fa-arrow-circle-right"></i> Icon Shortcode:
+                              </span>
+                                <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                   data-bs-toggle="collapse"
+                                   data-bs-target="#collIconShortcode">
+                                </i>
+                            </h6>
                             <hr>
+                            <div id="collIconShortcode" class="collapse">
+                                <div class="form-text mb-3">Icon <b>auswählen</b> und Shortcode <b>Kopieren</b>.</div>
+                                <button data-bs-toggle="modal"
+                                        data-bs-target="#dialog-add-icon" data-bs-type="fa-info"
+                                        class="show-theme-icons btn btn-outline-secondary btn-sm">
+                                    <i class="fa fa-th"></i>&nbsp;
+                                    Font-Awesome Übersicht
+                                </button>
 
-                            <div class="pb-3" id="shortcode-info"></div>
+                                <button data-bs-toggle="modal"
+                                        data-bs-target="#dialog-add-icon" data-bs-type="bi-info"
+                                        class="show-theme-icons btn btn-outline-secondary btn-sm">
+                                    <i class="bi bi-bootstrap"></i>&nbsp;
+                                    Bootstrap-Icons Übersicht
+                                </button>
+                                <div class="d-block">
+                                    <button id="resetIcons" onclick="reset_show_theme_icons(this,'shortcode-info')"
+                                            class="btn btn-blue-outline mt-3 btn-sm d-none">
+                                        <i class="fa fa-random"></i>&nbsp;
+                                        Reset
+                                    </button>
+                                </div>
+                                <hr>
+
+                                <div class="pb-3" id="shortcode-info"></div>
+                            </div>
                         </div>
 
                         <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
-                            <h6><i class="fa fa-arrow-circle-right"></i> PDF Download:</h6>
+                            <h6 class="d-flex flex-wrap align-items-center">
+                              <span>
+                                  <i class="fa fa-arrow-circle-right"></i> PDF Download:
+                              </span>
+                                <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                   data-bs-toggle="collapse"
+                                   data-bs-target="#collPdfDownload">
+                                </i>
+                            </h6>
                             <hr>
-                            <b class="d-block font-blue strong-font-weight">Download von PDF-Dateien:</b>
-                            <b class="strong-font-weight font-blue">URL:</b> <?= get_site_url() ?><span
-                                    class="font-blue">?hupa=pdf&type=1&file=test.pdf</span>
-                            <hr>
-                            <b class="d-block font-blue strong-font-weight">Stream von PDF-Dateien:</b>
-                            <b class="strong-font-weight font-blue">URL:</b> <?= get_site_url() ?><span
-                                    class="font-blue">?hupa=pdf&type=0&file=test.pdf</span>
-                            <hr>
-                            <div class="form-text mb-3">Die Variable <code>type=0</code> öffnet die PDF und
-                                <code>type=1</code> lädt die PDF runter.
-                                Der Dateiname wird bei der Variable <code>"file="</code> eingetragen.
+                            <div id="collPdfDownload" class="collapse">
+                                <b class="d-block font-blue strong-font-weight">Download von PDF-Dateien:</b>
+                                <b class="strong-font-weight font-blue">URL:</b> <?= get_site_url() ?><span
+                                        class="font-blue">?hupa=pdf&type=1&file=test.pdf</span>
+                                <hr>
+                                <b class="d-block font-blue strong-font-weight">Stream von PDF-Dateien:</b>
+                                <b class="strong-font-weight font-blue">URL:</b> <?= get_site_url() ?><span
+                                        class="font-blue">?hupa=pdf&type=0&file=test.pdf</span>
+                                <hr>
+                                <div class="form-text mb-3">Die Variable <code>type=0</code> öffnet die PDF und
+                                    <code>type=1</code> lädt die PDF runter.
+                                    Der Dateiname wird bei der Variable <code>"file="</code> eingetragen.
+                                </div>
+                                <hr>
                             </div>
+                        </div>
+
+                        <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
+                            <h6 class="d-flex flex-wrap align-items-center">
+                              <span>
+                                  <i class="fa fa-arrow-circle-right"></i>
+                                Render-Block Funktion <small class="fw-normal">(Gruppe)</small>:
+                            <small class="d-block fw-normal">
+                                Um CSS-Klassen einer Gruppe zuzuweisen muss, das "HTML-Element" auf <code><?= htmlspecialchars('<section>') ?></code> eingestellt sein.
+                            </small>
+                              </span>
+                                <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                   data-bs-toggle="collapse"
+                                   data-bs-target="#collBlockGroup">
+                                </i>
+                            </h6>
                             <hr>
+                            <div class="collapse" id="collBlockGroup">
+                                <b class="d-block font-blue strong-font-weight">Container-Fullwidth:</b>
+                                <b class="font-bold-light">
+                                    CssClass: <code>container-fullwidth</code>
+                                </b>
+                                <hr>
+                                <b class="d-block font-blue strong-font-weight">Custom-Fullwidth:</b>
+                                <b class="font-bold-light">
+                                    CssClass: <code>custom-full-width</code>
+                                </b>
+                                <hr>
+                                <b class="d-block font-blue strong-font-weight">Inner-Container entfernen:</b>
+                                <b class="font-bold-light">
+                                    CssClass: <code>no-inner</code>
+                                </b>
+                                <hr>
+                                <b class="d-block font-blue strong-font-weight">Fullwidth mit inner
+                                    Bootstrap-Container:</b>
+                                <b class="font-bold-light">
+                                    CssClass: <code>theme-fullwidth-container</code>
+                                </b>
+                                <hr>
+                                <b class="d-block font-blue strong-font-weight">Fullwidth mit inner Bootstrap-Container
+                                    und Flexbox:</b>
+                                <b class="font-bold-light">
+                                    CssClass: <code>theme-fullwidth-flex-container</code>
+                                </b>
+                                <hr>
+                            </div>
                         </div>
 
                     </div>

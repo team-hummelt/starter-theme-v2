@@ -80,6 +80,22 @@ body .wp-bs-starter-wrapper {
 
 //WRAPPER
 .wp-bs-starter-wrapper {
+  .icon-circle {
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #bbbbbb;
+    opacity: 1;
+    transition: opacity 250ms linear;
+    color: #fff;
+    &:hover {
+      opacity: .8;
+    }
+  }
+
  .min-w4r {
    min-width: 4rem;
  }

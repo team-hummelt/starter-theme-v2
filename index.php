@@ -145,7 +145,6 @@ get_header();
                         <div>
                             <?php bootscore_pagination(); ?>
                         </div>
-
                     </div>
                     <!-- col -->
                     <?php get_sidebar(); ?>

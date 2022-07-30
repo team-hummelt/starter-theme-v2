@@ -82,13 +82,13 @@ use Hupa\Starter\Config;
                                     </div>
 
                                     <div class="d-flex flex-wrap">
-                                        <div class="form-check form-switch my-2 my-md-1 me-md-3">
+                                        <!--<div class="form-check form-switch my-2 my-md-1 me-md-3">
                                             <input class="form-check-input" name="map_datenschutz" type="checkbox"
                                                    id="MapDatenschutzActive" <?=!get_hupa_option('map_datenschutz') ?: 'checked'?>>
                                             <label class="form-check-label" for="MapDatenschutzActive">
 												<?= __( 'Activate privacy query', 'bootscore' ) ?>
                                             </label>
-                                        </div>
+                                        </div>-->
                                         <div class="form-check form-switch my-2 my-md-1 me-md-3">
                                             <input class="form-check-input" name="map_colorcheck" type="checkbox"
                                                    id="MapColorActive" data-bs-toggle="collapse"

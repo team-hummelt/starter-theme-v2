@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function (event) {
-
     (function ($) {
         $(document).on('click', '.sweet-alert2', function () {
             let type = $(this).attr('data-type');

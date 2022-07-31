@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 } else {
                     isFixedHeader = false;
                     siteContent.css('margin-top', (header.innerHeight()) + 'px');
-                    siteContent.css('margin-top', (header.innerHeight() - offsetHCarHeader) + 'px');
+                    //siteContent.css('margin-top', (header.innerHeight() - offsetHCarHeader) + 'px');
                     header.addClass('fixed-top');
                 }
             }

@@ -18,7 +18,7 @@ Header-, Footer- und 404-Widgets.
 * Tags: Hupa Theme, Bootstrap
 * Version: 2.0.0
 * Stable tag: 2.0.0
-* Requires at least: 5.9
+* Requires at least: 5.6
 * Tested up to: 6.0.1
 * Requires PHP: 7.4
 

@@ -1,4 +1,5 @@
 let carouselSendFormTimeout;
+
 (function ($) {
     "use strict";
     $(document).on('click', '.btn-carousel-action', function () {

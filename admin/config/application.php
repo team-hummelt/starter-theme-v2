@@ -82,7 +82,7 @@ if (!get_option('theme_capabilities')) {
 }
 
 $theme_data = wp_get_theme('starter-theme-v2');
-$child_data = wp_get_theme('starter-theme-child-v2');
+$child_data = wp_get_theme('starter-theme-v2-child');
 if ($child_data->exists()) {
     $childVersion = $child_data->get('Version');
     $ifChild = true;

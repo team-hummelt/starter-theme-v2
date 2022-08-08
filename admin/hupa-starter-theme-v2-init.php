@@ -1,4 +1,7 @@
 <?php
+
+use Hupa\Starter\Config;
+
 defined('ABSPATH') or die();
 /**
  * HUPA INIT Admin Dashboard
@@ -54,4 +57,9 @@ function get_hupa_tools($option)
 function get_hupa_frontend($type, $args = '')
 {
     return apply_filters('get_hupa_frontend',$type, $args);
+}
+
+if (get_option("hupa_theme_version") !== Config::get('THEME_VERSION')) {
+    do_action('validate_install_optionen');
+    update_option('hupa_theme_version', Config::get('THEME_VERSION'));
 }

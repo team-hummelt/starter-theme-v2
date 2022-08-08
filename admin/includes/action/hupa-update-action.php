@@ -100,6 +100,7 @@ use Hupa\Starter\Config;
                 //apply_filters('generate_theme_css', '');
                 $hupa_register_theme_options->hupa_update_hupa_options('reset_gmaps_settings', 'reset_settings');
                 $hupa_css_generator_hooks->hupa_generate_theme_css();
+                //hupa_generate_theme_css
             }
 
             if(!is_dir(Config::get('THEME_FONTS_DIR'). 'Roboto')){
@@ -119,6 +120,7 @@ use Hupa\Starter\Config;
                 //apply_filters('generate_theme_css', '');
                 $hupa_register_theme_options->hupa_update_hupa_options('no-data', 'sync_font_folder');
                 $hupa_css_generator_hooks->hupa_generate_theme_css();
+                $hupa_css_generator_hooks->create_css_style();
             }
         }
 

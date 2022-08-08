@@ -572,6 +572,9 @@ class HupaStarterThemeV2
         $this->loader->add_filter('hupa_address_fields', $hupa_register_theme_helper, 'tools_address_fields');
         $this->loader->add_filter('hupa_help_select_thema', $hupa_register_theme_helper, 'theme_help_select_thema');
         $this->loader->add_filter('starter_animation_settings', $hupa_register_theme_helper, 'hupa_starter_animation_settings');
+        $this->loader->add_filter('get_settings_pin', $hupa_register_theme_helper, 'hupa_settings_pin');
+        $this->loader->add_filter('hupa_validate_pin', $hupa_register_theme_helper, 'hupa_settings_validate_pin', 10, 2);
+        $this->loader->add_action('is_hupa_custom_dir', $hupa_register_theme_helper, 'hupa_is_custom_dir');
 
     }
 
@@ -859,6 +862,7 @@ class HupaStarterThemeV2
         $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_hupa_carousel_scripts');
         $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_hupa_tools_scripts');
         $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_menu_scripts');
+
     }
 
     /**
@@ -918,10 +922,11 @@ class HupaStarterThemeV2
     private function register_starter_pattern()
     {
         global $hupa_pattern;
-        $hupa_pattern = Register_Starter_Theme_Gutenberg_Patterns::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
-        $this->loader->add_action('init', $hupa_pattern, 'register_gutenberg_patterns');
-        $this->loader->add_action('init', $hupa_pattern, 'register_block_pattern_category');
-
+        if (file_exists(THEME_ADMIN_DIR . 'admin-core/register-hupa-starter-optionen.php') && get_option('hupa_starter_product_install_authorize')) {
+            $hupa_pattern = Register_Starter_Theme_Gutenberg_Patterns::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
+            $this->loader->add_action('init', $hupa_pattern, 'register_gutenberg_patterns');
+            $this->loader->add_action('init', $hupa_pattern, 'register_block_pattern_category');
+        }
         //register_gutenberg_patterns
     }
 

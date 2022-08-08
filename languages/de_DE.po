@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: _s 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/tags/_s\n"
 "POT-Creation-Date: 2022-08-05 12:41+0200\n"
-"PO-Revision-Date: 2022-08-05 12:44+0200\n"
+"PO-Revision-Date: 2022-08-08 09:40+0200\n"
 "Last-Translator: \n"
 "Language-Team: Deutsch\n"
 "Language: de_DE\n"
@@ -1036,7 +1036,7 @@ msgstr ""
 #: admin-core/partials/hupa-options-page.php:46
 #: admin-core/partials/hupa-options-page.php:498
 msgid "Posts | Pages Duplicate"
-msgstr "Beiträge | Seiten Sortieren"
+msgstr "Beiträge | Seiten duplizieren"
 
 #: admin-core/partials/hupa-options-page.php:406
 #: admin-core/partials/hupa-options-page.php:533

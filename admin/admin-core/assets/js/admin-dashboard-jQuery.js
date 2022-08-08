@@ -48,6 +48,37 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         });
 
+        $(document).on('submit', '.save_system_settings', function (e) {
+            let formData = $(this).closest("form").get(0);
+            let method = $('[name="method"] ',formData).val();
+
+            switch (method) {
+                case 'update_theme_over_api':
+                    $('button.btn ', formData).remove();
+                    $('.install-update-ajax-spinner').removeClass('d-none');
+                    break;
+            }
+            xhr_ajax_handle(formData, true, save_system_settings_callback);
+            e.preventDefault();
+        });
+
+        function save_system_settings_callback(){
+            let data = JSON.parse(this.responseText);
+            if(data.type == 'update_theme_over_api') {
+                $('.install-update-ajax-spinner').addClass('d-none');
+                $('.btn-reload-site').removeClass('d-none');
+                return false;
+            }
+
+            $('#inputPin').val('');
+            if(data.status){
+                success_message(data.msg);
+            } else {
+                $('.save_system_settings').trigger('reset');
+                warning_message(data.msg);
+            }
+        }
+
         $(document).on('click', '#showSidebarCheck', function () {
             let sideSelect = $('#SelectSidebar');
             if ($(this).prop('checked')) {
@@ -56,6 +87,27 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 sideSelect.prop('disabled', true);
             }
         });
+
+        $(document).on('click', '.btn-admin-action', function () {
+            let type = $(this).attr('data-type');
+            let formData;
+            let settingsBody = $('.theme-settings-card');
+
+            switch (type) {
+                case'show-install-theme-update':
+                    let parBtn = $('#install-theme');
+                    let smUpdWr = $('#theme-update-wrapper');
+                    $('.inputVersion').val($(this).attr('data-version'));
+                    parBtn.html(`Version: ${$(this).attr('data-version')} installieren`);
+                    smUpdWr.html(`${$(this).attr('data-bezeichnung')}: ${$(this).attr('data-version')}` );
+                    settingsBody.toggleClass('d-none');
+                    break;
+                case'update-cancel':
+                    settingsBody.toggleClass('d-none');
+                    break;
+            }
+        });
+
 
 
         let start = new Date();

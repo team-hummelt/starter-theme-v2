@@ -141,38 +141,39 @@ final class HupaRegisterStarterTheme
 
         add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
 
-        $hook_suffix = add_submenu_page(
-            'hupa-starter-home',
-            __('Theme Tools', 'bootscore'),
-            __('Theme Tools', 'bootscore'),
-            get_option('theme_capabilities')['tools'],
-            'hupa-media-tools',
-            array($this, 'hupa_admin_starter_theme_media_tools'));
+        if (Config::get('HUPA_TOOLS')) {
+            $hook_suffix = add_submenu_page(
+                'hupa-starter-home',
+                __('Theme Tools', 'bootscore'),
+                __('Theme Tools', 'bootscore'),
+                get_option('theme_capabilities')['tools'],
+                'hupa-media-tools',
+                array($this, 'hupa_admin_starter_theme_media_tools'));
 
-        add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
+            add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
+        }
+        if (Config::get('HUPA_CAROUSEL')) {
+            $hook_suffix = add_submenu_page(
+                'hupa-starter-home',
+                __('Carousel', 'bootscore'),
+                __('Carousel', 'bootscore'),
+                get_option('theme_capabilities')['carousel'],
+                'hupa-carousel',
+                array($this, 'hupa_admin_starter_theme_carousel'));
 
+            add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
+        }
+        if (Config::get('HUPA_API_INSTALL')) {
+            $hook_suffix = add_submenu_page(
+                'hupa-starter-home',
+                __('Installation', 'bootscore'),
+                __('Installation', 'bootscore'),
+                get_option('theme_capabilities')['installation'],
+                'hupa-install-font',
+                array($this, 'hupa_admin_starter_theme_install_font'));
 
-        $hook_suffix = add_submenu_page(
-            'hupa-starter-home',
-            __('Carousel', 'bootscore'),
-            __('Carousel', 'bootscore'),
-            get_option('theme_capabilities')['carousel'],
-            'hupa-carousel',
-            array($this, 'hupa_admin_starter_theme_carousel'));
-
-        add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
-
-
-        $hook_suffix = add_submenu_page(
-            'hupa-starter-home',
-            __('Installation', 'bootscore'),
-            __('Installation', 'bootscore'),
-            get_option('theme_capabilities')['installation'],
-            'hupa-install-font',
-            array($this, 'hupa_admin_starter_theme_install_font'));
-
-        add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
-
+            add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
+        }
         if (get_hupa_option('lizenz_page_aktiv')) {
             $hook_suffix = add_submenu_page(
                 'hupa-starter-home',
@@ -189,44 +190,46 @@ final class HupaRegisterStarterTheme
     public function register_hupa_starter_maps_menu(): void
     {
         //GOOGLE MAPS SEITE
-        add_menu_page(
-            __('Google Maps', 'bootscore'),
-            __('Google Maps', 'bootscore'),
-            get_option('theme_capabilities')['maps-api'],
-            'hupa-starter-maps',
-            '',
-            'dashicons-location-alt', 8
-        );
+        if (Config::get('HUPA_MAPS')) {
+            add_menu_page(
+                __('Google Maps', 'bootscore'),
+                __('Google Maps', 'bootscore'),
+                get_option('theme_capabilities')['maps-api'],
+                'hupa-starter-maps',
+                '',
+                'dashicons-location-alt', 8
+            );
 
-        $hook_suffix = add_submenu_page(
-            'hupa-starter-maps',
-            __('Google Maps API', 'bootscore'),
-            __('Google Maps API', 'bootscore'),
-            get_option('theme_capabilities')['maps-api'],
-            'hupa-starter-maps',
-            array($this, 'hupa_admin_starter_theme_maps'));
+            $hook_suffix = add_submenu_page(
+                'hupa-starter-maps',
+                __('Google Maps API', 'bootscore'),
+                __('Google Maps API', 'bootscore'),
+                get_option('theme_capabilities')['maps-api'],
+                'hupa-starter-maps',
+                array($this, 'hupa_admin_starter_theme_maps'));
 
-        add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
+            add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
 
-        $hook_suffix = add_submenu_page(
-            'hupa-starter-maps',
-            __('Google Maps I-Frame', 'bootscore'),
-            __('Google Maps I-Frame', 'bootscore'),
-            get_option('theme_capabilities')['maps-iframe'],
-            'hupa-starter-iframe-maps',
-            array($this, 'hupa_admin_starter_iframe_maps'));
+            $hook_suffix = add_submenu_page(
+                'hupa-starter-maps',
+                __('Google Maps I-Frame', 'bootscore'),
+                __('Google Maps I-Frame', 'bootscore'),
+                get_option('theme_capabilities')['maps-iframe'],
+                'hupa-starter-iframe-maps',
+                array($this, 'hupa_admin_starter_iframe_maps'));
 
-        add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
+            add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
 
-        $hook_suffix = add_submenu_page(
-            'hupa-starter-maps',
-            __('Google Maps Settings', 'bootscore'),
-            __('Google Maps Settings', 'bootscore'),
-            get_option('theme_capabilities')['maps-settings'],
-            'hupa-starter-maps-settings',
-            array($this, 'hupa_admin_starter_maps_settings'));
+            $hook_suffix = add_submenu_page(
+                'hupa-starter-maps',
+                __('Google Maps Settings', 'bootscore'),
+                __('Google Maps Settings', 'bootscore'),
+                get_option('theme_capabilities')['maps-settings'],
+                'hupa-starter-maps-settings',
+                array($this, 'hupa_admin_starter_maps_settings'));
 
-        add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
+            add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
+        }
 
         /** OPTIONS PAGE */
         $hook_suffix = add_options_page(
@@ -250,7 +253,8 @@ final class HupaRegisterStarterTheme
     /**
      * @param $wp_admin_bar
      */
-    public function hupa_toolbar_hupa_options( $wp_admin_bar ): void {
+    public function hupa_toolbar_hupa_options($wp_admin_bar): void
+    {
 
         $args = array(
             'id' => 'hupa_options_page',
@@ -274,22 +278,22 @@ final class HupaRegisterStarterTheme
             'id' => 'hupa_contact',
             'title' => __('Contact', 'bootscore'),
             'parent' => 'hupa_options_page',
-            'href'   => 'mailto:kontakt@hummelt.com',
-            'meta'   => [
+            'href' => 'mailto:kontakt@hummelt.com',
+            'meta' => [
                 'class' => 'get_hupa_contact'
             ]
         ];
 
         $args[] = [
-            'id'     => 'hupa_website',
-            'title'  => __( 'Website', 'bootscore' ),
+            'id' => 'hupa_website',
+            'title' => __('Website', 'bootscore'),
             'parent' => 'hupa_options_page',
-            'href'   => 'https://www.hummelt-werbeagentur.de/',
+            'href' => 'https://www.hummelt-werbeagentur.de/',
         ];
 
-        sort( $args );
-        foreach ( $args as $tmp ) {
-            $wp_admin_bar->add_node( $tmp );
+        sort($args);
+        foreach ($args as $tmp) {
+            $wp_admin_bar->add_node($tmp);
         }
     }
 
@@ -304,7 +308,8 @@ final class HupaRegisterStarterTheme
         require 'partials/admin-starter-theme-home.php';
     }
 
-    public function hupa_admin_starter_theme_media_tools(): void {
+    public function hupa_admin_starter_theme_media_tools(): void
+    {
         $data = [
             'media' => apply_filters('get_social_media', ''),
             'tools' => apply_filters('get_hupa_tools_by_args', 'WHERE type="top_area" ORDER BY position ASC'),
@@ -315,38 +320,40 @@ final class HupaRegisterStarterTheme
         $data['admin_url'] = Config::get('WP_THEME_ADMIN_URL');
 
         try {
-            $template =  $this->twig->render( '@partials-templates/admin-starter-theme-tools.twig',  $data );
+            $template = $this->twig->render('@partials-templates/admin-starter-theme-tools.twig', $data);
             echo apply_filters('compress_template', $template);
-        } catch ( LoaderError | SyntaxError | RuntimeError $e ) {
+        } catch (LoaderError|SyntaxError|RuntimeError $e) {
             echo $e->getMessage();
-        } catch ( Throwable $e ) {
+        } catch (Throwable $e) {
             echo $e->getMessage();
         }
     }
 
-    public function hupa_admin_starter_theme_carousel(): void {
+    public function hupa_admin_starter_theme_carousel(): void
+    {
         wp_enqueue_media();
         $carousel = apply_filters('get_carousel_komplett_data', false);
         $data = apply_filters('hupaObject2array', $carousel);
         $data['admin_url'] = Config::get('WP_THEME_ADMIN_URL');
 
         try {
-            $template = $this->twig->render( '@partials-templates/carousel-template.twig',  $data );
+            $template = $this->twig->render('@partials-templates/carousel-template.twig', $data);
             echo apply_filters('compress_template', $template);
-        } catch ( LoaderError | SyntaxError | RuntimeError $e ) {
+        } catch (LoaderError|SyntaxError|RuntimeError $e) {
             echo $e->getMessage();
-        } catch ( Throwable $e ) {
+        } catch (Throwable $e) {
             echo $e->getMessage();
         }
     }
 
-    public function hupa_admin_starter_theme_install_font(): void {
+    public function hupa_admin_starter_theme_install_font(): void
+    {
         try {
-           $template = $this->twig->render( '@partials-templates/admin-install-from-api.twig',  [] );
+            $template = $this->twig->render('@partials-templates/admin-install-from-api.twig', []);
             echo apply_filters('compress_template', $template);
-        } catch ( LoaderError | SyntaxError | RuntimeError $e ) {
+        } catch (LoaderError|SyntaxError|RuntimeError $e) {
             echo $e->getMessage();
-        } catch ( Throwable $e ) {
+        } catch (Throwable $e) {
             echo $e->getMessage();
         }
     }
@@ -358,13 +365,15 @@ final class HupaRegisterStarterTheme
     }
 
     //HUPA MAPS
-    public function hupa_admin_starter_theme_maps(): void {
+    public function hupa_admin_starter_theme_maps(): void
+    {
         wp_enqueue_media();
         require 'partials/admin-starter-theme-maps.php';
     }
 
     //HUPA IFRAME MAPS
-    public function hupa_admin_starter_iframe_maps(): void {
+    public function hupa_admin_starter_iframe_maps(): void
+    {
         require 'partials/admin-iframe-maps.php';
     }
 
@@ -374,6 +383,7 @@ final class HupaRegisterStarterTheme
         wp_enqueue_media();
         require 'partials/admin-gmaps-settings.php';
     }
+
     /**
      * =========================================
      * =========== ADMIN OPTION PAGE ===========
@@ -474,17 +484,18 @@ final class HupaRegisterStarterTheme
      * ============================================================
      */
 
-    public function register_starter_custom_footer_post_types(): void {
+    public function register_starter_custom_footer_post_types(): void
+    {
         register_post_type(
             'starter_footer',
             array(
-                'labels'              => array(
-                    'name'                  => __( 'Custom Footer', 'bootscore' ),
-                    'singular_name'         => __( 'Footer', 'bootscore' ),
-                    'edit_item'             => __( 'Edit Footer', 'bootscore' ),
-                    'items_list_navigation' => __( 'Footer list navigation', 'bootscore' ),
-                    'add_new_item'          => 'Neuen Footer erstellen',
-                    'archives'              => __( 'Footer Archives', 'bootscore' )
+                'labels' => array(
+                    'name' => __('Custom Footer', 'bootscore'),
+                    'singular_name' => __('Footer', 'bootscore'),
+                    'edit_item' => __('Edit Footer', 'bootscore'),
+                    'items_list_navigation' => __('Footer list navigation', 'bootscore'),
+                    'add_new_item' => 'Neuen Footer erstellen',
+                    'archives' => __('Footer Archives', 'bootscore')
                 ),
                 'public' => true,
                 'publicly_queryable' => false,
@@ -515,18 +526,19 @@ final class HupaRegisterStarterTheme
      * ===============================================================
      */
 
-    public function register_starter_design_vorlagen_post_types(): void {
+    public function register_starter_design_vorlagen_post_types(): void
+    {
         register_post_type(
             'hupa_design',
             array(
-                'labels'              => array(
-                    'name'                  => __( 'Design template', 'bootscore' ),
-                    'singular_name'         => __( 'Template', 'bootscore' ),
-                    'edit_item'             => __( 'Edit Template', 'bootscore' ),
-                    'all_items'             => __('all Design templates', 'bootscore'),
-                    'items_list_navigation' => __( 'Design template list navigation', 'bootscore' ),
-                    'add_new_item'          => __( 'Create new template', 'bootscore' ),
-                    'archives'              => __( 'Design template Archives', 'bootscore' )
+                'labels' => array(
+                    'name' => __('Design template', 'bootscore'),
+                    'singular_name' => __('Template', 'bootscore'),
+                    'edit_item' => __('Edit Template', 'bootscore'),
+                    'all_items' => __('all Design templates', 'bootscore'),
+                    'items_list_navigation' => __('Design template list navigation', 'bootscore'),
+                    'add_new_item' => __('Create new template', 'bootscore'),
+                    'archives' => __('Design template Archives', 'bootscore')
                 ),
                 'public' => true,
                 'publicly_queryable' => false,
@@ -636,13 +648,13 @@ final class HupaRegisterStarterTheme
         register_post_type(
             'starter_header',
             array(
-                'labels'              => array(
-                    'name'                  => __( 'Custom Header', 'bootscore' ),
-                    'singular_name'         => __( 'Header', 'bootscore' ),
-                    'edit_item'             => __( 'Edit Header', 'bootscore' ),
-                    'items_list_navigation' => __( 'Header list navigation', 'bootscore' ),
-                    'add_new_item'          => __( 'Create new header', 'bootscore' ),
-                    'archives'              => __( 'Header Archives', 'bootscore' ),
+                'labels' => array(
+                    'name' => __('Custom Header', 'bootscore'),
+                    'singular_name' => __('Header', 'bootscore'),
+                    'edit_item' => __('Edit Header', 'bootscore'),
+                    'items_list_navigation' => __('Header list navigation', 'bootscore'),
+                    'add_new_item' => __('Create new header', 'bootscore'),
+                    'archives' => __('Header Archives', 'bootscore'),
                 ),
                 'public' => true,
                 'publicly_queryable' => false,
@@ -668,37 +680,43 @@ final class HupaRegisterStarterTheme
     }
 
     // JOB THEME BRANDING ACTIONS
-    public function hupaStarterAdminFavicon(): void {
+    public function hupaStarterAdminFavicon(): void
+    {
         echo '<link rel="Shortcut Icon" type="image/x-icon" href="' . Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/favicon/favicon.ico" />';
     }
 
-    public function remove_hupa_starter_footer_admin(): void {
+    public function remove_hupa_starter_footer_admin(): void
+    {
         $footer = '<p class="starter_admin_footer_text"> 
 			  <a href="https://www.hummelt-werbeagentur.de/" title="Werbeagentur in Magdeburg">
 			  <img alt="Werbeagentur in Magdeburg" src="' . Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/hupa-red.svg"></a>hummelt&nbsp; 
 			  <span class="footer-red">und&nbsp; </span> partner <span style="font-weight: 200;">&nbsp;Theme</span> </p>';
-        echo preg_replace( array( '/<!--(.*)-->/Uis', "/[[:blank:]]+/" ), array( '', ' ' ), str_replace( array("\n","\r", "\t" ),'', $footer ) );
+        echo preg_replace(array('/<!--(.*)-->/Uis', "/[[:blank:]]+/"), array('', ' '), str_replace(array("\n", "\r", "\t"), '', $footer));
     }
 
-    public function change_starter_footer_version(): void {
-        echo '<span class="admin_footer_version"><b class="footer-red">HUPA</b>: ' . $this->theme_version . ' &nbsp;|&nbsp;  WordPress: ' . get_bloginfo( 'version' ) . '</span>';
+    public function change_starter_footer_version(): void
+    {
+        echo '<span class="admin_footer_version"><b class="footer-red">HUPA</b>: ' . $this->theme_version . ' &nbsp;|&nbsp;  WordPress: ' . get_bloginfo('version') . '</span>';
     }
 
-    public function hupa_starter_footer_shh(): void {
-        remove_filter( 'update_footer', 'core_update_footer' );
+    public function hupa_starter_footer_shh(): void
+    {
+        remove_filter('update_footer', 'core_update_footer');
     }
 
-    public function remove_starter_wp_logo( $wp_admin_bar ): void {
-        $wp_admin_bar->remove_node( 'wp-logo' );
+    public function remove_starter_wp_logo($wp_admin_bar): void
+    {
+        $wp_admin_bar->remove_node('wp-logo');
     }
 
-    public function add_starter_admin_bar_logo( $wp_admin_bar ): void {
+    public function add_starter_admin_bar_logo($wp_admin_bar): void
+    {
         $args = array(
-            'id'     => 'hupa-bar-logo',
+            'id' => 'hupa-bar-logo',
             'parent' => false,
-            'meta'   => array( 'class' => 'hupa-admin-bar-logo', 'title' => 'Hummelt Werbeagentur in Magdeburg' )
+            'meta' => array('class' => 'hupa-admin-bar-logo', 'title' => 'Hummelt Werbeagentur in Magdeburg')
         );
-        $wp_admin_bar->add_node( $args );
+        $wp_admin_bar->add_node($args);
     }
 
 
@@ -707,36 +725,37 @@ final class HupaRegisterStarterTheme
      * =========== REGISTER SIDEBARS AND WIDGETS ===========
      * =====================================================
      */
-    public function register_hupa_starter_widgets(): void {
-        register_sidebar( array(
-            'name'          => __( 'Top Area Menu Info text', 'bootscore' ),
-            'id'            => 'top-menu-1',
-            'description'   => __( 'Area for info or contact information.', 'bootscore' ),
+    public function register_hupa_starter_widgets(): void
+    {
+        register_sidebar(array(
+            'name' => __('Top Area Menu Info text', 'bootscore'),
+            'id' => 'top-menu-1',
+            'description' => __('Area for info or contact information.', 'bootscore'),
             'before_widget' => '<div id="%1$s" class="widget %2$s">',
-            'after_widget'  => '</div>',
-            'before_title'  => '<div class="widget-title d-none">',
-            'after_title'   => '</div>',
-        ) );
+            'after_widget' => '</div>',
+            'before_title' => '<div class="widget-title d-none">',
+            'after_title' => '</div>',
+        ));
 
-        register_sidebar( array(
-            'name'          => __( 'Top Area Menu Social media', 'bootscore' ),
-            'id'            => 'top-menu-2',
-            'description'   => __( 'Area for social media icons.', 'bootscore' ),
+        register_sidebar(array(
+            'name' => __('Top Area Menu Social media', 'bootscore'),
+            'id' => 'top-menu-2',
+            'description' => __('Area for social media icons.', 'bootscore'),
             'before_widget' => '<div id="%1$s" class="widget %2$s">',
-            'after_widget'  => '</div>',
-            'before_title'  => '<div class="widget-title d-none">',
-            'after_title'   => '</div>',
-        ) );
+            'after_widget' => '</div>',
+            'before_title' => '<div class="widget-title d-none">',
+            'after_title' => '</div>',
+        ));
 
-        register_sidebar( array(
-            'name'          => __( 'Top Area Menu Button', 'bootscore' ),
-            'id'            => 'top-area-3',
-            'description'   => __( 'Area for button or search field.', 'bootscore' ),
+        register_sidebar(array(
+            'name' => __('Top Area Menu Button', 'bootscore'),
+            'id' => 'top-area-3',
+            'description' => __('Area for button or search field.', 'bootscore'),
             'before_widget' => '<div id="%1$s" class="widget %2$s">',
-            'after_widget'  => '</div>',
-            'before_title'  => '<div class="widget-title d-none">',
-            'after_title'   => '</div>',
-        ) );
+            'after_widget' => '</div>',
+            'before_title' => '<div class="widget-title d-none">',
+            'after_title' => '</div>',
+        ));
     }
 
     /**
@@ -840,17 +859,18 @@ final class HupaRegisterStarterTheme
      *
      * @since    2.0.0
      */
-    public function set_hupa_theme_v2_update_checker() {
+    public function set_hupa_theme_v2_update_checker()
+    {
 
         $updOptionen = $this->main->get_license_config();
-        if($updOptionen->update->update_aktiv == '1' ) {
+        if ($updOptionen->update->update_aktiv == '1') {
             $hupaThemeV2UpdateChecker = Puc_v4_Factory::buildUpdateChecker(
                 $updOptionen->update->update_url_git,
                 HUPA_THEME_DIR,
                 $this->basename
             );
 
-            if ($updOptionen->update->update_type == '1' ) {
+            if ($updOptionen->update->update_type == '1') {
                 if ($updOptionen->update->update_branch == 'release') {
                     $hupaThemeV2UpdateChecker->getVcsApi()->enableReleaseAssets();
                 } else {
@@ -861,7 +881,8 @@ final class HupaRegisterStarterTheme
         }
     }
 
-    public function hupa_theme_show_upgrade_notification( $current_theme_metadata, $new_theme_metadata ) {
+    public function hupa_theme_show_upgrade_notification($current_theme_metadata, $new_theme_metadata)
+    {
 
         /**
          * Check "upgrade_notice" in readme.txt.
@@ -869,13 +890,13 @@ final class HupaRegisterStarterTheme
          * Eg.:
          * == Upgrade Notice ==
          * = 20180624 = <- new version
-         * Notice		<- message
+         * Notice        <- message
          *
          */
-        if ( isset( $new_theme_metadata->upgrade_notice ) && strlen( trim( $new_theme_metadata->upgrade_notice ) ) > 0 ) {
+        if (isset($new_theme_metadata->upgrade_notice) && strlen(trim($new_theme_metadata->upgrade_notice)) > 0) {
 
             // Display "upgrade_notice".
-            echo sprintf( '<span style="background-color:#d54e21;padding:10px;color:#f9f9f9;margin-top:10px;display:block;"><strong>%1$s: </strong>%2$s</span>', esc_attr( 'Important Upgrade Notice', 'post-selector' ), esc_html( rtrim( $new_theme_metadata->upgrade_notice ) ) );
+            echo sprintf('<span style="background-color:#d54e21;padding:10px;color:#f9f9f9;margin-top:10px;display:block;"><strong>%1$s: </strong>%2$s</span>', esc_attr('Important Upgrade Notice', 'post-selector'), esc_html(rtrim($new_theme_metadata->upgrade_notice)));
 
         }
     }
@@ -885,9 +906,10 @@ final class HupaRegisterStarterTheme
      *
      * @return string
      */
-    protected static function get_svg_icons($name): string {
+    protected static function get_svg_icons($name): string
+    {
         $icon = '';
-        switch ($name){
+        switch ($name) {
             case'journal':
                 $icon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-journal-text" viewBox="0 0 16 16">
                          <path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
@@ -919,7 +941,7 @@ final class HupaRegisterStarterTheme
                 break;
             default:
         }
-        return 'data:image/svg+xml;base64,'. base64_encode($icon);
+        return 'data:image/svg+xml;base64,' . base64_encode($icon);
 
     }
 }

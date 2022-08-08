@@ -161,8 +161,10 @@ final class RegisterHupaStarter
             delete_option('hupa_starter_product_install_authorize');
             delete_option('hupa_update_error_message');
             delete_option('hupa_product_install_time');
-            delete_option('hupa_product_client_id');
-            delete_option('hupa_product_client_secret');
+            if(Config::get('DEACTIVATE_DELETE_ACCESS_DATA')){
+                delete_option('hupa_product_client_secret');
+                delete_option('hupa_product_client_id');
+            }
             delete_option('hupa_access_token');
             delete_option('hupa_license_url');
             set_transient('show_theme_license_info', true, 5);
@@ -192,13 +194,15 @@ final class RegisterHupaStarter
             update_option('ssl_login_aktiv', 0);
             update_option('admin_ssl_login_aktiv', 0);
             update_option('mu_plugin', 0);
-
         }
    }
 
     public function hupa_starter_theme_deactivated() {
-       // delete_option('hupa_starter_product_install_authorize');
-       // delete_option('hupa_product_client_secret');
+        delete_option('hupa_starter_product_install_authorize');
+        if(Config::get('DEACTIVATE_DELETE_ACCESS_DATA')){
+            delete_option('hupa_product_client_secret');
+            delete_option('hupa_product_client_id');
+        }
 
         global $hupa_optionen_class;
         $msg = 'Version: ' . $this->theme_version . ' Theme am '.date('d.m.Y \u\m H:i:s').' Uhr deaktiviert!';

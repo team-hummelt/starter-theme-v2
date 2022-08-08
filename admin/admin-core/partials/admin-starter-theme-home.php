@@ -17,10 +17,27 @@ use Hupa\Starter\Config;
             <h5 class="card-header d-flex align-items-center bg-hupa py-4">
                 <i class="icon-hupa-white d-block mt-2"
                    style="font-size: 2rem"></i>&nbsp; <?= __('Theme Settings', 'bootscore') ?> V2</h5>
-            <div class="card-body pb-4" style="min-height: 72vh">
+            <div class="theme-settings-card d-none card-body d-flex align-items-start justify-content-center" style="min-height: 72vh">
+                <div class="mt-5 pt-5 text-center">
+                    <h2 class="font-bold-light mb-3">Update <span class="fw-light"> Installieren</span>
+                    <small id="theme-update-wrapper" class="fs-5 d-block fw-light mt-1"></small>
+                    </h2>
+                    <form class="save_system_settings">
+                        <input type="hidden" name="method" value="update_theme_over_api">
+                        <input class="inputVersion" type="hidden" name="version" value="">
+                    <button type="submit" id="install-theme" class="btn btn-primary my-1 me-1">Version v.2.0.1 Installieren</button>
+                    <button type="button" data-type="update-cancel" class="btn-admin-action btn-admin-action btn btn-secondary my-1 me-1">Abbrechen</button>
+                    </form>
+                    <a href="<?=admin_url('admin.php?page=hupa-starter-home')?>" class="btn-reload-site mt-3 d-none btn btn-primary">
+                        <i class="bi bi-check-circle me-1"></i> Installation abschließen
+                    </a>
+                       <div class="install-update-ajax-spinner fs-5 d-none mt-3 font-dark-red"> <i class="fa fa-gear fa-spin align-middle fa-3x me-1"></i> Update wird installiert</div>
+                </div>
+            </div>
+            <div class="theme-settings-card card-body pb-4" style="min-height: 72vh">
                 <div class="d-flex align-items-center">
-                    <h5 class="card-title"><i
-                                class="hupa-color fa fa-arrow-circle-right"></i> <?= __('Settings', 'bootscore') ?> /
+                    <h5 class="card-title">
+                        <i class="hupa-color fa fa-arrow-circle-right"></i> <?= __('Settings', 'bootscore') ?> /
                         <span id="currentSideTitle"><?= __('actual', 'bootscore') ?></span>
                     </h5>
                     <div class="ajax-status-spinner ms-auto d-inline-block mb-2 pe-2"></div>
@@ -32,15 +49,15 @@ use Hupa\Starter\Config;
                             type="button"
                             data-bs-toggle="collapse" data-bs-target="#collapseSettingsHomeSite"
                             aria-expanded="true" aria-controls="collapseSettingsHomeSite"
-                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm active" disabled><i
-                                class="fa fa-home"></i>&nbsp;
+                            class="text-nowrap btn-collapse btn btn-hupa btn-outline-secondary btn-sm active" disabled>
+                        <i class="fa fa-home me-1"></i>
                         <?= __('Hupa actual', 'bootscore') ?>
                     </button>
 
                     <button data-site="<?= __('General', 'bootscore') ?>" type="button"
                             data-bs-toggle="collapse" data-bs-target="#collapseSettingsGeneralSite"
                             aria-expanded="false" aria-controls="collapseSettingsGeneralSite"
-                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-tasks"></i>&nbsp;
+                            class="text-nowrap btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-tasks me-1"></i>
                         <?= __('General', 'bootscore') ?>
                     </button>
 
@@ -49,7 +66,7 @@ use Hupa\Starter\Config;
                             type="button"
                             data-bs-toggle="collapse" data-bs-target="#collapseSettingsFontsSite"
                             aria-expanded="false" aria-controls="collapseSettingsFontsSite"
-                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-font"></i>&nbsp;
+                            class="text-nowrap btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-font me-1"></i>
                         <?= __('Fonts', 'bootscore') ?>
                     </button>
 
@@ -58,7 +75,7 @@ use Hupa\Starter\Config;
                             type="button"
                             data-bs-toggle="collapse" data-bs-target="#collapseSettingsColorSite"
                             aria-expanded="false" aria-controls="collapseSettingsColorSite"
-                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-magic"></i>&nbsp;
+                            class="text-nowrap btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-magic me-1"></i>
                         <?= __('Colors', 'bootscore') ?>
                     </button>
                     <?php $user = new WP_User(get_current_user_id());
@@ -66,8 +83,8 @@ use Hupa\Starter\Config;
                         <button data-site="<?= __('Theme options', 'bootscore') ?>" type="button"
                                 data-bs-toggle="collapse" data-bs-target="#collapseSettingsOtherOption"
                                 aria-expanded="true" aria-controls="collapseSettingsOtherOption"
-                                class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i
-                                    class="fa fa-gears"></i>&nbsp;
+                                class="text-nowrap btn-collapse btn btn-hupa btn-outline-secondary btn-sm">
+                            <i class="fa fa-gears me-1"></i>
                             <?= __('Theme options', 'bootscore') ?>
                         </button>
                     <?php endif; ?>
@@ -75,8 +92,8 @@ use Hupa\Starter\Config;
                         <button data-site="<?= __('Infos', 'bootscore') ?>" type="button"
                                 data-bs-toggle="collapse" data-bs-target="#collapseSettingsInfoOption"
                                 aria-expanded="true" aria-controls="collapseSettingsInfoOption"
-                                class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i
-                                    class="fa fa-info-circle"></i>&nbsp;
+                                class="text-nowrap btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i
+                                    class="fa fa-info-circle me-1"></i>
                             <?= __('Infos', 'bootscore') ?>
                         </button>
                         <?php $user = new WP_User(get_current_user_id());
@@ -84,8 +101,8 @@ use Hupa\Starter\Config;
                             <button data-site="<?= __('Reset', 'bootscore') ?>" type="button"
                                     data-bs-toggle="collapse" data-bs-target="#collapseSettingsResetOption"
                                     aria-expanded="true" aria-controls="collapseSettingsResetOption"
-                                    class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i
-                                        class="fa fa-random"></i>&nbsp;
+                                    class="text-nowrap btn-collapse btn btn-hupa btn-outline-secondary btn-sm">
+                                <i class="fa fa-random me-1"></i>
                                 <?= __('Reset', 'bootscore') ?>
                             </button>
                         <?php endif; ?>
@@ -96,7 +113,7 @@ use Hupa\Starter\Config;
                     <!--  TODO JOB WARNING STARTSEITE -->
                     <div class="collapse show" id="collapseSettingsHomeSite" data-bs-parent="#settings_display_data">
                         <div class="hupa-news-wrapper">
-                            <div class="d-flex justify-content-center align-items-center">
+                            <div class="d-flex d-nones justify-content-center align-items-center">
                                 <a title="Full-Service-Werbeagentur aus Magdeburg"
                                    href="https://www.hummelt-werbeagentur.de/">
                                     <img class="my-4 img-fluid" alt=""
@@ -106,6 +123,32 @@ use Hupa\Starter\Config;
                             </div>
                             <hr>
                             <h4 class="text-center"><?= __('News and Updates', 'bootscore') ?></h4>
+                            <?php
+                            $body = [
+                                'method' => 'check_updates',
+                                'version' => (int) str_replace(['v','.'],'',$this->theme_version),
+                                'slug' => $this->basename
+                            ];
+
+                            if(get_hupa_option('update_aktiv') && get_option('hupa_wp_automatic_update')):
+                            $checkUpdate =  apply_filters('post_scope_resource', 'hupa', $body);
+                            if($checkUpdate->status && $checkUpdate->update_status):  ?>
+                            <hr>
+                            <div class="text-center">
+                                <h5 class=" font-bold-light font-dark-red pt-3">
+                                    <i class="fa fa-info-circle me-1"></i> Neues <?=$checkUpdate->type_bezeichnung?>-Update verfügbar
+                                    <small class="d-block small-lg fw-normal text-muted"><?=$checkUpdate->bezeichnung?> -
+                                        Version: <?=$checkUpdate->version?></small>
+                                </h5>
+                                <button type="button" data-type="show-install-theme-update"
+                                        data-version="<?=$checkUpdate->version?>" data-bezeichnung="<?=$checkUpdate->bezeichnung?>"
+                                        class="btn-admin-action btn btn-primary btn-sm mt-3 mb-4">
+                                    <i class="bi bi-cloud-arrow-down me-1"></i> Update Installieren
+                                </button>
+                            </div>
+                            <hr>
+                            <?php endif; endif; ?>
+
                             <?php if (get_hupa_option('show_uhr_aktive')): ?>
                                 <div class="clock mb-3" id="homeStartClock"></div>
                             <?php endif; ?>
@@ -119,6 +162,7 @@ use Hupa\Starter\Config;
                             $errMsg = str_replace('#', '<br>', get_option('hupa_update_error_message'));
                             echo $errMsg;
                             ?>
+
                         </div>
                         <small class="card-body-bottom">DB: <i
                                     class="hupa-color"> <?= $this->main->get_db_version() ?></i> | THEME:

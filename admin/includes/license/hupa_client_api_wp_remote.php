@@ -119,7 +119,7 @@ class HupaApiServerHandle
         }
 
         $apiData = json_decode($response['body']);
-        if ($apiData->error) {
+        if (isset($apiData->error)) {
             $apiData->status = false;
             return $apiData;
         }
@@ -144,7 +144,7 @@ class HupaApiServerHandle
         }
 
         $apiData = json_decode($response['body']);
-        if (isset($apiData->error)) {
+        if (isset($apiData->error) && $apiData->error) {
             $errType = $this->get_error_message($apiData);
             if ($errType) {
                 $this->hupaGetApiClientCredentials();
@@ -154,20 +154,26 @@ class HupaApiServerHandle
         $response = wp_remote_post(get_option('hupa_server_url') . $scope, $this->HupaApiPostArgs($body));
 
         if (is_wp_error($response)) {
+
             $error->message = $response->get_error_message();
             $error->apicode = $response['code'];
             $error->apimessage = $response['message'];
             return $error;
         }
+
         $apiData = json_decode($response['body']);
+
         if (isset($apiData->success) && $apiData->success) {
             $apiData->status = true;
             return $apiData;
         }
+        $apiData->status = false;
+        //$apiData->message =  $apiData->message;
+        if(isset($apiData->error_description)){
+            $apiData->message = $apiData->error_description;
+        }
 
-        $error->error = $apiData->message;
-        //$error->error_description = $apiData->error_description;
-        return $error;
+        return $apiData;
     }
 
     public function hupaGETApiResource($scope, $get = [])
@@ -192,7 +198,7 @@ class HupaApiServerHandle
         }
 
         $apiData = json_decode($response['body']);
-        if ($apiData->error) {
+        if (isset($apiData->error )) {
             $errType = $this->get_error_message($apiData);
             if ($errType) {
                 $this->hupaGetApiClientCredentials();

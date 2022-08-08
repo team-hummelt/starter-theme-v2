@@ -3,6 +3,7 @@
 namespace Hupa\StarterThemeV2;
 
 use Exception;
+use Hupa\Starter\Config;
 use HupaStarterThemeV2;
 
 
@@ -225,6 +226,13 @@ class HupaStarterHelper
     public function object2array_recursive($object)
     {
         return json_decode(json_encode($object), true);
+    }
+
+    public function hupa_is_custom_dir($dir)
+    {
+        if(!is_dir($dir)){
+            mkdir($dir, 0777, false);
+        }
     }
 
     public function changeBeitragsListenTemplate($id, $type)
@@ -715,6 +723,17 @@ class HupaStarterHelper
         }
 
         return $layout;
+    }
+
+    public function hupa_settings_pin($salt = null) {
+       $date = date('dm', current_time('timestamp'));
+       $version = str_replace(['v','.'],'',$this->main->get_theme_version());
+        return password_hash($salt.$date.$version, PASSWORD_DEFAULT);
+    }
+
+    public function hupa_settings_validate_pin($pin, $hash):bool
+    {
+        return password_verify($pin, $hash);
     }
 
     public function api_set_error_message($type): array

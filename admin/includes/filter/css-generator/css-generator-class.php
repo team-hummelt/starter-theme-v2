@@ -113,12 +113,13 @@ class HupaStarterCssGenerator
         $path = get_theme_root() . '/' . Config::get('HUPA_THEME_SLUG');
         $css = $fontFace . $ccsStyle;
         $css = preg_replace(array('/<!--(.*)-->/Uis', "/[[:blank:]]+/"), array('', ' '), str_replace(array("\n", "\r", "\t"), '', $css));
-        ob_end_flush();
+
         file_put_contents($path . '/css/hupa-theme/auto-generate-theme.css', $css, LOCK_EX);
         file_put_contents($path . '/css/hupa-theme/auto-generate-login-style.css', $loginStyle, LOCK_EX);
+        ob_end_flush();
     }
 
-    protected function create_css_style(): string
+    public function create_css_style(): string
     {
         //Body
         $bodyFont = $this->css_styles_by_type('font', 'body_font');

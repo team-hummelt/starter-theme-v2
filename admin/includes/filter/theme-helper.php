@@ -19,6 +19,8 @@ class HupaStarterHelper
     //INSTANCE
     private static $theme_helper_instance;
 
+    use HupaOptionTrait;
+
     /**
      * Store plugin main class to allow admin access.
      *
@@ -365,11 +367,32 @@ class HupaStarterHelper
                 'collTarget' => 'collFax',
                 'type' => 'text'
             ],
+            '9' => [
+                'label' => __('Custom 1', 'bootscore'),
+                'shortcode' => 'custom1',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collCustom1',
+                'type' => 'text'
+            ],
+            '10' => [
+                'label' => __('Custom 2', 'bootscore'),
+                'shortcode' => 'custom2',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collCustom2',
+                'type' => 'text'
+            ],
+            '11' => [
+                'label' => __('Custom 3', 'bootscore'),
+                'shortcode' => 'custom3',
+                'icon' => __('Icon', 'bootscore'),
+                'collTarget' => 'collCustom3',
+                'type' => 'text'
+            ],
         ];
 
-        if($type){
-            foreach ($fields as $tmp){
-                if($type == $tmp['shortcode']){
+        if ($type) {
+            foreach ($fields as $tmp) {
+                if ($type == $tmp['shortcode']) {
                     return $tmp;
                 }
             }
@@ -378,6 +401,321 @@ class HupaStarterHelper
         return $fields;
     }
 
+    public function theme_help_select_thema($id = null): array
+    {
+        $select = [
+            '0' => [
+                'id' => 1,
+                'bezeichnung' => 'Icon Shortcode',
+                'target' => '#collIconShortcode'
+            ],
+            '5' => [
+                'id' => 6,
+                'bezeichnung' => 'Lightbox: (WordPress Galerie/Image)',
+                'target' => '#collLightBox'
+            ],
+            '1' => [
+                'id' => 2,
+                'bezeichnung' => 'Kontaktdaten: (Shortcode)',
+                'target' => '#collKontaktdaten'
+            ],
+            '2' => [
+                'id' => 4,
+                'bezeichnung' => 'PDF Download',
+                'target' => '#collPdfDownload'
+            ],
+            '6' => [
+                'id' => 7,
+                'bezeichnung' => 'Scroll-Animation',
+                'target' => '#collScrollAnimation'
+            ],
+            '3' => [
+                'id' => 3,
+                'bezeichnung' => 'Theme Tag: (Shortcode)',
+                'target' => '#collThemeTag'
+            ],
+
+            '4' => [
+                'id' => 5,
+                'bezeichnung' => 'Render-Block Funktion (Gruppe)',
+                'target' => '#collBlockGroup'
+            ],
+        ];
+
+        if ($id) {
+            foreach ($select as $tmp) {
+                if ($tmp['id'] == $id) {
+                    return $tmp;
+                }
+            }
+        }
+
+        return $select;
+    }
+
+    public function hupa_starter_animation_settings($animation = null):array
+    {
+        if(!get_option('hupa_animation_settings')) {
+            $settings = $this->get_theme_default_settings();
+            update_option('hupa_animation_settings', $settings['animation_default']);
+        }
+
+        $option = get_option('hupa_animation_settings');
+
+        $layout = [
+            'fadeScroll' => [
+                'bezeichnung_first' => 'Fade',
+                'bezeichnung_second' => 'Scroll',
+                'data' => [
+                    '0' => [
+                        'bezeichnung' => 'Fade Scroll Top',
+                        'name' => 'fadeTop',
+                        'id' => 'fadeTop',
+                        'type' => 'number',
+                        'value' => $option['fadeTop']
+                    ],
+                    '1' => [
+                        'bezeichnung' => 'Fade Scroll Bottom',
+                        'name' => 'fadeBottom',
+                        'id' => 'fadeBottom',
+                        'type' => 'number',
+                        'value' => $option['fadeBottom']
+                    ],
+                    '2' => [
+                        'bezeichnung' => 'Fade Scroll 25 Top',
+                        'name' => 'fadeTop25',
+                        'id' => 'fadeTop25',
+                        'type' => 'number',
+                        'value' => $option['fadeTop25']
+                    ],
+                    '3' => [
+                        'bezeichnung' => 'Fade Scroll 25 Bottom',
+                        'name' => 'fadeBottom25',
+                        'id' => 'fadeBottom25',
+                        'type' => 'number',
+                        'value' => $option['fadeBottom25']
+                    ],
+                    '4' => [
+                        'bezeichnung' => 'Fade Scroll 100 Top',
+                        'name' => 'fadeTop100',
+                        'id' => 'fadeTop100',
+                        'type' => 'number',
+                        'value' => $option['fadeTop100']
+                    ],
+                    '5' => [
+                        'bezeichnung' => 'Fade Scroll 100 Bottom',
+                        'name' => 'fadeBottom100',
+                        'id' => 'fadeBottom100',
+                        'type' => 'number',
+                        'value' => $option['fadeBottom100']
+                    ],
+
+                ],
+            ],
+            'moveLeft' => [
+                'bezeichnung_first' => 'Move',
+                'bezeichnung_second' => 'Left',
+                'data' => [
+                    '0' => [
+                        'bezeichnung' => 'Move Left Top',
+                        'name' => 'moveLeftTop',
+                        'id' => 'moveLeftTop',
+                        'type' => 'number',
+                        'value' => $option['moveLeftTop']
+                    ],
+                    '1' => [
+                        'bezeichnung' => 'Move Left Bottom',
+                        'name' => 'moveLeftBottom',
+                        'id' => 'moveLeftBottom',
+                        'type' => 'number',
+                        'value' => $option['moveLeftBottom']
+                    ],
+                    '2' => [
+                        'bezeichnung' => 'Move Left 25 Top',
+                        'name' => 'moveLeftTop25',
+                        'id' => 'moveLeftTop25',
+                        'type' => 'number',
+                        'value' => $option['moveLeftTop25']
+                    ],
+                    '3' => [
+                        'bezeichnung' => 'Move Left 25 Bottom',
+                        'name' => 'moveLeftBottom25',
+                        'id' => 'moveLeftBottom25',
+                        'type' => 'number',
+                        'value' => $option['moveLeftBottom25']
+                    ],
+                    '4' => [
+                        'bezeichnung' => 'Move Left 100 Top',
+                        'name' => 'moveLeftTop100',
+                        'id' => 'moveLeftTop100',
+                        'type' => 'number',
+                        'value' => $option['moveLeftTop100']
+                    ],
+                    '5' => [
+                        'bezeichnung' => 'Move Left 100 Bottom',
+                        'name' => 'moveLeftBottom100',
+                        'id' => 'moveLeftBottom100',
+                        'type' => 'number',
+                        'value' => $option['moveLeftBottom100']
+                    ],
+                ],
+            ],
+            'moveRight' => [
+                'bezeichnung_first' => 'Move',
+                'bezeichnung_second' => 'Right',
+                'data' => [
+                    '0' => [
+                        'bezeichnung' => 'Move Right Top',
+                        'name' => 'moveRightTop',
+                        'id' => 'moveRightTop',
+                        'type' => 'number',
+                        'value' => $option['moveRightTop']
+                    ],
+                    '1' => [
+                        'bezeichnung' => 'Move Right Bottom',
+                        'name' => 'moveRightBottom',
+                        'id' => 'moveRightBottom',
+                        'type' => 'number',
+                        'value' => $option['moveRightBottom']
+                    ],
+                    '2' => [
+                        'bezeichnung' => 'Move Right 25 Top',
+                        'name' => 'moveRightTop25',
+                        'id' => 'moveRightTop25',
+                        'type' => 'number',
+                        'value' => $option['moveRightTop25']
+                    ],
+                    '3' => [
+                        'bezeichnung' => 'Move Right 25 Bottom',
+                        'name' => 'moveRightBottom25',
+                        'id' => 'moveRightBottom25',
+                        'type' => 'number',
+                        'value' => $option['moveRightBottom25']
+                    ],
+                    '4' => [
+                        'bezeichnung' => 'Move Right 100 Top',
+                        'name' => 'moveRightTop100',
+                        'id' => 'moveRightTop100',
+                        'type' => 'number',
+                        'value' => $option['moveRightTop100']
+                    ],
+                    '5' => [
+                        'bezeichnung' => 'Move Right 100 Bottom',
+                        'name' => 'moveRightBottom100',
+                        'id' => 'moveRightBottom100',
+                        'type' => 'number',
+                        'value' => $option['moveRightBottom100']
+                    ],
+                ],
+            ],
+            'moveTop' => [
+                'bezeichnung_first' => 'Move',
+                'bezeichnung_second' => 'Top',
+                'data' => [
+                    '0' => [
+                        'bezeichnung' => 'Move Top (Top)',
+                        'name' => 'moveTopTop',
+                        'id' => 'moveTopTop',
+                        'type' => 'number',
+                        'value' => $option['moveTopTop']
+                    ],
+                    '1' => [
+                        'bezeichnung' => 'Move Bottom (Top)',
+                        'name' => 'moveTopBottom',
+                        'id' => 'moveTopBottom',
+                        'type' => 'number',
+                        'value' => $option['moveTopBottom']
+                    ],
+                    '2' => [
+                        'bezeichnung' => 'Move 25 Top (Top)',
+                        'name' => 'moveTopTop25',
+                        'id' => 'moveTopTop25',
+                        'type' => 'number',
+                        'value' => $option['moveTopTop25']
+                    ],
+                    '3' => [
+                        'bezeichnung' => 'Move 25 Bottom (Top)',
+                        'name' => 'moveTopBottom25',
+                        'id' => 'moveTopBottom25',
+                        'type' => 'number',
+                        'value' => $option['moveTopBottom25']
+                    ],
+                    '4' => [
+                        'bezeichnung' => 'Move 100 Top (Top)',
+                        'name' => 'moveTopTop100',
+                        'id' => 'moveTopTop100',
+                        'type' => 'number',
+                        'value' => $option['moveTopTop100']
+                    ],
+                    '5' => [
+                        'bezeichnung' => 'Move 100 Bottom (Top)',
+                        'name' => 'moveTopBottom100',
+                        'id' => 'moveTopBottom100',
+                        'type' => 'number',
+                        'value' => $option['moveTopBottom100']
+                    ],
+                ],
+            ],
+            'moveBottom' => [
+                'bezeichnung_first' => 'Move',
+                'bezeichnung_second' => 'Bottom',
+                'data' => [
+                    '0' => [
+                        'bezeichnung' => 'Move Top (Bottom)',
+                        'name' => 'moveBottomTop',
+                        'id' => 'moveBottomTop',
+                        'type' => 'number',
+                        'value' => $option['moveBottomTop']
+                    ],
+                    '1' => [
+                        'bezeichnung' => 'Move Bottom (Bottom)',
+                        'name' => 'moveBottomBottom',
+                        'id' => 'moveBottomBottom',
+                        'type' => 'number',
+                        'value' => $option['moveBottomBottom']
+                    ],
+                    '2' => [
+                        'bezeichnung' => 'Move 25 Top (Bottom)',
+                        'name' => 'moveBottomTop25',
+                        'id' => 'moveBottomTop25',
+                        'type' => 'number',
+                        'value' => $option['moveBottomTop25']
+                    ],
+                    '3' => [
+                        'bezeichnung' => 'Move 25 Bottom (Bottom)',
+                        'name' => 'moveBottomBottom25',
+                        'id' => 'moveBottomBottom25',
+                        'type' => 'number',
+                        'value' => $option['moveBottomBottom25']
+                    ],
+                    '4' => [
+                        'bezeichnung' => 'Move 100 Top (Top)',
+                        'name' => 'moveBottomTop100',
+                        'id' => 'moveBottomTop100',
+                        'type' => 'number',
+                        'value' => $option['moveBottomTop100']
+                    ],
+                    '5' => [
+                        'bezeichnung' => 'Move 100 Bottom (Bottom)',
+                        'name' => 'moveBottomBottom100',
+                        'id' => 'moveBottomBottom100',
+                        'type' => 'number',
+                        'value' => $option['moveBottomBottom100']
+                    ],
+                ],
+            ],
+        ];
+
+        if($animation){
+            foreach ($layout as $key => $val) {
+                if($key == $animation){
+                    return $val;
+                }
+            }
+        }
+
+        return $layout;
+    }
 
     public function api_set_error_message($type): array
     {

@@ -29,6 +29,7 @@ if (file_exists(THEME_ADMIN_DIR . '.env')) {
             'THEME_TOOLS_DIR',
             'CUSTOM_FOOTER',
             'CUSTOM_HEADER',
+            'DESIGN_TEMPLATES',
             'HUPA_SIDEBAR',
             'HUPA_TOOLS',
             'HUPA_CAROUSEL',
@@ -181,6 +182,11 @@ Config::define('CUSTOM_FOOTER', (int) env('CUSTOM_FOOTER'));
  * CUSTOM HEADER
  */
 Config::define('CUSTOM_HEADER', (int) env('CUSTOM_HEADER'));
+
+/**
+ * DESIGN TEMPLATES
+ */
+Config::define('DESIGN_TEMPLATES', (int) env('DESIGN_TEMPLATES'));
 
 /**
  * HUPA SIDEBAR

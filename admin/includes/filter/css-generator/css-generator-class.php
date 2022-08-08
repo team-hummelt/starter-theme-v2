@@ -531,6 +531,64 @@ class HupaStarterCssGenerator
         $html .= 'background-color: ' . get_hupa_option('menu_dropdown_active_bg') . ';' . "\r\n";
         $html .= '}' . "\r\n";
 
+        /** FADESCROLL */
+        $html .= '.fadeScroll, .fadeScroll100, .fadeScroll25 {' . "\r\n";
+        $html .= 'transition: all 400ms;' . "\r\n";
+        $html .= 'opacity: 0 !important;' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '.aniFade {' . "\r\n";
+        $html .= 'opacity: 1 !important;' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '.moveLeft, .moveLeft25, .moveLeft100 {' . "\r\n";
+        $html .= 'transition: all 400ms;' . "\r\n";
+        $html .= 'opacity: 0;' . "\r\n";
+        $html .= 'position: relative;' . "\r\n";
+        $html .= 'left: -200px;' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '.moveRight, .moveRight25, .moveRight100 {' . "\r\n";
+        $html .= 'transition: all 400ms;' . "\r\n";
+        $html .= 'opacity: 0;' . "\r\n";
+        $html .= 'position: relative;' . "\r\n";
+        $html .= 'right: -200px;' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '.moveTop, .moveTop25, .moveTop100  {' . "\r\n";
+        $html .= 'transition: all 400ms;' . "\r\n";
+        $html .= 'opacity: 0;' . "\r\n";
+        $html .= 'position: relative;' . "\r\n";
+        $html .= 'top: -200px;' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '.moveBottom, .moveBottom25, .moveBottom100 {' . "\r\n";
+        $html .= 'transition: all 400ms;' . "\r\n";
+        $html .= 'opacity: 0;' . "\r\n";
+        $html .= 'position: relative;' . "\r\n";
+        $html .= 'bottom: -200px;' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '.left {' . "\r\n";
+        $html .= 'transform: translate(200px, 0);' . "\r\n";
+        $html .= 'opacity: 1;' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '.right {' . "\r\n";
+        $html .= 'transform: translate(-200px, 0);' . "\r\n";
+        $html .= 'opacity: 1;' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '.top {' . "\r\n";
+        $html .= 'transform: translate(0, 200px);' . "\r\n";
+        $html .= 'opacity: 1;' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '.bottom {' . "\r\n";
+        $html .= 'transform: translate(0, -200px);' . "\r\n";
+        $html .= 'opacity: 1;' . "\r\n";
+        $html .= '}' . "\r\n";
+
 
         //TOP AREA
         $topArea = $this->css_styles_by_type('font', 'top_font');

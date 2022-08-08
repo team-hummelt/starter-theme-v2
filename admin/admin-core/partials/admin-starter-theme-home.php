@@ -4364,82 +4364,266 @@ use Hupa\Starter\Config;
 
                     <!--//TODO JOB WARNING INFOS-->
                     <div class="collapse" id="collapseSettingsInfoOption" data-bs-parent="#settings_display_data">
-                        <div class="border rounded mt-1 shadow-sm p-3 bg-custom-gray">
-                            <hr>
-                            <div class="d-flex flex-wrap align-items-center">
-                                <h5 class="card-title mb-0">
-                                    <i class="font-blue fa fa-info-circle"></i>&nbsp; <?= __('Theme Info', 'bootscore') ?>
-                                </h5>
+                        <div id="helpParent">
+
+                            <div class="form-floating mb-3">
+                                <select class="change-help-info-select form-select no-blur" id="floatingSelect"
+                                        aria-label="Info auswählen">
+                                    <option value=""><?= __('select', 'bootscore') ?> ...</option>
+                                    <?php
+                                    $selInfo = apply_filters('hupa_help_select_thema', null);
+                                    foreach ($selInfo as $tmp):?>
+                                        <option value="<?= $tmp['target'] ?>"><?= $tmp['bezeichnung'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <label for="floatingSelect">Info auswählen</label>
                             </div>
-                            <hr>
-                            <h6 class="d-flex flex-wrap align-items-center">
+                            <div class="border rounded mt-1 shadow-sm p-3 bg-custom-gray">
+                                <hr>
+                                <div class="d-flex flex-wrap align-items-center">
+                                    <h5 class="card-title mb-0">
+                                        <i class="font-blue fa fa-info-circle"></i>&nbsp; <?= __('Theme Info', 'bootscore') ?>
+                                    </h5>
+                                </div>
+                                <hr>
+                                <h6 class="d-flex flex-wrap align-items-center">
                               <span>
                                   <i class="fa fa-arrow-circle-right"></i> Icon Shortcode:
                               </span>
-                                <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
-                                   data-bs-toggle="collapse"
-                                   data-bs-target="#collIconShortcode">
-                                </i>
-                            </h6>
-                            <hr>
-                            <div id="collIconShortcode" class="collapse">
-                                <div class="form-text mb-3">Icon <b>auswählen</b> und Shortcode <b>Kopieren</b>.</div>
-                                <button data-bs-toggle="modal"
-                                        data-bs-target="#dialog-add-icon" data-bs-type="fa-info"
-                                        class="show-theme-icons btn btn-outline-secondary btn-sm">
-                                    <i class="fa fa-th"></i>&nbsp;
-                                    Font-Awesome Übersicht
-                                </button>
-
-                                <button data-bs-toggle="modal"
-                                        data-bs-target="#dialog-add-icon" data-bs-type="bi-info"
-                                        class="show-theme-icons btn btn-outline-secondary btn-sm">
-                                    <i class="bi bi-bootstrap"></i>&nbsp;
-                                    Bootstrap-Icons Übersicht
-                                </button>
-                                <div class="d-block">
-                                    <button id="resetIcons" onclick="reset_show_theme_icons(this,'shortcode-info')"
-                                            class="btn btn-blue-outline mt-3 btn-sm d-none">
-                                        <i class="fa fa-random"></i>&nbsp;
-                                        Reset
-                                    </button>
-                                </div>
+                                    <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#collIconShortcode">
+                                    </i>
+                                </h6>
                                 <hr>
+                                <div id="collIconShortcode" class="collapse" data-bs-parent="#helpParent">
+                                    <div class="form-text mb-3">Icon <b>auswählen</b> und Shortcode <b>Kopieren</b>.
+                                    </div>
+                                    <button data-bs-toggle="modal"
+                                            data-bs-target="#dialog-add-icon" data-bs-type="fa-info"
+                                            class="show-theme-icons btn btn-outline-secondary btn-sm">
+                                        <i class="fa fa-th"></i>&nbsp;
+                                        Font-Awesome Übersicht
+                                    </button>
 
-                                <div class="pb-3" id="shortcode-info"></div>
+                                    <button data-bs-toggle="modal"
+                                            data-bs-target="#dialog-add-icon" data-bs-type="bi-info"
+                                            class="show-theme-icons btn btn-outline-secondary btn-sm">
+                                        <i class="bi bi-bootstrap"></i>&nbsp;
+                                        Bootstrap-Icons Übersicht
+                                    </button>
+                                    <div class="d-block">
+                                        <button id="resetIcons" onclick="reset_show_theme_icons(this,'shortcode-info')"
+                                                class="btn btn-blue-outline mt-3 btn-sm d-none">
+                                            <i class="fa fa-random"></i>&nbsp;
+                                            Reset
+                                        </button>
+                                    </div>
+                                    <hr>
+
+                                    <div class="pb-3" id="shortcode-info"></div>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
-                            <h6 class="d-flex flex-wrap align-items-center">
+                            <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
+                                <h6 class="d-flex flex-wrap align-items-center">
+                              <span>
+                                  <i class="fa fa-arrow-circle-right"></i> Lightbox: <small class="fw-normal">(WordPress Galerie/Image)</small>
+                              </span>
+                                    <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#collLightBox">
+                                    </i>
+                                </h6>
+                                <hr>
+                                <div id="collLightBox" class="collapse" data-bs-parent="#helpParent">
+                                    <div class="form-text pt-3"><b class="font-bold-light d-block">Wordpress Galerie</b>
+                                        <p>
+                                            Wordpress-Galerie oder Gruppen Klasse(n) hinzufügen
+                                        </p>
+                                        <span class="d-block">CSS-Klasse <code>gallery-lightbox</code></span>
+                                        <span class="d-block">
+                                            Für Einzelbilder <i>ohne next prev</i> zusätzlich die Klasse <code>lightbox-singles</code>
+                                        </span>
+                                        <b class="d-block font-bold-light mt-3">
+                                            Wordpress-Bild <small>(einzeln)</small>
+                                        </b>
+                                        CSS-Klasse <code>hupa-lightbox</code>
+                                        <p class="mt-3">
+                                            <i class="fa fa-info-circle font-blue me-1"></i> Bei Galerie oder
+                                            Einzel-Bilder muss der Link zur Mediendatei ausgewählt sein.
+                                        </p>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </div>
+
+                            <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
+                                <h6 class="d-flex flex-wrap align-items-center">
+                              <span>
+                                  <i class="fa fa-arrow-circle-right"></i> Kontaktdaten: <small class="fw-normal">(Shortcode)</small>
+                              </span>
+                                    <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#collKontaktdaten">
+                                    </i>
+                                </h6>
+                                <hr>
+                                <div id="collKontaktdaten" class="collapse" data-bs-parent="#helpParent">
+                                    <div class="form-text pt-3">
+                                        <b class="font-bold-light d-block">Shortcode:</b>
+                                        <code>[kontakt type="bezeichnung"]</code>
+                                        <p>
+                                            Die Bezeichnung steht in eckige Klammern. z.B. <code>[kontakt
+                                                type="adresse1"]</code>
+                                        </p>
+                                        <b class="font-weight pb-1 pt-2 d-block"> Weitere Shortcode Optionen:</b>
+                                        <ul style="list-style: circle">
+                                            <li><b>iconBefore="1"</b> <br> default -> 1 <br>
+                                                <small><i>mögliche Werte 1 oder 0</i></small>
+                                            </li>
+                                            <li><b>class=""</b> <br> default -> NULL</li>
+                                            <li><b>icon=""</b> <br> default -> NULL</li>
+                                            <li><b>url_type=""</b> <br> default -> NULL<br>
+                                                <small><i>mögliche Werte "url", "mailto" oder "tel"</i></small>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </div>
+
+                            <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
+                                <h6 class="d-flex flex-wrap align-items-center">
                               <span>
                                   <i class="fa fa-arrow-circle-right"></i> PDF Download:
                               </span>
-                                <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
-                                   data-bs-toggle="collapse"
-                                   data-bs-target="#collPdfDownload">
-                                </i>
-                            </h6>
-                            <hr>
-                            <div id="collPdfDownload" class="collapse">
-                                <b class="d-block font-blue strong-font-weight">Download von PDF-Dateien:</b>
-                                <b class="strong-font-weight font-blue">URL:</b> <?= get_site_url() ?><span
-                                        class="font-blue">?hupa=pdf&type=1&file=test.pdf</span>
+                                    <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#collPdfDownload">
+                                    </i>
+                                </h6>
                                 <hr>
-                                <b class="d-block font-blue strong-font-weight">Stream von PDF-Dateien:</b>
-                                <b class="strong-font-weight font-blue">URL:</b> <?= get_site_url() ?><span
-                                        class="font-blue">?hupa=pdf&type=0&file=test.pdf</span>
-                                <hr>
-                                <div class="form-text mb-3">Die Variable <code>type=0</code> öffnet die PDF und
-                                    <code>type=1</code> lädt die PDF runter.
-                                    Der Dateiname wird bei der Variable <code>"file="</code> eingetragen.
+                                <div id="collPdfDownload" class="collapse" data-bs-parent="#helpParent">
+                                    <b class="d-block font-blue strong-font-weight">Download von PDF-Dateien:</b>
+                                    <b class="strong-font-weight font-blue">URL:</b> <?= get_site_url() ?><span
+                                            class="font-blue">?hupa=pdf&type=1&file=test.pdf</span>
+                                    <hr>
+                                    <b class="d-block font-blue strong-font-weight">Stream von PDF-Dateien:</b>
+                                    <b class="strong-font-weight font-blue">URL:</b> <?= get_site_url() ?><span
+                                            class="font-blue">?hupa=pdf&type=0&file=test.pdf</span>
+                                    <hr>
+                                    <div class="form-text mb-3">Die Variable <code>type=0</code> öffnet die PDF und
+                                        <code>type=1</code> lädt die PDF runter.
+                                        Der Dateiname wird bei der Variable <code>"file="</code> eingetragen.
+                                    </div>
+                                    <hr>
                                 </div>
-                                <hr>
                             </div>
-                        </div>
 
-                        <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
-                            <h6 class="d-flex flex-wrap align-items-center">
+                            <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
+                                <h6 class="d-flex flex-wrap align-items-center">
+                              <span>
+                                  <i class="fa fa-arrow-circle-right"></i>
+                                  Scroll-Animation:
+                              </span>
+                                    <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#collScrollAnimation">
+                                    </i>
+                                </h6>
+                                <hr>
+                                <div class="collapse" id="collScrollAnimation" data-bs-parent="#helpParent">
+                                    <form class="sendAjaxThemeForm">
+                                        <input type="hidden" name="method" value="theme_form_handle">
+                                        <input type="hidden" name="handle" value="theme_animation">
+                                        <b class="font-bold-light d-block">Animation-Klassen:</b>
+                                        <ul class="mt-3 list-unstyled">
+                                            <li><b class="font-bold-light d-inline-block min-w8r">Fade:</b> <code><span class="fw-6 d-inline-block fw-bolder min-w5r">fadeScroll</span>
+                                                    &bull; <small>fadeScroll25 &bull; fadeScroll100</small></code></li>
+                                            <li><b class="font-bold-light d-inline-block min-w8r">Move Left:</b> <code><span class="fw-6 d-inline-block fw-bolder min-w5r">moveLeft</span>
+                                                    &bull; <small>moveLeft25 &bull; moveLeft100</small></code></li>
+                                            <li><b class="font-bold-light d-inline-block min-w8r">Move Right:</b> <code><span class="fw-6 d-inline-block fw-bolder min-w5r">moveRight</span>
+                                                    &bull; <small>moveRight25 &bull; moveRight100</small></code></li>
+                                            <li><b class="font-bold-light d-inline-block min-w8r">Move Top:</b> <code><span class="fw-6 d-inline-block fw-bolder min-w5r">moveTop</span>
+                                                    &bull; <small>moveTop25 &bull; moveTop100</small></code></li>
+                                            <li><b class="font-bold-light d-inline-block min-w8r">Move Bottom:</b>
+                                                <code><span class="fw-6 d-inline-block fw-bolder min-w5r">moveBottom</span> &bull; <small>moveBottom25 &bull; moveBottom100</small></code></li>
+                                        </ul>
+                                        <p class="mt-3">
+                                            <i class="fa fa-info-circle font-blue me-1"></i>
+                                            Wenn keine Wiederholung gewünscht ist, kann zusätzlich die Klasse <code class="fs-6">notRepeat</code>
+                                            für eine einmalige Animation hinzugefügt werden.
+                                        </p>
+                                        <hr>
+                                        <div class="font-bold-light pb-1 pt-2 d-flex flex-wrap align-items-center">
+                                           <span> Einstellungen für ein und ausblenden der Animation-Klassen:</span>
+                                            <span class="ms-auto font-bold-light ajax-status-spinner"></span>
+                                        </div>
+                                        <hr>
+                                        <?php $aniSettings = apply_filters('starter_animation_settings', null);
+                                        foreach ($aniSettings as $tmp): ?>
+                                            <h5 class="fw-normal"><?= $tmp['bezeichnung_first'] ?><span
+                                                        class="fw-light"><?= $tmp['bezeichnung_second'] ?></span></h5>
+                                            <div class="row g-3">
+                                                <?php foreach ($tmp['data'] as $val): ?>
+                                                    <div class="col-xl-3 col-lg-4 col-12">
+                                                        <div class="form-floating">
+                                                            <input type="<?= $val['type'] ?>"
+                                                                   class="form-control no-blur"
+                                                                   name="<?= $val['name'] ?>"
+                                                                   id="<?= $val['id'] ?>" value="<?= $val['value'] ?>">
+                                                            <label for="<?= $val['id'] ?>"><?= $val['bezeichnung'] ?></label>
+                                                        </div>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                          <hr>
+                                        <?php endforeach; ?>
+                                    </form>
+                                    <button type="button" data-type="reset_animation" class="sweet-alert2 btn btn-outline-primary">
+                                        <i class="fa fa-repeat me-1"></i> Einstellungen zurücksetzen
+                                    </button>
+                                    <hr>
+                                    <div style="height: 2rem">
+                                    <span class="d-block font-bold-light ajax-status-spinner"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
+                                <h6 class="d-flex flex-wrap align-items-center">
+                              <span>
+                                  <i class="fa fa-arrow-circle-right"></i>
+                                  Theme Tag: <small class="fw-normal">(Shortcode)</small>
+                              </span>
+                                    <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#collThemeTag">
+                                    </i>
+                                </h6>
+                                <hr>
+                                <div class="collapse" id="collThemeTag" data-bs-parent="#helpParent">
+                                    <b class="font-bold-light d-block">Shortcode:</b>
+                                    <code>[theme-tag tag="tag"]</code>
+                                    <p>
+                                        Das Tag steht in eckige Klammern. z.B. <code>[theme-tag tag="div"]</code><br>
+                                        Das End-Tag wird mit "-end" gekennzeichnet. z.B. <code>[theme-tag
+                                            tag="div-end"]</code>
+                                    </p>
+                                    <hr>
+                                    <b class="font-weight pb-1 pt-2 d-block"> Weitere Shortcode Optionen:</b>
+                                    <ul style="list-style: circle">
+                                        <li><b>class=""</b> <br> default -> NULL <br>
+                                            <small><i>mögliche Werte CSS-Klassen <small>(ohne Punkt)</small></i></small>
+                                        </li>
+                                        <li><b>id=""</b> <br> default -> NULL</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
+                                <h6 class="d-flex flex-wrap align-items-center">
                               <span>
                                   <i class="fa fa-arrow-circle-right"></i>
                                 Render-Block Funktion <small class="fw-normal">(Gruppe)</small>:
@@ -4447,43 +4631,44 @@ use Hupa\Starter\Config;
                                 Um CSS-Klassen einer Gruppe zuzuweisen muss, das "HTML-Element" auf <code><?= htmlspecialchars('<section>') ?></code> eingestellt sein.
                             </small>
                               </span>
-                                <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
-                                   data-bs-toggle="collapse"
-                                   data-bs-target="#collBlockGroup">
-                                </i>
-                            </h6>
-                            <hr>
-                            <div class="collapse" id="collBlockGroup">
-                                <b class="d-block font-blue strong-font-weight">Container-Fullwidth:</b>
-                                <b class="font-bold-light">
-                                    CssClass: <code>container-fullwidth</code>
-                                </b>
+                                    <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#collBlockGroup">
+                                    </i>
+                                </h6>
                                 <hr>
-                                <b class="d-block font-blue strong-font-weight">Custom-Fullwidth:</b>
-                                <b class="font-bold-light">
-                                    CssClass: <code>custom-full-width</code>
-                                </b>
-                                <hr>
-                                <b class="d-block font-blue strong-font-weight">Inner-Container entfernen:</b>
-                                <b class="font-bold-light">
-                                    CssClass: <code>no-inner</code>
-                                </b>
-                                <hr>
-                                <b class="d-block font-blue strong-font-weight">Fullwidth mit inner
-                                    Bootstrap-Container:</b>
-                                <b class="font-bold-light">
-                                    CssClass: <code>theme-fullwidth-container</code>
-                                </b>
-                                <hr>
-                                <b class="d-block font-blue strong-font-weight">Fullwidth mit inner Bootstrap-Container
-                                    und Flexbox:</b>
-                                <b class="font-bold-light">
-                                    CssClass: <code>theme-fullwidth-flex-container</code>
-                                </b>
-                                <hr>
+                                <div class="collapse" id="collBlockGroup" data-bs-parent="#helpParent">
+                                    <b class="d-block font-blue strong-font-weight">Container-Fullwidth:</b>
+                                    <b class="font-bold-light">
+                                        CssClass: <code>container-fullwidth</code>
+                                    </b>
+                                    <hr>
+                                    <b class="d-block font-blue strong-font-weight">Custom-Fullwidth:</b>
+                                    <b class="font-bold-light">
+                                        CssClass: <code>custom-full-width</code>
+                                    </b>
+                                    <hr>
+                                    <b class="d-block font-blue strong-font-weight">Inner-Container entfernen:</b>
+                                    <b class="font-bold-light">
+                                        CssClass: <code>no-inner</code>
+                                    </b>
+                                    <hr>
+                                    <b class="d-block font-blue strong-font-weight">Fullwidth mit inner
+                                        Bootstrap-Container:</b>
+                                    <b class="font-bold-light">
+                                        CssClass: <code>theme-fullwidth-container</code>
+                                    </b>
+                                    <hr>
+                                    <b class="d-block font-blue strong-font-weight">Fullwidth mit inner
+                                        Bootstrap-Container
+                                        und Flexbox:</b>
+                                    <b class="font-bold-light">
+                                        CssClass: <code>theme-fullwidth-flex-container</code>
+                                    </b>
+                                    <hr>
+                                </div>
                             </div>
                         </div>
-
                     </div>
 
                     <!--//TODO JOB WARNING RESET-->

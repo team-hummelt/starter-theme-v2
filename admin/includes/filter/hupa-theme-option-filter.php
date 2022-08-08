@@ -1171,6 +1171,16 @@ class HupaStarterOptionFilter
                 }
             }
 
+            //TODO Theme-Tag Header ShortCode
+            $regEx = '@\[theme-tag.*]@m';
+            preg_match_all($regEx, $record->custum_header, $matches, PREG_SET_ORDER, 0);
+            if (isset($matches)) {
+                foreach ($matches as $tmp) {
+                    $doShortcode = do_shortcode($tmp[0]);
+                    $record->custum_header = str_replace($tmp[0], $doShortcode, $record->custum_header);
+                }
+            }
+
         } else {
             $record->custum_header = false;
         }
@@ -1295,6 +1305,16 @@ class HupaStarterOptionFilter
 
             //TODO Kontaktdaten Footer ShortCode
             $regEx = '@\[kontakt.*]@m';
+            preg_match_all($regEx, $record->custum_footer, $matches, PREG_SET_ORDER, 0);
+            if (isset($matches)) {
+                foreach ($matches as $tmp) {
+                    $doShortcode = do_shortcode($tmp[0]);
+                    $record->custum_footer = str_replace($tmp[0], $doShortcode, $record->custum_footer);
+                }
+            }
+
+            //TODO Theme-Tag Footer ShortCode
+            $regEx = '@\[theme-tag.*]@m';
             preg_match_all($regEx, $record->custum_footer, $matches, PREG_SET_ORDER, 0);
             if (isset($matches)) {
                 foreach ($matches as $tmp) {

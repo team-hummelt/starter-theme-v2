@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function (event) {
 
     (function ($) {
-
         // LOGO Mitte
         let mitte = 0;
         let newHtmlImg;
@@ -162,12 +161,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
             if (scroll > 200) {
                 header.addClass("navbar-small");
                 if (navLogo) {
-                    navLogo.css('max-height', get_hupa_option.img_scroll_width +'px')
+                    navLogo.css('max-height', get_hupa_option.img_scroll_width + 'px')
                 }
             } else {
                 header.removeClass("navbar-small");
                 if (navLogo) {
-                    navLogo.css('max-height', get_hupa_option.img_width+'px')
+                    navLogo.css('max-height', get_hupa_option.img_width + 'px')
                     middleLogo.removeClass('middle-img-sm')
                 }
             }
@@ -274,38 +273,103 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         };
 
-
-
-        WhatAnimation("fadescroll");
-        WhatAnimation("moveleft");
-        WhatAnimation("moveLeftCategory");
+        WhatAnimation("fadeScroll");
+        WhatAnimation("fadeScroll100");
+        WhatAnimation("fadeScroll25");
+        WhatAnimation("moveLeft");
+        WhatAnimation("moveLeft25");
+        WhatAnimation("moveLeft100");
         WhatAnimation("moveRight");
-        WhatAnimation("fadescroll100");
-        $(window).on("scroll", function (event) {
-            WhatAnimation("fadescroll");
-            WhatAnimation("fadescroll100");
-            WhatAnimation("moveleft");
-            WhatAnimation("moveLeftCategory");
+        WhatAnimation("moveRight25");
+        WhatAnimation("moveRight100");
+        WhatAnimation("moveTop");
+        WhatAnimation("moveTop25");
+        WhatAnimation("moveTop100");
+        WhatAnimation("moveBottom");
+        WhatAnimation("moveBottom25");
+        WhatAnimation("moveBottom100");
+        $(window).on("scroll", function () {
+            WhatAnimation("fadeScroll");
+            WhatAnimation("fadeScroll100");
+            WhatAnimation("fadeScroll25");
+            WhatAnimation("moveLeft");
+            WhatAnimation("moveLeft25");
+            WhatAnimation("moveLeft100");
             WhatAnimation("moveRight");
+            WhatAnimation("moveRight25");
+            WhatAnimation("moveRight100");
+            WhatAnimation("moveTop");
+            WhatAnimation("moveTop25");
+            WhatAnimation("moveTop100");
+            WhatAnimation("moveBottom");
+            WhatAnimation("moveBottom25");
+            WhatAnimation("moveBottom100");
         });
 
         function WhatAnimation(name) {
-            $("." + name).each(function() {
+            $("." + name).each(function () {
+                let moveRemove;
+                let ani = get_hupa_option.animation;
                 switch (name) {
-                    case "fadescroll":
-                        AddClass(this, "aniFade", 100 ,150, true);
+                    case "fadeScroll":
+                        $('.fadeScroll').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "aniFade", parseInt(ani.fadeTop), parseInt(ani.fadeBottom), moveRemove);
                         break;
-                    case "fadescroll100":
-                        AddClass(this, "fadescroll100", 120 ,80, true);
+                    case "fadeScroll100":
+                        $('.fadeScroll100').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "aniFade", parseInt(ani.fadeTop100), parseInt(ani.fadeBottom100), moveRemove);
                         break;
-                    case "moveleft":
-                        AddClass(this, "left", 150 ,250, true);
+                    case "fadeScroll25":
+                        $('.fadeScroll25').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "aniFade", parseInt(ani.fadeTop25), parseInt(ani.fadeBottom25), moveRemove);
+                        break;
+                    case "moveLeft":
+                        $('.moveLeft').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "left", parseInt(ani.moveLeftTop), parseInt(ani.moveLeftBottom), moveRemove);
+                        break;
+                    case "moveLeft25":
+                        $('.moveLeft25').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "left", parseInt(ani.moveLeftTop25), parseInt(ani.moveLeftBottom25), moveRemove);
+                        break;
+                    case "moveLeft100":
+                        $('.moveLeft100').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "left", parseInt(ani.moveLeftTop100), parseInt(ani.moveLeftBottom100), moveRemove);
                         break;
                     case "moveRight":
-                        AddClass(this, "right", 150 ,250, true);
+                        $('.moveRight').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "right", parseInt(ani.moveRightTop), parseInt(ani.moveRightBottom), moveRemove);
+                        break
+                    case "moveRight25":
+                        $('.moveRight25').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "right", parseInt(ani.moveRightTop25), parseInt(ani.moveRightBottom25), moveRemove);
+                        break
+                    case "moveRight100":
+                        $('.moveRight100').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "right", (ani.moveRightTop100), parseInt(ani.moveRightBottom100), moveRemove);
+                        break
+                    case "moveTop":
+                        $('.moveTop').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "top", parseInt(ani.moveTopTop), parseInt(ani.moveTopBottom), moveRemove);
                         break;
-                    case 'moveLeftCategory':
-                        AddClass(this, "left", 100 ,150 ,false);
+                    case "moveTop25":
+                        $('.moveTop25').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "top", parseInt(ani.moveTopTop25), parseInt(ani.moveTopBottom25), moveRemove);
+                        break;
+                    case "moveTop100":
+                        $('.moveTop100').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "top", parseInt(ani.moveTopTop100), parseInt(ani.moveTopBottom100), moveRemove);
+                        break;
+                    case "moveBottom":
+                        $('.moveBottom').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "bottom", parseInt(ani.moveBottomTop), parseInt(ani.moveBottomBottom), moveRemove);
+                        break;
+                    case "moveBottom25":
+                        $('.moveBottom25').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "bottom", parseInt(ani.moveBottomTop25), parseInt(ani.moveBottomBottom25), moveRemove);
+                        break;
+                    case "moveBottom100":
+                        $('.moveBottom100').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "bottom", parseInt(ani.moveBottomTop100), parseInt(ani.moveBottomBottom100), moveRemove);
                         break;
                 }
             });
@@ -315,7 +379,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             if (IsVisible(object, top, bottom)) {
                 $(object).addClass(name);
             } else {
-                if(remove){
+                if (remove) {
                     $(object).removeClass(name);
                 }
             }
@@ -446,17 +510,168 @@ document.addEventListener("DOMContentLoaded", function (event) {
             wowOffset150.attr('data-wow-offset', '150');
         }
 
-        if(iteration2) {
+        if (iteration2) {
             iteration2.attr('data-wow-iteration', '2');
         }
-        if(iteration3) {
+        if (iteration3) {
             iteration3.attr('data-wow-iteration', '3');
         }
-        if(iteration4) {
+        if (iteration4) {
             iteration4.attr('data-wow-iteration', '4');
         }
-        if(iteration5) {
+        if (iteration5) {
             iteration5.attr('data-wow-iteration', '5');
+        }
+
+        $(document).on('click', '.theme-lightbox', function (e) {
+            let galleryType = $(this).attr('data-gallery');
+            let options;
+            let target = e.target
+            let link = target.src ? target.parentNode : target;
+            switch (galleryType) {
+                case'single':
+                    options = {
+                        container: '#starter-blueimp-single',
+                        index: link,
+                        event: e,
+                        enableKeyboardNavigation: false,
+                        emulateTouchEvents: false,
+                        fullscreen: false,
+                        displayTransition: false,
+                        toggleControlsOnSlideClick: false,
+                    }
+                    break;
+                case'slides':
+                    options = {
+                        container: '#starter-blueimp-slides',
+                        index: link,
+                        event: e,
+                        toggleControlsOnSlideClick: false,
+                    }
+                    break;
+            }
+            let links = $('a.theme-lightbox');
+            blueimp.Gallery(links, options)
+            e.preventDefault();
+        });
+
+        /**========================================
+         ========== LOAD BLUEIMP GALLERY ==========
+         ==========================================
+         */
+        function loadModulScript(src, id) {
+            return new Promise(function (resolve, reject) {
+                let script = document.createElement('script');
+                script.src = src;
+                script.id = id;
+                script.type = 'text/javascript';
+                script.onload = () => resolve(script);
+                document.head.append(script);
+            });
+        }
+
+        /**========================================
+         * =============== LIGHTBOX ===============
+         ========================================== */
+        let galleryLightbox = $('.gallery-lightbox');
+        if (galleryLightbox.length) {
+            let blueImpId = $('#blueimp-gallery-script');
+            if (!blueImpId.length) {
+                let loadCarouselModul = loadModulScript(get_hupa_option.admin_url + 'admin-core/assets/js/tools/lightbox/blueimp-gallery.min.js', 'blueimp-gallery-script');
+                loadCarouselModul.then(() => {
+                    starter_blueimp_gallery();
+                });
+            }
+            let galleryImg = $('img', galleryLightbox);
+            if ($('a ', galleryLightbox)) {
+                let aHref = $('a ', galleryLightbox);
+                aHref.addClass('theme-lightbox');
+                if (galleryLightbox.hasClass('lightbox-single')) {
+                    aHref.attr('data-gallery', 'single');
+                } else {
+                    aHref.attr('data-gallery', 'slides');
+                }
+                if(galleryImg.prop('title')) {
+                    galleryImg.each(function( index , el ) {
+                        let elTitle = $(galleryImg[index]).attr('title');
+                        let hrefTitle = $(galleryImg[index]).parent();
+                        hrefTitle.attr('title', elTitle)
+                    });
+                }
+            }
+        }
+
+        let hupaLightBox = $('.hupa-lightbox');
+        if(hupaLightBox) {
+            let blueImpId = $('#blueimp-gallery-script');
+            if (!blueImpId.length) {
+                let loadCarouselModul = loadModulScript(get_hupa_option.admin_url + 'admin-core/assets/js/tools/lightbox/blueimp-gallery.min.js');
+                loadCarouselModul.then(() => {
+                    starter_blueimp_gallery();
+                });
+            }
+            let aHref = $('a ', hupaLightBox);
+            let singleImg = $('img', hupaLightBox);
+            if(singleImg.prop('title')) {
+                singleImg.each(function( index , el ) {
+                    let elTitle = $(singleImg[index]).attr('title');
+                    let hrefTitle = $(singleImg[index]).parent();
+                    hrefTitle.attr('title', elTitle)
+                });
+             }
+            aHref.addClass('theme-lightbox');
+            aHref.attr('data-gallery', 'single');
+        }
+
+        function starter_blueimp_gallery() {
+            let blueimpPlaceholder = $('#starter-v2-blueimp-gallery');
+            let blueImgSingle = $('#starter-blueimp-single');
+            if(blueimpPlaceholder.length && !blueImgSingle.length) {
+                let html = `<div id="starter-blueimp-single"
+                   class="blueimp-gallery blueimp-gallery-controls"
+                   aria-label="image gallery"
+                   aria-modal="true"
+                   role="dialog">
+                  <div class="slides" aria-live="polite"></div>
+                  <h3 class="title text-light fw-normal fs-4"></h3>
+                  <a class="close"
+                     aria-controls="blueimp-gallery"
+                     aria-label="close"
+                     aria-keyshortcuts="Escape">
+                  </a>
+                  </div>
+                  <div id="starter-blueimp-slides" class="blueimp-gallery blueimp-gallery-controls"
+                          aria-label="image gallery"
+                          aria-modal="true"
+                          role="dialog">
+                         <div class="slides" aria-live="polite"></div>
+                         <h3 class="title text-light fw-normal fs-4"></h3>
+                         <a class="prev"
+                            aria-controls="blueimp-gallery"
+                            aria-label="previous slide"
+                            aria-keyshortcuts="ArrowLeft">
+                         </a>
+                         <a class="next"
+                            aria-controls="blueimp-gallery"
+                            aria-label="next slide"
+                            aria-keyshortcuts="ArrowRight">
+                         </a>
+                         <a class="close"
+                            aria-controls="blueimp-gallery"
+                            aria-label="close"
+                            aria-keyshortcuts="Escape">
+                         </a>
+                         <a class="play-pause"
+                            aria-controls="blueimp-gallery"
+                            aria-label="play slideshow"
+                            aria-keyshortcuts="Space"
+                            aria-pressed="false"
+                            role="button">
+                         </a>
+                         <ol class="indicator"></ol>
+                       </div>`;
+                blueimpPlaceholder.html(html);
+            }
         }
 
     })(jQuery);
@@ -470,8 +685,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         'iPod',
     ].indexOf(navigator.platform) !== -1;
 
-
-    let wow = new WOW(
+    let starterWow = new WOW(
         {
             boxClass: 'wow',      // animated element css class (default is wow)
             animateClass: 'animate__animated', // animation css class (default is animated)
@@ -486,6 +700,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
             resetAnimation: true,     // reset animation on end (default is true)
         }
     );
-    wow.init();
+    starterWow.init();
 
 });

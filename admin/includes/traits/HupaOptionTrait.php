@@ -122,7 +122,6 @@ trait HupaOptionTrait
     protected string $hupa_select_404 = 'hupa_select_404';
 
 
-
     /*========================================================
     *============== SETTINGS WordPress OPTIONS ===============
     ==========================================================*/
@@ -875,25 +874,57 @@ trait HupaOptionTrait
                     $this->social_icon => 'fa fa-print',
                     $this->position => 12
                 ]
-            ]
+            ],
+            'animation_default' => [
+                'fadeTop' => 100,
+                'fadeBottom' => 150,
+                'fadeTop25' => 100,
+                'fadeBottom25' => 150,
+                'fadeTop100' => 100,
+                'fadeBottom100' => 150,
+                'moveLeftTop' => 150,
+                'moveLeftBottom' => 250,
+                'moveLeftTop25' => 150,
+                'moveLeftBottom25' => 250,
+                'moveLeftTop100' => 150,
+                'moveLeftBottom100' => 250,
+                'moveRightTop' => 150,
+                'moveRightBottom' => 250,
+                'moveRightTop25' => 150,
+                'moveRightBottom25' => 250,
+                'moveRightTop100' => 150,
+                'moveRightBottom100' => 250,
+                'moveTopTop' => 70,
+                'moveTopBottom' => 225,
+                'moveTopTop25' => 70,
+                'moveTopBottom25' => 225,
+                'moveTopTop100' => 70,
+                'moveTopBottom100' => 225,
+                'moveBottomTop' => 150,
+                'moveBottomBottom' => 250,
+                'moveBottomTop25' => 150,
+                'moveBottomBottom25' => 250,
+                'moveBottomTop100' => 150,
+                'moveBottomBottom100' => 250
+            ],
         ];
     }
 
-    protected function theme_language():array
+    protected function theme_language(): array
     {
-       return  [
-           __('sections', 'bootscore'),
-           __('The position or order of the individual sections can be changed by <b>moving</b> the boxes.', 'bootscore'),
-           __('Address', 'bootscore'),
-           __('Name', 'bootscore'),
-           __('Department', 'bootscore'),
-           __('Phone', 'bootscore'),
-           __('Mobile', 'bootscore'),
-           __('E-Mail', 'bootscore'),
-           __('Fax', 'bootscore'),
-           __('delete', 'bootscore'),
-           __('Contact details', 'bootscore'),
-       ];
+        return [
+            __('sections', 'bootscore'),
+            __('The position or order of the individual sections can be changed by <b>moving</b> the boxes.', 'bootscore'),
+            __('Address', 'bootscore'),
+            __('Name', 'bootscore'),
+            __('Department', 'bootscore'),
+            __('Phone', 'bootscore'),
+            __('Mobile', 'bootscore'),
+            __('E-Mail', 'bootscore'),
+            __('Fax', 'bootscore'),
+            __('delete', 'bootscore'),
+            __('Contact details', 'bootscore'),
+        ];
 
     }
 }

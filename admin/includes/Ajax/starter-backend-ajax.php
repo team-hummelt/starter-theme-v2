@@ -248,6 +248,43 @@ class Hupa_Starter_V2_Admin_Ajax
                         $responseJson->spinner = true;
 
                         break;
+                    case'theme_animation':
+                        $updateAnimation = [
+                            'fadeTop' => filter_input(INPUT_POST, 'fadeTop', FILTER_SANITIZE_NUMBER_INT),
+                            'fadeBottom' => filter_input(INPUT_POST, 'fadeBottom', FILTER_SANITIZE_NUMBER_INT),
+                            'fadeTop25' => filter_input(INPUT_POST, 'fadeTop25', FILTER_SANITIZE_NUMBER_INT),
+                            'fadeBottom25' => filter_input(INPUT_POST, 'fadeBottom25', FILTER_SANITIZE_NUMBER_INT),
+                            'fadeTop100' => filter_input(INPUT_POST, 'fadeTop100', FILTER_SANITIZE_NUMBER_INT),
+                            'fadeBottom100' => filter_input(INPUT_POST, 'fadeBottom100', FILTER_SANITIZE_NUMBER_INT),
+                            'moveLeftTop' => filter_input(INPUT_POST, 'moveLeftTop', FILTER_SANITIZE_NUMBER_INT),
+                            'moveLeftBottom' => filter_input(INPUT_POST, 'moveLeftBottom', FILTER_SANITIZE_NUMBER_INT),
+                            'moveLeftTop25' => filter_input(INPUT_POST, 'moveLeftTop25', FILTER_SANITIZE_NUMBER_INT),
+                            'moveLeftBottom25' => filter_input(INPUT_POST, 'moveLeftBottom25', FILTER_SANITIZE_NUMBER_INT),
+                            'moveLeftTop100' => filter_input(INPUT_POST, 'moveLeftTop100', FILTER_SANITIZE_NUMBER_INT),
+                            'moveLeftBottom100' => filter_input(INPUT_POST, 'moveLeftBottom100', FILTER_SANITIZE_NUMBER_INT),
+                            'moveRightTop' => filter_input(INPUT_POST, 'moveRightTop', FILTER_SANITIZE_NUMBER_INT),
+                            'moveRightBottom' => filter_input(INPUT_POST, 'moveRightBottom', FILTER_SANITIZE_NUMBER_INT),
+                            'moveRightTop25' => filter_input(INPUT_POST, 'moveRightTop25', FILTER_SANITIZE_NUMBER_INT),
+                            'moveRightBottom25' => filter_input(INPUT_POST, 'moveRightBottom25', FILTER_SANITIZE_NUMBER_INT),
+                            'moveRightTop100' => filter_input(INPUT_POST, 'moveRightTop100', FILTER_SANITIZE_NUMBER_INT),
+                            'moveRightBottom100' => filter_input(INPUT_POST, 'moveRightBottom100', FILTER_SANITIZE_NUMBER_INT),
+                            'moveTopTop' => filter_input(INPUT_POST, 'moveTopTop', FILTER_SANITIZE_NUMBER_INT),
+                            'moveTopBottom' => filter_input(INPUT_POST, 'moveTopBottom', FILTER_SANITIZE_NUMBER_INT),
+                            'moveTopTop25' => filter_input(INPUT_POST, 'moveTopTop25', FILTER_SANITIZE_NUMBER_INT),
+                            'moveTopBottom25' => filter_input(INPUT_POST, 'moveTopBottom25', FILTER_SANITIZE_NUMBER_INT),
+                            'moveTopTop100' => filter_input(INPUT_POST, 'moveTopTop100', FILTER_SANITIZE_NUMBER_INT),
+                            'moveTopBottom100' => filter_input(INPUT_POST, 'moveTopBottom100', FILTER_SANITIZE_NUMBER_INT),
+                            'moveBottomTop' => filter_input(INPUT_POST, 'moveBottomTop', FILTER_SANITIZE_NUMBER_INT),
+                            'moveBottomBottom' => filter_input(INPUT_POST, 'moveBottomBottom', FILTER_SANITIZE_NUMBER_INT),
+                            'moveBottomTop25' => filter_input(INPUT_POST, 'moveBottomTop25', FILTER_SANITIZE_NUMBER_INT),
+                            'moveBottomBottom25' => filter_input(INPUT_POST, 'moveBottomBottom25', FILTER_SANITIZE_NUMBER_INT),
+                            'moveBottomTop100' => filter_input(INPUT_POST, 'moveBottomTop100', FILTER_SANITIZE_NUMBER_INT),
+                            'moveBottomBottom100' => filter_input(INPUT_POST, 'moveBottomBottom100', FILTER_SANITIZE_NUMBER_INT)
+                        ];
+
+                        update_option('hupa_animation_settings', $updateAnimation);
+                        $responseJson->spinner = true;
+                        break;
 
                     case'smtp_settings':
                         $email_abs_name = filter_input(INPUT_POST, 'email_abs_name', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
@@ -1170,6 +1207,14 @@ class Hupa_Starter_V2_Admin_Ajax
                 $responseJson->msg = date('H:i:s', current_time('timestamp'));
                 break;
 
+            case 'reset_animation':
+                $defaults = $this->get_theme_default_settings();
+                update_option('hupa_animation_settings', $defaults['animation_default']);
+                $responseJson->status = true;
+                $responseJson->reset_animation = true;
+                $responseJson->defaults = get_option('hupa_animation_settings');
+                $responseJson->msg = 'Einstellungen erfolgreich zurückgesetzt.';
+                break;
             case 'delete_gmaps_settings':
                 $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
                 if(!$id) {

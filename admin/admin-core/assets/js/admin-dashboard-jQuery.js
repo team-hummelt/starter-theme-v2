@@ -36,6 +36,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     }
                     swal_fire_app_delete(formData);
                     break;
+                case'reset_animation':
+                    formData = {
+                        'method': type,
+                        'btnText': 'Alle Einstellungen zurücksetzen',
+                        'html': '<span class="swal-delete-body">Alle Werte werden <b>zurückgesetzt!</b> Die Änderungen können <b>nicht</b> rückgängig gemacht werden.</span>',
+                        'title': 'Einstellungen zurücksetzen?'
+                    }
+                    swal_fire_app_delete(formData);
+                    break;
             }
         });
 
@@ -145,6 +154,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         });
 
+        $(document).on('change', '.change-help-info-select', function () {
+            let change = $(this).val();
+            if(!change){
+                return false;
+            }
+            new bootstrap.Collapse(change, {
+                toggle: true,
+                parent:'#helpParent'
+            });
+            scrollToWrapper(change, 150);
+        });
+
         function get_site_params(search, input_url = '') {
             let get_url;
             if (input_url) {
@@ -200,6 +221,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     fontWrapper.remove();
                     success_message(data.msg);
                 }
+                if(data.reset_animation){
+                    for (let [name, value] of Object.entries(data.defaults)) {
+                        $(`[name="${name}"]`).val(`${value}`);
+                    }
+                    success_message(data.msg);
+                }
             } else {
                 warning_message(data.msg);
             }
@@ -231,6 +258,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
             formData.append('_ajax_nonce', theme_ajax_obj.nonce);
             formData.append('action', 'HupaStarterHandle');
             xhr.send(formData);
+        }
+
+
+        function scrollToWrapper(target, offset = 50) {
+            setTimeout(function () {
+                $('html, body').stop().animate({
+                    scrollTop: $(target).offset().top - (offset),
+                }, 400, "linear", function () {
+                });
+            }, 350);
         }
 
     })(jQuery);

@@ -168,7 +168,7 @@ final class RegisterHupaStarter
             set_transient('show_theme_license_info', true, 5);
 
             update_option('hupa_wp_cache', 0);
-            update_option('hupa_wp_debug', 0);
+            update_option('hupa_wp_debug', 1);
             update_option('hupa_wp_debug_log', 0);
             update_option('wp_debug_display', 0);
             update_option('hupa_wp_script_debug', 0);
@@ -229,6 +229,7 @@ final class RegisterHupaStarter
         delete_option('hupa_wp_disallow_file_mods');
 
         delete_option('tools_hupa_address');
+        delete_option('hupa_animation_settings');
 
 
     }

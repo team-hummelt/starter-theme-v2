@@ -1374,6 +1374,7 @@ class Hupa_Starter_V2_Admin_Ajax
                     'slug' => $this->basename
                 ];
 
+
                 $responseJson->type = $this->method;
                 $zipFile =  apply_filters('get_api_download', get_option('hupa_server_url') . 'hupa', $body);
                 if (!$zipFile) {
@@ -1389,11 +1390,10 @@ class Hupa_Starter_V2_Admin_Ajax
 
                 $filePath = Config::get('UPDATE_TEMP_FOLDER_DIR') . $this->basename . '.zip';
                 @file_put_contents($filePath, $zipFile);
-                $themeDir = dirname(HUPA_THEME_DIR) . DIRECTORY_SEPARATOR . $this->basename . DIRECTORY_SEPARATOR;
+                $themeDir = dirname(HUPA_THEME_DIR) . DIRECTORY_SEPARATOR . $this->basename;
                 apply_filters('destroy_dir_recursive', $themeDir);
-                  //$themeDir = Config::get('UPDATE_TEMP_FOLDER_DIR');
                 WP_Filesystem();
-                $unZipFile = unzip_file($filePath, $themeDir);
+                $unZipFile = unzip_file($filePath, dirname(HUPA_THEME_DIR));
                 if (!$unZipFile) {
                     $responseJson->msg = 'Download fehlgeschlagen!';
                     return $responseJson;

@@ -32,6 +32,7 @@ use Hupa\StarterThemeV2\HupaStarterLanguageFilter;
 use Hupa\StarterThemeV2\HupaStarterOptionFilter;
 use Hupa\StarterThemeV2\HupaStarterRenderBlock;
 use Hupa\StarterThemeV2\HupaStarterToolsFilter;
+use Hupa\StarterThemeV2\Register_Starter_Theme_Gutenberg_Patterns;
 use Hupa\StarterThemeV2\StarterThemeUpdateAction;
 use Hupa\StarterThemeV2\StarterThemeWPOptionen;
 use Hupa\StarterV2\HupaEnqueueStarterTheme;
@@ -239,6 +240,8 @@ class HupaStarterThemeV2
         $this->define_theme_api_handle();
         // Admin Dashboard
         $this->define_admin_hooks();
+        //Vorlagen Pattern
+        $this->register_starter_pattern();
     }
 
     /**
@@ -324,6 +327,8 @@ class HupaStarterThemeV2
          */
         if (file_exists(THEME_ADMIN_DIR . 'admin-core/register-hupa-starter-optionen.php')) {
             require(THEME_ADMIN_DIR . 'admin-core/register-hupa-starter-optionen.php');
+
+            require(Config::get('THEME_ADMIN_INCLUDES') . 'patterns/class_register_starter_theme_gutenberg_patterns.php');
         }
 
 
@@ -463,6 +468,13 @@ class HupaStarterThemeV2
                 // CREATE CUSTOM FOOTER POST TYPE
                 $this->loader->add_action('init', $hupa_register_starter_options, 'register_starter_custom_footer_post_types');
             }
+
+            if (Config::get('DESIGN_TEMPLATES')) {
+                // CREATE DESIGN TEMPLATES POST TYPE
+                $this->loader->add_action('init', $hupa_register_starter_options, 'register_starter_design_vorlagen_post_types');
+                $this->loader->add_action('init', $hupa_register_starter_options, 'register_design_vorlagen_taxonomies');
+            }
+
             $this->loader->add_action('admin_init', $hupa_register_starter_options, 'add_admin_capabilities');
 
             // JOB THEME ADMIN DASHBOARD BRANDING
@@ -558,6 +570,11 @@ class HupaStarterThemeV2
         $this->loader->add_filter('oauth_set_error_message', $hupa_register_theme_helper, 'api_set_error_message');
         $this->loader->add_filter('compress_template', $hupa_register_theme_helper, 'html_compress_template');
         $this->loader->add_filter('hupa_address_fields', $hupa_register_theme_helper, 'tools_address_fields');
+        $this->loader->add_filter('hupa_help_select_thema', $hupa_register_theme_helper, 'theme_help_select_thema');
+        $this->loader->add_filter('starter_animation_settings', $hupa_register_theme_helper, 'hupa_starter_animation_settings');
+        $this->loader->add_filter('get_settings_pin', $hupa_register_theme_helper, 'hupa_settings_pin');
+        $this->loader->add_filter('hupa_validate_pin', $hupa_register_theme_helper, 'hupa_settings_validate_pin', 10, 2);
+        $this->loader->add_action('is_hupa_custom_dir', $hupa_register_theme_helper, 'hupa_is_custom_dir');
 
     }
 
@@ -845,6 +862,7 @@ class HupaStarterThemeV2
         $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_hupa_carousel_scripts');
         $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_hupa_tools_scripts');
         $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_menu_scripts');
+
     }
 
     /**
@@ -892,6 +910,24 @@ class HupaStarterThemeV2
         $hupa_render_block = HupaStarterRenderBlock::init($this->main);
         $this->loader->add_filter('render_block', $hupa_render_block, 'custom_render_block_core_group', 0, 2);
 
+    }
+
+    /**
+     * Register all the hooks related to the admin area functionality
+     * of the theme.
+     *
+     * @since    2.0.0
+     * @access   private
+     */
+    private function register_starter_pattern()
+    {
+        global $hupa_pattern;
+        if (file_exists(THEME_ADMIN_DIR . 'admin-core/register-hupa-starter-optionen.php') && get_option('hupa_starter_product_install_authorize')) {
+            $hupa_pattern = Register_Starter_Theme_Gutenberg_Patterns::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
+            $this->loader->add_action('init', $hupa_pattern, 'register_gutenberg_patterns');
+            $this->loader->add_action('init', $hupa_pattern, 'register_block_pattern_category');
+        }
+        //register_gutenberg_patterns
     }
 
     /** Register all the hooks related to the admin options area functionality

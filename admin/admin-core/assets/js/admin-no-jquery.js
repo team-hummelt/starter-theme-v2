@@ -47,6 +47,10 @@ if (settingsColBtn) {
                     spinnerNodes.innerHTML = '';
                 });
             }
+            let setWrapper = document.getElementById('systemSettings');
+            if(setWrapper){
+                setWrapper.innerHTML = '';
+            }
 
             this.blur();
             if (this.classList.contains("active")) return false;
@@ -73,6 +77,13 @@ if (settingsColBtn) {
                 case'loadInstallFormularFonts':
                     load_install_list_api_data();
                     break;
+                case'system_settings':
+
+                    let formData = {
+                         'method': 'load_env_data'
+                    };
+                    send_xhr_form_data(formData, false, render_system_settings_callback);
+                    break;
 
             }
             siteTitle.innerText = dataSite;
@@ -81,6 +92,18 @@ if (settingsColBtn) {
             this.setAttribute('disabled', true);
         });
     });
+
+    function render_system_settings_callback() {
+        let data = JSON.parse(this.responseText);
+        if(data.status){
+            let setWrapper = document.getElementById('systemSettings');
+            if(setWrapper){
+                setWrapper.innerHTML = data.template;
+            }
+        } else {
+            warning_message(data.msg);
+        }
+    }
 
     function remove_active_btn() {
         for (let i = 0; i < CollapseEvent.length; i++) {
@@ -336,6 +359,7 @@ function send_xhr_form_data(data, is_formular = true, callback = '') {
             if (data.spinner) {
                 show_ajax_spinner(data);
             }
+
             if (data.show_msg) {
                 if (data.status) {
                     success_message(data.msg);
@@ -350,6 +374,7 @@ function send_xhr_form_data(data, is_formular = true, callback = '') {
                 return false;
             }
             switch (data.method) {
+
                 case 'change_font_select':
                     return change_font_style_select_input(data);
                 case'sync_font_folder':

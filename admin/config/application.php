@@ -29,6 +29,7 @@ if (file_exists(THEME_ADMIN_DIR . '.env')) {
             'THEME_TOOLS_DIR',
             'CUSTOM_FOOTER',
             'CUSTOM_HEADER',
+            'DESIGN_TEMPLATES',
             'HUPA_SIDEBAR',
             'HUPA_TOOLS',
             'HUPA_CAROUSEL',
@@ -45,7 +46,10 @@ if (file_exists(THEME_ADMIN_DIR . '.env')) {
             'ALLOW_JWT_IMPLICIT',
             'ACCESS_JWT_LIFETIME',
             'OAUTH_PUBLIC_CLIENT_SECRET',
-            'USE_JWT_MEMORY_ACCESS_TOKEN'
+            'USE_JWT_MEMORY_ACCESS_TOKEN',
+            'DEACTIVATE_DELETE_ACCESS_DATA',
+            'HUPA_API_INSTALL',
+            'UPDATE_TEMP_FOLDER_NAME'
         ]
     );
 }
@@ -104,6 +108,11 @@ Config::define('THEME_JS_MODUL_URL', get_template_directory_uri() . '/admin/asse
 $upload_dir = wp_get_upload_dir();
 Config::define('THEME_FONTS_DIR', $upload_dir['basedir'] . DIRECTORY_SEPARATOR . env('FONTS_FOLDER_NAME') . DIRECTORY_SEPARATOR);
 Config::define('THEME_FONTS_URL', $upload_dir['baseurl'] . DIRECTORY_SEPARATOR . env('FONTS_FOLDER_NAME') . '/');
+
+/**
+ * Temp-Update DIR
+ */
+Config::define('UPDATE_TEMP_FOLDER_DIR', $upload_dir['basedir'] . DIRECTORY_SEPARATOR . env('UPDATE_TEMP_FOLDER_NAME') . DIRECTORY_SEPARATOR);
 
 /**
  * Includes DIR
@@ -183,6 +192,11 @@ Config::define('CUSTOM_FOOTER', (int) env('CUSTOM_FOOTER'));
 Config::define('CUSTOM_HEADER', (int) env('CUSTOM_HEADER'));
 
 /**
+ * DESIGN TEMPLATES
+ */
+Config::define('DESIGN_TEMPLATES', (int) env('DESIGN_TEMPLATES'));
+
+/**
  * HUPA SIDEBAR
  */
 Config::define('HUPA_SIDEBAR', (int) env('HUPA_SIDEBAR'));
@@ -201,6 +215,16 @@ Config::define('HUPA_CAROUSEL', (int) env('HUPA_CAROUSEL'));
  * HUPA MAPS
  */
 Config::define('HUPA_MAPS', (int) env('HUPA_MAPS'));
+
+/**
+ * HUPA API INSTALL
+ */
+Config::define('HUPA_API_INSTALL', (int) env('HUPA_API_INSTALL'));
+
+/**
+ * Access Data Api Delete bei Deaktivierung
+ */
+Config::define('DEACTIVATE_DELETE_ACCESS_DATA', (int) env('DEACTIVATE_DELETE_ACCESS_DATA'));
 
 /**
  * oAuth2 SERVER

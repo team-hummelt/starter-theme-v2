@@ -76,6 +76,7 @@ class HupaSocialButtonShortCode
         add_shortcode('social-share-button', array($this, 'hupa_social_button_shortcode'));
         add_shortcode('social-icon', array($this, 'hupa_social_icon_shortcode'));
         add_shortcode('kontakt', array($this, 'hupa_kontakt_shortcode'));
+        add_shortcode('theme-tag', array($this, 'hupa_theme_tag_shortcode'));
     }
 
     public function hupa_social_button_shortcode($atts, $content, $tag)
@@ -198,10 +199,16 @@ class HupaSocialButtonShortCode
         }
         $atts['icon'] ? $icon = '<i class="'.$atts['icon'].'"></i>' : $icon = '<i class="'.$addressData['icon'].'"></i>';
 
-
         if ($atts['url_type']) {
-            $atts['url_type'] == 'url' ? $urlType = '' : $urlType = str_replace(':','',$atts['url_type']) . ':';
-            $url = '<a href="' . $urlType . $addressData['value'] . '" target="_blank">';
+            if($atts['url_type'] == 'url'){
+                $urlType = '';
+                $target = '" target="_blank"';
+            } else {
+                $urlType = str_replace(':','',$atts['url_type']) . ':';
+                $target = '';
+            }
+
+            $url = '<a href="' . $urlType . $addressData['value'].'" '. $target.'>';
             $url_end = '</a>';
         } else {
             $url = '';
@@ -216,7 +223,31 @@ class HupaSocialButtonShortCode
             $iconAfter =  $addressData['value'] . ' ' .$icon;
         }?>
         <span class="hupa_kontakt <?=$atts['class']?>"><?=$url?><?=$iconBefore?><?=$iconAfter?><?=$url_end?></span>
-    <?php
+        <?php
+        return ob_get_clean();
+    }
+
+    public function hupa_theme_tag_shortcode($atts, $content, $tag) {
+        $atts = shortcode_atts(array(
+            'tag' => '',
+            'class' => '',
+            'id' => ''
+        ), $atts);
+        ob_start();
+        $tag = explode('-', $atts['tag']);
+        isset($tag[0]) && $tag[0] ? $hTag = $tag[0] : $hTag = '';
+        $atts['class'] ? $class = 'class="' . $atts['class'] . '"' : $class = '';
+        $atts['id'] ? $id = 'id="' . $atts['id'] . '"' : $id = '';
+        if (isset($tag[1]) && $tag[1] == 'end') {
+            $div_tag = '/';
+            $class = '';
+            $id = '';
+        } else {
+            $div_tag = '';
+        }
+        ?>
+        <<?=$div_tag?><?=$hTag?> <?=$id?> <?=$class?>>
+        <?php
         return ob_get_clean();
     }
 

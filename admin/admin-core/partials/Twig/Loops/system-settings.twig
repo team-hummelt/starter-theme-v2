@@ -1,0 +1,30 @@
+<form class="save_system_settings">
+    <input type="hidden" name="method" value="update_env_settings">
+    <div class="row g-3">
+        {% for d in data %}
+            <div class="col-xxl-3 col-xl-4 col-lg-6 col-12">
+                <div class="form-check form-switch">
+                    <input class="form-check-input no-blur" name="{{ d.name }}" type="checkbox" role="switch"
+                           id="check{{ loop.index }}"
+                           {% if d.value == 1 %}checked{% endif %}>
+                    <label class="form-check-label" for="check{{ loop.index }}">
+                        <span class="strong-font-weight"> {{ d.bezeichnung }}</span>
+                        <span class="fw-light"> {{ 'show'|__ }}</span>
+                    </label>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="col-12">
+            <hr>
+            <div class="col-xxl-2 col-xl-3 col-lg-6 col-12">
+                <div class="form-floating">
+                    <input type="password" class="form-control no-blur" name="setting_pin" id="inputPin"
+                           placeholder="Pin zum speichern" required>
+                    <label for="inputPin">Pin zum speichern</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save2 me-1"></i> {{ 'save'|__ }}</button>
+</form>

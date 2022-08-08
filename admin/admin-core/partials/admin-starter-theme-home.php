@@ -17,10 +17,27 @@ use Hupa\Starter\Config;
             <h5 class="card-header d-flex align-items-center bg-hupa py-4">
                 <i class="icon-hupa-white d-block mt-2"
                    style="font-size: 2rem"></i>&nbsp; <?= __('Theme Settings', 'bootscore') ?> V2</h5>
-            <div class="card-body pb-4" style="min-height: 72vh">
+            <div class="theme-settings-card d-none card-body d-flex align-items-start justify-content-center" style="min-height: 72vh">
+                <div class="mt-5 pt-5 text-center">
+                    <h2 class="font-bold-light mb-3">Update <span class="fw-light"> Installieren</span>
+                    <small id="theme-update-wrapper" class="fs-5 d-block fw-light mt-1"></small>
+                    </h2>
+                    <form class="save_system_settings">
+                        <input type="hidden" name="method" value="update_theme_over_api">
+                        <input class="inputVersion" type="hidden" name="version" value="">
+                    <button type="submit" id="install-theme" class="btn btn-primary my-1 me-1">Version v.2.0.1 Installieren</button>
+                    <button type="button" data-type="update-cancel" class="btn-admin-action btn-admin-action btn btn-secondary my-1 me-1">Abbrechen</button>
+                    </form>
+                    <a href="<?=admin_url('admin.php?page=hupa-starter-home')?>" class="btn-reload-site mt-3 d-none btn btn-primary">
+                        <i class="bi bi-check-circle me-1"></i> Installation abschließen
+                    </a>
+                       <div class="install-update-ajax-spinner fs-5 d-none mt-3 font-dark-red"> <i class="fa fa-gear fa-spin align-middle fa-3x me-1"></i> Update wird installiert</div>
+                </div>
+            </div>
+            <div class="theme-settings-card card-body pb-4" style="min-height: 72vh">
                 <div class="d-flex align-items-center">
-                    <h5 class="card-title"><i
-                                class="hupa-color fa fa-arrow-circle-right"></i> <?= __('Settings', 'bootscore') ?> /
+                    <h5 class="card-title">
+                        <i class="hupa-color fa fa-arrow-circle-right"></i> <?= __('Settings', 'bootscore') ?> /
                         <span id="currentSideTitle"><?= __('actual', 'bootscore') ?></span>
                     </h5>
                     <div class="ajax-status-spinner ms-auto d-inline-block mb-2 pe-2"></div>
@@ -32,15 +49,15 @@ use Hupa\Starter\Config;
                             type="button"
                             data-bs-toggle="collapse" data-bs-target="#collapseSettingsHomeSite"
                             aria-expanded="true" aria-controls="collapseSettingsHomeSite"
-                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm active" disabled><i
-                                class="fa fa-home"></i>&nbsp;
+                            class="text-nowrap btn-collapse btn btn-hupa btn-outline-secondary btn-sm active" disabled>
+                        <i class="fa fa-home me-1"></i>
                         <?= __('Hupa actual', 'bootscore') ?>
                     </button>
 
                     <button data-site="<?= __('General', 'bootscore') ?>" type="button"
                             data-bs-toggle="collapse" data-bs-target="#collapseSettingsGeneralSite"
                             aria-expanded="false" aria-controls="collapseSettingsGeneralSite"
-                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-tasks"></i>&nbsp;
+                            class="text-nowrap btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-tasks me-1"></i>
                         <?= __('General', 'bootscore') ?>
                     </button>
 
@@ -49,7 +66,7 @@ use Hupa\Starter\Config;
                             type="button"
                             data-bs-toggle="collapse" data-bs-target="#collapseSettingsFontsSite"
                             aria-expanded="false" aria-controls="collapseSettingsFontsSite"
-                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-font"></i>&nbsp;
+                            class="text-nowrap btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-font me-1"></i>
                         <?= __('Fonts', 'bootscore') ?>
                     </button>
 
@@ -58,7 +75,7 @@ use Hupa\Starter\Config;
                             type="button"
                             data-bs-toggle="collapse" data-bs-target="#collapseSettingsColorSite"
                             aria-expanded="false" aria-controls="collapseSettingsColorSite"
-                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-magic"></i>&nbsp;
+                            class="text-nowrap btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-magic me-1"></i>
                         <?= __('Colors', 'bootscore') ?>
                     </button>
                     <?php $user = new WP_User(get_current_user_id());
@@ -66,8 +83,8 @@ use Hupa\Starter\Config;
                         <button data-site="<?= __('Theme options', 'bootscore') ?>" type="button"
                                 data-bs-toggle="collapse" data-bs-target="#collapseSettingsOtherOption"
                                 aria-expanded="true" aria-controls="collapseSettingsOtherOption"
-                                class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i
-                                    class="fa fa-gears"></i>&nbsp;
+                                class="text-nowrap btn-collapse btn btn-hupa btn-outline-secondary btn-sm">
+                            <i class="fa fa-gears me-1"></i>
                             <?= __('Theme options', 'bootscore') ?>
                         </button>
                     <?php endif; ?>
@@ -75,8 +92,8 @@ use Hupa\Starter\Config;
                         <button data-site="<?= __('Infos', 'bootscore') ?>" type="button"
                                 data-bs-toggle="collapse" data-bs-target="#collapseSettingsInfoOption"
                                 aria-expanded="true" aria-controls="collapseSettingsInfoOption"
-                                class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i
-                                    class="fa fa-info-circle"></i>&nbsp;
+                                class="text-nowrap btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i
+                                    class="fa fa-info-circle me-1"></i>
                             <?= __('Infos', 'bootscore') ?>
                         </button>
                         <?php $user = new WP_User(get_current_user_id());
@@ -84,8 +101,8 @@ use Hupa\Starter\Config;
                             <button data-site="<?= __('Reset', 'bootscore') ?>" type="button"
                                     data-bs-toggle="collapse" data-bs-target="#collapseSettingsResetOption"
                                     aria-expanded="true" aria-controls="collapseSettingsResetOption"
-                                    class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i
-                                        class="fa fa-random"></i>&nbsp;
+                                    class="text-nowrap btn-collapse btn btn-hupa btn-outline-secondary btn-sm">
+                                <i class="fa fa-random me-1"></i>
                                 <?= __('Reset', 'bootscore') ?>
                             </button>
                         <?php endif; ?>
@@ -96,7 +113,7 @@ use Hupa\Starter\Config;
                     <!--  TODO JOB WARNING STARTSEITE -->
                     <div class="collapse show" id="collapseSettingsHomeSite" data-bs-parent="#settings_display_data">
                         <div class="hupa-news-wrapper">
-                            <div class="d-flex justify-content-center align-items-center">
+                            <div class="d-flex d-nones justify-content-center align-items-center">
                                 <a title="Full-Service-Werbeagentur aus Magdeburg"
                                    href="https://www.hummelt-werbeagentur.de/">
                                     <img class="my-4 img-fluid" alt=""
@@ -106,6 +123,32 @@ use Hupa\Starter\Config;
                             </div>
                             <hr>
                             <h4 class="text-center"><?= __('News and Updates', 'bootscore') ?></h4>
+                            <?php
+                            $body = [
+                                'method' => 'check_updates',
+                                'version' => (int) str_replace(['v','.'],'',$this->theme_version),
+                                'slug' => $this->basename
+                            ];
+
+                            if(get_hupa_option('update_aktiv') && get_option('hupa_wp_automatic_update')):
+                            $checkUpdate =  apply_filters('post_scope_resource', 'hupa', $body);
+                            if($checkUpdate->status && $checkUpdate->update_status):  ?>
+                            <hr>
+                            <div class="text-center">
+                                <h5 class=" font-bold-light font-dark-red pt-3">
+                                    <i class="fa fa-info-circle me-1"></i> Neues <?=$checkUpdate->type_bezeichnung?>-Update verfügbar
+                                    <small class="d-block small-lg fw-normal text-muted"><?=$checkUpdate->bezeichnung?> -
+                                        Version: <?=$checkUpdate->version?></small>
+                                </h5>
+                                <button type="button" data-type="show-install-theme-update"
+                                        data-version="<?=$checkUpdate->version?>" data-bezeichnung="<?=$checkUpdate->bezeichnung?>"
+                                        class="btn-admin-action btn btn-primary btn-sm mt-3 mb-4">
+                                    <i class="bi bi-cloud-arrow-down me-1"></i> Update Installieren
+                                </button>
+                            </div>
+                            <hr>
+                            <?php endif; endif; ?>
+
                             <?php if (get_hupa_option('show_uhr_aktive')): ?>
                                 <div class="clock mb-3" id="homeStartClock"></div>
                             <?php endif; ?>
@@ -119,6 +162,7 @@ use Hupa\Starter\Config;
                             $errMsg = str_replace('#', '<br>', get_option('hupa_update_error_message'));
                             echo $errMsg;
                             ?>
+
                         </div>
                         <small class="card-body-bottom">DB: <i
                                     class="hupa-color"> <?= $this->main->get_db_version() ?></i> | THEME:
@@ -4364,82 +4408,266 @@ use Hupa\Starter\Config;
 
                     <!--//TODO JOB WARNING INFOS-->
                     <div class="collapse" id="collapseSettingsInfoOption" data-bs-parent="#settings_display_data">
-                        <div class="border rounded mt-1 shadow-sm p-3 bg-custom-gray">
-                            <hr>
-                            <div class="d-flex flex-wrap align-items-center">
-                                <h5 class="card-title mb-0">
-                                    <i class="font-blue fa fa-info-circle"></i>&nbsp; <?= __('Theme Info', 'bootscore') ?>
-                                </h5>
+                        <div id="helpParent">
+
+                            <div class="form-floating mb-3">
+                                <select class="change-help-info-select form-select no-blur" id="floatingSelect"
+                                        aria-label="Info auswählen">
+                                    <option value=""><?= __('select', 'bootscore') ?> ...</option>
+                                    <?php
+                                    $selInfo = apply_filters('hupa_help_select_thema', null);
+                                    foreach ($selInfo as $tmp):?>
+                                        <option value="<?= $tmp['target'] ?>"><?= $tmp['bezeichnung'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <label for="floatingSelect">Info auswählen</label>
                             </div>
-                            <hr>
-                            <h6 class="d-flex flex-wrap align-items-center">
+                            <div class="border rounded mt-1 shadow-sm p-3 bg-custom-gray">
+                                <hr>
+                                <div class="d-flex flex-wrap align-items-center">
+                                    <h5 class="card-title mb-0">
+                                        <i class="font-blue fa fa-info-circle"></i>&nbsp; <?= __('Theme Info', 'bootscore') ?>
+                                    </h5>
+                                </div>
+                                <hr>
+                                <h6 class="d-flex flex-wrap align-items-center">
                               <span>
                                   <i class="fa fa-arrow-circle-right"></i> Icon Shortcode:
                               </span>
-                                <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
-                                   data-bs-toggle="collapse"
-                                   data-bs-target="#collIconShortcode">
-                                </i>
-                            </h6>
-                            <hr>
-                            <div id="collIconShortcode" class="collapse">
-                                <div class="form-text mb-3">Icon <b>auswählen</b> und Shortcode <b>Kopieren</b>.</div>
-                                <button data-bs-toggle="modal"
-                                        data-bs-target="#dialog-add-icon" data-bs-type="fa-info"
-                                        class="show-theme-icons btn btn-outline-secondary btn-sm">
-                                    <i class="fa fa-th"></i>&nbsp;
-                                    Font-Awesome Übersicht
-                                </button>
-
-                                <button data-bs-toggle="modal"
-                                        data-bs-target="#dialog-add-icon" data-bs-type="bi-info"
-                                        class="show-theme-icons btn btn-outline-secondary btn-sm">
-                                    <i class="bi bi-bootstrap"></i>&nbsp;
-                                    Bootstrap-Icons Übersicht
-                                </button>
-                                <div class="d-block">
-                                    <button id="resetIcons" onclick="reset_show_theme_icons(this,'shortcode-info')"
-                                            class="btn btn-blue-outline mt-3 btn-sm d-none">
-                                        <i class="fa fa-random"></i>&nbsp;
-                                        Reset
-                                    </button>
-                                </div>
+                                    <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#collIconShortcode">
+                                    </i>
+                                </h6>
                                 <hr>
+                                <div id="collIconShortcode" class="collapse" data-bs-parent="#helpParent">
+                                    <div class="form-text mb-3">Icon <b>auswählen</b> und Shortcode <b>Kopieren</b>.
+                                    </div>
+                                    <button data-bs-toggle="modal"
+                                            data-bs-target="#dialog-add-icon" data-bs-type="fa-info"
+                                            class="show-theme-icons btn btn-outline-secondary btn-sm">
+                                        <i class="fa fa-th"></i>&nbsp;
+                                        Font-Awesome Übersicht
+                                    </button>
 
-                                <div class="pb-3" id="shortcode-info"></div>
+                                    <button data-bs-toggle="modal"
+                                            data-bs-target="#dialog-add-icon" data-bs-type="bi-info"
+                                            class="show-theme-icons btn btn-outline-secondary btn-sm">
+                                        <i class="bi bi-bootstrap"></i>&nbsp;
+                                        Bootstrap-Icons Übersicht
+                                    </button>
+                                    <div class="d-block">
+                                        <button id="resetIcons" onclick="reset_show_theme_icons(this,'shortcode-info')"
+                                                class="btn btn-blue-outline mt-3 btn-sm d-none">
+                                            <i class="fa fa-random"></i>&nbsp;
+                                            Reset
+                                        </button>
+                                    </div>
+                                    <hr>
+
+                                    <div class="pb-3" id="shortcode-info"></div>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
-                            <h6 class="d-flex flex-wrap align-items-center">
+                            <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
+                                <h6 class="d-flex flex-wrap align-items-center">
+                              <span>
+                                  <i class="fa fa-arrow-circle-right"></i> Lightbox: <small class="fw-normal">(WordPress Galerie/Image)</small>
+                              </span>
+                                    <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#collLightBox">
+                                    </i>
+                                </h6>
+                                <hr>
+                                <div id="collLightBox" class="collapse" data-bs-parent="#helpParent">
+                                    <div class="form-text pt-3"><b class="font-bold-light d-block">Wordpress Galerie</b>
+                                        <p>
+                                            Wordpress-Galerie oder Gruppen Klasse(n) hinzufügen
+                                        </p>
+                                        <span class="d-block">CSS-Klasse <code>gallery-lightbox</code></span>
+                                        <span class="d-block">
+                                            Für Einzelbilder <i>ohne next prev</i> zusätzlich die Klasse <code>lightbox-singles</code>
+                                        </span>
+                                        <b class="d-block font-bold-light mt-3">
+                                            Wordpress-Bild <small>(einzeln)</small>
+                                        </b>
+                                        CSS-Klasse <code>hupa-lightbox</code>
+                                        <p class="mt-3">
+                                            <i class="fa fa-info-circle font-blue me-1"></i> Bei Galerie oder
+                                            Einzel-Bilder muss der Link zur Mediendatei ausgewählt sein.
+                                        </p>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </div>
+
+                            <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
+                                <h6 class="d-flex flex-wrap align-items-center">
+                              <span>
+                                  <i class="fa fa-arrow-circle-right"></i> Kontaktdaten: <small class="fw-normal">(Shortcode)</small>
+                              </span>
+                                    <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#collKontaktdaten">
+                                    </i>
+                                </h6>
+                                <hr>
+                                <div id="collKontaktdaten" class="collapse" data-bs-parent="#helpParent">
+                                    <div class="form-text pt-3">
+                                        <b class="font-bold-light d-block">Shortcode:</b>
+                                        <code>[kontakt type="bezeichnung"]</code>
+                                        <p>
+                                            Die Bezeichnung steht in eckige Klammern. z.B. <code>[kontakt
+                                                type="adresse1"]</code>
+                                        </p>
+                                        <b class="font-weight pb-1 pt-2 d-block"> Weitere Shortcode Optionen:</b>
+                                        <ul style="list-style: circle">
+                                            <li><b>iconBefore="1"</b> <br> default -> 1 <br>
+                                                <small><i>mögliche Werte 1 oder 0</i></small>
+                                            </li>
+                                            <li><b>class=""</b> <br> default -> NULL</li>
+                                            <li><b>icon=""</b> <br> default -> NULL</li>
+                                            <li><b>url_type=""</b> <br> default -> NULL<br>
+                                                <small><i>mögliche Werte "url", "mailto" oder "tel"</i></small>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </div>
+
+                            <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
+                                <h6 class="d-flex flex-wrap align-items-center">
                               <span>
                                   <i class="fa fa-arrow-circle-right"></i> PDF Download:
                               </span>
-                                <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
-                                   data-bs-toggle="collapse"
-                                   data-bs-target="#collPdfDownload">
-                                </i>
-                            </h6>
-                            <hr>
-                            <div id="collPdfDownload" class="collapse">
-                                <b class="d-block font-blue strong-font-weight">Download von PDF-Dateien:</b>
-                                <b class="strong-font-weight font-blue">URL:</b> <?= get_site_url() ?><span
-                                        class="font-blue">?hupa=pdf&type=1&file=test.pdf</span>
+                                    <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#collPdfDownload">
+                                    </i>
+                                </h6>
                                 <hr>
-                                <b class="d-block font-blue strong-font-weight">Stream von PDF-Dateien:</b>
-                                <b class="strong-font-weight font-blue">URL:</b> <?= get_site_url() ?><span
-                                        class="font-blue">?hupa=pdf&type=0&file=test.pdf</span>
-                                <hr>
-                                <div class="form-text mb-3">Die Variable <code>type=0</code> öffnet die PDF und
-                                    <code>type=1</code> lädt die PDF runter.
-                                    Der Dateiname wird bei der Variable <code>"file="</code> eingetragen.
+                                <div id="collPdfDownload" class="collapse" data-bs-parent="#helpParent">
+                                    <b class="d-block font-blue strong-font-weight">Download von PDF-Dateien:</b>
+                                    <b class="strong-font-weight font-blue">URL:</b> <?= get_site_url() ?><span
+                                            class="font-blue">?hupa=pdf&type=1&file=test.pdf</span>
+                                    <hr>
+                                    <b class="d-block font-blue strong-font-weight">Stream von PDF-Dateien:</b>
+                                    <b class="strong-font-weight font-blue">URL:</b> <?= get_site_url() ?><span
+                                            class="font-blue">?hupa=pdf&type=0&file=test.pdf</span>
+                                    <hr>
+                                    <div class="form-text mb-3">Die Variable <code>type=0</code> öffnet die PDF und
+                                        <code>type=1</code> lädt die PDF runter.
+                                        Der Dateiname wird bei der Variable <code>"file="</code> eingetragen.
+                                    </div>
+                                    <hr>
                                 </div>
-                                <hr>
                             </div>
-                        </div>
 
-                        <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
-                            <h6 class="d-flex flex-wrap align-items-center">
+                            <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
+                                <h6 class="d-flex flex-wrap align-items-center">
+                              <span>
+                                  <i class="fa fa-arrow-circle-right"></i>
+                                  Scroll-Animation:
+                              </span>
+                                    <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#collScrollAnimation">
+                                    </i>
+                                </h6>
+                                <hr>
+                                <div class="collapse" id="collScrollAnimation" data-bs-parent="#helpParent">
+                                    <form class="sendAjaxThemeForm">
+                                        <input type="hidden" name="method" value="theme_form_handle">
+                                        <input type="hidden" name="handle" value="theme_animation">
+                                        <b class="font-bold-light d-block">Animation-Klassen:</b>
+                                        <ul class="mt-3 list-unstyled">
+                                            <li><b class="font-bold-light d-inline-block min-w8r">Fade:</b> <code><span class="fw-6 d-inline-block fw-bolder min-w5r">fadeScroll</span>
+                                                    &bull; <small>fadeScroll25 &bull; fadeScroll100</small></code></li>
+                                            <li><b class="font-bold-light d-inline-block min-w8r">Move Left:</b> <code><span class="fw-6 d-inline-block fw-bolder min-w5r">moveLeft</span>
+                                                    &bull; <small>moveLeft25 &bull; moveLeft100</small></code></li>
+                                            <li><b class="font-bold-light d-inline-block min-w8r">Move Right:</b> <code><span class="fw-6 d-inline-block fw-bolder min-w5r">moveRight</span>
+                                                    &bull; <small>moveRight25 &bull; moveRight100</small></code></li>
+                                            <li><b class="font-bold-light d-inline-block min-w8r">Move Top:</b> <code><span class="fw-6 d-inline-block fw-bolder min-w5r">moveTop</span>
+                                                    &bull; <small>moveTop25 &bull; moveTop100</small></code></li>
+                                            <li><b class="font-bold-light d-inline-block min-w8r">Move Bottom:</b>
+                                                <code><span class="fw-6 d-inline-block fw-bolder min-w5r">moveBottom</span> &bull; <small>moveBottom25 &bull; moveBottom100</small></code></li>
+                                        </ul>
+                                        <p class="mt-3">
+                                            <i class="fa fa-info-circle font-blue me-1"></i>
+                                            Wenn keine Wiederholung gewünscht ist, kann zusätzlich die Klasse <code class="fs-6">notRepeat</code>
+                                            für eine einmalige Animation hinzugefügt werden.
+                                        </p>
+                                        <hr>
+                                        <div class="font-bold-light pb-1 pt-2 d-flex flex-wrap align-items-center">
+                                           <span> Einstellungen für ein und ausblenden der Animation-Klassen:</span>
+                                            <span class="ms-auto font-bold-light ajax-status-spinner"></span>
+                                        </div>
+                                        <hr>
+                                        <?php $aniSettings = apply_filters('starter_animation_settings', null);
+                                        foreach ($aniSettings as $tmp): ?>
+                                            <h5 class="fw-normal"><?= $tmp['bezeichnung_first'] ?><span
+                                                        class="fw-light"><?= $tmp['bezeichnung_second'] ?></span></h5>
+                                            <div class="row g-3">
+                                                <?php foreach ($tmp['data'] as $val): ?>
+                                                    <div class="col-xl-3 col-lg-4 col-12">
+                                                        <div class="form-floating">
+                                                            <input type="<?= $val['type'] ?>"
+                                                                   class="form-control no-blur"
+                                                                   name="<?= $val['name'] ?>"
+                                                                   id="<?= $val['id'] ?>" value="<?= $val['value'] ?>">
+                                                            <label for="<?= $val['id'] ?>"><?= $val['bezeichnung'] ?></label>
+                                                        </div>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                          <hr>
+                                        <?php endforeach; ?>
+                                    </form>
+                                    <button type="button" data-type="reset_animation" class="sweet-alert2 btn btn-outline-primary">
+                                        <i class="fa fa-repeat me-1"></i> Einstellungen zurücksetzen
+                                    </button>
+                                    <hr>
+                                    <div style="height: 2rem">
+                                    <span class="d-block font-bold-light ajax-status-spinner"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
+                                <h6 class="d-flex flex-wrap align-items-center">
+                              <span>
+                                  <i class="fa fa-arrow-circle-right"></i>
+                                  Theme Tag: <small class="fw-normal">(Shortcode)</small>
+                              </span>
+                                    <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#collThemeTag">
+                                    </i>
+                                </h6>
+                                <hr>
+                                <div class="collapse" id="collThemeTag" data-bs-parent="#helpParent">
+                                    <b class="font-bold-light d-block">Shortcode:</b>
+                                    <code>[theme-tag tag="tag"]</code>
+                                    <p>
+                                        Das Tag steht in eckige Klammern. z.B. <code>[theme-tag tag="div"]</code><br>
+                                        Das End-Tag wird mit "-end" gekennzeichnet. z.B. <code>[theme-tag
+                                            tag="div-end"]</code>
+                                    </p>
+                                    <hr>
+                                    <b class="font-weight pb-1 pt-2 d-block"> Weitere Shortcode Optionen:</b>
+                                    <ul style="list-style: circle">
+                                        <li><b>class=""</b> <br> default -> NULL <br>
+                                            <small><i>mögliche Werte CSS-Klassen <small>(ohne Punkt)</small></i></small>
+                                        </li>
+                                        <li><b>id=""</b> <br> default -> NULL</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
+                                <h6 class="d-flex flex-wrap align-items-center">
                               <span>
                                   <i class="fa fa-arrow-circle-right"></i>
                                 Render-Block Funktion <small class="fw-normal">(Gruppe)</small>:
@@ -4447,43 +4675,44 @@ use Hupa\Starter\Config;
                                 Um CSS-Klassen einer Gruppe zuzuweisen muss, das "HTML-Element" auf <code><?= htmlspecialchars('<section>') ?></code> eingestellt sein.
                             </small>
                               </span>
-                                <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
-                                   data-bs-toggle="collapse"
-                                   data-bs-target="#collBlockGroup">
-                                </i>
-                            </h6>
-                            <hr>
-                            <div class="collapse" id="collBlockGroup">
-                                <b class="d-block font-blue strong-font-weight">Container-Fullwidth:</b>
-                                <b class="font-bold-light">
-                                    CssClass: <code>container-fullwidth</code>
-                                </b>
+                                    <i class="icon-circle bg-primary bi bi-arrows-collapse cursor-pointer ms-auto"
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#collBlockGroup">
+                                    </i>
+                                </h6>
                                 <hr>
-                                <b class="d-block font-blue strong-font-weight">Custom-Fullwidth:</b>
-                                <b class="font-bold-light">
-                                    CssClass: <code>custom-full-width</code>
-                                </b>
-                                <hr>
-                                <b class="d-block font-blue strong-font-weight">Inner-Container entfernen:</b>
-                                <b class="font-bold-light">
-                                    CssClass: <code>no-inner</code>
-                                </b>
-                                <hr>
-                                <b class="d-block font-blue strong-font-weight">Fullwidth mit inner
-                                    Bootstrap-Container:</b>
-                                <b class="font-bold-light">
-                                    CssClass: <code>theme-fullwidth-container</code>
-                                </b>
-                                <hr>
-                                <b class="d-block font-blue strong-font-weight">Fullwidth mit inner Bootstrap-Container
-                                    und Flexbox:</b>
-                                <b class="font-bold-light">
-                                    CssClass: <code>theme-fullwidth-flex-container</code>
-                                </b>
-                                <hr>
+                                <div class="collapse" id="collBlockGroup" data-bs-parent="#helpParent">
+                                    <b class="d-block font-blue strong-font-weight">Container-Fullwidth:</b>
+                                    <b class="font-bold-light">
+                                        CssClass: <code>container-fullwidth</code>
+                                    </b>
+                                    <hr>
+                                    <b class="d-block font-blue strong-font-weight">Custom-Fullwidth:</b>
+                                    <b class="font-bold-light">
+                                        CssClass: <code>custom-full-width</code>
+                                    </b>
+                                    <hr>
+                                    <b class="d-block font-blue strong-font-weight">Inner-Container entfernen:</b>
+                                    <b class="font-bold-light">
+                                        CssClass: <code>no-inner</code>
+                                    </b>
+                                    <hr>
+                                    <b class="d-block font-blue strong-font-weight">Fullwidth mit inner
+                                        Bootstrap-Container:</b>
+                                    <b class="font-bold-light">
+                                        CssClass: <code>theme-fullwidth-container</code>
+                                    </b>
+                                    <hr>
+                                    <b class="d-block font-blue strong-font-weight">Fullwidth mit inner
+                                        Bootstrap-Container
+                                        und Flexbox:</b>
+                                    <b class="font-bold-light">
+                                        CssClass: <code>theme-fullwidth-flex-container</code>
+                                    </b>
+                                    <hr>
+                                </div>
                             </div>
                         </div>
-
                     </div>
 
                     <!--//TODO JOB WARNING RESET-->

@@ -54,6 +54,7 @@
 
                     <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option first-box align-items-center">
                         <div class="col">
+
                             <div class="col-xxl-8 col-xl-10 col-12 p-2">
                                 <div class="form-floating">
                                     <select class="form-select no-blur" id="selectCarouselImageSize{{ r.id }}"
@@ -66,7 +67,7 @@
                                                 {% if r.carousel_image_size == 'large' %}selected{% endif %}>large
                                         </option>
                                         <option value="full"
-                                                {% if r.carousel_image_size == 'full' %}selected{% endif %}}>full
+                                                {% if r.carousel_image_size == 'full' %}selected{% endif %}>full
                                         </option>
                                     </select>
                                     <label for="selectCarouselImageSize{{ r.id }}">Bildgröße auswählen</label>

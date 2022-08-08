@@ -161,14 +161,16 @@ final class RegisterHupaStarter
             delete_option('hupa_starter_product_install_authorize');
             delete_option('hupa_update_error_message');
             delete_option('hupa_product_install_time');
-            delete_option('hupa_product_client_id');
-            delete_option('hupa_product_client_secret');
+            if(Config::get('DEACTIVATE_DELETE_ACCESS_DATA')){
+                delete_option('hupa_product_client_secret');
+                delete_option('hupa_product_client_id');
+            }
             delete_option('hupa_access_token');
             delete_option('hupa_license_url');
             set_transient('show_theme_license_info', true, 5);
 
             update_option('hupa_wp_cache', 0);
-            update_option('hupa_wp_debug', 0);
+            update_option('hupa_wp_debug', 1);
             update_option('hupa_wp_debug_log', 0);
             update_option('wp_debug_display', 0);
             update_option('hupa_wp_script_debug', 0);
@@ -192,13 +194,15 @@ final class RegisterHupaStarter
             update_option('ssl_login_aktiv', 0);
             update_option('admin_ssl_login_aktiv', 0);
             update_option('mu_plugin', 0);
-
         }
    }
 
     public function hupa_starter_theme_deactivated() {
-       // delete_option('hupa_starter_product_install_authorize');
-       // delete_option('hupa_product_client_secret');
+        delete_option('hupa_starter_product_install_authorize');
+        if(Config::get('DEACTIVATE_DELETE_ACCESS_DATA')){
+            delete_option('hupa_product_client_secret');
+            delete_option('hupa_product_client_id');
+        }
 
         global $hupa_optionen_class;
         $msg = 'Version: ' . $this->theme_version . ' Theme am '.date('d.m.Y \u\m H:i:s').' Uhr deaktiviert!';
@@ -229,6 +233,7 @@ final class RegisterHupaStarter
         delete_option('hupa_wp_disallow_file_mods');
 
         delete_option('tools_hupa_address');
+        delete_option('hupa_animation_settings');
 
 
     }

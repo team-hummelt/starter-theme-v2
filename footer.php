@@ -105,6 +105,7 @@ $pageBottomFooter = $pageSettings->show_bottom_footer;
 
 <?php wp_footer(); ?>
 
+<div id="starter-v2-blueimp-gallery"></div>
 <div id="blueimp-gallery"></div>
 </body>
 </html>

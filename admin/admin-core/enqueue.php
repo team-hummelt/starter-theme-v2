@@ -95,7 +95,7 @@ final class HupaEnqueueStarterTheme
 
         $modificated = date('YmdHi', filemtime(get_template_directory() . '/js/hupa-gmaps-script.js'));
         $modificated = date('YmdHi', filemtime(THEME_ADMIN_DIR . 'admin-core/assets/theme-scripte/hupa-starter-theme.js'));
-
+        $modificated = date('YmdHi', filemtime(get_template_directory() . '/css/lib/blueimp-gallery.min.css'));
 
         wp_enqueue_style('bootscore-style', get_stylesheet_uri(), array(), $modificated);
         // TODO ANIMATE
@@ -116,6 +116,8 @@ final class HupaEnqueueStarterTheme
             //JOB WOW JS
             $modificated = date('YmdHi', filemtime(get_template_directory() . '/js/wowjs/wow.min.js'));
             wp_enqueue_script('hupa-theme-wow-js-script', get_template_directory_uri() . '/js/wowjs/wow.min.js', array(), $modificated, true);
+            // JOB LIGHTBOX
+            wp_enqueue_style('blueimp-lightbox',get_template_directory_uri().'/css/lib/blueimp-gallery.min.css', array(), $modificated);
         }
 
         wp_enqueue_style('bootstrap-icons-style', Config::get('HUPA_THEME_VENDOR_URL') . 'twbs/bootstrap-icons/font/bootstrap-icons.css', array(), $modificated);
@@ -158,7 +160,8 @@ final class HupaEnqueueStarterTheme
                 'img_mobil_width' => $navMobilImg,
                 'img' => $img,
                 'src_url' => get_template_directory_uri(),
-                'img_size' => ''
+                'img_size' => '',
+                'animation' => get_option('hupa_animation_settings')
             )
         );
     }

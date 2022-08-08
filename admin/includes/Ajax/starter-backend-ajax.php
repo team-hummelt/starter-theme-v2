@@ -1,4 +1,5 @@
 <?php
+
 namespace Hupa\StarterV2;
 defined('ABSPATH') or die();
 
@@ -67,10 +68,10 @@ class Hupa_Starter_V2_Admin_Ajax
      * Store plugin main class to allow admin access.
      *
      * @since    2.0.0
-     * @access   private
+     * @access   protected
      * @var HupaStarterThemeV2 $main The main class.
      */
-    protected  HupaStarterThemeV2 $main;
+    protected HupaStarterThemeV2 $main;
 
     /**
      * TWIG autoload for PHP-Template-Engine
@@ -86,8 +87,8 @@ class Hupa_Starter_V2_Admin_Ajax
      * The ID of this theme.
      *
      * @since    2.0.0
-     * @access   private
-     * @var      string    $basename    The ID of this theme.
+     * @access   protected
+     * @var      string $basename The ID of this theme.
      */
     protected string $basename;
 
@@ -95,10 +96,19 @@ class Hupa_Starter_V2_Admin_Ajax
      * The version of this theme.
      *
      * @since    2.0.0
-     * @access   private
-     * @var      string    $theme_version    The current version of this theme.
+     * @access   protected
+     * @var      string $theme_version The current version of this theme.
      */
     protected string $theme_version;
+
+    /**
+     * The Constants of this theme.
+     *
+     * @since    2.0.0
+     * @access   private
+     * @array      array $systems_settings System Settings Constants.
+     */
+    private array $systems_settings;
 
     /**
      * TRAIT of Option Settings.
@@ -116,7 +126,7 @@ class Hupa_Starter_V2_Admin_Ajax
     /**
      * @return static
      */
-    public static function hupa_admin_ajax_instance(string  $theme_name, string  $theme_version, HupaStarterThemeV2  $main, Environment $twig): self
+    public static function hupa_admin_ajax_instance(string $theme_name, string $theme_version, HupaStarterThemeV2 $main, Environment $twig): self
     {
         if (is_null(self::$hupa_admin_ajax_instance)) {
             self::$hupa_admin_ajax_instance = new self($theme_name, $theme_version, $main, $twig);
@@ -125,15 +135,17 @@ class Hupa_Starter_V2_Admin_Ajax
     }
 
 
-    public function __construct( string $theme_name, string $theme_version, HupaStarterThemeV2 $main, Environment $twig) {
+    public function __construct(string $theme_name, string $theme_version, HupaStarterThemeV2 $main, Environment $twig)
+    {
 
         $this->basename = $theme_name;
         $this->theme_version = $theme_version;
         $this->main = $main;
         $this->twig = $twig;
+        $this->systems_settings = ['CUSTOM_FOOTER', 'CUSTOM_HEADER', 'DESIGN_TEMPLATES','HUPA_SIDEBAR_OLD', 'HUPA_TOOLS', 'HUPA_CAROUSEL', 'HUPA_MAPS', 'HUPA_API_INSTALL'];
         $this->method = $_POST['method'];
-        if ( isset( $_POST['daten'] ) ) {
-            $this->data   = $_POST['daten'];
+        if (isset($_POST['daten'])) {
+            $this->data = $_POST['daten'];
         }
     }
 
@@ -149,19 +161,19 @@ class Hupa_Starter_V2_Admin_Ajax
         global $hupa_register_theme_options;
         global $wpdb;
 
-        $record               = new stdClass();
-        $responseJson         = new stdClass();
+        $record = new stdClass();
+        $responseJson = new stdClass();
         $responseJson->status = false;
-        $responseJson->msg    = date( 'H:i:s', current_time( 'timestamp' ) );
+        $responseJson->msg = date('H:i:s', current_time('timestamp'));
 
-        switch ( $this->method ) {
+        switch ($this->method) {
             case 'theme_form_handle':
 
                 $handle = filter_input(INPUT_POST, 'handle', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                 if (!$handle) {
                     $responseJson->spinner = true;
                     $responseJson->msg = sprintf(__('Save <b class="text-danger">failed</b> (transmission error) - %s', 'bootscore'), date('H:i:s', current_time('timestamp')));
-                    return  $responseJson;
+                    return $responseJson;
                 }
                 switch ($handle) {
 
@@ -183,9 +195,9 @@ class Hupa_Starter_V2_Admin_Ajax
 
                         //$record->update_aktiv
                         $apiJson = $this->main->get_license_config();
-                        $apiJson->update->update_aktiv=$record->update_aktiv;
+                        $apiJson->update->update_aktiv = $record->update_aktiv;
                         $config_file = Config::get('THEME_ADMIN_INCLUDES') . 'license/config.json';
-                        file_put_contents($config_file, json_encode( $apiJson) );
+                        file_put_contents($config_file, json_encode($apiJson));
 
                         apply_filters('update_hupa_options', $record, 'wp_optionen');
                         $responseJson->spinner = true;
@@ -237,16 +249,53 @@ class Hupa_Starter_V2_Admin_Ajax
                         $dataArr = [];
                         foreach ($icons as $key => $val) {
                             $data_item = [
-                              'id' => $key,
-                              'shortcode' => esc_html($val['shortcode']),
-                              'value' => apply_filters('cleanWhitespace', esc_html($_POST[$val['shortcode']])),
-                              'icon' => esc_html($_POST['icon_' . $val['shortcode']])
+                                'id' => $key,
+                                'shortcode' => esc_html($val['shortcode']),
+                                'value' => apply_filters('cleanWhitespace', esc_html($_POST[$val['shortcode']])),
+                                'icon' => esc_html($_POST['icon_' . $val['shortcode']])
                             ];
                             $dataArr[] = $data_item;
                         }
                         update_option('tools_hupa_address', $dataArr);
                         $responseJson->spinner = true;
 
+                        break;
+                    case'theme_animation':
+                        $updateAnimation = [
+                            'fadeTop' => filter_input(INPUT_POST, 'fadeTop', FILTER_SANITIZE_NUMBER_INT),
+                            'fadeBottom' => filter_input(INPUT_POST, 'fadeBottom', FILTER_SANITIZE_NUMBER_INT),
+                            'fadeTop25' => filter_input(INPUT_POST, 'fadeTop25', FILTER_SANITIZE_NUMBER_INT),
+                            'fadeBottom25' => filter_input(INPUT_POST, 'fadeBottom25', FILTER_SANITIZE_NUMBER_INT),
+                            'fadeTop100' => filter_input(INPUT_POST, 'fadeTop100', FILTER_SANITIZE_NUMBER_INT),
+                            'fadeBottom100' => filter_input(INPUT_POST, 'fadeBottom100', FILTER_SANITIZE_NUMBER_INT),
+                            'moveLeftTop' => filter_input(INPUT_POST, 'moveLeftTop', FILTER_SANITIZE_NUMBER_INT),
+                            'moveLeftBottom' => filter_input(INPUT_POST, 'moveLeftBottom', FILTER_SANITIZE_NUMBER_INT),
+                            'moveLeftTop25' => filter_input(INPUT_POST, 'moveLeftTop25', FILTER_SANITIZE_NUMBER_INT),
+                            'moveLeftBottom25' => filter_input(INPUT_POST, 'moveLeftBottom25', FILTER_SANITIZE_NUMBER_INT),
+                            'moveLeftTop100' => filter_input(INPUT_POST, 'moveLeftTop100', FILTER_SANITIZE_NUMBER_INT),
+                            'moveLeftBottom100' => filter_input(INPUT_POST, 'moveLeftBottom100', FILTER_SANITIZE_NUMBER_INT),
+                            'moveRightTop' => filter_input(INPUT_POST, 'moveRightTop', FILTER_SANITIZE_NUMBER_INT),
+                            'moveRightBottom' => filter_input(INPUT_POST, 'moveRightBottom', FILTER_SANITIZE_NUMBER_INT),
+                            'moveRightTop25' => filter_input(INPUT_POST, 'moveRightTop25', FILTER_SANITIZE_NUMBER_INT),
+                            'moveRightBottom25' => filter_input(INPUT_POST, 'moveRightBottom25', FILTER_SANITIZE_NUMBER_INT),
+                            'moveRightTop100' => filter_input(INPUT_POST, 'moveRightTop100', FILTER_SANITIZE_NUMBER_INT),
+                            'moveRightBottom100' => filter_input(INPUT_POST, 'moveRightBottom100', FILTER_SANITIZE_NUMBER_INT),
+                            'moveTopTop' => filter_input(INPUT_POST, 'moveTopTop', FILTER_SANITIZE_NUMBER_INT),
+                            'moveTopBottom' => filter_input(INPUT_POST, 'moveTopBottom', FILTER_SANITIZE_NUMBER_INT),
+                            'moveTopTop25' => filter_input(INPUT_POST, 'moveTopTop25', FILTER_SANITIZE_NUMBER_INT),
+                            'moveTopBottom25' => filter_input(INPUT_POST, 'moveTopBottom25', FILTER_SANITIZE_NUMBER_INT),
+                            'moveTopTop100' => filter_input(INPUT_POST, 'moveTopTop100', FILTER_SANITIZE_NUMBER_INT),
+                            'moveTopBottom100' => filter_input(INPUT_POST, 'moveTopBottom100', FILTER_SANITIZE_NUMBER_INT),
+                            'moveBottomTop' => filter_input(INPUT_POST, 'moveBottomTop', FILTER_SANITIZE_NUMBER_INT),
+                            'moveBottomBottom' => filter_input(INPUT_POST, 'moveBottomBottom', FILTER_SANITIZE_NUMBER_INT),
+                            'moveBottomTop25' => filter_input(INPUT_POST, 'moveBottomTop25', FILTER_SANITIZE_NUMBER_INT),
+                            'moveBottomBottom25' => filter_input(INPUT_POST, 'moveBottomBottom25', FILTER_SANITIZE_NUMBER_INT),
+                            'moveBottomTop100' => filter_input(INPUT_POST, 'moveBottomTop100', FILTER_SANITIZE_NUMBER_INT),
+                            'moveBottomBottom100' => filter_input(INPUT_POST, 'moveBottomBottom100', FILTER_SANITIZE_NUMBER_INT)
+                        ];
+
+                        update_option('hupa_animation_settings', $updateAnimation);
+                        $responseJson->spinner = true;
                         break;
 
                     case'smtp_settings':
@@ -582,8 +631,8 @@ class Hupa_Starter_V2_Admin_Ajax
                         $reddit_url_check && $reddit_url ? $redditUrlCheck = true : $redditUrlCheck = false;
                         $tumblr_post_check && $tumblr_url ? $tumblrUrlCheck = true : $tumblrUrlCheck = false;
                         $buffer_url_check && $buffer_url ? $bufferUrlCheck = true : $bufferUrlCheck = false;
-                        $mix_url_check &&  $mix_url ?  $mixUrlCheck = true : $mixUrlCheck = false;
-                        $vk_url_check &&  $vk_url ?  $vkUrlCheck = true : $vkUrlCheck = false;
+                        $mix_url_check && $mix_url ? $mixUrlCheck = true : $mixUrlCheck = false;
+                        $vk_url_check && $vk_url ? $vkUrlCheck = true : $vkUrlCheck = false;
 
                         $media = [
                             'social_media' => [
@@ -771,13 +820,13 @@ class Hupa_Starter_V2_Admin_Ajax
                                 $google_maps_placeholder = apply_filters('arrayToObject', $dbArray);
                                 break;
                             case 'update':
-                                if(!$map_ds_id){
+                                if (!$map_ds_id) {
                                     $responseJson->msg = 'Daten konnten nicht gespeichert werden!';
                                     return $responseJson;
                                 }
                                 $settArr = [];
                                 foreach ($dbSettings->google_maps_placeholder as $tmp) {
-                                    if($tmp->map_ds_id == $map_ds_id) {
+                                    if ($tmp->map_ds_id == $map_ds_id) {
                                         $tmp = $google_maps_placeholder;
                                     }
                                     $settArr[] = $tmp;
@@ -831,10 +880,10 @@ class Hupa_Starter_V2_Admin_Ajax
                         update_option('hupa_wp_script_debug', $hupa_wp_script_debug);
 
                         //Optionen
-                        update_option('hupa_wp_automatic_update', $hupa_wp_automatic_update);
+                       /* update_option('hupa_wp_automatic_update', $hupa_wp_automatic_update);
                         update_option('hupa_wp_disable_wp_cron', $hupa_wp_disable_wp_cron);
                         update_option('hupa_wp_disallow_file_edit', $hupa_wp_disallow_file_edit);
-                        update_option('hupa_wp_disallow_file_mods', $hupa_wp_disallow_file_mods);
+                        update_option('hupa_wp_disallow_file_mods', $hupa_wp_disallow_file_mods);*/
 
                         update_option('hupa_show_fatal_error', $show_fatal_error);
                         update_option('hupa_db_repair', $db_repair);
@@ -861,68 +910,6 @@ class Hupa_Starter_V2_Admin_Ajax
                         } else {
                             $hupa_optionen_class->theme_deactivate_mu_plugin();
                         }
-
-
-                        //JOB AUTOMATIC_UPDATER_DISABLED
-                        if ($hupa_wp_automatic_update) {
-                            $create = $hupa_optionen_class->add_create_config_put('AUTOMATIC_UPDATER_DISABLED', 'AUTOMATIC UPDATER DISABLED CACHE', 1);
-                            if (!$create->status) {
-                                $responseJson->msg = $create->msg;
-                                return $responseJson;
-                            }
-                        } else {
-                            $delete = $hupa_optionen_class->delete_config_put('AUTOMATIC_UPDATER_DISABLED', 'AUTOMATIC UPDATER DISABLED', 1);
-                            if (!$delete->status) {
-                                $responseJson->msg = $delete->msg;
-                                return $responseJson;
-                            }
-                        }
-
-                        //JOB DISABLE_WP_CRON
-                        if ($hupa_wp_disable_wp_cron) {
-                            $create = $hupa_optionen_class->add_create_config_put('DISABLE_WP_CRON', 'DISABLE WP CRON', 1);
-                            if (!$create->status) {
-                                $responseJson->msg = $create->msg;
-                                return $responseJson;
-                            }
-                        } else {
-                            $delete = $hupa_optionen_class->delete_config_put('DISABLE_WP_CRON', 'DISABLE WP CRON', 1);
-                            if (!$delete->status) {
-                                $responseJson->msg = $delete->msg;
-                                return $responseJson;
-                            }
-                        }
-
-                        //JOB DISALLOW_FILE_EDIT
-                        if ($hupa_wp_disallow_file_edit) {
-                            $create = $hupa_optionen_class->add_create_config_put('DISALLOW_FILE_EDIT', 'DISALLOW FILE EDIT', 1);
-                            if (!$create->status) {
-                                $responseJson->msg = $create->msg;
-                                return $responseJson;
-                            }
-                        } else {
-                            $delete = $hupa_optionen_class->delete_config_put('DISALLOW_FILE_EDIT', 'DISALLOW FILE EDIT', 1);
-                            if (!$delete->status) {
-                                $responseJson->msg = $delete->msg;
-                                return $responseJson;
-                            }
-                        }
-
-                        //JOB DISALLOW_FILE_MODS
-                        if ($hupa_wp_disallow_file_mods) {
-                            $create = $hupa_optionen_class->add_create_config_put('DISALLOW_FILE_MODS', 'DISALLOW FILE MODS', 1);
-                            if (!$create->status) {
-                                $responseJson->msg = $create->msg;
-                                return $responseJson;
-                            }
-                        } else {
-                            $delete = $hupa_optionen_class->delete_config_put('DISALLOW_FILE_MODS', 'DISALLOW FILE MODS', 1);
-                            if (!$delete->status) {
-                                $responseJson->msg = $delete->msg;
-                                return $responseJson;
-                            }
-                        }
-
                         //JOB WP CACHE
                         if ($wp_cache) {
                             $create = $hupa_optionen_class->add_create_config_put('WP_CACHE', 'WP CACHE', 1);
@@ -1170,14 +1157,22 @@ class Hupa_Starter_V2_Admin_Ajax
                 $responseJson->msg = date('H:i:s', current_time('timestamp'));
                 break;
 
+            case 'reset_animation':
+                $defaults = $this->get_theme_default_settings();
+                update_option('hupa_animation_settings', $defaults['animation_default']);
+                $responseJson->status = true;
+                $responseJson->reset_animation = true;
+                $responseJson->defaults = get_option('hupa_animation_settings');
+                $responseJson->msg = 'Einstellungen erfolgreich zurückgesetzt.';
+                break;
             case 'delete_gmaps_settings':
                 $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
-                if(!$id) {
+                if (!$id) {
                     $responseJson->msg = 'Ajax Übertragungsfehler!';
                     return $responseJson;
                 }
 
-                if($id == 1) {
+                if ($id == 1) {
                     $responseJson->msg = 'Die Default-Settings können nicht gelöscht werden!';
                     return $responseJson;
                 }
@@ -1191,7 +1186,7 @@ class Hupa_Starter_V2_Admin_Ajax
 
                 $settingsArr = [];
                 foreach ($dbSettings->google_maps_placeholder as $tmp) {
-                    if($tmp->map_ds_id == $id ){
+                    if ($tmp->map_ds_id == $id) {
                         continue;
                     }
                     $settingsArr[] = $tmp;
@@ -1201,6 +1196,212 @@ class Hupa_Starter_V2_Admin_Ajax
                 $responseJson->msg = 'Settings gelöscht';
                 $responseJson->loadTable = true;
                 $responseJson->method = $this->method;
+                $responseJson->status = true;
+                break;
+
+            case 'load_env_data':
+                $file = false;
+                if (file_exists(THEME_ADMIN_DIR . '.env')) {
+                    $file = file(THEME_ADMIN_DIR . '.env');
+                }
+
+                $fileData = [];
+                if ($file):
+                    foreach ($file as $line) {
+                        $split = explode('=', $line);
+                        if (!in_array($split[0], $this->systems_settings)) {
+                            continue;
+                        }
+                        $bez = str_replace('_', ' ', $split[0]);
+                        $data_item = [
+                            'bezeichnung' => ucfirst(strtolower($bez)),
+                            'name' => $split[0],
+                            'value' => $split[1]
+                        ];
+                        $fileData[] = $data_item;
+                    }
+
+                endif;
+                $data = [
+                    'data' => $fileData
+                ];
+
+                try {
+                    $template = $this->twig->render('@partials-loops/system-settings.twig', $data);
+                    $responseJson->template = apply_filters('compress_template', $template);
+                } catch (LoaderError|SyntaxError|RuntimeError $e) {
+                    echo $e->getMessage();
+                } catch (Throwable $e) {
+                    echo $e->getMessage();
+                }
+                $responseJson->status = true;
+                break;
+
+            case'update_env_settings':
+
+                filter_input(INPUT_POST, 'CUSTOM_FOOTER', FILTER_SANITIZE_STRING) ? $record->CUSTOM_FOOTER = 1 : $record->CUSTOM_FOOTER = 0;
+                filter_input(INPUT_POST, 'CUSTOM_HEADER', FILTER_SANITIZE_STRING) ? $record->CUSTOM_HEADER = 1 : $record->CUSTOM_HEADER = 0;
+                filter_input(INPUT_POST, 'DESIGN_TEMPLATES', FILTER_SANITIZE_STRING) ? $record->DESIGN_TEMPLATES = 1 : $record->DESIGN_TEMPLATES = 0;
+                filter_input(INPUT_POST, 'HUPA_SIDEBAR', FILTER_SANITIZE_STRING) ? $record->HUPA_SIDEBAR = 1 : $record->HUPA_SIDEBAR = 0;
+                filter_input(INPUT_POST, 'HUPA_CAROUSEL', FILTER_SANITIZE_STRING) ? $record->HUPA_CAROUSEL = 1 : $record->HUPA_CAROUSEL = 0;
+                filter_input(INPUT_POST, 'HUPA_MAPS', FILTER_SANITIZE_STRING) ? $record->HUPA_MAPS = 1 : $record->HUPA_MAPS = 0;
+                filter_input(INPUT_POST, 'HUPA_TOOLS', FILTER_SANITIZE_STRING) ? $record->HUPA_TOOLS = 1 : $record->HUPA_TOOLS = 0;
+                filter_input(INPUT_POST, 'HUPA_API_INSTALL', FILTER_SANITIZE_STRING) ? $record->HUPA_API_INSTALL = 1 : $record->HUPA_API_INSTALL = 0;
+                $pinInput = filter_input(INPUT_POST, 'setting_pin', FILTER_SANITIZE_NUMBER_INT);
+                $pin = apply_filters('get_settings_pin', null);
+                if(!apply_filters('hupa_validate_pin',$pinInput, $pin)){
+                    $responseJson->msg = 'Falscher PIN!';
+                    return $responseJson;
+                }
+                $file = false;
+                if (file_exists(THEME_ADMIN_DIR . '.env')) {
+                    $file = file(THEME_ADMIN_DIR . '.env');
+                }
+
+                $envValue = '';
+                if ($file) {
+                    foreach ($file as $line) {
+                        $split = explode('=', $line);
+                        if (in_array($split[0], $this->systems_settings)) {
+                            $c = $split[0];
+                            $writeLine = $split[0] . "=" . (int)$record->$c . "\r\n";
+                        } else {
+                            $writeLine = $line;
+                        }
+
+                        $envValue .= $writeLine;
+                    }
+                } else {
+                    $responseJson->msg = 'ENV File nicht gefunden!';
+                    return $responseJson;
+                }
+
+                file_put_contents(THEME_ADMIN_DIR . '.env', $envValue);
+                $responseJson->status = true;
+                $responseJson->msg = 'Änderungen erfolgreich gespeichert!';
+                break;
+
+            case'update_theme_optionen':
+
+                $pinInput = filter_input(INPUT_POST, 'setting_pin', FILTER_SANITIZE_NUMBER_INT);
+                $pin = apply_filters('get_settings_pin', null);
+                if(!apply_filters('hupa_validate_pin',$pinInput, $pin)){
+                    $responseJson->msg = 'Falscher PIN!';
+                    return $responseJson;
+                }
+
+                //Optionen
+                filter_input(INPUT_POST, 'hupa_wp_automatic_update', FILTER_SANITIZE_STRING) ? $hupa_wp_automatic_update = 1 : $hupa_wp_automatic_update = 0;
+                filter_input(INPUT_POST, 'hupa_wp_disable_wp_cron', FILTER_SANITIZE_STRING) ? $hupa_wp_disable_wp_cron = 1 : $hupa_wp_disable_wp_cron = 0;
+                filter_input(INPUT_POST, 'hupa_wp_disallow_file_edit', FILTER_SANITIZE_STRING) ? $hupa_wp_disallow_file_edit = 1 : $hupa_wp_disallow_file_edit = 0;
+                filter_input(INPUT_POST, 'hupa_wp_disallow_file_mods', FILTER_SANITIZE_STRING) ? $hupa_wp_disallow_file_mods = 1 : $hupa_wp_disallow_file_mods = 0;
+
+                //Optionen
+                update_option('hupa_wp_automatic_update', $hupa_wp_automatic_update);
+                update_option('hupa_wp_disable_wp_cron', $hupa_wp_disable_wp_cron);
+                update_option('hupa_wp_disallow_file_edit', $hupa_wp_disallow_file_edit);
+                update_option('hupa_wp_disallow_file_mods', $hupa_wp_disallow_file_mods);
+
+                //JOB AUTOMATIC_UPDATER_DISABLED
+                if ($hupa_wp_automatic_update) {
+                    $create = $hupa_optionen_class->add_create_config_put('AUTOMATIC_UPDATER_DISABLED', 'AUTOMATIC UPDATER DISABLED CACHE', 1);
+                    if (!$create->status) {
+                        $responseJson->msg = $create->msg;
+                        return $responseJson;
+                    }
+                } else {
+                    $delete = $hupa_optionen_class->delete_config_put('AUTOMATIC_UPDATER_DISABLED', 'AUTOMATIC UPDATER DISABLED', 1);
+                    if (!$delete->status) {
+                        $responseJson->msg = $delete->msg;
+                        return $responseJson;
+                    }
+                }
+
+                //JOB DISABLE_WP_CRON
+                if ($hupa_wp_disable_wp_cron) {
+                    $create = $hupa_optionen_class->add_create_config_put('DISABLE_WP_CRON', 'DISABLE WP CRON', 1);
+                    if (!$create->status) {
+                        $responseJson->msg = $create->msg;
+                        return $responseJson;
+                    }
+                } else {
+                    $delete = $hupa_optionen_class->delete_config_put('DISABLE_WP_CRON', 'DISABLE WP CRON', 1);
+                    if (!$delete->status) {
+                        $responseJson->msg = $delete->msg;
+                        return $responseJson;
+                    }
+                }
+
+                //JOB DISALLOW_FILE_EDIT
+                if ($hupa_wp_disallow_file_edit) {
+                    $create = $hupa_optionen_class->add_create_config_put('DISALLOW_FILE_EDIT', 'DISALLOW FILE EDIT', 1);
+                    if (!$create->status) {
+                        $responseJson->msg = $create->msg;
+                        return $responseJson;
+                    }
+                } else {
+                    $delete = $hupa_optionen_class->delete_config_put('DISALLOW_FILE_EDIT', 'DISALLOW FILE EDIT', 1);
+                    if (!$delete->status) {
+                        $responseJson->msg = $delete->msg;
+                        return $responseJson;
+                    }
+                }
+
+                //JOB DISALLOW_FILE_MODS
+                if ($hupa_wp_disallow_file_mods) {
+                    $create = $hupa_optionen_class->add_create_config_put('DISALLOW_FILE_MODS', 'DISALLOW FILE MODS', 1);
+                    if (!$create->status) {
+                        $responseJson->msg = $create->msg;
+                        return $responseJson;
+                    }
+                } else {
+                    $delete = $hupa_optionen_class->delete_config_put('DISALLOW_FILE_MODS', 'DISALLOW FILE MODS', 1);
+                    if (!$delete->status) {
+                        $responseJson->msg = $delete->msg;
+                        return $responseJson;
+                    }
+                }
+
+                $responseJson->status = true;
+                $responseJson->msg = 'Änderungen erfolgreich gespeichert!';
+
+                break;
+            case'update_theme_over_api':
+                $version = filter_input(INPUT_POST, 'version', FILTER_SANITIZE_STRING);
+                $body = [
+                    'method' => 'download_update',
+                    'version' => $version,
+                    'slug' => $this->basename
+                ];
+
+                $responseJson->type = $this->method;
+                $zipFile =  apply_filters('get_api_download', get_option('hupa_server_url') . 'hupa', $body);
+                if (!$zipFile) {
+                    $responseJson->msg = 'Download fehlgeschlagen!';
+                    return $responseJson;
+                }
+
+                do_action('is_hupa_custom_dir', Config::get('UPDATE_TEMP_FOLDER_DIR'));
+                if(!is_dir( Config::get('UPDATE_TEMP_FOLDER_DIR'))){
+                    $responseJson->msg = 'Upload-Temp-Ordner nicht gefunden!';
+                    return $responseJson;
+                }
+
+                $filePath = Config::get('UPDATE_TEMP_FOLDER_DIR') . $this->basename . '.zip';
+                @file_put_contents($filePath, $zipFile);
+                $themeDir = dirname(HUPA_THEME_DIR) . DIRECTORY_SEPARATOR . $this->basename . DIRECTORY_SEPARATOR;
+                apply_filters('destroy_dir_recursive', $themeDir);
+                  //$themeDir = Config::get('UPDATE_TEMP_FOLDER_DIR');
+                WP_Filesystem();
+                $unZipFile = unzip_file($filePath, $themeDir);
+                if (!$unZipFile) {
+                    $responseJson->msg = 'Download fehlgeschlagen!';
+                    return $responseJson;
+                }
+
+                if(is_file($filePath)){
+                    @unlink($filePath);
+                }
                 $responseJson->status = true;
                 break;
 
@@ -1454,7 +1655,7 @@ class Hupa_Starter_V2_Admin_Ajax
 
                 if (!$data->map_pin_coords) {
                     $responseJson->status = false;
-                    $responseJson->msg = apply_filters('get_theme_language', 'ajax-return-msg')->language->error ;
+                    $responseJson->msg = apply_filters('get_theme_language', 'ajax-return-msg')->language->error;
 
                     return $responseJson;
                 }
@@ -1542,17 +1743,17 @@ class Hupa_Starter_V2_Admin_Ajax
                             $imdId = $tmp->custom_pin_img;
                             $img = wp_get_attachment_image_src($tmp->custom_pin_img);
                             $imgUrl = $img[0];
-                            $imgStPin = '<img class="range-image img-fluid" src="'.$img[0].'" alt="" width="'.($tmp->custom_width + $factor).'" height="'.($tmp->custom_height + $factor).'">';
+                            $imgStPin = '<img class="range-image img-fluid" src="' . $img[0] . '" alt="" width="' . ($tmp->custom_width + $factor) . '" height="' . ($tmp->custom_height + $factor) . '">';
                         } else {
                             if (get_hupa_option('map_standard_pin')) {
                                 $imdId = get_hupa_option('map_standard_pin');
                                 $img = wp_get_attachment_image_src($imdId);
                                 $imgUrl = $img[0];
-                                $imgStPin = '<img class="range-image img-fluid" src="'.$img[0].'" alt="" width="'.(get_hupa_option('map_pin_width') + $factor).'" height="'.(get_hupa_option('map_pin_height') + $factor).'">';
+                                $imgStPin = '<img class="range-image img-fluid" src="' . $img[0] . '" alt="" width="' . (get_hupa_option('map_pin_width') + $factor) . '" height="' . (get_hupa_option('map_pin_height') + $factor) . '">';
                             } else {
                                 $imdId = false;
                                 $imgUrl = Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/img-placeholder.svg';
-                                $imgStPin = '<img class="img-fluid" src="'.Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/img-placeholder.svg'.'" alt="" width="'.($factor + 25).'">';
+                                $imgStPin = '<img class="img-fluid" src="' . Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/img-placeholder.svg' . '" alt="" width="' . ($factor + 25) . '">';
                             }
                         }
                     } else {
@@ -1560,11 +1761,11 @@ class Hupa_Starter_V2_Admin_Ajax
                         if ($imdId) {
                             $img = wp_get_attachment_image_src($imdId);
                             $imgUrl = $img[0];
-                            $imgStPin = '<img class="range-image img-fluid" src="'.$img[0].'" alt="" width="'.(get_hupa_option('map_pin_width') + $factor).'" height="'.(get_hupa_option('map_pin_height') + $factor).'">';
+                            $imgStPin = '<img class="range-image img-fluid" src="' . $img[0] . '" alt="" width="' . (get_hupa_option('map_pin_width') + $factor) . '" height="' . (get_hupa_option('map_pin_height') + $factor) . '">';
                         } else {
                             $imdId = false;
                             $imgUrl = Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/img-placeholder.svg';
-                            $imgStPin = '<img class="img-fluid" src="'.Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/img-placeholder.svg'.'" alt="" width="'.($factor + 25).'">';
+                            $imgStPin = '<img class="img-fluid" src="' . Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/img-placeholder.svg' . '" alt="" width="' . ($factor + 25) . '">';
                         }
                     }
                     $retItem = [
@@ -1654,11 +1855,11 @@ class Hupa_Starter_V2_Admin_Ajax
                 unset($data['record']);
 
                 try {
-                    $template = $this->twig->render( $twigTemplate,  $data );
+                    $template = $this->twig->render($twigTemplate, $data);
                     $responseJson->template = apply_filters('compress_template', $template);
-                } catch ( LoaderError | SyntaxError | RuntimeError $e ) {
+                } catch (LoaderError|SyntaxError|RuntimeError $e) {
                     echo $e->getMessage();
-                } catch ( Throwable $e ) {
+                } catch (Throwable $e) {
                     echo $e->getMessage();
                 }
 
@@ -1786,7 +1987,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 $btn_select = false;
                 $btn_link = false;
                 $if_url = false;
-                if($btnArg):
+                if ($btnArg):
                     for ($i = 0; $i < count($btnArg); $i++) {
                         isset($_POST["btn_text_$btnArg[$i]"]) ? $btn_text = $_POST["btn_text_$btnArg[$i]"] : $btn_text = '';
                         isset($_POST["url_$btnArg[$i]"]) ? $btn_url = filter_input(INPUT_POST, "url_$btnArg[$i]", FILTER_VALIDATE_URL) : $btn_url = '';
@@ -1954,11 +2155,11 @@ class Hupa_Starter_V2_Admin_Ajax
                 unset($data['r']['familySelect']);
 
                 try {
-                    $template = $this->twig->render( '@partials-loops/slider-items-loop.twig',  $data );
+                    $template = $this->twig->render('@partials-loops/slider-items-loop.twig', $data);
                     $responseJson->template = apply_filters('compress_template', $template);
-                } catch ( LoaderError | SyntaxError | RuntimeError $e ) {
+                } catch (LoaderError|SyntaxError|RuntimeError $e) {
                     echo $e->getMessage();
-                } catch ( Throwable $e ) {
+                } catch (Throwable $e) {
                     echo $e->getMessage();
                 }
                 $responseJson->id = $id;
@@ -1988,12 +2189,12 @@ class Hupa_Starter_V2_Admin_Ajax
                 $data['btn_add'] = 1;
 
                 try {
-                    $template = $this->twig->render( '@partials-loops/carousel-btn-loop.twig',  $data );
+                    $template = $this->twig->render('@partials-loops/carousel-btn-loop.twig', $data);
                     $responseJson->template = apply_filters('compress_template', $template);
-                } catch ( LoaderError | SyntaxError | RuntimeError $e ) {
+                } catch (LoaderError|SyntaxError|RuntimeError $e) {
                     $responseJson->msg = $e->getMessage();
                     return $responseJson;
-                } catch ( Throwable $e ) {
+                } catch (Throwable $e) {
                     $responseJson->msg = $e->getMessage();
                     return $responseJson;
                 }
@@ -2150,12 +2351,12 @@ class Hupa_Starter_V2_Admin_Ajax
                 $data['fonts'] = apply_filters('hupaObject2array', $fontsArr);
 
                 try {
-                    $template = $this->twig->render( '@partials-loops/install-fonts-loop.twig',  $data );
+                    $template = $this->twig->render('@partials-loops/install-fonts-loop.twig', $data);
                     $responseJson->template = apply_filters('compress_template', $template);
-                } catch ( LoaderError | SyntaxError | RuntimeError $e ) {
+                } catch (LoaderError|SyntaxError|RuntimeError $e) {
                     $responseJson->msg = $e->getMessage();
                     return $responseJson;
-                } catch ( Throwable $e ) {
+                } catch (Throwable $e) {
                     $responseJson->msg = $e->getMessage();
                     return $responseJson;
                 }
@@ -2510,8 +2711,8 @@ class Hupa_Starter_V2_Admin_Ajax
                     return $responseJson;
                 }
                 $imgId = $settings->record->map_img_id;
-                if($imgId){
-                    $url = wp_get_attachment_image_src($imgId,'large');
+                if ($imgId) {
+                    $url = wp_get_attachment_image_src($imgId, 'large');
                     $settings->record->img_url = $url[0];
                 }
                 $responseJson->pages = apply_filters('get_theme_pages', false);
@@ -2605,12 +2806,12 @@ class Hupa_Starter_V2_Admin_Ajax
 
             case'get_capabilities_settings':
                 $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
-                if(!$type){
+                if (!$type) {
 
                     return $responseJson;
                 }
-                $responseJson->type =  ucfirst($type);
-                $responseJson->select = apply_filters('user_roles_select','');
+                $responseJson->type = ucfirst($type);
+                $responseJson->select = apply_filters('user_roles_select', '');
                 $responseJson->active = get_option('theme_capabilities')[$type];
                 $responseJson->status = true;
                 break;
@@ -2618,9 +2819,9 @@ class Hupa_Starter_V2_Admin_Ajax
             case'update_capability':
                 $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
                 $value = filter_input(INPUT_POST, 'value', FILTER_SANITIZE_STRING);
-                if(!$type || !$value){
+                if (!$type || !$value) {
                     $responseJson->msg = 'Ajax Übertragungsfehler...';
-                    return  $responseJson;
+                    return $responseJson;
                 }
                 $option = get_option('theme_capabilities');
                 $type = strtolower($type);

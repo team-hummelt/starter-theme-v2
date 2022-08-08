@@ -45,6 +45,14 @@ defined('ABSPATH') or die();
                             class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-copy"></i>&nbsp;
                         <?= __('Posts | Pages Duplicate', 'bootscore') ?>
                     </button>
+
+                    <button data-site="<?= __('Theme system settings', 'bootscore') ?>" type="button"
+                            data-load="system_settings"
+                            data-bs-toggle="collapse" data-bs-target="#themeSystemSettings"
+                            aria-expanded="false" aria-controls="themeSystemSettings"
+                            class="ms-xl-auto btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-gears"></i>&nbsp;
+                        <?= __('Theme system settings', 'bootscore') ?>
+                    </button>
                 </div>
                 <hr>
 
@@ -53,17 +61,11 @@ defined('ABSPATH') or die();
                     <div class="collapse show" id="collapseOptionsWPConfigSite"
                          data-bs-parent="#settings_display_data">
                         <div class="border rounded mt-1 shadow-sm p-3 bg-custom-gray" style="min-height: 55vh">
-                            <form class="sendAjaxThemeForm" action="#" method="post">
-                                <input type="hidden" name="method" value="theme_form_handle">
-                                <input type="hidden" name="handle" value="theme_options_page">
-                                <div class="d-flex align-items-center flex-wrap">
-                                    <h5 class="card-title">
-                                        <i class="font-blue fa fa-wordpress"></i>&nbsp; WP-Config
-                                    </h5>
-                                    <div class="ajax-status-spinner ms-auto d-inline-block mb-2 pe-2"></div>
-                                </div>
+
+                            <form class="save_system_settings">
+                                <input type="hidden" name="method" value="update_theme_optionen">
                                 <hr>
-                                <h6>WP-Optionen</h6>
+                                <h6><i class="font-blue fa fa-wordpress me-1"></i> WP-Optionen</h6>
                                 <hr>
                                 <div class="d-flex flex-wrap">
                                     <div class="form-check form-switch me-3">
@@ -86,7 +88,8 @@ defined('ABSPATH') or die();
                                         <input class="form-check-input"
                                                name="hupa_wp_disallow_file_edit" type="checkbox" role="switch"
                                                id="SwitchWP_DISALLOW_FILE_EDIT" <?= !get_option('hupa_wp_disallow_file_edit') ?: ' checked' ?>>
-                                        <label class="form-check-label" for="SwitchWP_DISALLOW_FILE_EDIT">DISALLOW FILE EDIT
+                                        <label class="form-check-label" for="SwitchWP_DISALLOW_FILE_EDIT">DISALLOW FILE
+                                            EDIT
                                             <sup class="text-danger fw-bold">A*</sup></label>
                                     </div>
 
@@ -94,11 +97,25 @@ defined('ABSPATH') or die();
                                         <input class="form-check-input"
                                                name="hupa_wp_disallow_file_mods" type="checkbox" role="switch"
                                                id="SwitchWP_DISALLOW_FILE_MODS" <?= !get_option('hupa_wp_disallow_file_mods') ?: ' checked' ?>>
-                                        <label class="form-check-label" for="SwitchWP_DISALLOW_FILE_MODS">DISALLOW FILE MODS
+                                        <label class="form-check-label" for="SwitchWP_DISALLOW_FILE_MODS">DISALLOW FILE
+                                            MODS
                                             <sup class="text-danger fw-bold">B*</sup></label>
                                     </div>
-
                                 </div>
+                                <hr>
+                                <div class="col-xxl-2 col-xl-3 col-lg-6 col-12">
+                                    <div class="form-floating">
+                                        <input type="password" class="form-control no-blur" name="setting_pin" id="inputPin"
+                                               placeholder="Pin zum speichern" required>
+                                        <label for="inputPin">Pin zum speichern</label>
+                                    </div>
+                                </div>
+                                <hr>
+                                <button type="submit" class="btn btn-outline-primary">
+                                    <i class="bi bi-save2 me-1"></i> <?= __('save', 'bootscore') ?>
+                                </button>
+                                <hr>
+
                                 <div class="form-text mt-3">
                                     <b class="text-danger strong-font-weight me-1"> A*</b>
                                     Deaktivieren Sie den Plugin- und Theme-Datei-Editor in der Verwaltung.
@@ -107,6 +124,19 @@ defined('ABSPATH') or die();
                                     <b class="text-danger strong-font-weight me-1"> B*</b>
                                     Deaktivieren Sie Plugin- und Theme-Updates und Installationen vom Admin aus.
                                 </div>
+
+                            </form>
+                            <hr>
+                            <form class="sendAjaxThemeForm" action="#" method="post">
+                                <input type="hidden" name="method" value="theme_form_handle">
+                                <input type="hidden" name="handle" value="theme_options_page">
+                                <div class="d-flex align-items-center flex-wrap">
+                                    <h5 class="card-title">
+                                        <i class="font-blue fa fa-wordpress"></i>&nbsp; WP-Config
+                                    </h5>
+                                    <div class="ajax-status-spinner ms-auto d-inline-block mb-2 pe-2"></div>
+                                </div>
+
 
                                 <hr>
                                 <h6>WP-Cache</h6>
@@ -384,7 +414,7 @@ defined('ABSPATH') or die();
                                 global $hupa_menu_helper;
                                 $options = $hupa_menu_helper->hupa_get_sort_options();
                                 $post_types = get_post_types();
-                                $ignore_post_types = ['reply', 'topic', 'report', 'status', 'wp_block'];
+                                $ignore_post_types = ['reply', 'topic', 'wp_navigation', 'report', 'status', 'wp_block'];
 
                                 foreach ($post_types as $post_type_name):
                                     if (in_array($post_type_name, $ignore_post_types)) {
@@ -509,7 +539,7 @@ defined('ABSPATH') or die();
                                 global $hupa_menu_helper;
                                 $options = $hupa_menu_helper->hupa_get_duplicate_options();
                                 $post_types = get_post_types();
-                                $ignore_post_types = ['reply', 'attachment', 'topic', 'report', 'status', 'wp_block'];
+                                $ignore_post_types = ['reply','wp_navigation', 'attachment', 'topic', 'report', 'status', 'wp_block'];
 
                                 foreach ($post_types as $post_type_name):
 
@@ -518,7 +548,7 @@ defined('ABSPATH') or die();
                                     }
 
                                     if (is_post_type_hierarchical($post_type_name)) {
-                                        //continue;
+                                       // continue;
                                     }
                                     $post_type_data = get_post_type_object($post_type_name);
                                     if ($post_type_data->show_ui === FALSE) {
@@ -561,7 +591,12 @@ defined('ABSPATH') or die();
                         </div>
                     </div><!--PostsCopySettings End-->
 
-
+                    <!-- JOB Theme System Settings -->
+                    <div class="collapse" id="themeSystemSettings" data-bs-parent="#settings_display_data">
+                       <h5 class="font-bold-light"><i class="font-blue fa fa-wordpress me-1"></i> <?= __('Theme system settings', 'bootscore') ?></h5>
+                        <hr>
+                        <div id="systemSettings"></div>
+                    </div>
                 </div><!--parent-->
             </div>
         </div>

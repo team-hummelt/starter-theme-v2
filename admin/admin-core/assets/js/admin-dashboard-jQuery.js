@@ -36,8 +36,48 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     }
                     swal_fire_app_delete(formData);
                     break;
+                case'reset_animation':
+                    formData = {
+                        'method': type,
+                        'btnText': 'Alle Einstellungen zurücksetzen',
+                        'html': '<span class="swal-delete-body">Alle Werte werden <b>zurückgesetzt!</b> Die Änderungen können <b>nicht</b> rückgängig gemacht werden.</span>',
+                        'title': 'Einstellungen zurücksetzen?'
+                    }
+                    swal_fire_app_delete(formData);
+                    break;
             }
         });
+
+        $(document).on('submit', '.save_system_settings', function (e) {
+            let formData = $(this).closest("form").get(0);
+            let method = $('[name="method"] ',formData).val();
+
+            switch (method) {
+                case 'update_theme_over_api':
+                    $('button.btn ', formData).remove();
+                    $('.install-update-ajax-spinner').removeClass('d-none');
+                    break;
+            }
+            xhr_ajax_handle(formData, true, save_system_settings_callback);
+            e.preventDefault();
+        });
+
+        function save_system_settings_callback(){
+            let data = JSON.parse(this.responseText);
+            if(data.type == 'update_theme_over_api') {
+                $('.install-update-ajax-spinner').addClass('d-none');
+                $('.btn-reload-site').removeClass('d-none');
+                return false;
+            }
+
+            $('#inputPin').val('');
+            if(data.status){
+                success_message(data.msg);
+            } else {
+                $('.save_system_settings').trigger('reset');
+                warning_message(data.msg);
+            }
+        }
 
         $(document).on('click', '#showSidebarCheck', function () {
             let sideSelect = $('#SelectSidebar');
@@ -47,6 +87,27 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 sideSelect.prop('disabled', true);
             }
         });
+
+        $(document).on('click', '.btn-admin-action', function () {
+            let type = $(this).attr('data-type');
+            let formData;
+            let settingsBody = $('.theme-settings-card');
+
+            switch (type) {
+                case'show-install-theme-update':
+                    let parBtn = $('#install-theme');
+                    let smUpdWr = $('#theme-update-wrapper');
+                    $('.inputVersion').val($(this).attr('data-version'));
+                    parBtn.html(`Version: ${$(this).attr('data-version')} installieren`);
+                    smUpdWr.html(`${$(this).attr('data-bezeichnung')}: ${$(this).attr('data-version')}` );
+                    settingsBody.toggleClass('d-none');
+                    break;
+                case'update-cancel':
+                    settingsBody.toggleClass('d-none');
+                    break;
+            }
+        });
+
 
 
         let start = new Date();
@@ -145,6 +206,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         });
 
+        $(document).on('change', '.change-help-info-select', function () {
+            let change = $(this).val();
+            if(!change){
+                return false;
+            }
+            new bootstrap.Collapse(change, {
+                toggle: true,
+                parent:'#helpParent'
+            });
+            scrollToWrapper(change, 150);
+        });
+
         function get_site_params(search, input_url = '') {
             let get_url;
             if (input_url) {
@@ -200,6 +273,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     fontWrapper.remove();
                     success_message(data.msg);
                 }
+                if(data.reset_animation){
+                    for (let [name, value] of Object.entries(data.defaults)) {
+                        $(`[name="${name}"]`).val(`${value}`);
+                    }
+                    success_message(data.msg);
+                }
             } else {
                 warning_message(data.msg);
             }
@@ -231,6 +310,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
             formData.append('_ajax_nonce', theme_ajax_obj.nonce);
             formData.append('action', 'HupaStarterHandle');
             xhr.send(formData);
+        }
+
+
+        function scrollToWrapper(target, offset = 50) {
+            setTimeout(function () {
+                $('html, body').stop().animate({
+                    scrollTop: $(target).offset().top - (offset),
+                }, 400, "linear", function () {
+                });
+            }, 350);
         }
 
     })(jQuery);

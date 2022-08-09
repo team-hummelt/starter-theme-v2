@@ -174,7 +174,7 @@ final class HupaRegisterStarterTheme
 
             add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
         }
-        if (get_hupa_option('lizenz_page_aktiv')) {
+        if (function_exists('get_hupa_option') && get_hupa_option('lizenz_page_aktiv')) {
             $hook_suffix = add_submenu_page(
                 'hupa-starter-home',
                 __('Licences', 'bootscore'),

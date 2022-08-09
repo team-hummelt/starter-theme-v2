@@ -588,6 +588,7 @@ class HupaStarterThemeV2
     private function define_theme_options_hooks()
     {
         if (file_exists(THEME_ADMIN_DIR . 'admin-core/register-hupa-starter-optionen.php') && get_option('hupa_starter_product_install_authorize')) {
+        }
             global $hupa_register_theme_options;
             $hupa_register_theme_options = HupaStarterOptionFilter::init($this->main);
 
@@ -637,7 +638,7 @@ class HupaStarterThemeV2
             //FOOTER HEADER CONTENT BY POST ID
             $this->loader->add_filter('get_content_custom_header', $hupa_register_theme_options, 'getContentCustomHeader');
             $this->loader->add_filter('get_content_custom_footer', $hupa_register_theme_options, 'getContentCustomFooter');
-        }
+
     }
 
     /**

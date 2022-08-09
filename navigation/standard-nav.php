@@ -30,18 +30,18 @@ get_hupa_option( 'handy' ) == 1 ? $handyMenu = 'menu1' : $handyMenu = 'menu2';
             <a class="middle-image-nav-sm" href="<?php echo esc_url( home_url() ); ?>">
                 <img src="<?=get_hupa_frontend('nav-img')->url?>"
                      alt="<?=get_bloginfo('name')?>"
-                     class="img-fluid logo md">
+                     class="img-fluid logo md" width="">
             </a>
         <?php endif; ?>
         <?php if(get_hupa_frontend('nav-img') && $menu->show_img): ?>
             <a class="navbar-brand d-none d-xl-flex <?=$menu->logo?>" href="<?php echo esc_url( home_url() ); ?>">
                 <img src="<?= get_hupa_frontend('nav-img')->url?>"
-                     alt="<?=get_bloginfo('name')?>" class="logo md">
+                     alt="<?=get_bloginfo('name')?>" class="logo md" width="">
             </a>
             <a class="navbar-brand  ps-2 img-fluid d-lg-flex d-xl-none <?=$menu->logo?>" href="<?php echo esc_url( home_url() ); ?>">
                 <img src="<?=get_hupa_frontend('nav-img')->url?>"
                      alt="<?=get_bloginfo('name')?>"
-                     class="logo sm">
+                     class="logo sm" width="">
             </a>
         <?php endif; ?>
         <!-- Top Nav Widget -->

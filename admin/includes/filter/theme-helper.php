@@ -167,6 +167,17 @@ class HupaStarterHelper
         return rmdir($dir);
     }
 
+    public function hupa_check_theme_install_table($table):bool
+    {
+        global $wpdb;
+        $checkTable = $wpdb->prefix . $table;
+        $isTable = $wpdb->get_var( "SHOW TABLES LIKE '{$checkTable}'" );
+        if($isTable) {
+            return true;
+        }
+        return false;
+    }
+
     public function hupa_theme_user_roles_select(): array
     {
 

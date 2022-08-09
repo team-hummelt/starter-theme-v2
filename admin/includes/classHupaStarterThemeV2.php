@@ -587,8 +587,6 @@ class HupaStarterThemeV2
      */
     private function define_theme_options_hooks()
     {
-        if (file_exists(THEME_ADMIN_DIR . 'admin-core/register-hupa-starter-optionen.php') && get_option('hupa_starter_product_install_authorize')) {
-        }
             global $hupa_register_theme_options;
             $hupa_register_theme_options = HupaStarterOptionFilter::init($this->main);
 

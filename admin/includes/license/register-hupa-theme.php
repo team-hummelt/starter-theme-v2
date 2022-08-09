@@ -158,13 +158,14 @@ final class RegisterHupaStarter
             if(is_file($file)) {
                unlink($file);
             }
-            delete_option('hupa_starter_product_install_authorize');
+
             delete_option('hupa_update_error_message');
             delete_option('hupa_product_install_time');
             if(Config::get('DEACTIVATE_DELETE_ACCESS_DATA') == 1){
                 delete_option('hupa_product_client_secret');
                 delete_option('hupa_product_client_id');
             }
+            delete_option('hupa_starter_product_install_authorize');
             delete_option('hupa_access_token');
             delete_option('hupa_license_url');
             set_transient('show_theme_license_info', true, 5);
@@ -211,10 +212,10 @@ final class RegisterHupaStarter
    }
 
     public function hupa_starter_theme_deactivated() {
-        delete_option('hupa_starter_product_install_authorize');
         if(Config::get('DEACTIVATE_DELETE_ACCESS_DATA') == 1){
             delete_option('hupa_product_client_secret');
             delete_option('hupa_product_client_id');
+            delete_option('hupa_starter_product_install_authorize');
         }
 
         global $hupa_optionen_class;

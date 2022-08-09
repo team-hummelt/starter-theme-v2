@@ -1277,6 +1277,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 }
 
                 file_put_contents(THEME_ADMIN_DIR . '.env', $envValue);
+                update_option('theme_env_settings', $envValue);
                 $responseJson->status = true;
                 $responseJson->msg = 'Änderungen erfolgreich gespeichert!';
                 break;

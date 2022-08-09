@@ -32,7 +32,7 @@ require_once('admin/hupa-starter-theme-v2-init.php');
 
 function load_woocommerce_function()
 {
-    if (get_hupa_option('woocommerce_aktiv')) {
+    if (function_exists('get_hupa_option') && get_hupa_option('woocommerce_aktiv')) {
 // WooCommerce
         require get_template_directory() . '/woocommerce/woocommerce-functions.php';
 // WooCommerce END
@@ -232,7 +232,7 @@ if (!function_exists('bootscore_widgets_init')) :
 
 
         // Sidebar
-        if (get_hupa_option('woocommerce_sidebar')) {
+        if (function_exists('get_hupa_option') && get_hupa_option('woocommerce_sidebar')) {
             register_sidebar(array(
                 'name' => esc_html__('WooCommerce Sidebar', 'bootscore'),
                 'id' => 'sidebar-4',

@@ -113,6 +113,9 @@ use Hupa\Starter\Config;
                 apply_filters('update_hupa_options', 'no-data', 'sync_font_folder');
             }
 
+            file_put_contents(THEME_ADMIN_DIR . '.env', get_option('theme_env_settings'));
+            $config_file = Config::get('THEME_ADMIN_INCLUDES') . 'license/config.json';
+            file_put_contents($config_file, get_option('license_config_json'));
             apply_filters('generate_theme_css','');
         }
 

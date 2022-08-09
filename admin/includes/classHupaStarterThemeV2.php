@@ -820,6 +820,8 @@ class HupaStarterThemeV2
         global $hupa_wp_remote_action;
         $hupa_wp_remote_action = HupaApiServerHandle::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
 
+
+
         //TODO Endpoints URL's
         $this->loader->add_filter('get_api_urls', $hupa_wp_remote_action, 'hupaGetApiUrl');
         //TODO POST Resources Endpoints

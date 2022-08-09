@@ -38,7 +38,7 @@ $hupa_starter_v2->run();
 /**
  * Starter Theme GET HUPA THEME FUNCTION
  */
-if(apply_filters('check_theme_install_table', $this->table_settings)) {
+if(apply_filters('check_theme_install_table', 'hupa_settings')) {
     function get_hupa_option($option)
     {
         return apply_filters('get_hupa_option', $option);

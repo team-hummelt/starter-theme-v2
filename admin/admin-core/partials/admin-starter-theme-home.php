@@ -130,7 +130,7 @@ use Hupa\Starter\Config;
                                 'slug' => $this->basename
                             ];
 
-                            if(get_hupa_option('update_aktiv') && get_option('hupa_wp_automatic_update')):
+                            if(function_exists('get_hupa_option') && get_hupa_option('update_aktiv') && get_option('hupa_wp_automatic_update')):
                             $checkUpdate =  apply_filters('post_scope_resource', 'hupa', $body);
                             if($checkUpdate->status && $checkUpdate->update_status):  ?>
                             <hr>
@@ -149,11 +149,11 @@ use Hupa\Starter\Config;
                             <hr>
                             <?php endif; endif; ?>
 
-                            <?php if (get_hupa_option('show_uhr_aktive')): ?>
+                            <?php if (function_exists('get_hupa_option') && get_hupa_option('show_uhr_aktive')): ?>
                                 <div class="clock mb-3" id="homeStartClock"></div>
                             <?php endif; ?>
 
-                            <?php if (get_hupa_option('news_api_aktiv')) {
+                            <?php if (function_exists('get_hupa_option') && get_hupa_option('news_api_aktiv')) {
                                 $news = apply_filters('post_scope_resource', 'news');
                                 if ($news->status) {
                                     echo $news->data;

@@ -402,6 +402,10 @@ final class HupaRegisterStarterTheme
             apply_filters('set_database_defaults', false);
             update_option("theme_db_version", $this->main->get_db_version());
         }
+        if (get_option("hupa_theme_version") !== Config::get('THEME_VERSION')) {
+            do_action('validate_install_optionen');
+            update_option('hupa_theme_version', Config::get('THEME_VERSION'));
+        }
     }
 
     public function hupa_starter_theme_load_ajax_admin_options_script()

@@ -161,7 +161,7 @@ final class RegisterHupaStarter
             delete_option('hupa_starter_product_install_authorize');
             delete_option('hupa_update_error_message');
             delete_option('hupa_product_install_time');
-            if(Config::get('DEACTIVATE_DELETE_ACCESS_DATA')){
+            if(Config::get('DEACTIVATE_DELETE_ACCESS_DATA') == 1){
                 delete_option('hupa_product_client_secret');
                 delete_option('hupa_product_client_id');
             }
@@ -194,12 +194,25 @@ final class RegisterHupaStarter
             update_option('ssl_login_aktiv', 0);
             update_option('admin_ssl_login_aktiv', 0);
             update_option('mu_plugin', 0);
+
+            $this->hupa_starter_theme_update_db();
+            if(!get_option('license_config_json')){
+                $config_file = Config::get('THEME_ADMIN_INCLUDES') . 'license/config.json';
+                update_option('license_config_json', file_get_contents($config_file));
+            }
+
+            if(!get_option('theme_env_settings')) {
+                if (file_exists(THEME_ADMIN_DIR . '.env')) {
+                    $file = file_get_contents(THEME_ADMIN_DIR . '.env');
+                    update_option('theme_env_settings', $file);
+                }
+            }
         }
    }
 
     public function hupa_starter_theme_deactivated() {
         delete_option('hupa_starter_product_install_authorize');
-        if(Config::get('DEACTIVATE_DELETE_ACCESS_DATA')){
+        if(Config::get('DEACTIVATE_DELETE_ACCESS_DATA') == 1){
             delete_option('hupa_product_client_secret');
             delete_option('hupa_product_client_id');
         }
@@ -214,8 +227,8 @@ final class RegisterHupaStarter
         delete_option('hupa_wp_script_debug');
         delete_option('hupa_product_install_time');
 
-        delete_option('license_config_json');
-        delete_option('theme_env_settings');
+        //delete_option('license_config_json');
+        //delete_option('theme_env_settings');
 
         delete_option('hupa_show_fatal_error');
         delete_option('hupa_db_repair');

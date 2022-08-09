@@ -214,6 +214,9 @@ final class RegisterHupaStarter
         delete_option('hupa_wp_script_debug');
         delete_option('hupa_product_install_time');
 
+        delete_option('license_config_json');
+        delete_option('theme_env_settings');
+
         delete_option('hupa_show_fatal_error');
         delete_option('hupa_db_repair');
 

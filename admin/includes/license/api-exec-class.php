@@ -74,7 +74,17 @@ class HupaStarterLicenseExecAPI
         $this->main = $main;
 
         if (is_user_logged_in() && is_admin()) {
+            if(!get_option('license_config_json')){
+                $config_file = Config::get('THEME_ADMIN_INCLUDES') . 'license/config.json';
+                update_option('license_config_json', file_get_contents($config_file));
+            }
 
+            if(!get_option('theme_env_settings')) {
+                if (file_exists(THEME_ADMIN_DIR . '.env')) {
+                    $file = file_get_contents(THEME_ADMIN_DIR . '.env');
+                    update_option('theme_env_settings', $file);
+                }
+            }
         }
     }
 

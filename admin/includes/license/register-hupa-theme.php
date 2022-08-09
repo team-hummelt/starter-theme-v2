@@ -211,8 +211,9 @@ final class RegisterHupaStarter
    }
 
     public function hupa_starter_theme_deactivated() {
-        delete_option('hupa_starter_product_install_authorize');
+
         if(Config::get('DEACTIVATE_DELETE_ACCESS_DATA') == 1){
+            delete_option('hupa_starter_product_install_authorize');
             delete_option('hupa_product_client_secret');
             delete_option('hupa_product_client_id');
         }
@@ -227,8 +228,8 @@ final class RegisterHupaStarter
         delete_option('hupa_wp_script_debug');
         delete_option('hupa_product_install_time');
 
-        //delete_option('license_config_json');
-        //delete_option('theme_env_settings');
+        delete_option('license_config_json');
+        delete_option('theme_env_settings');
 
         delete_option('hupa_show_fatal_error');
         delete_option('hupa_db_repair');

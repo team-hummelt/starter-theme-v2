@@ -38,7 +38,7 @@ $hupa_starter_v2->run();
 /**
  * Starter Theme GET HUPA THEME FUNCTION
  */
-if(apply_filters('check_theme_install_table', 'hupa_settings')) {
+
     function get_hupa_option($option)
     {
         return apply_filters('get_hupa_option', $option);
@@ -59,9 +59,5 @@ if(apply_filters('check_theme_install_table', 'hupa_settings')) {
     {
         return apply_filters('get_hupa_frontend', $type, $args);
     }
-}
 
-if (get_option("hupa_theme_version") !== Config::get('THEME_VERSION')) {
-    do_action('validate_install_optionen');
-    update_option('hupa_theme_version', Config::get('THEME_VERSION'));
-}
+

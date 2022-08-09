@@ -210,15 +210,20 @@ class HupaStarterThemeV2
         // JOB Twig Filter End
 
         $this->define_create_database_hooks();
-        $this->define_theme_helper_hooks();
-        $this->define_hupa_render_block();
         $this->define_theme_options_hooks();
+        $this->define_theme_helper_hooks();
+
+        $this->define_hupa_render_block();
+
         $this->define_theme_carousel_filter_hooks();
         $this->define_theme_tools_filter_hooks();
         $this->define_theme_fonts_handle_hooks();
 
         //License
         $this->define_get_theme_license_hooks();
+        // License API
+        $this->define_theme_api_handle();
+
         $this->define_enqueue_hooks();
         $this->define_get_theme_language_hooks();
         $this->define_get_css_generator_hooks();
@@ -235,8 +240,7 @@ class HupaStarterThemeV2
         $this->define_wp_optionen_hooks();
         //Shortcodes
         $this->define_theme_shortcodes_hooks();
-        // License API
-        $this->define_theme_api_handle();
+
         // Admin Dashboard
         $this->define_admin_hooks();
         //Vorlagen Pattern
@@ -941,7 +945,7 @@ class HupaStarterThemeV2
     private function define_theme_api_handle()
     {
         global $hupa_api_handle;
-        $hupa_api_handle = HupaStarterThemeAPI::instance($this->get_theme_slug(), $this->get_theme_version(), $this->main);
+        $hupa_api_handle = HupaStarterThemeAPI::instance();
 
     }
 

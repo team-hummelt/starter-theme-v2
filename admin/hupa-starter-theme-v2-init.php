@@ -38,25 +38,27 @@ $hupa_starter_v2->run();
 /**
  * Starter Theme GET HUPA THEME FUNCTION
  */
-function get_hupa_option($option)
-{
-    return apply_filters('get_hupa_option', $option);
-}
+if(apply_filters('check_theme_install_table', $this->table_settings)) {
+    function get_hupa_option($option)
+    {
+        return apply_filters('get_hupa_option', $option);
+    }
 
-/**
- * Starter Theme GET HUPA TOOLS FUNCTION
- */
-function get_hupa_tools($option)
-{
-    return apply_filters('get_hupa_tools', $option);
-}
+    /**
+     * Starter Theme GET HUPA TOOLS FUNCTION
+     */
+    function get_hupa_tools($option)
+    {
+        return apply_filters('get_hupa_tools', $option);
+    }
 
-/**
- * Starter Theme GET HUPA FRONTEND FUNCTION
- */
-function get_hupa_frontend($type, $args = '')
-{
-    return apply_filters('get_hupa_frontend',$type, $args);
+    /**
+     * Starter Theme GET HUPA FRONTEND FUNCTION
+     */
+    function get_hupa_frontend($type, $args = '')
+    {
+        return apply_filters('get_hupa_frontend', $type, $args);
+    }
 }
 
 if (get_option("hupa_theme_version") !== Config::get('THEME_VERSION')) {

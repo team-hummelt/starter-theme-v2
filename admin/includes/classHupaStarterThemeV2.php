@@ -211,14 +211,15 @@ class HupaStarterThemeV2
 
         $this->define_create_database_hooks();
         $this->define_theme_helper_hooks();
+        //License
+        $this->define_get_theme_license_hooks();
         $this->define_hupa_render_block();
         $this->define_theme_options_hooks();
         $this->define_theme_carousel_filter_hooks();
         $this->define_theme_tools_filter_hooks();
         $this->define_theme_fonts_handle_hooks();
 
-        //License
-        $this->define_get_theme_license_hooks();
+
 
         $this->define_enqueue_hooks();
         $this->define_get_theme_language_hooks();
@@ -575,6 +576,7 @@ class HupaStarterThemeV2
         $this->loader->add_filter('get_settings_pin', $hupa_register_theme_helper, 'hupa_settings_pin');
         $this->loader->add_filter('hupa_validate_pin', $hupa_register_theme_helper, 'hupa_settings_validate_pin', 10, 2);
         $this->loader->add_action('is_hupa_custom_dir', $hupa_register_theme_helper, 'hupa_is_custom_dir');
+        $this->loader->add_filter('check_theme_install_table', $hupa_register_theme_helper, 'hupa_check_theme_install_table');
 
     }
 

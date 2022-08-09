@@ -89,13 +89,16 @@ use Hupa\Starter\Config;
 
         public function hupaValidateInstallOptionen()
         {
-            global $wpdb;
-            $table = $wpdb->prefix . $this->table_settings;
-            $result = $wpdb->get_row("SELECT google_maps_placeholder FROM {$table} ");
+            if(apply_filters('check_theme_install_table', $this->table_settings)){
+                global $wpdb;
+                $table = $wpdb->prefix . $this->table_settings;
+                $result = $wpdb->get_row("SELECT google_maps_placeholder FROM {$table} ");
 
-            if (!$result->google_maps_placeholder) {
-                apply_filters('update_hupa_options', 'reset_gmaps_settings', 'reset_settings');
-             }
+                if (!$result->google_maps_placeholder) {
+                    apply_filters('update_hupa_options', 'reset_gmaps_settings', 'reset_settings');
+                }
+            }
+
 
             if(!is_dir(Config::get('THEME_FONTS_DIR'). 'Roboto')){
                 $src = Config::get('THEME_ADMIN_INCLUDES') . 'theme-fonts' . DIRECTORY_SEPARATOR . 'Roboto';

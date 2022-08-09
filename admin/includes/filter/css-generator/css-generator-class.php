@@ -135,12 +135,17 @@ class HupaStarterCssGenerator
 
         //HEADER LOGO SIZE
         $html .= '.logo.md {' . "\r\n";
-        $html .= 'max-height: ' . get_hupa_frontend('nav-img')->width . 'px;' . "\r\n";
+        $html .= 'max-width: ' . get_hupa_frontend('nav-img')->width . 'px;' . "\r\n";
         $html .= 'width: 100%'  ."\r\n";
         $html .= '}' . "\r\n";
 
         $html .= '.logo.sm {' . "\r\n";
-        $html .= 'max-height: ' . get_hupa_frontend('nav-img')->width_mobil . 'px;' . "\r\n";
+        $html .= 'max-width: ' . get_hupa_frontend('nav-img')->width_mobil . 'px;' . "\r\n";
+        $html .= 'width: 100%'  ."\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '#logoPlaceholder img {' . "\r\n";
+        $html .= 'max-width: ' . get_hupa_frontend('nav-img')->width_mobil . 'px;' . "\r\n";
         $html .= 'width: 100%'  ."\r\n";
         $html .= '}' . "\r\n";
 

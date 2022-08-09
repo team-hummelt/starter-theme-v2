@@ -206,8 +206,8 @@ if (!function_exists('bootscore_widgets_init')) :
             'description' => esc_html__('Add widgets here.', 'bootscore'),
             'before_widget' => '<section id="%1$s" class="widget %2$s widget-sidebar card card-body mb-4">',
             'after_widget' => '</section>',
-            'before_title' => '<h2 class="widget-title card-title fst-normal fw-normal border-bottom py-2">',
-            'after_title' => '</h2>',
+            'before_title' => '<h3 class="widget-title card-title fst-normal fw-normal border-bottom py-2">',
+            'after_title' => '</h3>',
         ));
 
         register_sidebar(array(
@@ -216,8 +216,8 @@ if (!function_exists('bootscore_widgets_init')) :
             'description' => esc_html__('Add widgets here.', 'bootscore'),
             'before_widget' => '<section id="%1$s" class="widget %2$s widget-sidebar card card-body mb-4">',
             'after_widget' => '</section>',
-            'before_title' => '<h2 class="widget-title card-title fst-normal fw-normal border-bottom py-2">',
-            'after_title' => '</h2>',
+            'before_title' => '<h3 class="widget-title title-sidebar-3 card-title fst-normal fw-normal border-bottom py-2">',
+            'after_title' => '</h3>',
         ));
 
         register_sidebar(array(
@@ -226,8 +226,8 @@ if (!function_exists('bootscore_widgets_init')) :
             'description' => esc_html__('Add widgets here.', 'bootscore'),
             'before_widget' => '<section id="%1$s" class="widget %2$s widget-sidebar card card-body mb-4">',
             'after_widget' => '</section>',
-            'before_title' => '<h2 class="widget-title card-title fst-normal fw-normal border-bottom py-2">',
-            'after_title' => '</h2>',
+            'before_title' => '<h3 class="widget-title title-sidebar-4 card-title fst-normal fw-normal border-bottom py-2">',
+            'after_title' => '</h3>',
         ));
 
 
@@ -235,12 +235,12 @@ if (!function_exists('bootscore_widgets_init')) :
         if (function_exists('get_hupa_option') && get_hupa_option('woocommerce_sidebar')) {
             register_sidebar(array(
                 'name' => esc_html__('WooCommerce Sidebar', 'bootscore'),
-                'id' => 'sidebar-4',
+                'id' => 'sidebar-5',
                 'description' => esc_html__('Add widgets here.', 'bootscore'),
                 'before_widget' => '<section id="%1$s" class="widget %2$s card card-body mb-4 border-0">',
                 'after_widget' => '</section>',
-                'before_title' => '<h2 class="widget-title card-title fst-normal fw-normal border-bottom py-2">',
-                'after_title' => '</h2>',
+                'before_title' => '<h3 class="widget-title title-sidebar-5 card-title fst-normal fw-normal border-bottom py-2">',
+                'after_title' => '</h3>',
             ));
         }
         // Sidebar End
@@ -252,8 +252,8 @@ if (!function_exists('bootscore_widgets_init')) :
             'description' => esc_html__('Add widgets here.', 'bootscore'),
             'before_widget' => '<div id="%1$s" class="top_footer %2$s mb-5">',
             'after_widget' => '</div>',
-            'before_title' => '<h2 class="widget-title">',
-            'after_title' => '</h2>'
+            'before_title' => '<h3 class="widget-title title-top-footer">',
+            'after_title' => '</h3>'
         ));
         // Top Footer End
 
@@ -264,8 +264,8 @@ if (!function_exists('bootscore_widgets_init')) :
             'description' => esc_html__('Add widgets here.', 'bootscore'),
             'before_widget' => '<div id="%1$s" class="footer_widget %2$s mb-4">',
             'after_widget' => '</div>',
-            'before_title' => '<h2 class="widget-title h4">',
-            'after_title' => '</h2>'
+            'before_title' => '<h3 class="widget-title title-footer-1 h4">',
+            'after_title' => '</h3>'
         ));
         // Footer 1 End
 
@@ -276,8 +276,8 @@ if (!function_exists('bootscore_widgets_init')) :
             'description' => esc_html__('Add widgets here.', 'bootscore'),
             'before_widget' => '<div id="%1$s" class="footer_widget %2$s mb-4">',
             'after_widget' => '</div>',
-            'before_title' => '<h2 class="widget-title h4">',
-            'after_title' => '</h2>'
+            'before_title' => '<h3 class="widget-title title-footer-2 h4">',
+            'after_title' => '</h3>'
         ));
         // Footer 2 End
 
@@ -288,7 +288,7 @@ if (!function_exists('bootscore_widgets_init')) :
             'description' => esc_html__('Add widgets here.', 'bootscore'),
             'before_widget' => '<div id="%1$s" class="footer_widget %2$s mb-4">',
             'after_widget' => '</div>',
-            'before_title' => '<h2 class="widget-title h4">',
+            'before_title' => '<h2 class="widget-title title-footer-3 h4">',
             'after_title' => '</h2>'
         ));
         // Footer 3 End
@@ -300,13 +300,13 @@ if (!function_exists('bootscore_widgets_init')) :
             'description' => esc_html__('Add widgets here.', 'bootscore'),
             'before_widget' => '<div id="%1$s" class="footer_widget %2$s mb-4">',
             'after_widget' => '</div>',
-            'before_title' => '<h2 class="widget-title h4">',
-            'after_title' => '</h2>'
+            'before_title' => '<h3 class="widget-title title-footer-4 h4">',
+            'after_title' => '</h3>'
         ));
         // Footer 4 End
 
         // 404 Page
-        register_sidebar(array(
+       /* register_sidebar(array(
             'name' => esc_html__('404 Page', 'bootscore'),
             'id' => '404-page',
             'description' => esc_html__('Add widgets here.', 'bootscore'),
@@ -314,7 +314,7 @@ if (!function_exists('bootscore_widgets_init')) :
             'after_widget' => '</div>',
             'before_title' => '<h1 class="widget-title">',
             'after_title' => '</h1>'
-        ));
+        ));*/
         // 404 Page End
 
     }

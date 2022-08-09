@@ -211,16 +211,14 @@ class HupaStarterThemeV2
 
         $this->define_create_database_hooks();
         $this->define_theme_helper_hooks();
-        //License
-        $this->define_get_theme_license_hooks();
         $this->define_hupa_render_block();
         $this->define_theme_options_hooks();
         $this->define_theme_carousel_filter_hooks();
         $this->define_theme_tools_filter_hooks();
         $this->define_theme_fonts_handle_hooks();
 
-
-
+        //License
+        $this->define_get_theme_license_hooks();
         $this->define_enqueue_hooks();
         $this->define_get_theme_language_hooks();
         $this->define_get_css_generator_hooks();

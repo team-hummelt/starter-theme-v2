@@ -187,7 +187,8 @@ class HupaCarouselShortCode
 
         $carousel->data_autoplay ? $ride = 'carousel' : $ride = 'false';
         $carousel->data_animate == 2 ? $slide = ' carousel-fade' : $slide = '';
-        $carousel->full_width ? $full_width = ' hupa-full-row ' : $full_width = '';
+        $carousel->full_width ? $full_width = 'hupa-full-row ' : $full_width = '';
+        $carousel->data_animate == 2 ? $data_animate = 'slide carousel-fade' : $data_animate = 'slide';
 
         switch ($carousel->select_bg) {
             case '0':
@@ -223,7 +224,7 @@ class HupaCarouselShortCode
         ob_start();
         ?>
         <div id="hupaCarousel<?= $carousel->id ?>"
-             class="<?= $full_width ?>carousel<?= $carouselClass ?><?= $marginTop ?> slide<?= $slide ?>"
+             class="<?= $full_width ?>carousel<?= $carouselClass ?><?= $marginTop ?> <?=$data_animate?><?= $slide ?>"
              data-bs-ride="<?= $ride ?>" data-bs-pause="<?= $data_stop_hover ?>" data-bs-touch="<?= $data_touch_active ?>" data-bs-keyboard="<?= $data_keyboard_active ?>">
             <?php if ($countS > 1): ?>
                 <div class="<?= $carousel->indicator ? '' : 'd-none' ?> carousel-indicators">

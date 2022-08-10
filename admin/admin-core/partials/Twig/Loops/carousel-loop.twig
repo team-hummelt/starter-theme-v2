@@ -133,9 +133,9 @@
                                     <select class="form-select no-blur" id="selectCarouselAnimation{{ r.id }}"
                                             aria-label="{{ 'animation'|__ }}"
                                             name="data_animate">
-                                        <option value="medium" {% if r.data_animate == '1' %}selected{% endif %}>slide
+                                        <option value="1" {% if r.data_animate == 1 %}selected{% endif %}>slide
                                         </option>
-                                        <option value="large" {% if r.data_animate == '2' %}selected{% endif %}>fade
+                                        <option value="2" {% if r.data_animate == 2 %}selected{% endif %}>fade
                                         </option>
                                     </select>
                                     <label for="selectCarouselAnimation{{ r.id }}">{{ 'animation'|__ }}</label>

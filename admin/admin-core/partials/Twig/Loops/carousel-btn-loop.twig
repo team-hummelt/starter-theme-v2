@@ -137,6 +137,17 @@
             {# Select PAGES POSTS #}
             <div class="mb-3">
                 <div class="form-floating">
+                    <input type="text"
+                           value="{% if slideBtn.btn_css %}{{ slideBtn.btn_css }}{% endif %}"
+                           class="form-control no-blur"
+                           name="btn_css_{{ btnRandom }}" id="inputBtnCSS{{ btnRandom }}">
+                    <label for="inputBtnCSS{{ btnRandom }}"
+                           class="form-label">Button extra CSS
+                    </label>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="form-floating">
                     <select onchange="change_select_btn_url('{{ btnRandom }}', this);" style="max-width: 100%"
                             id="selectUrl{{ btnRandom }}"
                             class="form-select no-blur" name="select_btn_url_{{ btnRandom }}">

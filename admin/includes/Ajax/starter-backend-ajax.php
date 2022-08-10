@@ -1991,6 +1991,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 if ($btnArg):
                     for ($i = 0; $i < count($btnArg); $i++) {
                         isset($_POST["btn_text_$btnArg[$i]"]) ? $btn_text = $_POST["btn_text_$btnArg[$i]"] : $btn_text = '';
+                        isset($_POST["btn_css_$btnArg[$i]"]) ? $btn_css = $_POST["btn_css_$btnArg[$i]"] : $btn_css = '';
                         isset($_POST["url_$btnArg[$i]"]) ? $btn_url = filter_input(INPUT_POST, "url_$btnArg[$i]", FILTER_VALIDATE_URL) : $btn_url = '';
                         isset($_POST["button_color_$btnArg[$i]"]) ? $button_color = sanitize_text_field($_POST["button_color_$btnArg[$i]"]) : $button_color = '';
                         isset($_POST["border_color_$btnArg[$i]"]) ? $border_color = sanitize_text_field($_POST["border_color_$btnArg[$i]"]) : $border_color = '';
@@ -2039,7 +2040,8 @@ class Hupa_Starter_V2_Admin_Ajax
                             'icon_unicode' => $iconUnicode,
                             'if_url' => $if_url,
                             'btn_link' => $btn_link,
-                            'btn_target' => $btn_target
+                            'btn_target' => $btn_target,
+                            'btn_css' => $btn_css
                         ];
 
                         $btArr[] = $btn_item;

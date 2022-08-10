@@ -144,9 +144,75 @@ class HupaStarterCssGenerator
         $html .= 'width: 100%'  ."\r\n";
         $html .= '}' . "\r\n";
 
+
         $html .= '#logoPlaceholder img {' . "\r\n";
         $html .= 'max-width: ' . get_hupa_frontend('nav-img')->width_mobil . 'px;' . "\r\n";
         $html .= 'width: 100%'  ."\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '.content-negativ {' . "\r\n";
+        $html .= 'margin-top: -2.5rem;' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '.custom-fullwidth {' . "\r\n";
+        $html .= 'width: 100vw;' . "\r\n";
+        $html .= 'position: relative;' . "\r\n";
+        $html .= 'left: 50%;' . "\r\n";
+        $html .= 'margin-left: -50vw;' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        // Handy Icon
+        $html .= '.navbar-toggler {' . "\r\n";
+        $html .= 'border: none;' . "\r\n";
+        $html .= 'padding: 0;' . "\r\n";
+        $html .= 'outline: none;' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= 'button.navbar-toggler {' . "\r\n";
+        $html .= 'height: 4rem;' . "\r\n";
+        $html .= 'width: 4rem;' . "\r\n";
+        $html .= 'position: relative;' . "\r\n";
+        $html .= 'right: 0;' . "\r\n";
+        $html .= 'align-items: center;' . "\r\n";
+        $html .= 'justify-content: center;' . "\r\n";
+        $html .= 'z-index: 10 !important;' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= 'button.navbar-toggler i.fa {' . "\r\n";
+        $html .= 'position: relative;' . "\r\n";
+        $html .= 'width: 35px;' . "\r\n";
+        $html .= 'right: 0;' . "\r\n";
+        $html .= 'height: 0.2rem;' . "\r\n";
+        $html .= 'background-color: #00538b;' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= 'button.navbar-toggler i.fa:before {' . "\r\n";
+        $html .= 'position: absolute;' . "\r\n";
+        $html .= 'content: "";' . "\r\n";
+        $html .= 'width: 35px;' . "\r\n";
+        $html .= 'top: -20px;' . "\r\n";
+        $html .= 'right: 0;' . "\r\n";
+        $html .= 'height: 0.2rem;' . "\r\n";
+        $html .= 'background-color: #00538b;' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= 'button.navbar-toggler i.fa:after {' . "\r\n";
+        $html .= 'position: absolute;' . "\r\n";
+        $html .= 'content: "";' . "\r\n";
+        $html .= 'width: 35px;' . "\r\n";
+        $html .= 'bottom: -15px;' . "\r\n";
+        $html .= 'margin-bottom: 25px;' . "\r\n";
+        $html .= 'right: 0;' . "\r\n";
+        $html .= 'height: 0.2rem;' . "\r\n";
+        $html .= 'background-color: #00538b;' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '@media (max-width: 576px) {' . "\r\n";
+        $html .= 'button.navbar-toggler {' . "\r\n";
+        $html .= 'width: 3rem;' . "\r\n";
+        $html .= 'height: 3rem;' . "\r\n";
+        $html .= 'right: .5rem;' . "\r\n";
+        $html .= '}' . "\r\n";
         $html .= '}' . "\r\n";
 
 
@@ -266,6 +332,17 @@ class HupaStarterCssGenerator
         $html .= $h6Font->fontWeight . "\r\n";
         $html .= $h6Font->fontHeight . "\r\n";
         $html .= $h6Font->fontColor . "\r\n";
+        $html .= '}' . "\r\n";
+
+        //Half Background
+        $html .= '.bg-half {' . "\r\n";
+        $html .= 'background: linear-gradient(90deg, #00538B 50%, #19D3C5 50%);' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '@media (max-width: 1199px) {' . "\r\n";
+        $html .= '.bg-half {' . "\r\n";
+        $html .= 'background: linear-gradient(0deg, #19D3C5 50%, #00538B 50%);' . "\r\n";
+        $html .= '}' . "\r\n";
         $html .= '}' . "\r\n";
 
         //STANDARD INFO FOOTER
@@ -403,10 +480,16 @@ class HupaStarterCssGenerator
         $html .= 'transition: all 450ms;' . "\r\n";
         $html .= '}' . "\r\n";
 
+        $html .= '@media (max-width: 992px) {' . "\r\n";
+        $html .= '.navbar-root {' . "\r\n";
+        $html .= 'padding-top: .5rem;' . "\r\n";
+        $html .= 'padding-bottom: .5rem;' . "\r\n";
+        $html .= '}' . "\r\n";
+        $html .= '}' . "\r\n";
+
         $html .= '.navbar-root.navbar-small {' . "\r\n";
         $html .= 'padding-top: .5rem ;' . "\r\n";
         $html .= 'padding-bottom: .5rem ;' . "\r\n";
-
         $html .= '}' . "\r\n";
 
         //NAVBAR
@@ -535,6 +618,16 @@ class HupaStarterCssGenerator
         $html .= '#nav-main-starter.navbar-root .dropdown-menu a.dropdown-item.active,#nav-main-starter.navbar-root .dropdown-menu .menu-item.current-menu-item {' . "\r\n";
         $html .= 'color: ' . get_hupa_option('menu_dropdown_active_color') . ';' . "\r\n";
         $html .= 'background-color: ' . get_hupa_option('menu_dropdown_active_bg') . ';' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '@media (max-width: 1199px) {' . "\r\n";
+        $html .= '#nav-main-starter.navbar-root .navbar-nav .nav-link:not(.mega-menu-wrapper .nav-link) {' . "\r\n";
+        $html .= 'padding-left:.3rem;' . "\r\n";
+        $html .= 'padding-right:.3rem;' . "\r\n";
+        $html .= '}' . "\r\n";
+        $html .= '.bg-half {' . "\r\n";
+        $html .= 'background: linear-gradient(0deg, #19D3C5 50%, #00538B 50%);' . "\r\n";
+        $html .= '}' . "\r\n";
         $html .= '}' . "\r\n";
 
         /** FADESCROLL */

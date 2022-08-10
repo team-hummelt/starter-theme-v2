@@ -438,16 +438,14 @@ class HupaStarterCssGenerator
 
         //FULLWIDTH CONTAINER
         $html .= '.container-fullwidth {' . "\r\n";
-        $html .= 'width: 100vw!important;' . "\r\n";
-        $html .= 'position: relative!important;' . "\r\n";
-        $html .= 'left: 50%!important;' . "\r\n";
-        $html .= 'margin-left: -50vw!important;' . "\r\n";
-        $html .= 'padding-right: ' . $this->px_to_rem(get_hupa_option('fw_right')) . '!important;' . "\r\n";
-        $html .= 'padding-left: ' . $this->px_to_rem(get_hupa_option('fw_left')) . '!important;' . "\r\n";
-        $html .= 'padding-top: ' . $this->px_to_rem(get_hupa_option('fw_top')) . '!important;' . "\r\n";
-        $html .= 'padding-bottom: ' . $this->px_to_rem(get_hupa_option('fw_bottom')) . '!important;' . "\r\n";
-        $html .= 'margin-bottom: 0!important;' . "\r\n";
-        $html .= 'margin-top: 0!important;' . "\r\n";
+        $html .= 'width: 100vw;' . "\r\n";
+        $html .= 'position: relative;' . "\r\n";
+        $html .= 'left: 50%;' . "\r\n";
+        $html .= 'margin-left: -50vw;' . "\r\n";
+        $html .= 'padding-right: ' . $this->px_to_rem(get_hupa_option('fw_right')) . ';' . "\r\n";
+        $html .= 'padding-left: ' . $this->px_to_rem(get_hupa_option('fw_left')) . ';' . "\r\n";
+        $html .= 'padding-top: ' . $this->px_to_rem(get_hupa_option('fw_top')) . ';' . "\r\n";
+        $html .= 'padding-bottom: ' . $this->px_to_rem(get_hupa_option('fw_bottom')) . ';' . "\r\n";
         $html .= '}' . "\r\n";
 
 

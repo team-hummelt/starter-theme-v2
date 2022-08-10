@@ -168,28 +168,15 @@ class HupaCarouselShortCode
             return '';
         }
         $carousel = $carouselData->record;
-        global $post;
-        $post = get_post(get_the_ID());
-        $postAttribute = parse_blocks($post->post_content);
-        if ($postAttribute) {
-            foreach ($postAttribute as $attribute) {
-                if ($attribute['blockName'] == 'core/group') {
-                    $carouselClass = '';
-                }
-            }
-        } else {
-            $carouselClass = ' header-carousel ';
-        }
-
-        /* $meta = get_post_meta(get_the_ID(), '_hupa_select_header', true);
+        $carouselClass = '';
+        /*$meta = get_post_meta(get_the_ID(), '_hupa_select_header', true);
         $postContent = get_post($meta);
+
         $regEx = '/<!.*theme-carousel.*({.*}).*>/m';
         preg_match($regEx, $postContent->post_content, $matches);
-        print_r($matches);
         if ($matches) {
-            $carouselClass = ' header-carousel ';
+            //$carouselClass = ' header-carousel ';
         }*/
-
         $slider = $sliderData->record;
 
         $carousel->data_stop_hover ? $data_stop_hover = 'hover' : $data_stop_hover = 'false';
@@ -235,7 +222,7 @@ class HupaCarouselShortCode
         ob_start();
         ?>
         <div id="hupaCarousel<?= $carousel->id ?>"
-             class="<?= $full_width ?>carousel<?= $carouselClass ?><?= $marginTop ?> <?=$data_animate?><?= $slide ?>"
+             class="<?= $full_width ?> carousel <?= $carouselClass ?> <?= $marginTop ?> <?=$data_animate?><?= $slide ?>"
              data-bs-ride="<?= $ride ?>" data-bs-pause="<?= $data_stop_hover ?>" data-bs-touch="<?= $data_touch_active ?>" data-bs-keyboard="<?= $data_keyboard_active ?>">
             <?php if ($countS > 1): ?>
                 <div class="<?= $carousel->indicator ? '' : 'd-none' ?> carousel-indicators">

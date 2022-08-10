@@ -37,14 +37,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
         let header = $('#nav-main-starter');
         let siteContent = $('.site-content');
         let navLogo = $('.navbar-root .logo.md');
-        let carouselWrapper = $('.header-carousel');
+        let carouselWrapper = $('.theme-carousel div:first');
         let headerHeight = header.outerHeight();
         let carouselMargin;
         let middleLogo = $('.middle-img');
         let topArea = $('#top-area-wrapper');
         let isFixedHeader = '';
-        let carouselItem = $('.header-carousel .carousel-item');
-        let carouselImg = $('.header-carousel img.bgImage');
+        let carouselItem = $('.theme-carousel .carousel-item');
+        let carouselImg = $('.theme-carousel img.bgImage');
         let imgFullHeight = carouselImg.outerHeight() - topArea.outerHeight();
 
         if (header.hasClass('fixed-top')) {

@@ -1,4 +1,9 @@
 
+
+.body .editor-styles-wrapper {
+    font-size: 16px;
+}
+
 body .wp-bs-starter-wrapper {
     font-size: 16px !important;
 }
@@ -18,16 +23,17 @@ body .wp-bs-starter-wrapper {
     display: none;
 }
 
-.components-form-toggle.is-disabled .components-form-toggle__track{
- background-color: #797979;
+.components-form-toggle.is-disabled .components-form-toggle__track {
+    background-color: #797979;
 
 }
 
-.components-form-toggle.is-disabled .components-form-toggle__input{
+.components-form-toggle.is-disabled .components-form-toggle__input {
     pointer-events: none;
 }
+
 .components-form-toggle.is-disabled ~ .components-toggle-control__label {
-    pointer-events: none!important;
+    pointer-events: none !important;
 }
 
 .components-panel__row.panel-row-column {
@@ -36,11 +42,11 @@ body .wp-bs-starter-wrapper {
     justify-content: center;
 }
 
-.components-panel__row.panel-row-column p{
+.components-panel__row.panel-row-column p {
     padding: .3rem 0;
 }
 
-.components-panel__row.panel-row-column p:first-child{
+.components-panel__row.panel-row-column p:first-child {
     padding: .5rem 0 0.3rem 0;
 }
 
@@ -49,6 +55,7 @@ body .wp-bs-starter-wrapper {
     font-size: .915rem;
     color: #2271b1;
 }
+
 /**
 .row-column-title::before {
     font-family: dashicons;
@@ -107,7 +114,6 @@ body .wp-bs-starter-wrapper {
     min-width: 34px;
     min-height: 34px;
 }
-
 
 
 .components-button .dashicon.dashicons-hupaIcon:hover {

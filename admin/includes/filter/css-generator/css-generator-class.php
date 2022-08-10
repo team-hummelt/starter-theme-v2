@@ -98,13 +98,26 @@ class HupaStarterCssGenerator
         $selectedFonts = $this->get_theme_settings('hupa_fonts');
 
         if (!$selectedFonts->status) {
-            return;
+            return false;
+        }
+
+
+        $editorCss = $this->hupa_generate_wp_editor_css();
+        $editorCss = preg_replace(array('/<!--(.*)-->/Uis', "/[[:blank:]]+/"), array('', ' '), str_replace(array("\n", "\r", "\t"), '', $editorCss));
+        $editorDir = THEME_ADMIN_DIR . 'admin-core/assets/css/autogenerate-editor-ui-styles.css';
+
+        switch ($args) {
+            case 'generate_wp_editor_css':
+                file_put_contents($editorDir, $editorCss, LOCK_EX);
+                return true;
         }
 
         ob_start();
         //LOGIN-Style
         $loginStyle = $this->generate_login_site_css();
         $loginStyle = preg_replace(array('/<!--(.*)-->/Uis', "/[[:blank:]]+/"), array('', ' '), str_replace(array("\n", "\r", "\t"), '', $loginStyle));
+        //Editor CSS
+        file_put_contents($editorDir, $editorCss, LOCK_EX);
         //FontFace
         $fontFace = $this->generate_font_face($selectedFonts->hupa_fonts);
         //$fontFace = preg_replace(array('/<!--(.*)-->/Uis',"/[[:blank:]]+/"),array('',' '),str_replace(array("\n","\r","\t"),'', $fontFace));
@@ -136,18 +149,18 @@ class HupaStarterCssGenerator
         //HEADER LOGO SIZE
         $html .= '.logo.md {' . "\r\n";
         $html .= 'max-width: ' . get_hupa_frontend('nav-img')->width . 'px;' . "\r\n";
-        $html .= 'width: 100%'  ."\r\n";
+        $html .= 'width: 100%' . "\r\n";
         $html .= '}' . "\r\n";
 
         $html .= '.logo.sm {' . "\r\n";
         $html .= 'max-width: ' . get_hupa_frontend('nav-img')->width_mobil . 'px;' . "\r\n";
-        $html .= 'width: 100%'  ."\r\n";
+        $html .= 'width: 100%' . "\r\n";
         $html .= '}' . "\r\n";
 
 
         $html .= '#logoPlaceholder img {' . "\r\n";
         $html .= 'max-width: ' . get_hupa_frontend('nav-img')->width_mobil . 'px;' . "\r\n";
-        $html .= 'width: 100%'  ."\r\n";
+        $html .= 'width: 100%' . "\r\n";
         $html .= '}' . "\r\n";
 
         $html .= '.content-negativ {' . "\r\n";
@@ -159,6 +172,24 @@ class HupaStarterCssGenerator
         $html .= 'position: relative;' . "\r\n";
         $html .= 'left: 50%;' . "\r\n";
         $html .= 'margin-left: -50vw;' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        // Shadow Placeholder
+        $html .= '.placeholder-shadow {' . "\r\n";
+        $html .= 'position: absolute;' . "\r\n";
+        $html .= 'width: 100%;' . "\r\n";
+        $html .= 'z-index: 9;' . "\r\n";
+        $html .= '-webkit-box-shadow: 0 10px 13px -7px #00000080, 0 42px 45px -30px rgb(0 0 0 / 30%);' . "\r\n";
+        $html .= 'box-shadow: 0 10px 13px -7px #00000080, 0 42px 45px -30px rgb(0 0 0 / 30%);' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '.placeholder-shadow-reverse {' . "\r\n";
+        $html .= 'position: absolute;' . "\r\n";
+        $html .= 'transform: rotate(180deg);' . "\r\n";
+        $html .= 'width: 100%;' . "\r\n";
+        $html .= 'z-index: 9;' . "\r\n";
+        $html .= '-webkit-box-shadow: 0 10px 13px -7px #00000080, 0 42px 45px -30px rgb(0 0 0 / 30%);' . "\r\n";
+        $html .= 'box-shadow: 0 10px 13px -7px #00000080, 0 42px 45px -30px rgb(0 0 0 / 30%);' . "\r\n";
         $html .= '}' . "\r\n";
 
         // Handy Icon
@@ -360,7 +391,7 @@ class HupaStarterCssGenerator
 
         //SIDEBAR etc. WIDGET TITLE
         $widgetFont = $this->css_styles_by_type('widgetFont', 'widget_font');
-        $html .= 'h2.widget-title {' . "\r\n";
+        $html .= 'h3.widget-title {' . "\r\n";
         $html .= $widgetFont->family . "\r\n";
         $html .= $widgetFont->fontSize . "\r\n";
         $html .= $widgetFont->fontStyle . "\r\n";
@@ -371,7 +402,7 @@ class HupaStarterCssGenerator
 
         //TOP FOOTER WIDGET TITLE
         $topFooterWidgetHeader = $this->css_styles_by_type('font', 'top_footer_headline_font');
-        $html .= '.top_footer h2.widget-title {' . "\r\n";
+        $html .= '.top_footer h3.widget-title {' . "\r\n";
         $html .= $topFooterWidgetHeader->family . "\r\n";
         $html .= $topFooterWidgetHeader->fontSize . "\r\n";
         $html .= $topFooterWidgetHeader->fontStyle . "\r\n";
@@ -393,7 +424,7 @@ class HupaStarterCssGenerator
 
         //FOOTER WIDGET HEADLINE
         $footer_headline = $this->css_styles_by_type('font', 'footer_headline_font');
-        $html .= '.bootscore-footer .footer_widget h2.widget-title.h4 {' . "\r\n";
+        $html .= '.bootscore-footer .footer_widget h3.widget-title.h4 {' . "\r\n";
         $html .= $footer_headline->family . "\r\n";
         $html .= $footer_headline->fontSize . "\r\n";
         $html .= $footer_headline->fontStyle . "\r\n";
@@ -824,6 +855,127 @@ class HupaStarterCssGenerator
             $html .= 'border: 0!important;' . "\r\n";
         }
         $html .= '}' . "\r\n";
+
+        return $html;
+    }
+
+    public function hupa_generate_wp_editor_css(): string
+    {
+        $html = '';
+        if (Config::get('EDITOR_SHOW_PLACEHOLDER')) {
+            $html .= '.wp-block-spacer {' . "\r\n";
+            $html .= 'background-color: #f5f5f5;' . "\r\n";
+            $html .= 'position: relative;' . "\r\n";
+            $html .= '}' . "\r\n";
+            $html .= '.wp-block-spacer::before {' . "\r\n";
+            $html .= 'display:flex!important;' . "\r\n";
+            $html .= 'content: "Abstandshalter" !important;' . "\r\n";
+            $html .= 'align-items: center!important;' . "\r\n";
+            $html .= 'justify-content: center;' . "\r\n";
+            $html .= 'font-size: 16px!important;' . "\r\n";
+            $html .= '}' . "\r\n";
+        }
+        //FONT
+        if (Config::get('EDITOR_SHOW_FONT_SIZE')) {
+            $h1Font = $this->css_styles_by_type('font', 'h1_font');
+            $html .= '.editor-styles-wrapper h1 {' . "\r\n";
+            $html .= $h1Font->family . "\r\n";
+            if ($h1Font->fontSize) {
+                $html .= str_replace(';', '', $h1Font->fontSize) . '!important;' . "\r\n";
+            }
+            $html .= $h1Font->fontStyle . "\r\n";
+            $html .= str_replace(';', '', $h1Font->fontWeight) . '!important;' . "\r\n";
+            $html .= str_replace(';', '', $h1Font->fontHeight) . '!important;' . "\r\n";
+            $html .= '}' . "\r\n";
+
+            $h2Font = $this->css_styles_by_type('font', 'h2_font');
+            $html .= '.editor-styles-wrapper h2:not(.edit-post-sidebar) {' . "\r\n";
+            $html .= $h2Font->family . "\r\n";
+            if ($h2Font->fontSize) {
+                $html .= str_replace(';', '', $h2Font->fontSize) . '!important;' . "\r\n";
+            }
+            $html .= str_replace(';', '', $h2Font->fontStyle) . '!important;' . "\r\n";
+            $html .= str_replace(';', '', $h2Font->fontWeight) . '!important;' . "\r\n";
+            $html .= str_replace(';', '', $h2Font->fontHeight) . '!important;' . "\r\n";
+            $html .= '}' . "\r\n";
+
+            $h3Font = $this->css_styles_by_type('font', 'h3_font');
+            $html .= '.editor-styles-wrapper h3 {' . "\r\n";
+            $html .= $h3Font->family . "\r\n";
+            if ($h3Font->fontSize) {
+                $html .= str_replace(';', '', $h3Font->fontSize) . '!important;' . "\r\n";
+            }
+            $html .= str_replace(';', '', $h3Font->fontStyle) . '!important;' . "\r\n";
+            $html .= str_replace(';', '', $h3Font->fontWeight) . '!important;' . "\r\n";
+            $html .= str_replace(';', '', $h3Font->fontHeight) . '!important;' . "\r\n";
+            $html .= '}' . "\r\n";
+
+            $h4Font = $this->css_styles_by_type('font', 'h4_font');
+            $html .= '.editor-styles-wrapper h4 {' . "\r\n";
+            $html .= $h4Font->family . "\r\n";
+            if ($h4Font->fontSize) {
+                $html .= str_replace(';', '', $h4Font->fontSize) . '!important;' . "\r\n";
+            }
+            $html .= str_replace(';', '', $h4Font->fontStyle) . '!important;' . "\r\n";
+            $html .= str_replace(';', '', $h4Font->fontWeight) . '!important;' . "\r\n";
+            $html .= str_replace(';', '', $h4Font->fontHeight) . '!important;' . "\r\n";
+            $html .= '}' . "\r\n";
+
+            $h5Font = $this->css_styles_by_type('font', 'h5_font');
+            $html .= '.editor-styles-wrapper h5 {' . "\r\n";
+            $html .= $h5Font->family . "\r\n";
+            if ($h5Font->fontSize) {
+                $html .= str_replace(';', '', $h5Font->fontSize) . '!important;' . "\r\n";
+            }
+            $html .= str_replace(';', '', $h5Font->fontStyle) . '!important;' . "\r\n";
+            $html .= str_replace(';', '', $h5Font->fontWeight) . '!important;' . "\r\n";
+            $html .= str_replace(';', '', $h5Font->fontHeight) . '!important;' . "\r\n";
+            $html .= '}' . "\r\n";
+
+            $h6Font = $this->css_styles_by_type('font', 'h6_font');
+            $html .= '.editor-styles-wrapper h6 {' . "\r\n";
+            $html .= $h6Font->family . "\r\n";
+            if ($h6Font->fontSize) {
+                $html .= str_replace(';', '', $h6Font->fontSize) . '!important;' . "\r\n";
+            }
+            $html .= str_replace(';', '', $h6Font->fontStyle) . '!important;' . "\r\n";
+            $html .= str_replace(';', '', $h6Font->fontWeight) . '!important;' . "\r\n";
+            $html .= str_replace(';', '', $h6Font->fontHeight) . '!important;' . "\r\n";
+            $html .= '}' . "\r\n";
+
+            $bodyFont = $this->css_styles_by_type('font', 'body_font');
+            $html .= '.editor-styles-wrapper p {' . "\r\n";
+            $html .= $bodyFont->family . "\r\n";
+            $html .= str_replace(';', '', $bodyFont->fontSize) . '!important;' . "\r\n";
+            $html .= str_replace(';', '', $bodyFont->fontStyle) . '!important;' . "\r\n";
+            $html .= str_replace(';', '', $bodyFont->fontWeight) . '!important;' . "\r\n";
+            $html .= str_replace(';', '', $bodyFont->fontHeight) . '!important;' . "\r\n";
+            $html .= '}' . "\r\n";
+        }
+        if (Config::get('EDITOR_SHOW_HEADLINE_BORDER')) {
+            $html .= '.editor-styles-wrapper .wp-block-heading {' . "\r\n";
+            $html .= 'border: 1px solid #efefef;' . "\r\n";
+            $html .= 'padding: .25rem;' . "\r\n";
+            $html .= '}' . "\r\n";
+        }
+        if (Config::get('EDITOR_SHOW_GROUP_BORDER')) {
+            $html .= '.editor-styles-wrapper .wp-block-group {' . "\r\n";
+            $html .= 'border: 1px solid #ffdcd9;' . "\r\n";
+            $html .= 'padding: .25rem;' . "\r\n";
+            $html .= '}' . "\r\n";
+        }
+        if (Config::get('EDITOR_SHOW_COLUMN_BORDER')) {
+            $html .= '.editor-styles-wrapper .wp-block-columns {' . "\r\n";
+            $html .= 'border: 1px solid #dbffb1;' . "\r\n";
+            $html .= 'padding: .25rem;' . "\r\n";
+            $html .= '}' . "\r\n";
+        }
+        if (Config::get('EDITOR_SHOW_PARAGRAPH_BORDER')) {
+            $html .= '.editor-styles-wrapper .wp-block-paragraph {' . "\r\n";
+            $html .= 'border: 1px solid #efefef;' . "\r\n";
+            $html .= 'padding: .25rem;' . "\r\n";
+            $html .= '}' . "\r\n";
+        }
 
         return $html;
     }

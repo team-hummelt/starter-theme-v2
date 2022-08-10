@@ -18,7 +18,7 @@ use Hupa\StarterThemeV2\HupaCarouselTrait;
 use Hupa\StarterThemeV2\HupaOptionTrait;
 use HupaStarterThemeV2;
 
-final class HupaEnqueueStarterTheme
+class HupaEnqueueStarterTheme
 {
     private static $hupa_enqueue_instance;
 
@@ -173,6 +173,11 @@ final class HupaEnqueueStarterTheme
         // TODO DASHBOARD WP STYLES
         wp_enqueue_style('hupa-starter-admin-custom-icons', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/css/tools.css', array(), $this->theme_version, false);
         wp_enqueue_style('hupa-starter-admin-dashboard-tools', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/css/Glyphter.css', array(), $this->theme_version, false);
+    }
+
+    public function hupa_enqueue_block_editor() {
+
+        wp_enqueue_style('hupa-starter-editor-ui-style', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/css/autogenerate-editor-ui-styles.css');
     }
 
     public function add_type_attribute($tag, $handle, $src)

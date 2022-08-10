@@ -336,6 +336,7 @@ class HupaCarouselShortCode
                                                 $link = '';
                                         }
                                     }
+                                    $bt->btn_css ? $btn_css = $bt->btn_css : $btn_css = '';
                                     $style = 'style=
                                                 "color: ' . $bt->button_color . ';
                                                  border-color:' . $bt->button_color . ';
@@ -343,7 +344,7 @@ class HupaCarouselShortCode
                                     $style = preg_replace(array('/<!--(.*)-->/Uis', "/[[:blank:]]+/"), array('', ' '), str_replace(array("\n", "\r", "\t"), '', $style));
                                     ?>
                                     <a <?= $bt->btn_target ? 'target="_blank"' : '' ?> href="<?= $link ?>"
-                                                                                       class="btn"
+                                                                                       class="<?=$btn_css?> btn"
                                         <?= $style ?>
                                                                                        onmouseover="this.style.background='<?= $bt->bg_hover ?>';
                                                                                                this.style.color='<?= $bt->hover_color ?>';

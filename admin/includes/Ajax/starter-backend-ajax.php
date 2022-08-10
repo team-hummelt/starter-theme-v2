@@ -109,6 +109,7 @@ class Hupa_Starter_V2_Admin_Ajax
      * @array      array $systems_settings System Settings Constants.
      */
     private array $systems_settings;
+    private array $wp_editor_settings;
 
     /**
      * TRAIT of Option Settings.
@@ -143,6 +144,7 @@ class Hupa_Starter_V2_Admin_Ajax
         $this->main = $main;
         $this->twig = $twig;
         $this->systems_settings = ['CUSTOM_FOOTER', 'CUSTOM_HEADER', 'DESIGN_TEMPLATES','HUPA_SIDEBAR_OLD', 'HUPA_TOOLS', 'HUPA_CAROUSEL', 'HUPA_MAPS', 'HUPA_API_INSTALL'];
+        $this->wp_editor_settings = ['EDITOR_SHOW_PARAGRAPH_BORDER','EDITOR_SHOW_HEADLINE_BORDER','EDITOR_SHOW_COLUMN_BORDER','EDITOR_SHOW_GROUP_BORDER','EDITOR_SHOW_PLACEHOLDER','EDITOR_SHOW_FONT_SIZE'];
         $this->method = $_POST['method'];
         if (isset($_POST['daten'])) {
             $this->data = $_POST['daten'];
@@ -1206,6 +1208,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 }
 
                 $fileData = [];
+                $editorData = [];
                 if ($file):
                     foreach ($file as $line) {
                         $split = explode('=', $line);
@@ -1221,9 +1224,24 @@ class Hupa_Starter_V2_Admin_Ajax
                         $fileData[] = $data_item;
                     }
 
+                    foreach ($file as $line) {
+                        $split = explode('=', $line);
+                        if (!in_array($split[0], $this->wp_editor_settings)) {
+                            continue;
+                        }
+                        $bez = str_replace('_', ' ', $split[0]);
+                        $editor_item = [
+                            'bezeichnung' => ucfirst(strtolower($bez)),
+                            'name' => $split[0],
+                            'value' => $split[1]
+                        ];
+                        $editorData[] = $editor_item;
+                    }
                 endif;
+
                 $data = [
-                    'data' => $fileData
+                    'data' => $fileData,
+                    'editor' => $editorData
                 ];
 
                 try {
@@ -1238,7 +1256,6 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
 
             case'update_env_settings':
-
                 filter_input(INPUT_POST, 'CUSTOM_FOOTER', FILTER_SANITIZE_STRING) ? $record->CUSTOM_FOOTER = 1 : $record->CUSTOM_FOOTER = 0;
                 filter_input(INPUT_POST, 'CUSTOM_HEADER', FILTER_SANITIZE_STRING) ? $record->CUSTOM_HEADER = 1 : $record->CUSTOM_HEADER = 0;
                 filter_input(INPUT_POST, 'DESIGN_TEMPLATES', FILTER_SANITIZE_STRING) ? $record->DESIGN_TEMPLATES = 1 : $record->DESIGN_TEMPLATES = 0;
@@ -1247,6 +1264,14 @@ class Hupa_Starter_V2_Admin_Ajax
                 filter_input(INPUT_POST, 'HUPA_MAPS', FILTER_SANITIZE_STRING) ? $record->HUPA_MAPS = 1 : $record->HUPA_MAPS = 0;
                 filter_input(INPUT_POST, 'HUPA_TOOLS', FILTER_SANITIZE_STRING) ? $record->HUPA_TOOLS = 1 : $record->HUPA_TOOLS = 0;
                 filter_input(INPUT_POST, 'HUPA_API_INSTALL', FILTER_SANITIZE_STRING) ? $record->HUPA_API_INSTALL = 1 : $record->HUPA_API_INSTALL = 0;
+                //WP-Editor Settings
+                filter_input(INPUT_POST, 'EDITOR_SHOW_PARAGRAPH_BORDER', FILTER_SANITIZE_STRING) ? $record->EDITOR_SHOW_PARAGRAPH_BORDER = 1 : $record->EDITOR_SHOW_PARAGRAPH_BORDER = 0;
+                filter_input(INPUT_POST, 'EDITOR_SHOW_HEADLINE_BORDER', FILTER_SANITIZE_STRING) ? $record->EDITOR_SHOW_HEADLINE_BORDER = 1 : $record->EDITOR_SHOW_HEADLINE_BORDER = 0;
+                filter_input(INPUT_POST, 'EDITOR_SHOW_COLUMN_BORDER', FILTER_SANITIZE_STRING) ? $record->EDITOR_SHOW_COLUMN_BORDER = 1 : $record->EDITOR_SHOW_COLUMN_BORDER = 0;
+                filter_input(INPUT_POST, 'EDITOR_SHOW_GROUP_BORDER', FILTER_SANITIZE_STRING) ? $record->EDITOR_SHOW_GROUP_BORDER = 1 : $record->EDITOR_SHOW_GROUP_BORDER = 0;
+                filter_input(INPUT_POST, 'EDITOR_SHOW_PLACEHOLDER', FILTER_SANITIZE_STRING) ? $record->EDITOR_SHOW_PLACEHOLDER = 1 : $record->EDITOR_SHOW_PLACEHOLDER = 0;
+                filter_input(INPUT_POST, 'EDITOR_SHOW_FONT_SIZE', FILTER_SANITIZE_STRING) ? $record->EDITOR_SHOW_FONT_SIZE = 1 : $record->EDITOR_SHOW_FONT_SIZE = 0;
+
                 $pinInput = filter_input(INPUT_POST, 'setting_pin', FILTER_SANITIZE_NUMBER_INT);
                 $pin = apply_filters('get_settings_pin', null);
                 if(!apply_filters('hupa_validate_pin',$pinInput, $pin)){
@@ -1259,16 +1284,16 @@ class Hupa_Starter_V2_Admin_Ajax
                 }
 
                 $envValue = '';
+                $settArr = array_merge($this->systems_settings,$this->wp_editor_settings);
                 if ($file) {
                     foreach ($file as $line) {
                         $split = explode('=', $line);
-                        if (in_array($split[0], $this->systems_settings)) {
+                        if (in_array($split[0], $settArr)) {
                             $c = $split[0];
                             $writeLine = $split[0] . "=" . (int)$record->$c . "\r\n";
                         } else {
                             $writeLine = $line;
                         }
-
                         $envValue .= $writeLine;
                     }
                 } else {
@@ -1278,6 +1303,7 @@ class Hupa_Starter_V2_Admin_Ajax
 
                 file_put_contents(THEME_ADMIN_DIR . '.env', $envValue);
                 update_option('theme_env_settings', $envValue);
+                apply_filters('generate_theme_css', 'generate_wp_editor_css');
                 $responseJson->status = true;
                 $responseJson->msg = 'Änderungen erfolgreich gespeichert!';
                 break;

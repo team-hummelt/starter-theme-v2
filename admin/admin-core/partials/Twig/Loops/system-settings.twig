@@ -14,6 +14,22 @@
                 </div>
             </div>
         {% endfor %}
+        <hr>
+        <h5 class="font-bold-light"><i class="font-blue fa fa-wordpress me-1"></i> WordPress Gutenberg Editor Settings</h5>
+        <hr>
+        {% for e in editor %}
+            <div class="col-xxl-3 col-xl-4 col-lg-6 col-12">
+                <div class="form-check form-switch">
+                    <input class="form-check-input no-blur" name="{{ e.name }}" type="checkbox" role="switch"
+                           id="editor{{ loop.index }}"
+                           {% if e.value == 1 %}checked{% endif %}>
+                    <label class="form-check-label" for="editor{{ loop.index }}">
+                        <span class="strong-font-weight"> {{ e.bezeichnung }}</span>
+                        <span class="fw-light"> {{ 'show'|__ }}</span>
+                    </label>
+                </div>
+            </div>
+        {% endfor %}
         <div class="col-12">
             <hr>
             <div class="col-xxl-2 col-xl-3 col-lg-6 col-12">

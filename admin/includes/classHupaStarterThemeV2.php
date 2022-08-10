@@ -325,6 +325,9 @@ class HupaStarterThemeV2
         require(Config::get('THEME_ADMIN_INCLUDES') . 'Class/hupa-optionen-class.php');
         require(Config::get('THEME_ADMIN_INCLUDES') . 'Class/class-api-handle.php');
 
+        //Editor CSS
+        //require(THEME_ADMIN_DIR . 'admin-core/assets/css/editor-ui-styles-css.php');
+
         /**
          * The class responsible for defining all actions that occur in the admin area.
          */
@@ -429,7 +432,7 @@ class HupaStarterThemeV2
         global $hupa_css_generator_hooks;
         $hupa_css_generator_hooks = HupaStarterCssGenerator::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
         $this->loader->add_filter('generate_theme_css', $hupa_css_generator_hooks, 'hupa_generate_theme_css');
-
+        $this->loader->add_action('generate_wp_editor_css', $hupa_css_generator_hooks, 'hupa_generate_wp_editor_css');
     }
 
     /**
@@ -515,6 +518,7 @@ class HupaStarterThemeV2
         $hupa_register_enqueue = HupaEnqueueStarterTheme::hupa_enqueue_instance($this->get_theme_slug(), $this->get_theme_version(), $this->main);
         $this->loader->add_action('wp_enqueue_scripts', $hupa_register_enqueue, 'starter_theme_wordpress_public_style');
         $this->loader->add_action('admin_enqueue_scripts', $hupa_register_enqueue, 'starter_theme_wordpress_dashboard_style');
+        $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_enqueue, 'hupa_enqueue_block_editor');
     }
 
     /**

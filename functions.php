@@ -194,19 +194,19 @@ if (!function_exists('bootscore_widgets_init')) :
             'name' => esc_html__('Sidebar 1 (default)', 'bootscore'),
             'id' => 'sidebar-1',
             'description' => esc_html__('Add widgets here.', 'bootscore'),
-            'before_widget' => '<section id="%1$s" class="widget %2$s widget-sidebar card card-body mb-4">',
+            'before_widget' => '<section id="%1$s" class="widget %2$s content-sidebar-1 widget-sidebar card card-body mb-4">',
             'after_widget' => '</section>',
-            'before_title' => '<h2 class="widget-title card-title fst-normal fw-normal border-bottom py-2">',
-            'after_title' => '</h2>',
+            'before_title' => '<h3 class="widget-title title-sidebar-1 card-title fst-normal fw-normal border-bottom py-2">',
+            'after_title' => '</h3>',
         ));
 
         register_sidebar(array(
             'name' => esc_html__('Sidebar 2', 'bootscore'),
             'id' => 'sidebar-2',
             'description' => esc_html__('Add widgets here.', 'bootscore'),
-            'before_widget' => '<section id="%1$s" class="widget %2$s widget-sidebar card card-body mb-4">',
+            'before_widget' => '<section id="%1$s" class="widget %2$s content-sidebar-2 widget-sidebar card card-body mb-4">',
             'after_widget' => '</section>',
-            'before_title' => '<h3 class="widget-title card-title fst-normal fw-normal border-bottom py-2">',
+            'before_title' => '<h3 class="widget-title title-sidebar-2 card-title fst-normal fw-normal border-bottom py-2">',
             'after_title' => '</h3>',
         ));
 
@@ -214,7 +214,7 @@ if (!function_exists('bootscore_widgets_init')) :
             'name' => esc_html__('Sidebar 3', 'bootscore'),
             'id' => 'sidebar-3',
             'description' => esc_html__('Add widgets here.', 'bootscore'),
-            'before_widget' => '<section id="%1$s" class="widget %2$s widget-sidebar card card-body mb-4">',
+            'before_widget' => '<section id="%1$s" class="widget %2$s widget-sidebar content-sidebar-3 card card-body mb-4">',
             'after_widget' => '</section>',
             'before_title' => '<h3 class="widget-title title-sidebar-3 card-title fst-normal fw-normal border-bottom py-2">',
             'after_title' => '</h3>',
@@ -224,7 +224,7 @@ if (!function_exists('bootscore_widgets_init')) :
             'name' => esc_html__('Sidebar 4', 'bootscore'),
             'id' => 'sidebar-4',
             'description' => esc_html__('Add widgets here.', 'bootscore'),
-            'before_widget' => '<section id="%1$s" class="widget %2$s widget-sidebar card card-body mb-4">',
+            'before_widget' => '<section id="%1$s" class="widget %2$s widget-sidebar content-sidebar-4 card card-body mb-4">',
             'after_widget' => '</section>',
             'before_title' => '<h3 class="widget-title title-sidebar-4 card-title fst-normal fw-normal border-bottom py-2">',
             'after_title' => '</h3>',
@@ -237,7 +237,7 @@ if (!function_exists('bootscore_widgets_init')) :
                 'name' => esc_html__('WooCommerce Sidebar', 'bootscore'),
                 'id' => 'sidebar-5',
                 'description' => esc_html__('Add widgets here.', 'bootscore'),
-                'before_widget' => '<section id="%1$s" class="widget %2$s card card-body mb-4 border-0">',
+                'before_widget' => '<section id="%1$s" class="widget %2$s card card-body content-sidebar-5 mb-4 border-0">',
                 'after_widget' => '</section>',
                 'before_title' => '<h3 class="widget-title title-sidebar-5 card-title fst-normal fw-normal border-bottom py-2">',
                 'after_title' => '</h3>',
@@ -250,7 +250,7 @@ if (!function_exists('bootscore_widgets_init')) :
             'name' => esc_html__('Top Footer', 'bootscore'),
             'id' => 'top-footer',
             'description' => esc_html__('Add widgets here.', 'bootscore'),
-            'before_widget' => '<div id="%1$s" class="top_footer %2$s mb-5">',
+            'before_widget' => '<div id="%1$s" class="top_footer content-top-footer %2$s mb-5">',
             'after_widget' => '</div>',
             'before_title' => '<h3 class="widget-title title-top-footer">',
             'after_title' => '</h3>'
@@ -262,7 +262,7 @@ if (!function_exists('bootscore_widgets_init')) :
             'name' => esc_html__('Footer 1', 'bootscore'),
             'id' => 'footer-1',
             'description' => esc_html__('Add widgets here.', 'bootscore'),
-            'before_widget' => '<div id="%1$s" class="footer_widget %2$s mb-4">',
+            'before_widget' => '<div id="%1$s" class="footer_widget content-footer-1 %2$s mb-4">',
             'after_widget' => '</div>',
             'before_title' => '<h3 class="widget-title title-footer-1 h4">',
             'after_title' => '</h3>'
@@ -274,7 +274,7 @@ if (!function_exists('bootscore_widgets_init')) :
             'name' => esc_html__('Footer 2', 'bootscore'),
             'id' => 'footer-2',
             'description' => esc_html__('Add widgets here.', 'bootscore'),
-            'before_widget' => '<div id="%1$s" class="footer_widget %2$s mb-4">',
+            'before_widget' => '<div id="%1$s" class="footer_widget content-footer-2 %2$s mb-4">',
             'after_widget' => '</div>',
             'before_title' => '<h3 class="widget-title title-footer-2 h4">',
             'after_title' => '</h3>'
@@ -286,10 +286,10 @@ if (!function_exists('bootscore_widgets_init')) :
             'name' => esc_html__('Footer 3', 'bootscore'),
             'id' => 'footer-3',
             'description' => esc_html__('Add widgets here.', 'bootscore'),
-            'before_widget' => '<div id="%1$s" class="footer_widget %2$s mb-4">',
+            'before_widget' => '<div id="%1$s" class="footer_widget content-footer-3 %2$s mb-4">',
             'after_widget' => '</div>',
-            'before_title' => '<h2 class="widget-title title-footer-3 h4">',
-            'after_title' => '</h2>'
+            'before_title' => '<h3 class="widget-title title-footer-3 h4">',
+            'after_title' => '</h3>'
         ));
         // Footer 3 End
 
@@ -298,7 +298,7 @@ if (!function_exists('bootscore_widgets_init')) :
             'name' => esc_html__('Footer 4', 'bootscore'),
             'id' => 'footer-4',
             'description' => esc_html__('Add widgets here.', 'bootscore'),
-            'before_widget' => '<div id="%1$s" class="footer_widget %2$s mb-4">',
+            'before_widget' => '<div id="%1$s" class="footer_widget content-footer-4 %2$s mb-4">',
             'after_widget' => '</div>',
             'before_title' => '<h3 class="widget-title title-footer-4 h4">',
             'after_title' => '</h3>'

@@ -159,8 +159,6 @@ class HupaCarouselShortCode
             return '';
         }
 
-        $carouselClass = '';
-
         $args = sprintf('WHERE id=%d', $a['id']);
         $carouselData = apply_filters('get_carousel_data', 'hupa_carousel', $args, 'get_row');
         $args = sprintf('WHERE carousel_id=%d AND aktiv=1 AND img_id > 0 ORDER BY position ASC', $a['id']);
@@ -170,14 +168,27 @@ class HupaCarouselShortCode
             return '';
         }
         $carousel = $carouselData->record;
+        global $post;
+        $post = get_post(get_the_ID());
+        $postAttribute = parse_blocks($post->post_content);
+        if ($postAttribute) {
+            foreach ($postAttribute as $attribute) {
+                if ($attribute['blockName'] == 'core/group') {
+                    $carouselClass = '';
+                }
+            }
+        } else {
+            $carouselClass = ' header-carousel ';
+        }
 
-        $meta = get_post_meta(get_the_ID(), '_hupa_select_header', true);
+        /* $meta = get_post_meta(get_the_ID(), '_hupa_select_header', true);
         $postContent = get_post($meta);
         $regEx = '/<!.*theme-carousel.*({.*}).*>/m';
         preg_match($regEx, $postContent->post_content, $matches);
+        print_r($matches);
         if ($matches) {
             $carouselClass = ' header-carousel ';
-        }
+        }*/
 
         $slider = $sliderData->record;
 

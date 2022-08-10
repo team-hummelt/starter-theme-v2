@@ -34,6 +34,12 @@ if (file_exists(THEME_ADMIN_DIR . '.env')) {
             'HUPA_TOOLS',
             'HUPA_CAROUSEL',
             'HUPA_MAPS',
+            'EDITOR_SHOW_PARAGRAPH_BORDER',
+            'EDITOR_SHOW_HEADLINE_BORDER',
+            'EDITOR_SHOW_COLUMN_BORDER',
+            'EDITOR_SHOW_GROUP_BORDER',
+            'EDITOR_SHOW_PLACEHOLDER',
+            'EDITOR_SHOW_FONT_SIZE',
             'THEME_AJAX_TEMPLATE_DIR',
             'ALWAYS_ISSUE_NEW_REFRESH_TOKEN',
             'AUTH_CODE_LIFETIME',
@@ -215,6 +221,16 @@ Config::define('HUPA_CAROUSEL', (int) env('HUPA_CAROUSEL'));
  * HUPA MAPS
  */
 Config::define('HUPA_MAPS', (int) env('HUPA_MAPS'));
+
+/**
+ * HUPA WordPress Editor CSS Optionen
+ */
+Config::define('EDITOR_SHOW_PARAGRAPH_BORDER', (int) env('EDITOR_SHOW_PARAGRAPH_BORDER'));
+Config::define('EDITOR_SHOW_HEADLINE_BORDER', (int) env('EDITOR_SHOW_HEADLINE_BORDER'));
+Config::define('EDITOR_SHOW_COLUMN_BORDER', (int) env('EDITOR_SHOW_COLUMN_BORDER'));
+Config::define('EDITOR_SHOW_GROUP_BORDER', (int) env('EDITOR_SHOW_GROUP_BORDER'));
+Config::define('EDITOR_SHOW_PLACEHOLDER', (int) env('EDITOR_SHOW_PLACEHOLDER'));
+Config::define('EDITOR_SHOW_FONT_SIZE', (int) env('EDITOR_SHOW_FONT_SIZE'));
 
 /**
  * HUPA API INSTALL

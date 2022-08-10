@@ -44,12 +44,14 @@ function hupa_gmaps_data() {
             let map_type_ids = ['roadmap'];
 
             //Farbshema anlegen
+            let farbshema;
+            let custom_style;
             if (data.farbshema_aktiv && data.farbshema_aktiv != false) {
                 //console.log('Benutzerdefiniertes Farbschema wird geladen.');
-                let farbshema = data.farbshema.replace(/&#34;/g, '"');
+                farbshema = data.farbshema.replace(/&#34;/g, '"');
                 farbshema = farbshema.replace(/&#39;/g, '"');
                 farbshema = JSON.parse(farbshema);
-                let custom_style = new google.maps.StyledMapType(farbshema, {name: 'HUPA-Map'});
+                custom_style = new google.maps.StyledMapType(farbshema, {name: 'HUPA-Map'});
                 map_type_ids = ['styled_map'];
             }
 

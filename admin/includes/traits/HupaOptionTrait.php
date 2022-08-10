@@ -646,7 +646,7 @@ trait HupaOptionTrait
                 $this->map_datenschutz => 0,
                 $this->map_colorcheck => 0,
                 $this->map_standard_pin => 0,
-                $this->map_pin_height => 25,
+                $this->map_pin_height => 35,
                 $this->map_pin_width => 25,
                 $this->map_color => '',
                 $this->map_pins => [
@@ -656,7 +656,7 @@ trait HupaOptionTrait
                         'info_text' => 'hummelt und partner | Werbeagentur GmbH',
                         'custom_pin_check' => 0,
                         'custom_pin_img' => 0,
-                        'custom_height' => 25,
+                        'custom_height' => 35,
                         'custom_width' => 25
                     ]
                 ]

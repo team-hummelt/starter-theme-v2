@@ -874,6 +874,13 @@ class HupaStarterCssGenerator
             $html .= 'justify-content: center;' . "\r\n";
             $html .= 'font-size: 16px!important;' . "\r\n";
             $html .= '}' . "\r\n";
+            $html .= '.wp-block-spacer.placeholder-shadow  {' . "\r\n";
+            $html .= 'background-color: #ffdf80;' . "\r\n";
+            $html .= '}' . "\r\n";
+            $html .= '.placeholder-shadow::before {' . "\r\n";
+            $html .= 'content: "Schatten" !important;' . "\r\n";
+            $html .= '}' . "\r\n";
+
         }
         //FONT
         if (Config::get('EDITOR_SHOW_FONT_SIZE')) {

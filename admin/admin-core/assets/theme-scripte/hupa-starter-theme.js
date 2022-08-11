@@ -37,18 +37,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
         let header = $('#nav-main-starter');
         let siteContent = $('.site-content');
         let navLogo = $('.navbar-root .logo.md');
-        let carouselWrapper = $('.theme-carousel div:first');
+        let carouselWrapper = $('.theme-carousel .carousel');
         let headerHeight = header.outerHeight();
         let carouselMargin;
         let middleLogo = $('.middle-img');
         let topArea = $('#top-area-wrapper');
         let isFixedHeader = '';
-        let carouselItem = $('.theme-carousel .carousel-item');
+        let carouselItem = $('.theme-carousel  .carousel-item');
         let carouselImg = $('.theme-carousel img.bgImage');
         let imgFullHeight = carouselImg.outerHeight() - topArea.outerHeight();
 
         if (header.hasClass('fixed-top')) {
-            if (topArea[0]) {
+            if (topArea.length) {
                 isFixedHeader = true;
                 header.removeClass('fixed-top');
 
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 
         if (carouselWrapper.hasClass('carousel-margin-top')) {
-            if (topArea[0] && $(window).outerWidth() > 991) {
+            if (topArea.length && $(window).outerWidth() > 991) {
                 carouselImg.css('height', carouselImg.outerHeight() - topArea.outerHeight() + 'px')
             }
             carouselWrapper.css('margin-top', -header.outerHeight() + 'px');
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             //  console.log( $(this).width() );
             let scroll = $(window).scrollTop();
             carouselMargin = header.innerHeight() - header.innerHeight();
-            if (topArea[0] && carouselWrapper.hasClass('carousel-margin-top')) {
+            if (topArea.length && carouselWrapper.hasClass('carousel-margin-top')) {
                 carouselItem.css('max-height', imgFullHeight + 'px')
                 if ($(this).width() > 991) {
                     carouselItem.css('max-height', imgFullHeight + 'px')
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
 
             if (header.hasClass('fixed-top') && carouselWrapper.hasClass('carousel-margin-top')) {
-                if (topArea[0]) {
+                if (topArea.length) {
                     isFixedHeader = true;
                     header.removeClass('fixed-top');
                 } else {
@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 }
             }
 
-            if (topArea[0] && !carouselWrapper.hasClass('carousel-margin-top')) {
+            if (topArea.length && !carouselWrapper.hasClass('carousel-margin-top')) {
                 if ($(this).width() > 991) {
                     if (scroll > topArea.outerHeight()) {
                         header.addClass('fixed-top');
@@ -114,13 +114,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     carouselWrapper.css('margin-top', header.outerHeight() + 'px');
                 }
             }
-
         });
 
         $(window).on("scroll", function (event) {
             let scroll = $(window).scrollTop();
             carouselMargin = headerHeight - headerHeight;
-            if (topArea[0] && carouselWrapper.hasClass('carousel-margin-top')) {
+            if (topArea.length && carouselWrapper.hasClass('carousel-margin-top')) {
                 if (scroll > topArea.outerHeight()) {
                     header.addClass('fixed-top');
                     carouselWrapper.css('margin-top', carouselMargin + 'px')
@@ -130,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 }
             }
 
-            if (topArea[0] && !carouselWrapper.hasClass('carousel-margin-top')) {
+            if (topArea.length && !carouselWrapper.hasClass('carousel-margin-top')) {
                 if ($(this).width() > 991) {
                     if (scroll > topArea.outerHeight()) {
                         header.addClass('fixed-top');
@@ -147,8 +146,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 }
             }
 
-            let hupaTopArea = $('.hupa-top-area');
-            if (hupaTopArea && !$('.header-carousel').length) {
+            let hupaTopArea = $('#top-area-wrapper');
+            if (hupaTopArea && !$('.theme-carousel ').length) {
                 let siteContent = $('.site-content');
                 let siteHeight = header.outerHeight() - header.outerHeight();
                 if (scroll > topArea.outerHeight()) {

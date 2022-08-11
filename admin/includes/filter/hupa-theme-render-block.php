@@ -15,7 +15,6 @@ defined('ABSPATH') or die();
  * Copyright 2021, Jens Wiecker
  * License: Commercial - goto https://www.hummelt-werbeagentur.de/
  */
-
 class HupaStarterRenderBlock
 {
     //STATIC INSTANCE
@@ -28,15 +27,16 @@ class HupaStarterRenderBlock
      * @access   private
      * @var HupaStarterThemeV2 $main The main class.
      */
-    protected  HupaStarterThemeV2 $main;
+    protected HupaStarterThemeV2 $main;
 
     //OPTION TRAIT
     use HupaOptionTrait;
 
     /**
+     * @param HupaStarterThemeV2 $main
      * @return static
      */
-    public static function init(HupaStarterThemeV2  $main): self
+    public static function init(HupaStarterThemeV2 $main): self
     {
         if (is_null(self::$starter_render_block_instance)) {
             self::$starter_render_block_instance = new self($main);
@@ -48,12 +48,17 @@ class HupaStarterRenderBlock
     /**
      * HupaStarterRenderBlock constructor.
      */
-    public function __construct(HupaStarterThemeV2  $main)
+    public function __construct(HupaStarterThemeV2 $main)
     {
         $this->main = $main;
     }
 
-    public function custom_render_block_core_group(string $block_content, array $block):string
+    /**
+     * @param string $block_content
+     * @param array $block
+     * @return string
+     */
+    public function custom_render_block_core_group(string $block_content, array $block): string
     {
         $html = '';
         if ($block['blockName'] === 'core/group' && !is_admin() && !wp_is_json_request()) {
@@ -63,78 +68,109 @@ class HupaStarterRenderBlock
                 $blocks = explode(' ', $block['attrs']['className']);
             }
 
+            $currentId = '';
+            preg_match('/id="(.+?)"/', $block['innerHTML'], $id_matches);
+            if ($id_matches && isset($id_matches[1])) {
+                $currentId = $id_matches[1];
+            }
+
             /**
-             * SECTION Start
+             * ID: hupa-group-tag
              */
-            if (isset($block['attrs']['tagName']) && $block['attrs']['tagName']  == 'section') {
-
-                if (in_array('container-fullwidth', $blocks)) {
-                    $class = implode(' ', $blocks);
-                    $html .= '<div class="'.$class.'">';
-                    if (isset($block['innerBlocks'])) {
-                        foreach ($block['innerBlocks'] as $inner_block) {
-                            $html .= render_block($inner_block);
+            if ($currentId == 'hupa-group-tag') {
+                if ($block['attrs']['className']) {
+                    $html .= '<div class="' . $block['attrs']['className'] . '">';
+                } else {
+                    $html .= '<div class="hupa-group">';
+                }
+                if (isset($block['innerBlocks'])) {
+                    foreach ($block['innerBlocks'] as $inner_block) {
+                        $inner_block['attrs']['className'] ??= '';
+                        if (!$inner_block['attrs']['className']) {
+                            $html .= '<div class="hupa-inner-block">';
+                        }
+                        $html .= render_block($inner_block);
+                        if (!$inner_block['attrs']['className']) {
+                            $html .= '</div>';
                         }
                     }
-                    $html .= '</div>';
                 }
+                $html .= '</div>';
+                return $html;
+            }
 
-                if (in_array('no-inner', $blocks)) {
-                    $class = implode(' ', $blocks);
-                    $html .= '<div class="'.$class.'">' . "\n";
-                    if (isset($block['innerBlocks'])) {
-                        foreach ($block['innerBlocks'] as $inner_block) {
-                            $html .= render_block($inner_block);
-                        }
+            /**
+             * ID: hupa-row
+             */
+            if ($currentId == 'hupa-row') {
+                if ($block['attrs']['className']) {
+                    $html .= '<div class="' . $block['attrs']['className'] . '">';
+                } else {
+                    $html .= '<div class="hupa-group">';
+                }
+                foreach ($block['innerBlocks'] as $column) {
+                    $column['attrs']['className'] ??= '';
+                    if ($column['attrs']['className']) {
+                        $html .= '<div class="' . $column['attrs']['className'] . '">';
+                    } else {
+                        $html .= '<div class="row">';
                     }
-                    $html .= '</div>';
-                }
-
-                if (in_array('theme-fullwidth-container', $blocks)) {
-                    $block['attrs']['className'] .= ' theme-fullwidth';
-                    $html .= '<div class="' . $block['attrs']['className'] . '">' . "\n";
-                    if (isset($block['innerBlocks'])) {
-                        foreach ($block['innerBlocks'] as $inner_block) {
-                            $html .= '<div class="container">' . "\n";
-                            $html .= render_block($inner_block);
+                    foreach ($column['innerBlocks'] as $inner_block) {
+                        $inner_block['attrs']['className'] ??= '';
+                        if ($inner_block['attrs']['className']) {
+                            $col = $inner_block['attrs']['className'];
+                        } else {
+                            $col = 'col';
+                        }
+                        foreach ($inner_block['innerBlocks'] as $inner_col) {
+                            $html .= '<div class="' . $col . '">';
+                            $html .= render_block($inner_col);
                             $html .= '</div>';
                         }
                     }
                     $html .= '</div>';
                 }
+                $html .= '</div>';
+                return $html;
+            }
 
-                if (in_array('theme-fullwidth-flex-container', $blocks)) {
-                    $class = implode(' ', $blocks);
-                    $html .= '<div class="container-fullwidth '.$class.'">' . "\n";
-                    $html .= '<div class="container d-flex flex-wrap position-relative">' . "\n";
-                    if (isset($block['innerBlocks'])) {
-                        foreach ($block['innerBlocks'] as $inner_block) {
-                            $html .= render_block($inner_block);
-                        }
-                    }
-                    $html .= '</div>';
-                    $html .= '</div>';
+            /**
+             * ID: hupa-flex
+             */
+            if ($currentId == 'hupa-flex') {
+                if ($block['attrs']['className']) {
+                    $html .= '<div class="' . $block['attrs']['className'] . '">';
+                } else {
+                    $html .= '<div class="hupa-group">';
                 }
-
-                if (in_array('custom-full-width', $blocks)) {
-                    $class = implode(' ', $blocks);
-                    $html .= '<div class="'.$class.'">' . "\n";
-                    if (isset($block['innerBlocks'])) {
-                        foreach ($block['innerBlocks'] as $inner_block) {
-                            $html .= '<div class="container">' . "\n";
-                            $html .= render_block($inner_block);
+                foreach ($block['innerBlocks'] as $column) {
+                    $column['attrs']['className'] ??= '';
+                    if ($column['attrs']['className']) {
+                        $html .= '<div class="' . $column['attrs']['className'] . '">';
+                    } else {
+                        $html .= '<div class="d-flex flex-wrap">';
+                    }
+                    foreach ($column['innerBlocks'] as $inner_block) {
+                        $inner_block['attrs']['className'] ??= '';
+                        if ($inner_block['attrs']['className']) {
+                            $col = $inner_block['attrs']['className'];
+                        } else {
+                            $col = 'col';
+                        }
+                        foreach ($inner_block['innerBlocks'] as $inner_col) {
+                            $html .= '<div class="' . $col . '">';
+                            $html .= render_block($inner_col);
                             $html .= '</div>';
                         }
                     }
                     $html .= '</div>';
                 }
-
+                $html .= '</div>';
                 return $html;
             }
         }
-
         /**
-         * SECTION END
+         * ARTICLE END
          */
 
         return $block_content;

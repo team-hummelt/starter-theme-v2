@@ -172,12 +172,16 @@ class HupaEnqueueStarterTheme
 
         // TODO DASHBOARD WP STYLES
         wp_enqueue_style('hupa-starter-admin-custom-icons', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/css/tools.css', array(), $this->theme_version, false);
-        wp_enqueue_style('hupa-starter-admin-dashboard-tools', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/css/Glyphter.css', array(), $this->theme_version, false);
+        if(Config::get('EDITOR_SHOW_BOOTSTRAP_CSS')){
+            wp_enqueue_style('hupa-starter-admin-dashboard-tools', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/css/Glyphter.css', array(), $this->theme_version, false);
+        }
+
     }
 
     public function hupa_enqueue_block_editor() {
 
         wp_enqueue_style('hupa-starter-editor-ui-style', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/css/autogenerate-editor-ui-styles.css');
+        wp_enqueue_style('hupa-starter-editor-bs-grid', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/css/bs/bs-wp-editor/grid-bootstrap.css');
     }
 
     public function add_type_attribute($tag, $handle, $src)

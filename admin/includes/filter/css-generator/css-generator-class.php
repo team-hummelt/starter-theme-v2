@@ -246,6 +246,18 @@ class HupaStarterCssGenerator
         $html .= '}' . "\r\n";
         $html .= '}' . "\r\n";
 
+        // SMALL
+        $html .= '.small-md {' . "\r\n";
+        $html .= 'font-size: 85%!important;' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '.small-lg {' . "\r\n";
+        $html .= 'font-size: 75%!important;' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '.small-xl {' . "\r\n";
+        $html .= 'font-size: 65%!important;' . "\r\n";
+        $html .= '}' . "\r\n";
 
         //HUPA ICONS
         $html .= '.hupa-icon.fa {' . "\r\n";
@@ -366,12 +378,42 @@ class HupaStarterCssGenerator
         $html .= '}' . "\r\n";
 
         //Half Background
-        $html .= '.bg-half {' . "\r\n";
+        $html .= '.bg-half, .bg-half-xxl, .bg-half-xl, .bg-half-lg, .bg-half-md, .bg-half-sm {' . "\r\n";
         $html .= 'background: linear-gradient(90deg, #00538B 50%, #19D3C5 50%);' . "\r\n";
         $html .= '}' . "\r\n";
 
         $html .= '@media (max-width: 1199px) {' . "\r\n";
         $html .= '.bg-half {' . "\r\n";
+        $html .= 'background: linear-gradient(0deg, #19D3C5 50%, #00538B 50%);' . "\r\n";
+        $html .= '}' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '@media (max-width: 1399px) {' . "\r\n";
+        $html .= '.bg-half-xxl {' . "\r\n";
+        $html .= 'background: linear-gradient(0deg, #19D3C5 50%, #00538B 50%);' . "\r\n";
+        $html .= '}' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '@media (max-width: 1199px) {' . "\r\n";
+        $html .= '.bg-half-xl {' . "\r\n";
+        $html .= 'background: linear-gradient(0deg, #19D3C5 50%, #00538B 50%);' . "\r\n";
+        $html .= '}' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '@media (max-width: 991px) {' . "\r\n";
+        $html .= '.bg-half-lg {' . "\r\n";
+        $html .= 'background: linear-gradient(0deg, #19D3C5 50%, #00538B 50%);' . "\r\n";
+        $html .= '}' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '@media (max-width: 767px) {' . "\r\n";
+        $html .= '.bg-half-md {' . "\r\n";
+        $html .= 'background: linear-gradient(0deg, #19D3C5 50%, #00538B 50%);' . "\r\n";
+        $html .= '}' . "\r\n";
+        $html .= '}' . "\r\n";
+
+        $html .= '@media (max-width: 575px) {' . "\r\n";
+        $html .= '.bg-half-sm {' . "\r\n";
         $html .= 'background: linear-gradient(0deg, #19D3C5 50%, #00538B 50%);' . "\r\n";
         $html .= '}' . "\r\n";
         $html .= '}' . "\r\n";
@@ -958,6 +1000,15 @@ class HupaStarterCssGenerator
             $html .= str_replace(';', '', $bodyFont->fontWeight) . '!important;' . "\r\n";
             $html .= str_replace(';', '', $bodyFont->fontHeight) . '!important;' . "\r\n";
             $html .= '}' . "\r\n";
+
+            $html .= '.editor-styles-wrapper code {' . "\r\n";
+            $html .= 'font-family: monospace;' . "\r\n";
+            $html .= 'direction: ltr;' . "\r\n";
+            $html .= 'unicode-bidi: bidi-override;' . "\r\n";
+            $html .= 'font-size: 1em;' . "\r\n";
+            $html .= 'color: #d63384;' . "\r\n";
+            $html .= 'word-wrap: break-word;' . "\r\n";
+            $html .= '}' . "\r\n";
         }
         if (Config::get('EDITOR_SHOW_HEADLINE_BORDER')) {
             $html .= '.editor-styles-wrapper .wp-block-heading {' . "\r\n";
@@ -983,6 +1034,27 @@ class HupaStarterCssGenerator
             $html .= 'padding: .25rem;' . "\r\n";
             $html .= '}' . "\r\n";
         }
+        if (Config::get('EDITOR_SHOW_BOOTSTRAP_CSS')) {
+            $html .= '.editor-styles-wrapper .wp-block-columns {' . "\r\n";
+            $html .= 'flex-wrap: wrap!important;' . "\r\n";
+            $html .= '}' . "\r\n";
+
+            $html .= '.block-editor-block-list__block.wp-block.wp-block-columns {' . "\r\n";
+            $html .= 'flex-wrap: wrap!important;' . "\r\n";
+            $html .= 'gap: unset!important;' . "\r\n";
+            $html .= 'flex-direction: unset!important;' . "\r\n";
+            $html .= 'align-items: unset!important;' . "\r\n";
+            $html .= 'justify-content: unset!important;' . "\r\n";
+            $html .= '}' . "\r\n";
+
+            $html .= '@media (min-width: 782px) {' . "\r\n";
+            $html .= '.wp-block-columns:not(.is-not-stacked-on-mobile)>.wp-block-column {' . "\r\n";
+            $html .= 'flex-basis: unset!important;' . "\r\n";
+            $html .= 'flex-grow: unset!important;' . "\r\n";
+            $html .= '}' . "\r\n";
+            $html .= '}' . "\r\n";
+        }
+
 
         return $html;
     }

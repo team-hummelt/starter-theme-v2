@@ -2,6 +2,7 @@
 
 namespace Hupa\StarterThemeV2;
 
+use Hupa\Starter\Config;
 use HupaStarterThemeV2;
 use stdClass;
 
@@ -127,12 +128,36 @@ class Register_Starter_Theme_Gutenberg_Patterns
                         'description' => 'Hupa Theme Designvorlage',
                         'content' => $content,
                         'categories' => [
-                            'hupaPattern/'.$cat->slug,
+                            'hupaPattern/' . $cat->slug,
                         ],
                     )
                 );
             }
         }
+
+        $templatesDir = Config::get('THEME_ADMIN_INCLUDES') . 'patterns' . DIRECTORY_SEPARATOR . 'bootstrap-container';
+        $scanned_directory = array_diff(scandir($templatesDir), array('..', '.'));
+        foreach ($scanned_directory as $file) {
+            $name = preg_replace('/\d{1,2}#/', '', $file);
+            $bezeichnung = str_replace(['_', '~'], [' ', '/'], $name);
+            $pattern_name = str_replace(['_', '~'], '-', $name);
+            $fileContent = $templatesDir . DIRECTORY_SEPARATOR . $file;
+            if (is_file($fileContent)) {
+                $content = file_get_contents($fileContent);
+                register_block_pattern(
+                    'hupa/'.$pattern_name,
+                    [
+                        'title' => $bezeichnung,
+                        'description' => 'Hupa Bootstrap Container Examples',
+                        'content' => $content,
+                        'categories' => [
+                            'hupa/bootsrap-container-patterns',
+                        ],
+                    ],
+                );
+            }
+        }
+
     }
 
     /**
@@ -157,5 +182,12 @@ class Register_Starter_Theme_Gutenberg_Patterns
                 ]
             );
         }
+
+        register_block_pattern_category(
+            'hupa/bootsrap-container-patterns',
+            [
+                'label' => __('Hupa Bootstrap Container', 'bootscore'),
+            ]
+        );
     }
 }

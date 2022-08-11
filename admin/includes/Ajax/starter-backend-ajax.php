@@ -144,7 +144,7 @@ class Hupa_Starter_V2_Admin_Ajax
         $this->main = $main;
         $this->twig = $twig;
         $this->systems_settings = ['CUSTOM_FOOTER', 'CUSTOM_HEADER', 'DESIGN_TEMPLATES','HUPA_SIDEBAR_OLD', 'HUPA_TOOLS', 'HUPA_CAROUSEL', 'HUPA_MAPS', 'HUPA_API_INSTALL'];
-        $this->wp_editor_settings = ['EDITOR_SHOW_PARAGRAPH_BORDER','EDITOR_SHOW_HEADLINE_BORDER','EDITOR_SHOW_COLUMN_BORDER','EDITOR_SHOW_GROUP_BORDER','EDITOR_SHOW_PLACEHOLDER','EDITOR_SHOW_FONT_SIZE'];
+        $this->wp_editor_settings = ['EDITOR_SHOW_PARAGRAPH_BORDER','EDITOR_SHOW_HEADLINE_BORDER','EDITOR_SHOW_COLUMN_BORDER','EDITOR_SHOW_GROUP_BORDER','EDITOR_SHOW_PLACEHOLDER','EDITOR_SHOW_FONT_SIZE', 'EDITOR_SHOW_BOOTSTRAP_CSS'];
         $this->method = $_POST['method'];
         if (isset($_POST['daten'])) {
             $this->data = $_POST['daten'];
@@ -1271,6 +1271,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 filter_input(INPUT_POST, 'EDITOR_SHOW_GROUP_BORDER', FILTER_SANITIZE_STRING) ? $record->EDITOR_SHOW_GROUP_BORDER = 1 : $record->EDITOR_SHOW_GROUP_BORDER = 0;
                 filter_input(INPUT_POST, 'EDITOR_SHOW_PLACEHOLDER', FILTER_SANITIZE_STRING) ? $record->EDITOR_SHOW_PLACEHOLDER = 1 : $record->EDITOR_SHOW_PLACEHOLDER = 0;
                 filter_input(INPUT_POST, 'EDITOR_SHOW_FONT_SIZE', FILTER_SANITIZE_STRING) ? $record->EDITOR_SHOW_FONT_SIZE = 1 : $record->EDITOR_SHOW_FONT_SIZE = 0;
+                filter_input(INPUT_POST, 'EDITOR_SHOW_BOOTSTRAP_CSS', FILTER_SANITIZE_STRING) ? $record->EDITOR_SHOW_BOOTSTRAP_CSS = 1 : $record->EDITOR_SHOW_BOOTSTRAP_CSS = 0;
 
                 $pinInput = filter_input(INPUT_POST, 'setting_pin', FILTER_SANITIZE_NUMBER_INT);
                 $pin = apply_filters('get_settings_pin', null);

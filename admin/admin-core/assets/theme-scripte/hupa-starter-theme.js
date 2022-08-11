@@ -160,13 +160,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
             if (scroll > 200) {
                 header.addClass("navbar-small");
                 if (navLogo) {
-                    navLogo.css('width', get_hupa_option.img_scroll_width + 'px')
+                    navLogo.css('width', get_hupa_option.img_scroll_width + 'px');
                 }
             } else {
                 header.removeClass("navbar-small");
                 if (navLogo) {
-                    navLogo.css('width', get_hupa_option.img_width + 'px')
-                    middleLogo.removeClass('middle-img-sm')
+                    navLogo.css('width', get_hupa_option.img_width + 'px');
+                    middleLogo.removeClass('middle-img-sm');
                 }
             }
         });

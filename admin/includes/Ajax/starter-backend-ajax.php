@@ -195,6 +195,7 @@ class Hupa_Starter_V2_Admin_Ajax
                         filter_input(INPUT_POST, 'show_uhr_aktive', FILTER_SANITIZE_STRING) ? $record->show_uhr_aktive = 1 : $record->show_uhr_aktive = 0;
                         filter_input(INPUT_POST, 'news_api_aktiv', FILTER_SANITIZE_STRING) ? $record->news_api_aktiv = 1 : $record->news_api_aktiv = 0;
 
+                        filter_input(INPUT_POST, 'disabled_wp_layout', FILTER_SANITIZE_STRING) ? $record->disabled_wp_layout = 1 : $record->disabled_wp_layout = 0;
                         //$record->update_aktiv
                         $apiJson = $this->main->get_license_config();
                         $apiJson->update->update_aktiv = $record->update_aktiv;
@@ -446,6 +447,17 @@ class Hupa_Starter_V2_Admin_Ajax
                         filter_input(INPUT_POST, 'post_kommentar', FILTER_SANITIZE_STRING) ? $record->post_kommentar = 1 : $record->post_kommentar = 0;
                         filter_input(INPUT_POST, 'post_tags', FILTER_SANITIZE_STRING) ? $record->post_tags = 1 : $record->post_tags = 0;
                         filter_input(INPUT_POST, 'post_breadcrumb', FILTER_SANITIZE_STRING) ? $record->post_breadcrumb = 1 : $record->post_breadcrumb = 0;
+
+                        $defSettings = $this->get_theme_default_settings('theme_wp_general');
+                        if(!$record->logo_size){
+                            $record->logo_size = $defSettings['logo_size'];
+                        }
+                        if(!$record->logo_size_scroll){
+                            $record->logo_size_scroll = $defSettings['logo_size_scroll'];
+                        }
+                        if(!$record->logo_size_mobil){
+                            $record->logo_size_mobil = $defSettings['logo_size_mobil'];
+                        }
 
                         apply_filters('update_hupa_options', $record, 'hupa_general');
                         //TODO JOB WARNING UPDATE CSS FILE

@@ -595,55 +595,55 @@ class HupaStarterThemeV2
      */
     private function define_theme_options_hooks()
     {
-            global $hupa_register_theme_options;
-            $hupa_register_theme_options = HupaStarterOptionFilter::init($this->main);
+        global $hupa_register_theme_options;
+        $hupa_register_theme_options = HupaStarterOptionFilter::init($this->main);
 
-            $this->loader->add_filter('set_database_defaults', $hupa_register_theme_options, 'hupa_set_database_defaults');
-            //JOB GET HUPA OPTION
-            $this->loader->add_filter('get_hupa_option', $hupa_register_theme_options, 'hupa_get_hupa_option');
-            //JOB GET HUPA TOOLS
-            $this->loader->add_filter('get_hupa_tools', $hupa_register_theme_options, 'hupa_get_hupa_tools');
-            //JOB GET PAGE META DATA
-            $this->loader->add_filter('get_page_meta_data', $hupa_register_theme_options, 'getHupaPageMetaDaten');
+        $this->loader->add_filter('set_database_defaults', $hupa_register_theme_options, 'hupa_set_database_defaults');
+        //JOB GET HUPA OPTION
+        $this->loader->add_filter('get_hupa_option', $hupa_register_theme_options, 'hupa_get_hupa_option');
+        //JOB GET HUPA TOOLS
+        $this->loader->add_filter('get_hupa_tools', $hupa_register_theme_options, 'hupa_get_hupa_tools');
+        //JOB GET PAGE META DATA
+        $this->loader->add_filter('get_page_meta_data', $hupa_register_theme_options, 'getHupaPageMetaDaten');
 
-            //GET FONT STYLE BY FONT-FAMILY
-            $this->loader->add_filter('get_font_style_select', $hupa_register_theme_options, 'hupa_get_font_style_select');
-            //GET FONT FAMILY
-            $this->loader->add_filter('get_font_family_select', $hupa_register_theme_options, 'hupa_get_font_family_select');
-            //UPDATE DER THEME OPTIONEN
-            $this->loader->add_filter('update_hupa_options', $hupa_register_theme_options, 'hupa_update_hupa_options', 10, 2);
-            //GET SOCIAL MEDIA
-            $this->loader->add_filter('get_social_media', $hupa_register_theme_options, 'hupa_get_social_media', 10, 2);
-            //GET ANIMATE OPTIONEN
-            $this->loader->add_filter('get_animate_option', $hupa_register_theme_options, 'hupa_get_animate_option');
-            //GET HUPA TOOLS
-            $this->loader->add_filter('get_hupa_tools_by_args', $hupa_register_theme_options, 'hupa_get_hupa_tools_by_args', 10, 3);
-            //UPDATE Sortable Position
-            $this->loader->add_filter('update_sortable_position', $hupa_register_theme_options, 'hupa_update_sortable_position', 10, 2);
-            //SETTINGS MENU LABEL
-            $this->loader->add_filter('get_settings_menu_label', $hupa_register_theme_options, 'hupa_get_settings_menu_label');
-            //MENU AUSWAHL
-            $this->loader->add_filter('get_menu_auswahl', $hupa_register_theme_options, 'hupa_get_menu_auswahl');
-            // Social Button URL
-            $this->loader->add_filter('get_social_button_url', $hupa_register_theme_options, 'hupa_get_social_button_url', 10, 2);
+        //GET FONT STYLE BY FONT-FAMILY
+        $this->loader->add_filter('get_font_style_select', $hupa_register_theme_options, 'hupa_get_font_style_select');
+        //GET FONT FAMILY
+        $this->loader->add_filter('get_font_family_select', $hupa_register_theme_options, 'hupa_get_font_family_select');
+        //UPDATE DER THEME OPTIONEN
+        $this->loader->add_filter('update_hupa_options', $hupa_register_theme_options, 'hupa_update_hupa_options', 10, 2);
+        //GET SOCIAL MEDIA
+        $this->loader->add_filter('get_social_media', $hupa_register_theme_options, 'hupa_get_social_media', 10, 2);
+        //GET ANIMATE OPTIONEN
+        $this->loader->add_filter('get_animate_option', $hupa_register_theme_options, 'hupa_get_animate_option');
+        //GET HUPA TOOLS
+        $this->loader->add_filter('get_hupa_tools_by_args', $hupa_register_theme_options, 'hupa_get_hupa_tools_by_args', 10, 3);
+        //UPDATE Sortable Position
+        $this->loader->add_filter('update_sortable_position', $hupa_register_theme_options, 'hupa_update_sortable_position', 10, 2);
+        //SETTINGS MENU LABEL
+        $this->loader->add_filter('get_settings_menu_label', $hupa_register_theme_options, 'hupa_get_settings_menu_label');
+        //MENU AUSWAHL
+        $this->loader->add_filter('get_menu_auswahl', $hupa_register_theme_options, 'hupa_get_menu_auswahl');
+        // Social Button URL
+        $this->loader->add_filter('get_social_button_url', $hupa_register_theme_options, 'hupa_get_social_button_url', 10, 2);
 
-            // JOB SITEMAP ERSTELLEN
-            if ($hupa_register_theme_options->hupa_get_hupa_option('sitemap_post')) {
-                $this->loader->add_action('publish_post', $hupa_register_theme_options, 'hupa_starter_create_sitemap');
-            }
-            if ($hupa_register_theme_options->hupa_get_hupa_option('sitemap_page')) {
-                $this->loader->add_action('publish_page', $hupa_register_theme_options, 'hupa_starter_create_sitemap');
-            }
+        // JOB SITEMAP ERSTELLEN
+        if ($hupa_register_theme_options->hupa_get_hupa_option('sitemap_post')) {
+            $this->loader->add_action('publish_post', $hupa_register_theme_options, 'hupa_starter_create_sitemap');
+        }
+        if ($hupa_register_theme_options->hupa_get_hupa_option('sitemap_page')) {
+            $this->loader->add_action('publish_page', $hupa_register_theme_options, 'hupa_starter_create_sitemap');
+        }
 
-            $this->loader->add_filter('get_default_settings', $hupa_register_theme_options, 'getHupaDefaultSettings');
-            // ALL Sidebars
-            $this->loader->add_filter('get_registered_sidebar', $hupa_register_theme_options, 'hupa_get_registered_sidebar');
-            //All Footer AND Header SELECT
-            $this->loader->add_filter('get_custom_header', $hupa_register_theme_options, 'getCustomHeader');
-            $this->loader->add_filter('get_custom_footer', $hupa_register_theme_options, 'getCustomFooter');
-            //FOOTER HEADER CONTENT BY POST ID
-            $this->loader->add_filter('get_content_custom_header', $hupa_register_theme_options, 'getContentCustomHeader');
-            $this->loader->add_filter('get_content_custom_footer', $hupa_register_theme_options, 'getContentCustomFooter');
+        $this->loader->add_filter('get_default_settings', $hupa_register_theme_options, 'getHupaDefaultSettings');
+        // ALL Sidebars
+        $this->loader->add_filter('get_registered_sidebar', $hupa_register_theme_options, 'hupa_get_registered_sidebar');
+        //All Footer AND Header SELECT
+        $this->loader->add_filter('get_custom_header', $hupa_register_theme_options, 'getCustomHeader');
+        $this->loader->add_filter('get_custom_footer', $hupa_register_theme_options, 'getCustomFooter');
+        //FOOTER HEADER CONTENT BY POST ID
+        $this->loader->add_filter('get_content_custom_header', $hupa_register_theme_options, 'getContentCustomHeader');
+        $this->loader->add_filter('get_content_custom_footer', $hupa_register_theme_options, 'getContentCustomFooter');
 
     }
 
@@ -783,6 +783,14 @@ class HupaStarterThemeV2
             remove_action('admin_print_scripts', 'print_emoji_detection_script');
             remove_action('admin_print_styles', 'print_emoji_styles');
         }
+
+        if ($hupa_register_theme_options->hupa_get_hupa_option('disabled_wp_layout')) {
+            remove_filter('render_block', 'wp_render_layout_support_flag', 10, 2);
+            remove_filter('render_block', 'gutenberg_render_layout_support_flag', 10, 2);
+        }
+
+        $this->loader->add_filter('the_content', $theme_wp_options_handle, 'hupa_theme_the_content_replace', 20);
+
     }
 
     /**
@@ -827,7 +835,6 @@ class HupaStarterThemeV2
     {
         global $hupa_wp_remote_action;
         $hupa_wp_remote_action = HupaApiServerHandle::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
-
 
 
         //TODO Endpoints URL's

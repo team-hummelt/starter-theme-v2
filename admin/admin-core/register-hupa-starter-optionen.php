@@ -399,7 +399,9 @@ final class HupaRegisterStarterTheme
     {
         if (get_option("theme_db_version") !== $this->main->get_db_version()) {
             apply_filters('theme_database_install', false);
-            apply_filters('set_database_defaults', false);
+            if(!get_option("theme_db_version")){
+                apply_filters('set_database_defaults', false);
+            }
             update_option("theme_db_version", $this->main->get_db_version());
         }
         if (get_option("hupa_theme_version") !== Config::get('THEME_VERSION')) {

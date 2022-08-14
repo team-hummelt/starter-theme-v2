@@ -1,5 +1,9 @@
-<!-- wp:group {"tagName":"article","className":"container-fullwidth bg-half"} -->
-<article id="hupa-flex" class="wp-block-group container-fullwidth bg-half"><!-- wp:columns {"className":"d-flex flex-wrap container"} -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted">.bg-half {<br>     background: linear-gradient(90deg, #00538B 50%, #19D3C5 50%);<br>}<br>@media (max-width: 1199px) {<br>  .bg-half-xl {<br>     background: linear-gradient(0deg, #19D3C5 50%, #00538B 50%);<br>  }<br>}</pre>
+<!-- /wp:preformatted -->
+
+<!-- wp:group {"className":"container-fullwidth bg-half","hupaGroupTag":"hupa-flex"} -->
+<div id="hupa-flex" class="wp-block-group container-fullwidth bg-half"><!-- wp:columns {"className":"d-flex flex-wrap container"} -->
 <div class="wp-block-columns d-flex flex-wrap container"><!-- wp:column {"className":"col-xl-6 col-12"} -->
 <div class="wp-block-column col-xl-6 col-12"><!-- wp:paragraph {"className":" mb-0 text-white py-5 px-2"} -->
 <p class="mb-0 text-white py-5 px-2">Use&nbsp;align-items&nbsp;utilities on flexbox containers to change the alignment of flex items on the cross axis (the y-axis to start, x-axis if&nbsp;flex-direction: column). Choose  rom&nbsp;start,&nbsp;end,&nbsp;center,&nbsp;baseline, or&nbsp;stretch&nbsp;(browser default).</p>
@@ -11,5 +15,5 @@
 <p class="py-5 mb-0 px-2">Col 2</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:column --></div>
-<!-- /wp:columns --></article>
+<!-- /wp:columns --></div>
 <!-- /wp:group -->

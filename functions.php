@@ -119,6 +119,8 @@ if (!function_exists('bootscore_setup')) :
          */
         add_theme_support('post-thumbnails');
 
+        add_theme_support('align-wide');
+
         /*
          * Switch default core markup for search form, comment form, and comments
          * to output valid HTML5.
@@ -339,6 +341,7 @@ function bootscore_scripts()
     $modificated = date('YmdHi', filemtime(get_template_directory() . '/css/lib/bootstrap.min.css'));
     $modificated = date('YmdHi', filemtime(get_stylesheet_directory() . '/style.css'));
     $modificated = date('YmdHi', filemtime(get_template_directory() . '/js/theme.js'));
+    $modificated = date('YmdHi', filemtime(get_template_directory() . '/js/lib/jarallax.min.js'));
     $modificated = date('YmdHi', filemtime(get_template_directory() . '/js/lib/bootstrap.bundle.min.js'));
     $modificated = date('YmdHi', filemtime(get_template_directory() . '/css/hupa-theme/auto-generate-theme.css'));
     $modificated = date('YmdHi', filemtime(get_template_directory() . '/css/hupa-theme/theme-custom.css'));
@@ -351,6 +354,7 @@ function bootscore_scripts()
     wp_enqueue_style('theme-generate-style', get_template_directory_uri() . '/css/hupa-theme/auto-generate-theme.css', array(), $modificated);
     //Custom CSS
     wp_enqueue_style('starter-theme-custom-style', get_template_directory_uri() . '/css/hupa-theme/theme-custom.css', array(), $modificated);
+
     // Bootstrap JS
     wp_enqueue_script('bootstrap-script', get_template_directory_uri() . '/js/lib/bootstrap.bundle.min.js', array(), $modificated, true);
     // Theme JS

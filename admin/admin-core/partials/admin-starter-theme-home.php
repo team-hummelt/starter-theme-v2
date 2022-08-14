@@ -4226,6 +4226,24 @@ use Hupa\Starter\Config;
 
                                     <div class="col-lg-12 pt-2">
                                         <h6>
+                                            <i class="font-blue fa fa-wordpress"></i>&nbsp;<?= __('WordPress layout', 'bootscore'); ?>
+                                        </h6>
+                                        <hr>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" name="disabled_wp_layout" type="checkbox"
+                                                   id="CheckWpLayoutActive"
+                                                   aria-describedby="CheckWpLayoutActiveHelp" <?= (int)!get_hupa_option('disabled_wp_layout') ?: 'checked' ?>>
+                                            <label class="form-check-label" for="CheckWpLayoutActive">
+                                                <?= __('Disable WordPress layout', 'bootscore') ?></label>
+                                        </div>
+                                        <div id="CheckWpLayoutActiveHelp" class="form-text">
+                                            <?= __('If this option is active, <b>all WordPress containers and classes</b> will no longer be output.', 'bootscore') ?>
+                                        </div>
+                                    </div>
+                                    <hr>
+
+                                    <div class="col-lg-12 pt-2">
+                                        <h6>
                                             <i class="font-blue fa fa-upload"></i>&nbsp;<?= __('Enable SVG upload', 'bootscore'); ?>
                                         </h6>
                                         <hr>
@@ -4469,7 +4487,7 @@ use Hupa\Starter\Config;
                                 </div>
                             </div>
 
-                            <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
+                            <!--<div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
                                 <h6 class="d-flex flex-wrap align-items-center">
                               <span>
                                   <i class="fa fa-arrow-circle-right"></i> Lightbox: <small class="fw-normal">(WordPress Galerie/Image)</small>
@@ -4500,7 +4518,7 @@ use Hupa\Starter\Config;
                                     </div>
                                     <hr>
                                 </div>
-                            </div>
+                            </div>-->
 
                             <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
                                 <h6 class="d-flex flex-wrap align-items-center">
@@ -4666,7 +4684,7 @@ use Hupa\Starter\Config;
                                 </div>
                             </div>
 
-                            <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
+                            <!--<div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
                                 <h6 class="d-flex flex-wrap align-items-center">
                               <span>
                                   <i class="fa fa-arrow-circle-right"></i>
@@ -4711,7 +4729,7 @@ use Hupa\Starter\Config;
                                     </b>
                                     <hr>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
 

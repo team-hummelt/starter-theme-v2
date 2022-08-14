@@ -143,6 +143,19 @@ class StarterThemeWPOptionen
         wp_dequeue_style('wc-block-style'); // Remove WooCommerce block CSS
     }
 
+    public function hupa_theme_the_content_replace($content)
+    {
+        $regEx = '/(\[hupa-theme-remove-container].+?(wp-container-\d{1,5}))/';
+        if(preg_match_all($regEx, $content, $matches)){
+            if(isset($matches[2]) && is_array($matches[2])){
+              foreach ($matches[2] as $tmp) {
+                  $content = str_replace($tmp,'', $content);
+              }
+            }
+        }
+        return $content;
+    }
+
     public function set_hupa_login_logo(): void
     {
         if (!get_hupa_option('login_img_aktiv')) {

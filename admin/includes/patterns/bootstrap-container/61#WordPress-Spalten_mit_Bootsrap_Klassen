@@ -1,0 +1,19 @@
+<!-- wp:columns {"className":"row g-3","hupaListTag":"no-columns","removeWpContainer":true} -->
+<div class="wp-block-columns row g-3 no-columns hupa-theme-remove-container" id="hupa-list-options"><!-- wp:column {"className":"col-xl-4 col-12"} -->
+<div class="wp-block-column col-xl-4 col-12"><!-- wp:paragraph {"className":"p-3 border bg-light"} -->
+<p class="p-3 border bg-light">Bootsrap Row</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"className":"col-xl-4 col-12"} -->
+<div class="wp-block-column col-xl-4 col-12"><!-- wp:paragraph {"className":"p-3 border bg-light"} -->
+<p class="p-3 border bg-light">Bootsrap Row</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"className":"col-xl-4 col-12"} -->
+<div class="wp-block-column col-xl-4 col-12"><!-- wp:paragraph {"className":"p-3 border bg-light"} -->
+<p class="p-3 border bg-light">Bootsrap Row</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->

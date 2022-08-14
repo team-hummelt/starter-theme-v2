@@ -167,12 +167,12 @@ class HupaCarouselShortCode
         if (!$carouselData->status || !$sliderData->status || $sliderData->count < 1) {
             return '';
         }
-        $carousel = $carouselData->record;
-        $carouselClass = '';
-        /*$meta = get_post_meta(get_the_ID(), '_hupa_select_header', true);
-        $postContent = get_post($meta);
 
-        $regEx = '/<!.*theme-carousel.*({.*}).*>/m';
+
+        $carousel = $carouselData->record;
+
+        $carouselClass = '';
+        /*$regEx = '/<!.*theme-carousel.*({.*}).*>/m';
         preg_match($regEx, $postContent->post_content, $matches);
         if ($matches) {
             //$carouselClass = ' header-carousel ';
@@ -280,11 +280,11 @@ class HupaCarouselShortCode
                 }
 
                 ?>
-                <div class="carousel-item <?= $active ?>" data-bs-interval="<?= $tmp->data_interval ?>">
+                <div class="carousel-item <?= $active ?>" data-bs-interval="<?= $tmp->data_interval ?>" style="height: <?= $carousel->container_height ?>; ">
                     <?php
 
                     if ($carousel->carousel_lazy_load && $active) :?>
-                        <img data-src="<?= $image[0] ?>" class="bgImage <?= $lazy ?>" alt="<?= $data_alt ?>" title="<?=$dataTitleTag?>"
+                        <img data-src="<?= $image[0] ?>" class="bgImage  <?= $lazy ?>" alt="<?= $data_alt ?>" title="<?=$dataTitleTag?>"
                              style="height: <?= $carousel->container_height ?>;">
 
                     <?php endif;

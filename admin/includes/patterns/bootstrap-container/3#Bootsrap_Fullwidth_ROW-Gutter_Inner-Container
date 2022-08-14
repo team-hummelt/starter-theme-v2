@@ -1,27 +1,27 @@
-<!-- wp:group {"tagName":"article","className":"container-fullwidth bg-light py-5","layout":{"type":"default"}} -->
-<article id="hupa-row" class="wp-block-group container-fullwidth bg-light py-5"><!-- wp:columns {"className":"container row mx-auto  g-2"} -->
-    <div class="wp-block-columns container row mx-auto  g-2"><!-- wp:column {"className":"col-xxl-3 col-xl-4 col-lg-6 col-12"} -->
-        <div class="wp-block-column col-xxl-3 col-xl-4 col-lg-6 col-12"><!-- wp:paragraph {"className":"p-3 mb-0 border bg-light"} -->
-            <p class="p-3 mb-0 border bg-light">Col 1 </p>
-            <!-- /wp:paragraph --></div>
-        <!-- /wp:column -->
+<!-- wp:group {"className":"container-fullwidth bg-light py-5","layout":{"type":"default"},"hupaGroupTag":"hupa-row"} -->
+<div id="hupa-row" class="wp-block-group container-fullwidth bg-light py-5"><!-- wp:columns {"className":"container row mx-auto  g-2"} -->
+<div class="wp-block-columns container row mx-auto  g-2"><!-- wp:column {"className":"col-xxl-3 col-xl-4 col-lg-6 col-12"} -->
+<div class="wp-block-column col-xxl-3 col-xl-4 col-lg-6 col-12"><!-- wp:paragraph {"className":"p-3 mb-0 border bg-light"} -->
+<p class="p-3 mb-0 border bg-light">Col 1 </p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column -->
 
-        <!-- wp:column {"className":"col-xxl-3 col-xl-4 col-lg-6 col-12"} -->
-        <div class="wp-block-column col-xxl-3 col-xl-4 col-lg-6 col-12"><!-- wp:paragraph {"className":"p-3 mb-0 border bg-light"} -->
-            <p class="p-3 mb-0 border bg-light">Col 2</p>
-            <!-- /wp:paragraph --></div>
-        <!-- /wp:column -->
+<!-- wp:column {"className":"col-xxl-3 col-xl-4 col-lg-6 col-12"} -->
+<div class="wp-block-column col-xxl-3 col-xl-4 col-lg-6 col-12"><!-- wp:paragraph {"className":"p-3 mb-0 border bg-light"} -->
+<p class="p-3 mb-0 border bg-light">Col 2</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column -->
 
-        <!-- wp:column {"className":"col-xxl-3 col-xl-4 col-lg-6 col-12"} -->
-        <div class="wp-block-column col-xxl-3 col-xl-4 col-lg-6 col-12"><!-- wp:paragraph {"className":"p-3 mb-0 border bg-light"} -->
-            <p class="p-3 mb-0 border bg-light">Col 3</p>
-            <!-- /wp:paragraph --></div>
-        <!-- /wp:column -->
+<!-- wp:column {"className":"col-xxl-3 col-xl-4 col-lg-6 col-12"} -->
+<div class="wp-block-column col-xxl-3 col-xl-4 col-lg-6 col-12"><!-- wp:paragraph {"className":"p-3 mb-0 border bg-light"} -->
+<p class="p-3 mb-0 border bg-light">Col 3</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column -->
 
-        <!-- wp:column {"className":"col-xxl-3 col-xl-4 col-lg-6 col-12"} -->
-        <div class="wp-block-column col-xxl-3 col-xl-4 col-lg-6 col-12"><!-- wp:paragraph {"className":"p-3 mb-0 border bg-light"} -->
-            <p class="p-3 mb-0 border bg-light">Col 4</p>
-            <!-- /wp:paragraph --></div>
-        <!-- /wp:column --></div>
-    <!-- /wp:columns --></article>
+<!-- wp:column {"className":"col-xxl-3 col-xl-4 col-lg-6 col-12"} -->
+<div class="wp-block-column col-xxl-3 col-xl-4 col-lg-6 col-12"><!-- wp:paragraph {"className":"p-3 mb-0 border bg-light"} -->
+<p class="p-3 mb-0 border bg-light">Col 4</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns --></div>
 <!-- /wp:group -->

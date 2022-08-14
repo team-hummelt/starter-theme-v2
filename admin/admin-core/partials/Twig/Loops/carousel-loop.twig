@@ -190,6 +190,31 @@
                             <small class="small d-block p-2">{{ 'If selected, a background colour is displayed behind the selectors.'|__ }}</small>
                         </div>
                     </div>
+                   {#  <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option align-items-center">
+                        <div class="col">
+                            <div class="col-xxl-8 col-xl-10 col-12 p-2">
+                                <div class="form-check form-switch py-3">
+                                    <input class="form-check-input no-blur" name="data_parallax_aktiv" type="checkbox"
+                                           id="checkParallaxAktiv{{ r.id }}" {% if r.data_parallax_aktiv %}checked{% endif %}>
+                                    <label class="form-check-label"
+                                           for="checkParallaxAktiv{{ r.id }}">{{ 'Parallax active'|__ }}</label>
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-8 col-xl-10 col-12 p-2">
+                                <div class="form-floating">
+                                    <input type="number" min="1" max="99" class="form-control no-blur" value="{{ r.data_parallax_speed }}"
+                                           name="data_parallax_speed"
+                                           id="inputParallaxSpeed{{ r.id }}"
+                                           placeholder="{{ 'Parallax speed'|__ }}">
+                                    <label for="inputParallaxSpeed{{ r.id }}">{{ 'Parallax speed'|__ }}</label>
+                                </div>
+                                <div class="form-text">(min:1 <span class="vr"></span> max: 99)</div>
+                            </div>
+                        </div>
+                        <div class="col"> </div>
+                    </div>
+                   #}
                     <div class="row row-cols-1 row-cols-lg-2 py-2 settings-box option align-items-center">
                         <div class="col">
                             <div class="col-xxl-8 col-xl-10 col-12 p-2">

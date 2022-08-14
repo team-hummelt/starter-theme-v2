@@ -170,7 +170,73 @@ class HupaStarterRenderBlock
             }
         }
         /**
-         * ARTICLE END
+         * Group END
+         */
+        if ($block['blockName'] === 'core/columns' && !is_admin() && !wp_is_json_request()) {
+            $block['attrs']['className'] ??= '';
+            $blocks = [];
+            if ($block['attrs']['className']) {
+                $blocks = explode(' ', $block['attrs']['className']);
+            }
+
+            $currentId = '';
+            preg_match('/id="(.+?)"/', $block['innerHTML'], $id_matches);
+            if ($id_matches && isset($id_matches[1])) {
+                $currentId = $id_matches[1];
+            }
+            $listArr = [];
+            if ($currentId == 'hupa-list-options') {
+                if ($block['attrs']['hupaListTag'] ??= '') {
+                    $listArr = explode('_', $block['attrs']['hupaListTag']);
+                }
+
+                if (in_array('no-wp-container', $listArr)) {
+                    $columns = '';
+                    $column = '';
+                } elseif (in_array('no-columns', $listArr)){
+                    $columns = '';
+                    $column = 'wp-block-column ';
+                } elseif (in_array('no-column', $listArr)){
+                    $columns = 'wp-block-columns ';
+                    $column = '';
+                }
+                else {
+                    $columns = 'wp-block-columns ';
+                    $column = 'wp-block-column ';
+                }
+
+                preg_match('/hupa-theme-remove-container/', $block['innerHTML'], $innerMatches);
+                if($innerMatches && isset($innerMatches[0])){
+                    $noContainer = 'data-remove-container="['.$innerMatches[0].']"';
+                } else {
+                    $noContainer = '';
+                }
+              if ($block['attrs']['className']) {
+                    $html .= '<div '.$noContainer.' class="'.$columns . $block['attrs']['className'] . '">';
+                } else {
+                    $html .= '<div '.$noContainer.' class="hupa-list">';
+                }
+
+
+                foreach ($block['innerBlocks'] as $columnItems) {
+                    $columnItems['attrs']['className'] ??= '';
+                    if ($columnItems['attrs']['className']) {
+                        $html .= '<div class="' . $column . $columnItems['attrs']['className'] . '">';
+                    } else {
+                        $html .= '<div class="hupa-list-item">';
+                    }
+
+                    foreach ($columnItems['innerBlocks'] as $innerItems){
+                        $html .= render_block($innerItems);
+                    }
+                    $html .= '</div>';
+                }
+                $html .= '</div>';
+                return $html;
+            }
+        }
+        /**
+         * Group List
          */
 
         return $block_content;

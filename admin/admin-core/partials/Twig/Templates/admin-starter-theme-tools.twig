@@ -251,8 +251,7 @@
                                                         <h5 class="text-muted py-2 mb-0 text-center"> {{ t.bezeichnung }}
                                                             <i class="sortableArrow float-start fa fa-arrows"></i>
                                                         </h5>
-                                                        <fieldset
-                                                                {% if t.slug == 'areamenu_' and 'top-area-menu'|has_nav_menu %}disabled{% endif %}>
+                                                        <fieldset {% if t.slug == 'areamenu_' and not 'top-area-menu'|has_nav_menu %}disabled{% endif %}>
                                                             <small class="d-block form-text text-center mt-0">
                                                                 {% if t.slug == 'areamenu_' %}{{ 'Top Menu'|__ }}{% else %}{{ 'Widget Box'|__ }}{% endif %}
                                                             </small>

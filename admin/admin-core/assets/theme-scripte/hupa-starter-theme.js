@@ -171,6 +171,30 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         });
 
+        /**======================================
+         ========== Parallax FUNCTION ===========
+         ========================================
+         */
+        let themeParallaxOption = document.querySelectorAll(".parallax-is-active");
+        if (themeParallaxOption.length) {
+            let nodes = Array.prototype.slice.call(themeParallaxOption, 0);
+            nodes.forEach(function (nodes) {
+                add_jarallax_image(nodes);
+                nodes.classList.add('jarallax');
+                let dataSpeed = '0' + '.' + nodes.getAttribute('data-parallax-speed');
+                $(nodes).jarallax({
+                    speed: dataSpeed
+                });
+            });
+
+            function add_jarallax_image(node) {
+                let jarImg = node.querySelectorAll('img');
+                let nodes = Array.prototype.slice.call(jarImg, 0);
+                nodes.forEach(function (nodes) {
+                    nodes.classList.add('jarallax-img');
+                });
+            }
+        }
         // Preloader script
         jQuery(window).load(function () {
             $("#preloader-wrapper").delay(1600).fadeOut('easing').remove();
@@ -213,7 +237,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $('.carousel').on('slide.bs.carousel', function (e) {
             let $nextImage = $(e.relatedTarget).find('img');
             let $activeItem = $('.active.item', this);
-            // prevents the slide decreasing in height before the image is loaded
 
             if (cHeight == 0) {
                 cHeight = $(this).height();
@@ -308,11 +331,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
         function WhatAnimation(name) {
             $("." + name).each(function () {
                 let moveRemove;
+                let aniTop;
+                let aniBottom;
                 let ani = get_hupa_option.animation;
                 switch (name) {
                     case "fadeScroll":
-                        $('.fadeScroll').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
-                        AddClass(this, "aniFade", parseInt(ani.fadeTop), parseInt(ani.fadeBottom), moveRemove);
+                        if ($(this).attr('data-animation-top')) {
+                            aniTop = $(this).attr('data-animation-top');
+                            aniBottom = $(this).attr('data-animation-bottom');
+                        } else {
+                            aniTop = ani.fadeTop;
+                            aniBottom = ani.fadeBottom;
+                        }
+                        $(this).hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "aniFade", parseInt(aniTop), parseInt(aniBottom), moveRemove);
                         break;
                     case "fadeScroll100":
                         $('.fadeScroll100').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
@@ -323,8 +355,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         AddClass(this, "aniFade", parseInt(ani.fadeTop25), parseInt(ani.fadeBottom25), moveRemove);
                         break;
                     case "moveLeft":
-                        $('.moveLeft').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
-                        AddClass(this, "left", parseInt(ani.moveLeftTop), parseInt(ani.moveLeftBottom), moveRemove);
+                        if ($(this).attr('data-animation-top')) {
+                            aniTop = $(this).attr('data-animation-top');
+                            aniBottom = $(this).attr('data-animation-bottom');
+                        } else {
+                            aniTop = ani.fadeTop;
+                            aniBottom = ani.fadeBottom;
+                        }
+                        $(this).hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "left", parseInt(aniTop), parseInt(aniBottom), moveRemove);
                         break;
                     case "moveLeft25":
                         $('.moveLeft25').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
@@ -335,8 +374,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         AddClass(this, "left", parseInt(ani.moveLeftTop100), parseInt(ani.moveLeftBottom100), moveRemove);
                         break;
                     case "moveRight":
-                        $('.moveRight').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
-                        AddClass(this, "right", parseInt(ani.moveRightTop), parseInt(ani.moveRightBottom), moveRemove);
+                        if ($(this).attr('data-animation-top')) {
+                            aniTop = $(this).attr('data-animation-top');
+                            aniBottom = $(this).attr('data-animation-bottom');
+                        } else {
+                            aniTop = ani.fadeTop;
+                            aniBottom = ani.fadeBottom;
+                        }
+                        $(this).hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "right", parseInt(aniTop), parseInt(aniBottom), moveRemove);
                         break
                     case "moveRight25":
                         $('.moveRight25').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
@@ -347,8 +393,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         AddClass(this, "right", (ani.moveRightTop100), parseInt(ani.moveRightBottom100), moveRemove);
                         break
                     case "moveTop":
-                        $('.moveTop').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
-                        AddClass(this, "top", parseInt(ani.moveTopTop), parseInt(ani.moveTopBottom), moveRemove);
+                        if ($(this).attr('data-animation-top')) {
+                            aniTop = $(this).attr('data-animation-top');
+                            aniBottom = $(this).attr('data-animation-bottom');
+                        } else {
+                            aniTop = ani.fadeTop;
+                            aniBottom = ani.fadeBottom;
+                        }
+                        $(this).hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "top", parseInt(aniTop), parseInt(aniBottom), moveRemove);
                         break;
                     case "moveTop25":
                         $('.moveTop25').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
@@ -359,8 +412,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         AddClass(this, "top", parseInt(ani.moveTopTop100), parseInt(ani.moveTopBottom100), moveRemove);
                         break;
                     case "moveBottom":
-                        $('.moveBottom').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
-                        AddClass(this, "bottom", parseInt(ani.moveBottomTop), parseInt(ani.moveBottomBottom), moveRemove);
+                        if ($(this).attr('data-animation-top')) {
+                            aniTop = $(this).attr('data-animation-top');
+                            aniBottom = $(this).attr('data-animation-bottom');
+                        } else {
+                            aniTop = ani.fadeTop;
+                            aniBottom = ani.fadeBottom;
+                        }
+                        $(this).hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
+                        AddClass(this, "bottom", parseInt(aniTop), parseInt(aniBottom), moveRemove);
                         break;
                     case "moveBottom25":
                         $('.moveBottom25').hasClass('notRepeat') ? moveRemove = false : moveRemove = true;
@@ -391,135 +451,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
             return !(
                 viewport < rand.top + top || $(window).scrollTop() > rand.bottom - bottom
             );
-        }
-
-
-        let wowDelay1 = $('.delay1');
-        let wowDelay2 = $('.delay2');
-        let wowDelay3 = $('.delay3');
-        let wowDelay4 = $('.delay4');
-        let wowDelay5 = $('.delay5');
-
-        let wowOffset50 = $('.offset50');
-        let wowOffset75 = $('.offset75');
-        let wowOffset100 = $('.offset100');
-        let wowOffset125 = $('.offset125');
-        let wowOffset150 = $('.offset150');
-
-        let iteration2 = $('.iteration2');
-        let iteration3 = $('.iteration3');
-        let iteration4 = $('.iteration4');
-        let iteration5 = $('.iteration5');
-
-        let animate__fadeIn = $('.anFadeIn');
-        let animate__fadeInUpBig = $('.anFadeInUpBig');
-        let animate__slideInUp = $('.anSlideInUp');
-
-        let animate__slideInDown = $('.anSlideInDown');
-        let animate__fadeInLeft = $('.anFadeInLeft');
-        let animate__fadeInRight = $('.anFadeInRight');
-        let animate__fadeInDown = $('.anFadeInDown');
-        let animate__fadeInUp = $('.anFadeInUp');
-        let animate__slideInLeft = $('.anSlideInLeft');
-        let animate__slideInRight = $('.anSlideInRight');
-        let animate__bounceIn = $('.anBounceIn');
-        let animate__flipInX = $('.anFlipInX');
-        let animate__flipInY = $('.anFlipInY');
-        let animate__pulse = $('.anPulse');
-        let animate__zoomIn = $('.anZoomIn');
-
-        /// Make WOW
-        if (animate__fadeIn) {
-            animate__fadeIn.addClass('animate__fadeIn wow');
-        }
-        if (animate__fadeInUpBig) {
-            animate__fadeInUpBig.addClass('animate__fadeInUpBig wow');
-        }
-        if (animate__slideInUp) {
-            animate__slideInUp.addClass('animate__slideInUp wow');
-        }
-        if (animate__slideInDown) {
-            animate__slideInDown.addClass('animate__slideInDown wow');
-        }
-        if (animate__fadeInLeft) {
-            animate__fadeInLeft.addClass('animate__fadeInLeft wow');
-        }
-        if (animate__fadeInRight) {
-            animate__fadeInRight.addClass('animate__fadeInRight wow');
-        }
-        if (animate__fadeInDown) {
-            animate__fadeInDown.addClass('animate__fadeInDown wow');
-        }
-        if (animate__fadeInUp) {
-            animate__fadeInUp.addClass('animate__fadeInUp wow');
-        }
-        if (animate__slideInLeft) {
-            animate__slideInLeft.addClass('animate__slideInLeft wow');
-        }
-        if (animate__slideInRight) {
-            animate__slideInRight.addClass('animate__slideInRight wow');
-        }
-        if (animate__bounceIn) {
-            animate__bounceIn.addClass('wow');
-        }
-        if (animate__flipInX) {
-            animate__flipInX.addClass('animate__bounceIn wow');
-        }
-        if (animate__flipInY) {
-            animate__flipInY.addClass('animate__flipInY wow');
-        }
-
-        if (animate__pulse) {
-            animate__pulse.addClass('wow animate__pulse');
-        }
-
-        if (animate__zoomIn) {
-            animate__zoomIn.addClass('wow animate__zoomIn');
-        }
-
-        if (wowDelay1) {
-            wowDelay1.attr('data-wow-delay', '0.25s');
-        }
-        if (wowDelay2) {
-            wowDelay2.attr('data-wow-delay', '.5s');
-        }
-        if (wowDelay3) {
-            wowDelay3.attr('data-wow-delay', '.75s');
-        }
-        if (wowDelay4) {
-            wowDelay4.attr('data-wow-delay', '1s');
-        }
-        if (wowDelay5) {
-            wowDelay5.attr('data-wow-delay', '1.25s');
-        }
-
-        if (wowOffset50) {
-            wowOffset50.attr('data-wow-offset', '50');
-        }
-        if (wowOffset75) {
-            wowOffset75.attr('data-wow-offset', '75');
-        }
-        if (wowOffset100) {
-            wowOffset100.attr('data-wow-offset', '100');
-        }
-        if (wowOffset125) {
-            wowOffset125.attr('data-wow-offset', '125');
-        }
-        if (wowOffset150) {
-            wowOffset150.attr('data-wow-offset', '150');
-        }
-
-        if (iteration2) {
-            iteration2.attr('data-wow-iteration', '2');
-        }
-        if (iteration3) {
-            iteration3.attr('data-wow-iteration', '3');
-        }
-        if (iteration4) {
-            iteration4.attr('data-wow-iteration', '4');
-        }
-        if (iteration5) {
-            iteration5.attr('data-wow-iteration', '5');
         }
 
         $(document).on('click', '.theme-lightbox', function (e) {
@@ -590,8 +521,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 } else {
                     aHref.attr('data-gallery', 'slides');
                 }
-                if(galleryImg.prop('title')) {
-                    galleryImg.each(function( index , el ) {
+                if (galleryImg.prop('title')) {
+                    galleryImg.each(function (index, el) {
                         let elTitle = $(galleryImg[index]).attr('title');
                         let hrefTitle = $(galleryImg[index]).parent();
                         hrefTitle.attr('title', elTitle)
@@ -601,7 +532,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
 
         let hupaLightBox = $('.hupa-lightbox');
-        if(hupaLightBox) {
+        if (hupaLightBox) {
             let blueImpId = $('#blueimp-gallery-script');
             if (!blueImpId.length) {
                 let loadCarouselModul = loadModulScript(get_hupa_option.admin_url + 'admin-core/assets/js/tools/lightbox/blueimp-gallery.min.js');
@@ -611,13 +542,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
             let aHref = $('a ', hupaLightBox);
             let singleImg = $('img', hupaLightBox);
-            if(singleImg.prop('title')) {
-                singleImg.each(function( index , el ) {
+            if (singleImg.prop('title')) {
+                singleImg.each(function (index, el) {
                     let elTitle = $(singleImg[index]).attr('title');
                     let hrefTitle = $(singleImg[index]).parent();
                     hrefTitle.attr('title', elTitle)
                 });
-             }
+            }
             aHref.addClass('theme-lightbox');
             aHref.attr('data-gallery', 'single');
         }
@@ -625,7 +556,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         function starter_blueimp_gallery() {
             let blueimpPlaceholder = $('#starter-v2-blueimp-gallery');
             let blueImgSingle = $('#starter-blueimp-single');
-            if(blueimpPlaceholder.length && !blueImgSingle.length) {
+            if (blueimpPlaceholder.length && !blueImgSingle.length) {
                 let html = `<div id="starter-blueimp-single"
                    class="blueimp-gallery blueimp-gallery-controls"
                    aria-label="image gallery"
@@ -673,6 +604,45 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         }
 
+
+        let hupaAnimation = document.querySelectorAll('.theme-wow-animation');
+        if (hupaAnimation.length) {
+            let nodes = Array.prototype.slice.call(hupaAnimation, 0);
+            nodes.forEach(function (nodes) {
+                if (nodes.hasAttribute('data-type-animation')) {
+                    nodes.classList.add('wow');
+                    nodes.classList.add('animate__' + nodes.getAttribute('data-type-animation'));
+                }
+            });
+
+            // Helper function for add element box list in WOW
+            WOW.prototype.addBox = function (element) {
+                this.boxes.push(element);
+            };
+
+            let starterWow = new WOW(
+                {
+                    boxClass: 'wow',
+                    animateClass: 'animate__animated',
+                    mobile: true,
+                    live: true
+                }
+            );
+            starterWow.init();
+
+            $('.wow').on('scrollSpy:exit', function () {
+                if ($(this).attr('data-animation-no-repeat')) {
+                    return false;
+                }
+
+                $(this).css({
+                    'visibility': 'hidden',
+                    'animation-name': 'none'
+                }).removeClass('animate__animated');
+                starterWow.addBox(this);
+            }).scrollSpy();
+        }
+
     })(jQuery);
 
     const isIOS = [
@@ -684,21 +654,5 @@ document.addEventListener("DOMContentLoaded", function (event) {
         'iPod',
     ].indexOf(navigator.platform) !== -1;
 
-    let starterWow = new WOW(
-        {
-            boxClass: 'wow',      // animated element css class (default is wow)
-            animateClass: 'animate__animated', // animation css class (default is animated)
-            offset: 0,          // distance to the element when triggering the animation (default is 0)
-            mobile: true,       // trigger animations on mobile devices (default is true)
-            live: true,       // act on asynchronously loaded content (default is true)
-            callback: function (box) {
-                // the callback is fired every time an animation is started
-                // the argument that is passed in is the DOM node being animated
-            },
-            scrollContainer: null,    // optional scroll container selector, otherwise use window,
-            resetAnimation: true,     // reset animation on end (default is true)
-        }
-    );
-    starterWow.init();
 
 });

@@ -137,6 +137,7 @@ trait HupaOptionTrait
     protected string $optimize = 'optimize';
     protected string $lizenz_page_aktiv = 'lizenz_page_aktiv';
     protected string $lizenz_login_aktiv = 'lizenz_login_aktiv';
+    protected string $disabled_wp_layout = 'disabled_wp_layout';
 
     protected string $show_uhr_aktive = 'show_uhr_aktive';
     protected string $news_api_aktiv = 'news_api_aktiv';
@@ -310,9 +311,9 @@ trait HupaOptionTrait
     protected string $hupa_tools_css_class = 'css_class';
     protected string $hupa_tools_other = 'other';
 
-    protected function get_theme_default_settings(): array
+    protected function get_theme_default_settings($args = NULL): array
     {
-        return $this->settings_default_values = [
+         $this->settings_default_values = [
             /*===============================================
             ================= THEME GENERAL =================
             =================================================*/
@@ -417,6 +418,7 @@ trait HupaOptionTrait
                 $this->optimize => 0,
                 $this->lizenz_page_aktiv => 0,
                 $this->lizenz_login_aktiv => 0,
+                $this->disabled_wp_layout => 0,
                 $this->show_uhr_aktive => 1,
                 $this->news_api_aktiv => 0,
             ],
@@ -908,6 +910,14 @@ trait HupaOptionTrait
                 'moveBottomBottom100' => 250
             ],
         ];
+
+         if($args){
+             if($this->settings_default_values[$args]){
+                 return $this->settings_default_values[$args];
+             }
+         }
+
+         return $this->settings_default_values;
     }
 
     protected function theme_language(): array

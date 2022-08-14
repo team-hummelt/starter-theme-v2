@@ -1947,5 +1947,69 @@
     line-height: 1!important;
 }
 
+.editor-styles-wrapper.sidebar-advanced-controls .fw-normal {
+    font-weight: normal!important;
+}
+
+.editor-styles-wrapper.sidebar-advanced-controls p:not(.editor-styles-wrapper .components-base-control__help) {
+    margin: 0 0 1rem !important;
+    font-size: .85rem!important;
+}
+
+.editor-styles-wrapper.sidebar-advanced-controls .components-toggle-control, .editor-styles-wrapper .components-base-control {
+    margin-bottom: .5rem!important;
+}
+
+.editor-styles-wrapper.sidebar-advanced-controls .components-toggle-control {
+    margin-top: 1rem;
+}
+
+.editor-styles-wrapper .components-base-control__help {
+    font-size: 12px!important;
+}
+
+.editor-styles-wrapper .components-select-control__input option:disabled {
+    background-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==) !important;
+    color: black!important;
+    background-repeat: repeat-x!important;
+    background-position: 50% 50% !important;
+    background-attachment: scroll!important;
+    text-align: left!important;
+    display: block!important;
+    font-size: 15px!important;
+}
+
+.components-panel__body.editor-styles-wrapper.sidebar-advanced-controls {
+    margin: 0 -1rem auto -1rem;
+}
+
+.editor-styles-wrapper .components-panel__body.is-opened>.components-panel__body-title {
+    margin-top: .25rem!important;
+    margin-bottom: .25rem!important;
+}
+.components-panel__body.editor-styles-wrapper.sidebar-advanced-controls {
+    padding: .5rem 1rem!important;
+}
+
+.editor-styles-wrapper h2.components-panel__body-title {
+    font-size: unset!important;
+    background-color: #f9f9f9!important;
+    margin: -.5rem -1rem -.75rem -1rem!important;
+}
+
+.editor-styles-wrapper .panel-headline {
+    padding-top: 2rem!important;
+}
+.editor-styles-wrapper .components-select-control label {
+    line-height: 1.3!important;
+}
+.editor-styles-wrapper .components-select-control__input {
+    line-height: 1.4!important;
+    height: 35px!important;
+}
+
+
+
+
 
 

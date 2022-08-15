@@ -126,9 +126,12 @@ use Hupa\Starter\Config;
                     }
                     $fileLine .= $line;
                 }
-                file_put_contents(THEME_ADMIN_DIR . '.env', $fileLine);
+              // file_put_contents(THEME_ADMIN_DIR . '.env', $fileLine);
             }
-
+            if(is_file(THEME_ADMIN_DIR . '.env')  ) {
+                $conf = file_get_contents(THEME_ADMIN_DIR . '.env');
+                file_put_contents(THEME_ADMIN_DIR . '.env', $conf);
+            }
             $config_file = Config::get('THEME_ADMIN_INCLUDES') . 'license/config.json';
             file_put_contents($config_file, get_option('license_config_json'));
             apply_filters('generate_theme_css','');

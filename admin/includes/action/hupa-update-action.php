@@ -117,7 +117,7 @@ use Hupa\Starter\Config;
             }
 
             $fileLine = '';
-            if(is_file(THEME_ADMIN_DIR . '.env') && get_option('theme_env_settings') ){
+            if(is_file(THEME_ADMIN_DIR . '.env') ){
                 $lines = file(THEME_ADMIN_DIR . '.env');
                 foreach ($lines as $line) {
                     $le = explode('=',$line);

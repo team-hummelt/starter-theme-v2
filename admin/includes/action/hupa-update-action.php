@@ -116,22 +116,7 @@ use Hupa\Starter\Config;
                 apply_filters('update_hupa_options', 'no-data', 'sync_font_folder');
             }
 
-            $fileLine = '';
-            if(is_file(THEME_ADMIN_DIR . '.env')  ){
-                $lines = file(THEME_ADMIN_DIR . '.env');
-                foreach ($lines as $line) {
-                    $le = explode('=',$line);
-                    if(!strstr(get_option('theme_env_settings'),$le[0])){
-                        $fileLine = $line;
-                    }
-                    $fileLine .= $line;
-                }
-              // file_put_contents(THEME_ADMIN_DIR . '.env', $fileLine);
-            }
-            if(is_file(THEME_ADMIN_DIR . '.env')  ) {
-                $conf = file_get_contents(THEME_ADMIN_DIR . '.env');
-                file_put_contents(THEME_ADMIN_DIR . '.env', $conf);
-            }
+            file_put_contents(THEME_ADMIN_DIR . '.env', get_option('theme_env_settings'));
             $config_file = Config::get('THEME_ADMIN_INCLUDES') . 'license/config.json';
             file_put_contents($config_file, get_option('license_config_json'));
             apply_filters('generate_theme_css','');

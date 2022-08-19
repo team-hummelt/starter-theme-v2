@@ -428,11 +428,7 @@ class HupaStarterHelper
                 'bezeichnung' => 'Icon Shortcode',
                 'target' => '#collIconShortcode'
             ],
-            '5' => [
-                'id' => 6,
-                'bezeichnung' => 'Lightbox: (WordPress Galerie/Image)',
-                'target' => '#collLightBox'
-            ],
+
             '1' => [
                 'id' => 2,
                 'bezeichnung' => 'Kontaktdaten: (Shortcode)',
@@ -452,12 +448,6 @@ class HupaStarterHelper
                 'id' => 3,
                 'bezeichnung' => 'Theme Tag: (Shortcode)',
                 'target' => '#collThemeTag'
-            ],
-
-            '4' => [
-                'id' => 5,
-                'bezeichnung' => 'Render-Block Funktion (Gruppe)',
-                'target' => '#collBlockGroup'
             ],
         ];
 

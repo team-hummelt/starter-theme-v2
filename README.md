@@ -16,34 +16,15 @@ Header-, Footer- und 404-Widgets.
 ***
 * Contributors: jwiecker
 * Tags: Hupa Theme, Bootstrap
-* Version: 2.0.1
-* Stable tag: 2.0.1
+* Version: 2.0.0
+* Stable tag: 2.0.0
 * Requires at least: 5.6
 * Tested up to: 6.0.1
 * Requires PHP: 7.4
-***
-  <span style="color: #dc3545; font-size:18px;"> Das Theme ist nicht mit der Version 1 kompatibel! </span>
 
-***
+#### Theme ist nicht mit der Version 1 kompatibel.
 
 ## Changelog
-### 2.0.1
- - Gutenberg-Tools
-   - Parallax-Option für Cover-Image hinzugefügt
-   - Gruppen-Tags hinzugefügt
-   - Listen-Tag hinzugefügt
-   - Listen Option WordPress-Container entfernen hinzugefügt
-   - Animation (WOW mit animate.css) Optionen hinzugefügt
-   - Theme-Animation Optionen hinzugefügt
-   - Lightbox für WP-Galerie und Bilder hinzugefügt
-   - Gutenberg-Editor Bootstrap-Grid hinzugefügt
-   - Designvorlagen für Bootsrap-Container hinzugefügt
- - Theme Optionen
-   - Disable WordPress Container hinzugefügt
- - Theme Settings
-   - WordPress Gutenberg Editor Settings hinzugefügt 
-   - Theme-System-Settings hinzugefügt
- - Update und Installationsfehler gefixt 
 ### 2.0.0
  - Carousel
    - Carousel-Dashboard optimiert 

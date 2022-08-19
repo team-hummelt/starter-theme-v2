@@ -341,7 +341,6 @@ function bootscore_scripts()
     $modificated = date('YmdHi', filemtime(get_template_directory() . '/css/lib/bootstrap.min.css'));
     $modificated = date('YmdHi', filemtime(get_stylesheet_directory() . '/style.css'));
     $modificated = date('YmdHi', filemtime(get_template_directory() . '/js/theme.js'));
-    $modificated = date('YmdHi', filemtime(get_template_directory() . '/js/lib/jarallax.min.js'));
     $modificated = date('YmdHi', filemtime(get_template_directory() . '/js/lib/bootstrap.bundle.min.js'));
     $modificated = date('YmdHi', filemtime(get_template_directory() . '/css/hupa-theme/auto-generate-theme.css'));
     $modificated = date('YmdHi', filemtime(get_template_directory() . '/css/hupa-theme/theme-custom.css'));

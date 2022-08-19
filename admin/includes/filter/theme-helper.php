@@ -167,12 +167,12 @@ class HupaStarterHelper
         return rmdir($dir);
     }
 
-    public function hupa_check_theme_install_table($table): bool
+    public function hupa_check_theme_install_table($table):bool
     {
         global $wpdb;
         $checkTable = $wpdb->prefix . $table;
-        $isTable = $wpdb->get_var("SHOW TABLES LIKE '{$checkTable}'");
-        if ($isTable) {
+        $isTable = $wpdb->get_var( "SHOW TABLES LIKE '{$checkTable}'" );
+        if($isTable) {
             return true;
         }
         return false;
@@ -241,7 +241,7 @@ class HupaStarterHelper
 
     public function hupa_is_custom_dir($dir)
     {
-        if (!is_dir($dir)) {
+        if(!is_dir($dir)){
             mkdir($dir, 0777, false);
         }
     }
@@ -428,6 +428,11 @@ class HupaStarterHelper
                 'bezeichnung' => 'Icon Shortcode',
                 'target' => '#collIconShortcode'
             ],
+            '5' => [
+                'id' => 6,
+                'bezeichnung' => 'Lightbox: (WordPress Galerie/Image)',
+                'target' => '#collLightBox'
+            ],
             '1' => [
                 'id' => 2,
                 'bezeichnung' => 'Kontaktdaten: (Shortcode)',
@@ -447,8 +452,13 @@ class HupaStarterHelper
                 'id' => 3,
                 'bezeichnung' => 'Theme Tag: (Shortcode)',
                 'target' => '#collThemeTag'
-            ]
+            ],
 
+            '4' => [
+                'id' => 5,
+                'bezeichnung' => 'Render-Block Funktion (Gruppe)',
+                'target' => '#collBlockGroup'
+            ],
         ];
 
         if ($id) {
@@ -462,9 +472,9 @@ class HupaStarterHelper
         return $select;
     }
 
-    public function hupa_starter_animation_settings($animation = null): array
+    public function hupa_starter_animation_settings($animation = null):array
     {
-        if (!get_option('hupa_animation_settings')) {
+        if(!get_option('hupa_animation_settings')) {
             $settings = $this->get_theme_default_settings();
             update_option('hupa_animation_settings', $settings['animation_default']);
         }
@@ -715,9 +725,9 @@ class HupaStarterHelper
             ],
         ];
 
-        if ($animation) {
+        if($animation){
             foreach ($layout as $key => $val) {
-                if ($key == $animation) {
+                if($key == $animation){
                     return $val;
                 }
             }
@@ -726,14 +736,13 @@ class HupaStarterHelper
         return $layout;
     }
 
-    public function hupa_settings_pin($salt = null)
-    {
-        $date = date('dm', current_time('timestamp'));
-        $version = str_replace(['v', '.'], '', $this->main->get_theme_version());
-        return password_hash($salt . $date . $version, PASSWORD_DEFAULT);
+    public function hupa_settings_pin($salt = null) {
+       $date = date('dm', current_time('timestamp'));
+       $version = str_replace(['v','.'],'',$this->main->get_theme_version());
+        return password_hash($salt.$date.$version, PASSWORD_DEFAULT);
     }
 
-    public function hupa_settings_validate_pin($pin, $hash): bool
+    public function hupa_settings_validate_pin($pin, $hash):bool
     {
         return password_verify($pin, $hash);
     }

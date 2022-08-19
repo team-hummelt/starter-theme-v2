@@ -147,7 +147,7 @@ class HupaStarterCssGenerator
         $html .= '}' . "\r\n";
 
         //HEADER LOGO SIZE
-        if(get_hupa_frontend('nav-img')->width){
+        if(isset(get_hupa_frontend('nav-img')->width) ){
             $imgWidth = get_hupa_frontend('nav-img')->width;
             $mobilWidth = get_hupa_frontend('nav-img')->width_mobil;
         } else {

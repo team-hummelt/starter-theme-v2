@@ -1,8 +1,8 @@
 === HUPA Theme V2 ===
 Contributors: jwiecker
 Requires at least: 5.6
-Stable tag: 2.0.1
-Version: 2.0.1
+Stable tag: 2.0.2
+Version: 2.0.2
 Tested up to: 6.0.1
 Requires PHP: 7.4
 License: MIT-Lizenz
@@ -19,6 +19,8 @@ Das Theme hat eine große Auswahl an Kategorie-, Seiten-, Beitrags-, Autoren- un
 == Screenshots ==
 
 == Changelog ==
+= 2.0.2 =
+* Installationsfehler gefixt
 = 2.0.1 =
 * Parallax-Option für Cover-Image hinzugefügt
 * Gruppen-Tags hinzugefügt

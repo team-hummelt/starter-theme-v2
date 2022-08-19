@@ -312,7 +312,7 @@ class HupaStarterOptionFilter
                     'hupa_gmaps' => json_encode($defaults->google_maps),
                     'google_maps_placeholder' => json_encode($defaults->google_maps),
                 ),
-                array('%s', '%s', '%s', '%s', '%s', '%s', '%s')
+                array('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')
             );
         }
 

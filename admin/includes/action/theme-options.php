@@ -148,9 +148,9 @@ class StarterThemeWPOptionen
         $regEx = '/(\[hupa-theme-remove-container].+?(wp-container-\d{1,5}))/';
         if(preg_match_all($regEx, $content, $matches)){
             if(isset($matches[2]) && is_array($matches[2])){
-              foreach ($matches[2] as $tmp) {
-                  $content = str_replace($tmp,'', $content);
-              }
+                foreach ($matches[2] as $tmp) {
+                    $content = str_replace($tmp,'', $content);
+                }
             }
         }
         return $content;

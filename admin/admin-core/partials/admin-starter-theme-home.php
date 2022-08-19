@@ -4487,7 +4487,7 @@ use Hupa\Starter\Config;
                                 </div>
                             </div>
 
-                            <!--<div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
+                           <!-- <div class="border rounded mt-3 shadow-sm p-3 bg-custom-gray">
                                 <h6 class="d-flex flex-wrap align-items-center">
                               <span>
                                   <i class="fa fa-arrow-circle-right"></i> Lightbox: <small class="fw-normal">(WordPress Galerie/Image)</small>

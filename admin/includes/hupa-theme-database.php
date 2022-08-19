@@ -45,47 +45,48 @@ class HupaStarterDataBaseHandle
         $table = $wpdb->prefix . $this->table_settings;
         $charset_collate = $wpdb->get_charset_collate();
         $sql = "CREATE TABLE {$table} (
-    		id int(11) NOT NULL,
-            hupa_general text NULL,
-            hupa_smtp text NULL,
-            hupa_fonts text NULL,
-            hupa_fonts_src text NULL,
-            hupa_colors text NULL,
-            hupa_wp_option text NULL,
-            hupa_gmaps text NULL,
-            hupa_top_area text NULL,
-            google_maps_placeholder text NULL,
+    		`id` int(11) NOT NULL AUTO_INCREMENT,
+            `hupa_general` text NULL,
+            `hupa_smtp` text NULL,
+            `hupa_fonts` text NULL,
+            `hupa_fonts_src` text NULL,
+            `hupa_colors` text NULL,
+            `hupa_wp_option` text NULL,
+            `hupa_gmaps` text NULL,
+            `hupa_top_area` text NULL,
+            `google_maps_placeholder` text NULL,
+            
             PRIMARY KEY (id)
      ) $charset_collate;";
         dbDelta($sql);
 
         $table = $wpdb->prefix . $this->table_social;
         $sql = "CREATE TABLE {$table} (
-    		id int(11) NOT NULL AUTO_INCREMENT,
-            bezeichnung varchar(64) NOT NULL,
-            slug varchar (24) NOT NULL,
-            post_check tinyint(1) NOT NULL DEFAULT  0,
-            top_check tinyint(1) NOT NULL DEFAULT 0,
-            url_check tinyint(1) NOT NULL DEFAULT 0,
-            share_txt varchar (255) NULL,
-            url varchar (128) NULL,
-            btn varchar(62) NOT NULL,
-            icon varchar (62) NOT NULL,
-            position tinyint (3) NOT NULL DEFAULT  0,
+    		`id` int(11) NOT NULL AUTO_INCREMENT,
+            `bezeichnung` varchar(64) NOT NULL,
+            `slug` varchar (24) NOT NULL,
+            `post_check` tinyint(1) NOT NULL DEFAULT  0,
+            `top_check` tinyint(1) NOT NULL DEFAULT 0,
+            `url_check` tinyint(1) NOT NULL DEFAULT 0,
+            `share_txt` varchar (255) NULL,
+            `url` varchar (128) NULL,
+            `btn` varchar(62) NOT NULL,
+            `icon` varchar (62) NOT NULL,
+            `position` tinyint (3) NOT NULL DEFAULT  0,
             PRIMARY KEY (id)
      ) $charset_collate;";
         dbDelta($sql);
 
         $table = $wpdb->prefix . $this->table_tools;
         $sql = "CREATE TABLE {$table} (
-    		id int(11) NOT NULL AUTO_INCREMENT,
-            bezeichnung varchar(255) NOT NULL,
-            slug varchar(64) NOT NULL UNIQUE,
-            aktiv tinyint(1) NOT NULL DEFAULT 1,
-            type varchar(64) NOT NULL,
-            position tinyint (3) NOT NULL DEFAULT  0,
-            css_class varchar(255) NULL,
-            other text NULL,
+    		`id` int(11) NOT NULL AUTO_INCREMENT,
+            `bezeichnung` varchar(255) NOT NULL,
+            `slug` varchar(64) NOT NULL UNIQUE,
+            `aktiv` tinyint(1) NOT NULL DEFAULT 1,
+            `type` varchar(64) NOT NULL,
+            `position` tinyint (3) NOT NULL DEFAULT  0,
+            `css_class` varchar(255) NULL,
+            `other` text NULL,
             PRIMARY KEY (id)
      ) $charset_collate;";
         dbDelta($sql);
@@ -93,7 +94,7 @@ class HupaStarterDataBaseHandle
         $table = $wpdb->prefix . $this->table_carousel;
         $sql = "CREATE TABLE {$table} (
        		id int(11) NOT NULL AUTO_INCREMENT,
-       		aktiv tinyint(1) NOT NULL,
+       		aktiv mediumint(1) NOT NULL,
        		bezeichnung varchar(50) NOT NULL,
        		controls mediumint(1) NOT NULL DEFAULT 1,
        		indicator mediumint(1) NOT NULL DEFAULT 1,
@@ -151,12 +152,12 @@ class HupaStarterDataBaseHandle
 
         $table = $wpdb->prefix . $this->table_iframes;
         $sql = "CREATE TABLE {$table} (
-    		id int(11) NOT NULL AUTO_INCREMENT,
-    		bezeichnung varchar (128) NOT NULL,
-    		shortcode varchar (128) NOT NULL,
-            iframe text NULL,
-            datenschutz mediumint(1) NOT NULL DEFAULT 1,
-            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    		`id` int(11) NOT NULL AUTO_INCREMENT,
+    		`bezeichnung` varchar (128) NOT NULL,
+    		`shortcode` varchar (128) NOT NULL,
+            `iframe` text NULL,
+            `datenschutz` mediumint(1) NOT NULL DEFAULT 1,
+            `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (id)
      ) $charset_collate;";
         dbDelta($sql);

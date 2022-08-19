@@ -1,7 +1,0 @@
-                        <PanelRow>
-                            <SelectMainMenuMeta/>
-                        </PanelRow>
-
-                        <PanelRow>
-                            <SelectHandyMenuMeta/>
-                        </PanelRow>

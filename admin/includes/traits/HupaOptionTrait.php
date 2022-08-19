@@ -311,9 +311,9 @@ trait HupaOptionTrait
     protected string $hupa_tools_css_class = 'css_class';
     protected string $hupa_tools_other = 'other';
 
-    protected function get_theme_default_settings($args = NULL): array
+    protected function get_theme_default_settings(): array
     {
-         $this->settings_default_values = [
+        return $this->settings_default_values = [
             /*===============================================
             ================= THEME GENERAL =================
             =================================================*/
@@ -328,9 +328,9 @@ trait HupaOptionTrait
                 $this->fix_footer => 0,
                 $this->scroll_top => 1,
                 $this->login_img_aktiv => 1,
-                $this->logo_size => 50,
-                $this->logo_size_scroll => 40,
-                $this->logo_size_mobil => 35,
+                $this->logo_size => 200,
+                $this->logo_size_scroll => 70,
+                $this->logo_size_mobil => 60,
                 $this->logo_size_login => 200,
                 $this->menu => 1,
                 $this->handy => 1,
@@ -910,14 +910,6 @@ trait HupaOptionTrait
                 'moveBottomBottom100' => 250
             ],
         ];
-
-         if($args){
-             if($this->settings_default_values[$args]){
-                 return $this->settings_default_values[$args];
-             }
-         }
-
-         return $this->settings_default_values;
     }
 
     protected function theme_language(): array

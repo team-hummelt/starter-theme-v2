@@ -211,7 +211,7 @@ class HupaStarterRenderBlock
                 } else {
                     $noContainer = '';
                 }
-              if ($block['attrs']['className']) {
+                if ($block['attrs']['className']) {
                     $html .= '<div '.$noContainer.' class="'.$columns . $block['attrs']['className'] . '">';
                 } else {
                     $html .= '<div '.$noContainer.' class="hupa-list">';

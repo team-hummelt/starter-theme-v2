@@ -3,6 +3,7 @@
 namespace Hupa\StarterThemeV2;
 
 use Exception;
+use finfo;
 use Hupa\Starter\Config;
 use HupaStarterThemeV2;
 
@@ -94,6 +95,14 @@ class HupaStarterHelper
         return trim(preg_replace('/\s+/', ' ', $string));
     }
 
+    public function cleanWhitespaceString($string): string
+    {
+        if (!$string) {
+            return '';
+        }
+        return trim(preg_replace('/\s+/', '', $string));
+    }
+
     final public function hupa_wp_get_attachment($attachment_id): object
     {
         $attachment = get_post($attachment_id);
@@ -167,12 +176,12 @@ class HupaStarterHelper
         return rmdir($dir);
     }
 
-    public function hupa_check_theme_install_table($table):bool
+    public function hupa_check_theme_install_table($table): bool
     {
         global $wpdb;
         $checkTable = $wpdb->prefix . $table;
-        $isTable = $wpdb->get_var( "SHOW TABLES LIKE '{$checkTable}'" );
-        if($isTable) {
+        $isTable = $wpdb->get_var("SHOW TABLES LIKE '{$checkTable}'");
+        if ($isTable) {
             return true;
         }
         return false;
@@ -241,9 +250,95 @@ class HupaStarterHelper
 
     public function hupa_is_custom_dir($dir)
     {
-        if(!is_dir($dir)){
+        if (!is_dir($dir)) {
             mkdir($dir, 0777, false);
         }
+    }
+
+    /**
+     * @param $file
+     * @return false|string
+     */
+    public function hupa_get_mime_type($file)
+    {
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        return $finfo->file($file);
+    }
+
+    /**
+     * @param float $bytes
+     * @return string
+     */
+    public function FileSizeConvert(float $bytes): string
+    {
+        $bytes = floatval($bytes);
+        $result = '';
+        $arBytes = array(
+            0 => array("UNIT" => "TB", "VALUE" => pow(1024, 4)),
+            1 => array("UNIT" => "GB", "VALUE" => pow(1024, 3)),
+            2 => array("UNIT" => "MB", "VALUE" => pow(1024, 2)),
+            3 => array("UNIT" => "KB", "VALUE" => 1024),
+            4 => array("UNIT" => "B", "VALUE" => 1),
+        );
+
+        foreach ($arBytes as $arItem) {
+            if ($bytes >= $arItem["VALUE"]) {
+                $result = $bytes / $arItem["VALUE"];
+                $result = str_replace(".", ",", strval(round($result, 2))) . " " . $arItem["UNIT"];
+                break;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * @param $filepath
+     * @return array
+     */
+    public function mb_path_info($filepath): array
+    {
+        $ret = [];
+        preg_match('%^(.*?)[\\\\/]*(([^/\\\\]*?)(\.([^\.\\\\/]+?)|))[\\\\/\.]*$%im', $filepath, $m);
+        if ($m[1]) $ret['dirname'] = $m[1];
+        if ($m[2]) $ret['basename'] = $m[2];
+        if ($m[5]) $ret['extension'] = $m[5];
+        if ($m[3]) $ret['filename'] = $m[3];
+        return $ret;
+    }
+
+    /**
+     * @param $bezeichnung
+     * @return void
+     */
+    public function delete_starter_patch($bezeichnung)
+    {
+        $dir = $this->main->theme_upload_dir() . 'patch' . DIRECTORY_SEPARATOR;
+        if (is_dir($dir . $bezeichnung)) {
+            $this->destroyDirRecursive($dir . $bezeichnung);
+        }
+        $patchData = get_option('hupa_patch');
+
+        $arr = [];
+        if (is_array($patchData)) {
+            foreach ($patchData as $tmp) {
+                if ($tmp['name'] == $bezeichnung) {
+                    continue;
+                }
+                $arr[] = $tmp;
+            }
+        }
+         update_option('hupa_patch', $arr);
+    }
+
+    /**
+     * @param $msg
+     * @return void
+     */
+    public function set_patch_log($msg)
+    {
+        $msg = current_time('timestamp').'|'.$msg."\r\n";
+        $file = $this->main->theme_upload_dir().'log'.DIRECTORY_SEPARATOR.'patch.log';
+        file_put_contents($file, $msg, FILE_APPEND | LOCK_EX);
     }
 
     public function changeBeitragsListenTemplate($id, $type)
@@ -462,9 +557,9 @@ class HupaStarterHelper
         return $select;
     }
 
-    public function hupa_starter_animation_settings($animation = null):array
+    public function hupa_starter_animation_settings($animation = null): array
     {
-        if(!get_option('hupa_animation_settings')) {
+        if (!get_option('hupa_animation_settings')) {
             $settings = $this->get_theme_default_settings();
             update_option('hupa_animation_settings', $settings['animation_default']);
         }
@@ -715,9 +810,9 @@ class HupaStarterHelper
             ],
         ];
 
-        if($animation){
+        if ($animation) {
             foreach ($layout as $key => $val) {
-                if($key == $animation){
+                if ($key == $animation) {
                     return $val;
                 }
             }
@@ -726,13 +821,14 @@ class HupaStarterHelper
         return $layout;
     }
 
-    public function hupa_settings_pin($salt = null) {
-       $date = date('dm', current_time('timestamp'));
-       $version = str_replace(['v','.'],'',$this->main->get_theme_version());
-        return password_hash($salt.$date.$version, PASSWORD_DEFAULT);
+    public function hupa_settings_pin($salt = null)
+    {
+        $date = date('dm', current_time('timestamp'));
+        $version = str_replace(['v', '.'], '', $this->main->get_theme_version());
+        return password_hash($salt . $date . $version, PASSWORD_DEFAULT);
     }
 
-    public function hupa_settings_validate_pin($pin, $hash):bool
+    public function hupa_settings_validate_pin($pin, $hash): bool
     {
         return password_verify($pin, $hash);
     }

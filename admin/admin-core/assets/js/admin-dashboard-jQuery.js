@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
         $(document).on('submit', '.save_system_settings', function (e) {
             let formData = $(this).closest("form").get(0);
-            let method = $('[name="method"] ',formData).val();
+            let method = $('[name="method"] ', formData).val();
 
             switch (method) {
                 case 'update_theme_over_api':
@@ -62,16 +62,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
             e.preventDefault();
         });
 
-        function save_system_settings_callback(){
+        function save_system_settings_callback() {
             let data = JSON.parse(this.responseText);
-            if(data.type == 'update_theme_over_api') {
+            if (data.type == 'update_theme_over_api') {
                 $('.install-update-ajax-spinner').addClass('d-none');
                 $('.btn-reload-site').removeClass('d-none');
                 return false;
             }
 
             $('#inputPin').val('');
-            if(data.status){
+            if (data.status) {
                 success_message(data.msg);
             } else {
                 $('.save_system_settings').trigger('reset');
@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     let smUpdWr = $('#theme-update-wrapper');
                     $('.inputVersion').val($(this).attr('data-version'));
                     parBtn.html(`Version: ${$(this).attr('data-version')} installieren`);
-                    smUpdWr.html(`${$(this).attr('data-bezeichnung')}: ${$(this).attr('data-version')}` );
+                    smUpdWr.html(`${$(this).attr('data-bezeichnung')}: ${$(this).attr('data-version')}`);
                     settingsBody.toggleClass('d-none');
                     break;
                 case'update-cancel':
@@ -107,7 +107,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     break;
             }
         });
-
 
 
         let start = new Date();
@@ -156,6 +155,108 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     }
                 };
             });
+        }
+        $(document).on('click', '.execute_patch_file', function () {
+            let formData = {
+                'method': 'install_patch_file',
+                'patch': $(this).attr('data-id')
+            }
+            xhr_ajax_handle(formData, false, install_patch_callback);
+        });
+
+        function install_patch_callback() {
+            let data = JSON.parse(this.responseText);
+            if (data.status) {
+                let tr = $('#patch_' + data.id);
+                tr.remove();
+                if ($('#uploadedFiles tr').length == 0) {
+                    $('.patch-table').addClass('d-none');
+                }
+                success_message(data.msg);
+            } else {
+                warning_message(data.msg);
+            }
+        }
+
+        let handle;
+        $('#uploadLogModal').on('show.bs.modal', function (e) {
+            let button = e.relatedTarget;
+            let title = $(button).attr('data-bs-title');
+            let method = $(button).attr('data-bs-method');
+            handle = $(button).attr('data-bs-handle');
+            $('.modal-title ', $(this)).html(title);
+            let formData = {
+                'method': method,
+                'handle': handle
+            }
+            xhr_ajax_handle(formData, false, log_modal_callback);
+
+            function log_modal_callback() {
+                let data = JSON.parse(this.responseText);
+                let modal = $('#uploadLogModal');
+                if(data.status) {
+                    $('.delete-log-file').prop('disabled', false)
+                    $('.modal-body ', modal).html(data.template);
+                    $('.delete-log-file ', modal).attr('data-type', handle);
+                } else {
+                    $('.delete-log-file').prop('disabled', true);
+                    $('.modal-body ', modal).html('<h5 class="text-center">keine Daten vorhanden</h5>');
+                }
+            }
+        });
+
+        $(document).on('click', '.delete-log-line', function () {
+            let formData = {
+                'method' : 'delete-log-line',
+                'line': $(this).attr('data-line'),
+                'handle':$(this).attr('data-type')
+            }
+            xhr_ajax_handle(formData, false, delete_log_line_callback);
+        });
+
+        function delete_log_line_callback() {
+            let data = JSON.parse(this.responseText);
+            if(data.status){
+               $('.entry_'+data.entry).remove();
+            } else {
+                warning_message(data.msg);
+            }
+        }
+
+        $(document).on('click', '.delete-log-file', function () {
+            let formData = {
+                'method' : 'delete-log-file',
+                'handle':$(this).attr('data-type')
+            }
+            xhr_ajax_handle(formData, false, delete_log_file_callback);
+        });
+
+        function delete_log_file_callback() {
+            let data = JSON.parse(this.responseText);
+            if(data.status){
+               success_message(data.msg);
+                $('#uploadLogModal .modal-body').html('<h5 class="text-center">keine Daten vorhanden</h5>');
+            } else {
+                warning_message(data.msg);
+            }
+        }
+
+        $(document).on('click', '.delete-patch-file', function () {
+            let formData = {
+                'method' : 'delete-patch-file',
+                'file':$(this).attr('data-id')
+            }
+            xhr_ajax_handle(formData, false, delete_patch_file_callback);
+        });
+
+        function delete_patch_file_callback() {
+            let data = JSON.parse(this.responseText);
+            if(data.status){
+                success_message(data.msg);
+                $('#patch_'+data.patch).remove();
+            } else {
+                warning_message(data.msg);
+            }
         }
 
         $(document).on('click', '.btn-log-renew', function () {
@@ -208,12 +309,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
         $(document).on('change', '.change-help-info-select', function () {
             let change = $(this).val();
-            if(!change){
+            if (!change) {
                 return false;
             }
             new bootstrap.Collapse(change, {
                 toggle: true,
-                parent:'#helpParent'
+                parent: '#helpParent'
             });
             scrollToWrapper(change, 150);
         });
@@ -268,12 +369,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     let delSlider = document.getElementById("sliderWrapper" + data.id);
                     delSlider.remove();
                 }
-                if(data.font){
-                    let fontWrapper = document.getElementById('installFont-'+data.font);
+                if (data.font) {
+                    let fontWrapper = document.getElementById('installFont-' + data.font);
                     fontWrapper.remove();
                     success_message(data.msg);
                 }
-                if(data.reset_animation){
+                if (data.reset_animation) {
                     for (let [name, value] of Object.entries(data.defaults)) {
                         $(`[name="${name}"]`).val(`${value}`);
                     }

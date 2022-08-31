@@ -174,6 +174,18 @@ final class HupaRegisterStarterTheme
 
             add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
         }
+        if (Config::get('HUPA_PATCH_INSTALL_AKTIV')) {
+            $hook_suffix = add_submenu_page(
+                'hupa-starter-home',
+                __('Patch' .' '.__('Installation', 'bootscore'), 'bootscore'),
+                __('Patch'.' '.__('Installation', 'bootscore'), 'bootscore'),
+                'manage_options',
+                'hupa-install-patch',
+                array($this, 'hupa_admin_starter_theme_install_patch'));
+
+            add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
+        }
+
         if (function_exists('get_hupa_option') && get_hupa_option('lizenz_page_aktiv')) {
             $hook_suffix = add_submenu_page(
                 'hupa-starter-home',
@@ -358,6 +370,27 @@ final class HupaRegisterStarterTheme
         }
     }
 
+    public function hupa_admin_starter_theme_install_patch(): void
+    {
+
+        $data = [
+            'site_section' => 'Patch Installation',
+            'first_title' => 'Patch',
+            'second_title' => 'Upload',
+            'data' => get_option('hupa_patch')
+        ];
+
+        try {
+            $template = $this->twig->render('@partials-templates/patch-installation.twig', $data);
+            echo apply_filters('compress_template', $template);
+        } catch (LoaderError|SyntaxError|RuntimeError $e) {
+            echo $e->getMessage();
+        } catch (Throwable $e) {
+            echo $e->getMessage();
+        }
+    }
+
+
     //Lizenzen
     public function hupa_admin_starter_license(): void
     {
@@ -391,6 +424,23 @@ final class HupaRegisterStarterTheme
      */
     public function hupa_theme_options_page(): void
     {
+
+        //delete_option('hupa_wp_upd_msg');
+        if(!get_option('hupa_wp_upd_msg')){
+           $trait = $this->get_theme_default_settings();
+           $def = $trait['theme_wp_optionen'];
+            $def['email_err_msg'] ? $email = $def['email_err_msg'] : $email = get_bloginfo('admin_email');
+           $options = [
+               'core_upd_msg' => $def['core_upd_msg'],
+               'plugin_upd_msg' => $def['plugin_upd_msg'],
+               'theme_upd_msg' => $def['theme_upd_msg'],
+               'd_board_upd_anzeige' => $def['d_board_upd_anzeige'],
+               'send_error_email' => $def['send_error_email'],
+               'email_err_msg' => $email
+           ];
+           update_option('hupa_wp_upd_msg', (object) $options);
+        }
+
         require 'partials/hupa-options-page.php';
     }
 
@@ -849,6 +899,12 @@ final class HupaRegisterStarterTheme
             //}
             // if($page == 'hupa-starter-maps-settings'){
             wp_enqueue_script('js-hupa-maps-settings', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/js/google-maps-settings.js', array(), $this->theme_version, true);
+        }
+
+        if (Config::get('HUPA_PATCH_INSTALL_AKTIV')) {
+            wp_enqueue_style('hupa-starter-dropzone-style', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/css/dropzone.min.css', array(), $this->theme_version, false);
+            wp_enqueue_script('hupa-starter-dropzone-script', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/js/dropzone.min.js', array(), $this->theme_version, true);
+            wp_enqueue_script('hupa-starter-dropzone-option-script', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/js/patch-zip-dropzone.js', array(), $this->theme_version, true);
         }
 
     }

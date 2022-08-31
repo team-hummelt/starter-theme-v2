@@ -139,6 +139,14 @@ trait HupaOptionTrait
     protected string $lizenz_login_aktiv = 'lizenz_login_aktiv';
     protected string $disabled_wp_layout = 'disabled_wp_layout';
 
+    protected string $core_upd_msg = 'core_upd_msg';
+    protected string $plugin_upd_msg = 'plugin_upd_msg';
+    protected string $theme_upd_msg = 'theme_upd_msg';
+    protected string $dboard_upd_anzeige = 'd_board_upd_anzeige';
+    protected string $send_error_email = 'send_error_email';
+    protected string $email_err_msg = 'email_err_msg';
+
+
     protected string $show_uhr_aktive = 'show_uhr_aktive';
     protected string $news_api_aktiv = 'news_api_aktiv';
 
@@ -421,6 +429,12 @@ trait HupaOptionTrait
                 $this->disabled_wp_layout => 0,
                 $this->show_uhr_aktive => 1,
                 $this->news_api_aktiv => 0,
+                $this->core_upd_msg => 0,
+                $this->plugin_upd_msg => 0,
+                $this->theme_upd_msg => 0,
+                $this->dboard_upd_anzeige => 1,
+                $this->send_error_email => 0,
+                $this->email_err_msg => ''
             ],
 
             /*=============================================

@@ -1,9 +1,9 @@
 === HUPA Theme V2 ===
 Contributors: jwiecker
 Requires at least: 5.6
-Stable tag: 2.0.1
-Version: 2.0.1
-Tested up to: 6.0.1
+Stable tag: 2.0.2
+Version: 2.0.2
+Tested up to: 6.0.2
 Requires PHP: 7.4
 License: MIT-Lizenz
 License URI: https://github.com/team-hummelt/starter-theme-v2/blob/master/LICENSE.txt
@@ -19,6 +19,16 @@ Das Theme hat eine große Auswahl an Kategorie-, Seiten-, Beitrags-, Autoren- un
 == Screenshots ==
 
 == Changelog ==
+
+= 2.0.2 =
+* Patch-Funktion hinzugefügt
+* Option "WordPress Update-Benachrichtigung deaktivieren" hinzugefügt
+* Option "Plugin Update-Benachrichtigung deaktivieren" hinzugefügt
+* Option "Theme Update-Benachrichtigung deaktivieren" hinzugefügt
+* Option "Update-Benachrichtigungen anzeigen" hinzugefügt
+* Option "E-Mail schwerwiegender Fehler senden deaktivieren" hinzugefügt
+* Option "E-Mail-Adresse für Error-Message ändern" hinzugefügt
+
 = 2.0.1 =
 * Parallax-Option für Cover-Image hinzugefügt
 * Gruppen-Tags hinzugefügt

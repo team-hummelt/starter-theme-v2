@@ -761,7 +761,7 @@ body .wp-bs-starter-wrapper {
     display: flex;
 
     button.btn {
-      margin: 0 .1rem;
+      margin: .25rem .1rem;
     }
   }
 
@@ -1002,6 +1002,89 @@ body .wp-bs-starter-wrapper {
   .btn-outline-success.active {
       color: #fff!important;
   }
+
+
+
+  /*=====================DROPZONE===================*/
+
+  .cancelHide button, .opacityHide button {
+    cursor: default;
+  }
+
+  .btn:focus {
+    outline: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .opacityHide, .cancelHide {
+    opacity: 0;
+    transition: opacity .5s;
+  }
+
+  .btn:focus, .btn:active, .active.btn:active, .active.btn:focus {
+    outline: none !important;
+    box-shadow: none;
+  }
+
+  .paginations {
+    .btn.active {
+      cursor: default;
+    }
+  }
+
+  .paginations {
+    display: inline-block;
+  }
+
+  .dropzone {
+    border: 2px dashed #57a7e2 !important;
+    background-color: #f3f3f3 !important;
+    min-height: 140px !important;
+    position: relative !important;
+
+    .dz-error-message {
+      text-align: center !important;
+    }
+    &:before {
+      position: absolute;
+      font-family: bootstrap-icons, serif;
+      content: '\f603';
+      display: block;
+      vertical-align: middle;
+      //padding-right: .7rem;
+      left: 45%;
+      //right: 40%;
+      top: 7rem;
+      font-size: 8rem;
+      z-index: 0;
+      color: #4e9bde1a;
+    }
+
+    .dz-button {
+      color: #1e80c7 !important;
+      font-size: 1rem !important;
+      font-weight: 500 !important;
+      margin: 3.5rem auto !important;
+    }
+  }
+
+  #uploadedFiles td .tableImg {
+    overflow: hidden;
+
+    img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: .25rem;
+      border: 1px solid #57a7e3;
+      display: block;
+      padding: 0.1rem;
+    }
+  }
+
+
+  /*======================= DROPZONE END ==========================*/
+
 }
 
 .swal-success-container {

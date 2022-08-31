@@ -21,20 +21,30 @@ defined('ABSPATH') or die();
                     </h5>
                 </div>
                 <hr>
-                <div class="settings-btn-group d-flex">
+                <div class="settings-btn-group flex-wrap">
                     <button data-site="<?= __('WP-Config', 'bootscore') ?>" type="button"
                             data-load="collapseOptionsWPConfigSite"
                             data-bs-toggle="collapse" data-bs-target="#collapseOptionsWPConfigSite"
-                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm active" disabled>
+                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm active text-nowrap" disabled>
                         <i class="fa fa-server"></i>&nbsp;
                         <?= __('WP-Config', 'bootscore') ?>
+                    </button>
+
+                    <button data-site="<?= __('Update Notizen und Benachrichtigungen', 'bootscore') ?>" type="button"
+                            data-load=""
+                            data-bs-toggle="collapse" data-bs-target="#UpdateBenachrichtigungSettings"
+                            aria-expanded="false" aria-controls="UpdateBenachrichtigungSettings"
+                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm text-nowrap"><i
+                                class="fa fa-wordpress"></i>&nbsp;
+                        <?= __('Update Notizen und Benachrichtigungen', 'bootscore') ?>
                     </button>
 
                     <button data-site="<?= __('Sortieren Settings', 'bootscore') ?>" type="button"
                             data-load=""
                             data-bs-toggle="collapse" data-bs-target="#PostsSortSettings"
                             aria-expanded="false" aria-controls="PostsSortSettings"
-                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-arrows"></i>&nbsp;
+                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm text-nowrap"><i
+                                class="fa fa-arrows"></i>&nbsp;
                         <?= __('Beiträge | Seiten Sortieren', 'bootscore') ?>
                     </button>
 
@@ -42,7 +52,8 @@ defined('ABSPATH') or die();
                             data-load=""
                             data-bs-toggle="collapse" data-bs-target="#PostsCopySettings"
                             aria-expanded="false" aria-controls="PostsCopySettings"
-                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-copy"></i>&nbsp;
+                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm text-nowrap"><i
+                                class="fa fa-copy"></i>&nbsp;
                         <?= __('Posts | Pages Duplicate', 'bootscore') ?>
                     </button>
 
@@ -50,14 +61,15 @@ defined('ABSPATH') or die();
                             data-load="system_settings"
                             data-bs-toggle="collapse" data-bs-target="#themeSystemSettings"
                             aria-expanded="false" aria-controls="themeSystemSettings"
-                            class="ms-xl-auto btn-collapse btn btn-hupa btn-outline-secondary btn-sm"><i class="fa fa-gears"></i>&nbsp;
+                            class="btn-collapse btn btn-hupa btn-outline-secondary btn-sm text-nowrap"><i
+                                class="fa fa-gears"></i>&nbsp;
                         <?= __('Theme system settings', 'bootscore') ?>
                     </button>
                 </div>
                 <hr>
 
                 <div id="settings_display_data">
-                    <!--  TODO JOB WARNING Fonts Installieren -->
+                    <!-- JOB WARNING Fonts Installieren -->
                     <div class="collapse show" id="collapseOptionsWPConfigSite"
                          data-bs-parent="#settings_display_data">
                         <div class="border rounded mt-1 shadow-sm p-3 bg-custom-gray" style="min-height: 55vh">
@@ -105,7 +117,8 @@ defined('ABSPATH') or die();
                                 <hr>
                                 <div class="col-xxl-2 col-xl-3 col-lg-6 col-12">
                                     <div class="form-floating">
-                                        <input type="password" class="form-control no-blur" name="setting_pin" id="inputPin"
+                                        <input type="password" class="form-control no-blur" name="setting_pin"
+                                               id="inputPin"
                                                placeholder="Pin zum speichern" required>
                                         <label for="inputPin">Pin zum speichern</label>
                                     </div>
@@ -391,6 +404,111 @@ defined('ABSPATH') or die();
                             </div>
                         </div>
                     </div><!--collapse-->
+                    <!-- JOB WARNING Benachrichtigungen -->
+                    <div class="collapse" id="UpdateBenachrichtigungSettings"
+                         data-bs-parent="#settings_display_data">
+                        <div class="border rounded mt-1 shadow-sm p-3 bg-custom-gray" style="min-height: 55vh">
+                            <form class="sendAjaxThemeForm" action="#" method="post">
+                                <input type="hidden" name="method" value="theme_form_handle">
+                                <input type="hidden" name="handle" value="update_benachrichtigungen">
+                                <div class="d-flex align-items-center flex-wrap">
+                                    <h5 class="card-title">
+                                        <i class="font-blue fa fa-wordpress me-1"></i> Update Notizen und
+                                        Benachrichtigungen
+                                    </h5>
+                                    <div class="ajax-status-spinner ms-auto d-inline-block mb-2 pe-2"></div>
+                                </div>
+                                <hr>
+                                <h6>
+                                    <i class="font-blue fa fa-arrow-circle-down"></i>
+                                    WordPress E-Mail Update-Benachrichtigungen</h6>
+                                <hr>
+                                <?php $bn = get_option('hupa_wp_upd_msg'); ?>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" name="core_upd_msg" type="checkbox" role="switch"
+                                           id="CheckCoreUpdMsg" <?= isset($bn->core_upd_msg) && $bn->core_upd_msg ? 'checked' : '' ?>>
+                                    <label class="form-check-label" for="CheckCoreUpdMsg">
+                                        WordPress Update-Benachrichtigung deaktivieren<small> (E-Mail) </small>
+                                    </label>
+                                </div>
+
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" name="plugin_upd_msg" type="checkbox" role="switch"
+                                           id="CheckPluginUpdMsg" <?= isset($bn->plugin_upd_msg) && $bn->plugin_upd_msg ? 'checked' : '' ?>>
+                                    <label class="form-check-label" for="CheckPluginUpdMsg">
+                                        Plugin Update-Benachrichtigung deaktivieren<small> (E-Mail) </small>
+                                    </label>
+                                </div>
+
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" name="theme_upd_msg" type="checkbox" role="switch"
+                                           id="CheckThemeUpdMsg" <?= isset($bn->theme_upd_msg) && $bn->theme_upd_msg ? 'checked' : '' ?>>
+                                    <label class="form-check-label" for="CheckThemeUpdMsg">
+                                        Theme Update-Benachrichtigung deaktivieren<small> (E-Mail) </small>
+                                    </label>
+                                </div>
+
+                                <hr>
+                                <h6><i class="font-blue fa fa-arrow-circle-down"></i>
+                                    Update-Benachrichtigungen im Dashboard
+                                </h6>
+                                <hr>
+
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" value="1" type="radio" name="d_board_upd_anzeige"
+                                           id="radioDashboardUpdAnzeige1" <?= isset($bn->d_board_upd_anzeige) && $bn->d_board_upd_anzeige == 1 ? 'checked' : '' ?>>
+                                    <label class="form-check-label" for="radioDashboardUpdAnzeige1">
+                                        Update-Benachrichtigungen anzeigen
+                                    </label>
+                                </div>
+
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" value="2" type="radio" name="d_board_upd_anzeige"
+                                           id="radioDashboardUpdAnzeige2" <?= isset($bn->d_board_upd_anzeige) && $bn->d_board_upd_anzeige == 2 ? 'checked' : '' ?>>
+                                    <label class="form-check-label" for="radioDashboardUpdAnzeige2">
+                                        Update-Benachrichtigungen für alle Benutze ausblenden <small> (einschließlich
+                                            Administratoren)</small>
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" value="3" type="radio" name="d_board_upd_anzeige"
+                                           id="radioDashboardUpdAnzeige3" <?= isset($bn->d_board_upd_anzeige) && $bn->d_board_upd_anzeige == 3 ? 'checked' : '' ?>>
+                                    <label class="form-check-label" for="radioDashboardUpdAnzeige3">
+                                        Update-Benachrichtigungen nur für Administrator anzeigen
+                                    </label>
+                                </div>
+
+                                <hr>
+                                <h6><i class="font-blue fa fa-arrow-circle-down"></i>
+                                    Benachrichtigungen schwerwiegender Fehler <small> (E-Mail)</small>
+                                </h6>
+                                <hr>
+
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" name="send_error_email" type="checkbox"
+                                           role="switch"
+                                           id="CheckSndErrMsg" <?= isset($bn->send_error_email) && $bn->send_error_email ? 'checked' : '' ?>>
+                                    <label class="form-check-label" for="CheckSndErrMsg">
+                                        E-Mail schwerwiegender Fehler <b class="font-bold-light text-danger"><u>nicht</u></b>
+                                        senden
+                                    </label>
+                                </div>
+
+                                <div class="col-xxl-4 col-xl-6 col-lg-8 col-12">
+                                    <div class="form-floating mb-1">
+                                        <input type="email" class="form-control no-blur"
+                                               value="<?= isset($bn->email_err_msg) && $bn->email_err_msg ? $bn->email_err_msg : '' ?>"
+                                               name="email_err_msg" id="InputErrMsgEmail">
+                                        <label for="InputErrMsgEmail">Error Message E-Mail Empfänger</label>
+                                    </div>
+                                </div>
+                                <div class="form-text">
+                                    Bleibt der Eintrag leer, wird die Administrator-E-Mail-Adresse verwendet
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                     <!--//JOB WARNING SORTIERE SITE-->
                     <div class="collapse" id="PostsSortSettings"
                          data-bs-parent="#settings_display_data">
@@ -415,7 +533,7 @@ defined('ABSPATH') or die();
                                 $options = $hupa_menu_helper->hupa_get_sort_options();
                                 $post_types = get_post_types();
                                 $ignore_post_types = ['reply', 'topic', 'wp_navigation', 'report', 'status', 'wp_block'];
-
+                                $i = 1;
                                 foreach ($post_types as $post_type_name):
                                     if (in_array($post_type_name, $ignore_post_types)) {
                                         continue;
@@ -428,16 +546,16 @@ defined('ABSPATH') or die();
                                         continue;
                                     } ?>
                                     <div class="mb-3">
-                                        <label for="postTypeSelect"
+                                        <label for="postTypeSelect<?= $i ?>"
                                                class="form-label mb-1 strong-font-weight"><?= esc_html($post_type_data->labels->singular_name) ?></label>
-                                        <select id="postTypeSelect"
+                                        <select id="postTypeSelect<?= $i ?>"
                                                 name="show_reorder_interfaces[<?= esc_attr($post_type_name) ?>]"
                                                 class="form-select">
                                             <option value="show" <?= isset($options['show_reorder_interfaces'][$post_type_name]) && $options['show_reorder_interfaces'][$post_type_name] == 'show' ? ' selected' : ''; ?>><?= esc_html__("show", 'bootscore') ?></option>
                                             <option value="hide" <?= isset($options['show_reorder_interfaces'][$post_type_name]) && $options['show_reorder_interfaces'][$post_type_name] == 'hide' ? ' selected' : '' ?>><?= esc_html__("hide", 'bootscore') ?></option>
                                         </select>
                                     </div>
-                                <?php endforeach; ?>
+                                    <?php $i++; endforeach; ?>
                                 <hr>
                                 <h6>
                                     <i class="font-blue fa fa-arrow-circle-down"></i> <?= esc_html__('Minimum requirement for using this function', 'bootscore') ?>
@@ -539,8 +657,8 @@ defined('ABSPATH') or die();
                                 global $hupa_menu_helper;
                                 $options = $hupa_menu_helper->hupa_get_duplicate_options();
                                 $post_types = get_post_types();
-                                $ignore_post_types = ['reply','wp_navigation', 'attachment', 'topic', 'report', 'status', 'wp_block'];
-
+                                $ignore_post_types = ['reply', 'wp_navigation', 'attachment', 'topic', 'report', 'status', 'wp_block'];
+                                $i = 1;
                                 foreach ($post_types as $post_type_name):
 
                                     if (in_array($post_type_name, $ignore_post_types)) {
@@ -548,23 +666,23 @@ defined('ABSPATH') or die();
                                     }
 
                                     if (is_post_type_hierarchical($post_type_name)) {
-                                       // continue;
+                                        // continue;
                                     }
                                     $post_type_data = get_post_type_object($post_type_name);
                                     if ($post_type_data->show_ui === FALSE) {
                                         continue;
                                     } ?>
                                     <div class="mb-3">
-                                        <label for="postTypeDuplicatorSelect"
+                                        <label for="postTypeDuplicatorSelect<?= $i ?>"
                                                class="form-label mb-1 strong-font-weight"><?= esc_html($post_type_data->labels->singular_name) ?></label>
-                                        <select id="postTypeDuplicatorSelect"
+                                        <select id="postTypeDuplicatorSelect<?= $i ?>"
                                                 name="show_duplicate_interfaces[<?= esc_attr($post_type_name) ?>]"
                                                 class="form-select">
                                             <option value="show" <?= isset($options['show_duplicate_interfaces'][$post_type_name]) && $options['show_duplicate_interfaces'][$post_type_name] == 'show' ? ' selected' : ''; ?>><?= esc_html__("show", 'bootscore') ?></option>
                                             <option value="hide" <?= isset($options['show_duplicate_interfaces'][$post_type_name]) && $options['show_duplicate_interfaces'][$post_type_name] == 'hide' ? ' selected' : '' ?>><?= esc_html__("hide", 'bootscore') ?></option>
                                         </select>
                                     </div>
-                                <?php endforeach; ?>
+                                    <?php $i++; endforeach; ?>
                                 <hr>
                                 <h6>
                                     <i class="font-blue fa fa-arrow-circle-down"></i> <?= esc_html__('Minimum requirement for using this function', 'bootscore') ?>
@@ -593,7 +711,9 @@ defined('ABSPATH') or die();
 
                     <!-- JOB Theme System Settings -->
                     <div class="collapse" id="themeSystemSettings" data-bs-parent="#settings_display_data">
-                       <h5 class="font-bold-light"><i class="font-blue fa fa-wordpress me-1"></i> <?= __('Theme system settings', 'bootscore') ?></h5>
+                        <h5 class="font-bold-light"><i
+                                    class="font-blue fa fa-wordpress me-1"></i> <?= __('Theme system settings', 'bootscore') ?>
+                        </h5>
                         <hr>
                         <div id="systemSettings"></div>
                     </div>

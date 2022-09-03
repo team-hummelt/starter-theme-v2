@@ -11,6 +11,8 @@ namespace Hupa\StarterThemeV2;
  * @package    Hupa_Starterter_v2
  * @subpackage Hupa_Starterter_v2/includes/shortcode
  */
+
+use bootstrap_5_menu_select_walker;
 use Hupa\Starter\Config;
 use HupaStarterThemeV2;
 use stdClass;
@@ -79,14 +81,39 @@ class HupaIconsShortCode
 
     public function hupa_select_menu_shortcode($atts, $content, $tag)
     {
-        $a = shortcode_atts(array(
-            'selectedMenu' => '',
-            'menuWrapper' => '',
-            'menuUlClass' => '',
-            'menuLiClass' => '',
+
+        $atts = shortcode_atts(array(
+            'selectedmenu' => '',
+            'menuwrapper' => '',
+            'menuulclass' => '',
+            'menuliclass' => '',
+            'class_name' => ''
         ), $atts);
+
         ob_start();
-        do_action('render_menu_select_output', $atts);
+        if (isset($atts['selectedmenu']) && $atts['selectedmenu']) {
+
+            isset($atts['menuulclass']) && $atts['menuulclass'] ? $menuUlClass = $atts['menuulclass'] : $menuUlClass = '';
+            isset($atts['menuliclass']) && $atts['menuliclass'] ? $menuLiClass = $atts['menuliclass'] : $menuLiClass = '';
+            isset($atts['menuwrapper']) && $atts['menuwrapper'] ? $menuwrapper = $atts['menuwrapper'] : $menuwrapper = '';
+            ?>
+               <div class="menu <?=$atts['class_name']?>">
+            <?php
+            wp_nav_menu(array(
+                'theme_location' => $atts['selectedmenu'],
+                'container' => false,
+                'menu_class' => $menuwrapper,
+                'li_class' => $menuLiClass,
+                'fallback_cb' => '__return_false',
+                'items_wrap' => '<ul class="' . $menuUlClass . ' custom-menu-wrapper %2$s">%3$s</ul>',
+                'depth' => 6,
+                'walker' => new bootstrap_5_menu_select_walker()
+            ));
+            ?>
+                </div>
+            <?php
+        }
+        //do_action('render_menu_select_output', $atts);
         return ob_get_clean();
     }
 

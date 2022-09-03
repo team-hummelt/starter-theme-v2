@@ -16,15 +16,25 @@ Header-, Footer- und 404-Widgets.
 ***
 * Contributors: jwiecker
 * Tags: Hupa Theme, Bootstrap
-* Version: 2.0.1
-* Stable tag: 2.0.1
+* Version: 2.0.2
+* Stable tag: 2.0.2
 * Requires at least: 5.6
-* Tested up to: 6.0.1
+* Tested up to: 6.0.2
 * Requires PHP: 7.4
 
 #### Theme ist nicht mit der Version 1 kompatibel.
 
 ## Changelog
+### 2.0.2
+- Patch-Funktion hinzugefügt
+- Option "WordPress Update-Benachrichtigung deaktivieren" hinzugefügt
+- Option "Plugin Update-Benachrichtigung deaktivieren" hinzugefügt
+- Option "Theme Update-Benachrichtigung deaktivieren" hinzugefügt
+- Option "Update-Benachrichtigungen anzeigen" hinzugefügt
+- Option "E-Mail schwerwiegender Fehler senden deaktivieren" hinzugefügt
+- Option "E-Mail-Adresse für Error-Message ändern" hinzugefügt
+- Icon-Block-Controls hinzugefügt 
+
 ### 2.0.1
 - Gutenberg-Tools
     - Parallax-Option für Cover-Image hinzugefügt

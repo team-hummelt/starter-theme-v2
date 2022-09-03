@@ -1,0 +1,28 @@
+<div class="table-responsive">
+    <table class="table table-sm table-striped table-bordered nowrap w-100">
+        <thead>
+        <tr>
+            <th scope="col">Ausgeführt</th>
+            <th scope="col">Patch</th>
+            <th scope="col">Bezeichnung</th>
+            <th scope="col">Status</th>
+            <th class="align-middle text-center" scope="col">löschen</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for d in data %}
+            <tr class="entry_{{ d.line }}">
+                <td class="align-middle"><small class="mb-2 lh-1">{{ d.date }}<span class="small-lg d-block">{{ d.time }} Uhr</span> </small></td>
+                <td class="align-middle fw-normal">{{ d.patch }}</td>
+                <td class="align-middle fw-normal">{{ d.bezeichnung }}</td>
+                <td class="align-middle fw-normal">{{ d.status }}</td>
+                <td class="align-middle text-center">
+                    <button data-line="{{ d.line }}" data-type="{{ d.type }}" class="delete-log-line btn btn-outline-danger btn-sm">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

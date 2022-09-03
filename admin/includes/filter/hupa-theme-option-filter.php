@@ -1248,6 +1248,22 @@ class HupaStarterOptionFilter
                 }
             }
 
+            //TODO Kontakt Custom Footer ShortCode
+            $regEx = '@\[kontakt .*]@m';
+            preg_match_all($regEx, $record->custum_footer, $matches, PREG_SET_ORDER, 0);
+            if (isset($matches[0][0])) {
+                $doShortcode = do_shortcode($matches[0][0]);
+                $record->custum_footer = str_replace($matches[0][0], $doShortcode, $record->custum_footer);
+            }
+
+            //TODO ThemeTag Custom Footer ShortCode
+            $regEx = '@\[theme-tag .*]@m';
+            preg_match_all($regEx, $record->custum_footer, $matches, PREG_SET_ORDER, 0);
+            if (isset($matches[0][0])) {
+                $doShortcode = do_shortcode($matches[0][0]);
+                $record->custum_footer = str_replace($matches[0][0], $doShortcode, $record->custum_footer);
+            }
+
             if (Config::get('WP_POST_SELECTOR_AKTIV')) {
                 $regEx = '/<!.*theme-post-selector.*({.*}).*>/m';
                 preg_match_all($regEx, $record->custum_footer, $matches, PREG_SET_ORDER, 0);

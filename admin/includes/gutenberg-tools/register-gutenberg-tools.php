@@ -119,8 +119,22 @@ final class HupaRegisterGutenbergTools {
             'render_callback' => 'callback_hupa_menu_select',
             'editor_script'   => 'hupa-theme-menu-select',
         ));
-
         add_filter( 'gutenberg_block_menu_select_render', 'gutenberg_block_menu_select_render_filter', 10, 20 );
+
+        // BS-Button
+        $plugin_asset = require 'bs-button/build/index.asset.php';
+        wp_register_script(
+            'hupa-theme-bs-button',
+            Config::get('HUPA_THEME_TOOLS_URL') . '/bs-button/build/index.js',
+            $plugin_asset['dependencies'], $this->theme_version, true );
+
+
+        global $gutenberg_callback;
+        /*register_block_type( 'hupa/bootstrap-button', array(
+            'render_callback' =>  array($gutenberg_callback, 'callback_bs_buttons_block'),
+            'editor_script'   => 'hupa-theme-bs-button',
+        ));*/
+
     }
 
     /**
@@ -156,6 +170,18 @@ final class HupaRegisterGutenbergTools {
         wp_enqueue_script( 'hupa-theme-carousel-tools' );
         wp_enqueue_style( 'hupa-theme-carousel-style');
         wp_enqueue_style( 'hupa-theme-carousel-style', Config::get('HUPA_THEME_TOOLS_URL') . '/theme-carousel/build/index.css',
+            [], '' );
+    }
+
+    /**
+     * =====================================================================
+     * =========== REGISTER GUTENBERG BS-Button JAVASCRIPT | CSS ===========
+     * =====================================================================
+     */
+    public function hupa_theme_bs_button_scripts():void {
+        wp_enqueue_script( 'hupa-theme-bs-button' );
+        wp_enqueue_style( 'hupa-theme-bs-button-style');
+        wp_enqueue_style( 'hupa-theme-bs-button-style', Config::get('HUPA_THEME_TOOLS_URL') . '/bs-button/build/index.css',
             [], '' );
     }
 

@@ -1,0 +1,87 @@
+{% extends "@partials-layout/basic-layout.twig" %}
+{% block basicContent %}
+    <div class="container">
+        <!--selectLimit-->
+        <div class="dropzone_upload_wrapper">
+            <div class="d-flex align-items-center mb-1">
+                <h6 class="pt-3"><i class="bi bi-upload"></i> Upload Patch ZIP-File</h6>
+                <button data-bs-target="#uploadLogModal" data-bs-toggle="modal" data-bs-handle="patch" data-bs-method="get-log-data" data-bs-title="Patch log"
+                        class="btn btn-blue-outline ms-auto"><i class="bi bi-clock-history"></i></button>
+            </div>
+            <form id="patchUploadDropzone" class="dropzone">
+                <input class="upload_type" type="hidden" name="upload_type" value="patch">
+                <div id="cmsFallback" class="fallback">
+                    <input name="file" type="file"/>
+                </div>
+            </form>
+            <div id="CancelBtnBox" class="opacityHide mt-2">
+                <button id="clear-dropzone" class="btn btn-outline-danger btn-sm">
+                    <i class="bi bi-x-circle me-1"></i> Reset Upload
+                </button>
+            </div>
+        </div>
+
+        <div class="patch-table {% if not data %}d-none{% endif %}">
+            <h5>vorhandene Dateien</h5>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered nowrap w-100">
+                    <thead>
+                    <tr>
+                        <th scope="col">Bezeichnung</th>
+                        <th scope="col">Theme/Plugin</th>
+                        <th scope="col">Type</th>
+                        <th class="text-center" scope="col">Dateigröße</th>
+                        <th scope="col">erstellt</th>
+                        <th scope="col">upload</th>
+                        <th class="align-middle text-center" scope="col">ausführen</th>
+                        <th class="align-middle text-center" scope="col">löschen</th>
+                    </tr>
+                    </thead>
+                    <tbody id="uploadedFiles">
+                    {% for d in data %}
+                        <tr id="patch_{{ d.name }}">
+                            <th class="align-middle">{{ d.patch_json.beschreibung }}</th>
+                            <td class="align-middle">{{ d.patch_json.slug }} <small class="small-lg">
+                                    ({{ d.patch_json.version }})</small></td>
+                            <td class="align-middle text-capitalize">{{ d.patch_json.type }}</td>
+                            <td class="align-middle text-center">{{ d.size }}</td>
+                            <td class="align-middle"><small class="mb-0 d-inline-block">{{ d.last_modified_date }}<span
+                                            class="d-block lh-1 small-lg">{{ d.last_modified_time }} Uhr</span></small>
+                            </td>
+                            <td class="align-middle"><small class="mb-0 d-inline-block">{{ d.upload_date }}<span
+                                            class="d-block lh-1 small-lg">{{ d.upload_time }} Uhr</span></small></td>
+                            <td class="align-middle text-center">
+                                <button data-id="{{ d.name }}" class="execute_patch_file btn btn-blue-outline">
+                                    ausführen
+                                </button>
+                            </td>
+                            <td class="align-middle text-center">
+                                <button data-id="{{ d.name }}" class="delete-patch-file btn btn-outline-danger">
+                                    löschen
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    {% if data|length >= 2 %}
+                        <tfoot>
+                        <tr>
+                            <th scope="col">Bezeichnung</th>
+                            <th scope="col">Theme/Plugin</th>
+                            <th scope="col">Type</th>
+                            <th class="text-center" scope="col">Dateigröße</th>
+                            <th scope="col">erstellt</th>
+                            <th scope="col">upload</th>
+                            <th class="align-middle text-center" scope="col">ausführen</th>
+                            <th class="align-middle text-center" scope="col">löschen</th>
+                        </tr>
+                        </tfoot>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+    </div>
+    {% block basicModal %}
+        {{ include('@partials-modal/upload-log.twig') }}
+    {% endblock %}
+{% endblock %}

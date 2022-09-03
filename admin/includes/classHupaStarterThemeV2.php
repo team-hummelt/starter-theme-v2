@@ -16,6 +16,7 @@ use Hupa\API\HupaStarterThemeAPI;
 use Hupa\MenuOrder\HupaMenuOrder;
 use Hupa\Optionen\HupaStarterThemeOptionen;
 use Hupa\Starter\Config;
+use Hupa\StarterThemeV2\Gutenberg_Tools_Callback;
 use Hupa\StarterThemeV2\HupaCarouselShortCode;
 use Hupa\StarterThemeV2\HupaGoogleMapsShortCode;
 use Hupa\StarterThemeV2\HupaIconsShortCode;
@@ -35,6 +36,7 @@ use Hupa\StarterThemeV2\HupaStarterToolsFilter;
 use Hupa\StarterThemeV2\Register_Starter_Theme_Gutenberg_Patterns;
 use Hupa\StarterThemeV2\StarterThemeUpdateAction;
 use Hupa\StarterThemeV2\StarterThemeWPOptionen;
+use Hupa\StarterThemeV2\ThemeV2Uploader;
 use Hupa\StarterV2\HupaEnqueueStarterTheme;
 use Hupa\StarterV2\HupaRegisterStarterTheme;
 use Hupa\ThemeLicense\HupaApiServerHandle;
@@ -118,6 +120,8 @@ class HupaStarterThemeV2
      * @var      string $db_version The current database version of the theme.
      */
     private string $db_version;
+
+    private string $upload_dir;
 
     /**
      * The current database settings id of the theme.
@@ -233,6 +237,8 @@ class HupaStarterThemeV2
 
         $this->define_menu_hupa_order_handle();
 
+        //Gutenberg Callback Class
+        $this->register_gutenberg_tools_render_callback();
         //Gutenberg Tools
         $this->define_gutenberg_tools_hooks();
         //Gutenberg Sidebar
@@ -241,10 +247,14 @@ class HupaStarterThemeV2
         //Shortcodes
         $this->define_theme_shortcodes_hooks();
 
+        //Uploader
+        $this->define_admin_uploader();
+
         // Admin Dashboard
         $this->define_admin_hooks();
         //Vorlagen Pattern
         $this->register_starter_pattern();
+
     }
 
     /**
@@ -401,6 +411,16 @@ class HupaStarterThemeV2
          * The class responsible for defining all scripts that occur in the Theme Fonts OPTIONEN.
          */
         require(Config::get('THEME_ADMIN_INCLUDES') . 'filter/css-generator/css-generator-class.php');
+
+        /**
+         * The class responsible for defining all scripts that occur in the Theme Uploader OPTIONEN.
+         */
+        require(Config::get('THEME_ADMIN_INCLUDES') . 'filter/hupa-uploader.php');
+
+        /**
+         * The class responsible for defining all scripts that occur in the Theme Gutenberg Callback.
+         */
+        require(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/gutenberg-tools-callback.php');
 
         $this->loader = new Hupa_Theme_v2_Loader();
     }
@@ -789,6 +809,42 @@ class HupaStarterThemeV2
             remove_filter('render_block', 'gutenberg_render_layout_support_flag', 10, 2);
         }
 
+         if(get_option('hupa_wp_upd_msg')){
+             $bn = get_option('hupa_wp_upd_msg');
+             if($bn->core_upd_msg) {
+                 // Disable core update emails
+                 add_filter( 'auto_core_update_send_email', '__return_false' );
+             }
+             if($bn->plugin_upd_msg){
+                 // Disable plugin update emails
+                 add_filter( 'auto_plugin_update_send_email', '__return_false' );
+             }
+             if($bn->theme_upd_msg){
+                 // Disable theme update emails
+                 add_filter( 'auto_theme_update_send_email', '__return_false' );
+             }
+             if($bn->d_board_upd_anzeige == 2) {
+                // Hide dashboard update notifications for all users
+                 $this->loader->add_action('admin_menu', $theme_wp_options_handle, 'hupa_theme_hide_update_nag');
+             }
+
+             if($bn->d_board_upd_anzeige == 3) {
+                 // Hide dashboard update notifications for all users
+                 $this->loader->add_action('admin_menu', $theme_wp_options_handle, 'hupa_theme_hide_update_not_admin_nag');
+             }
+
+             if($bn->send_error_email){
+                 // Disable Error emails
+                 $this->loader->add_filter('recovery_mode_email_rate_limit', $theme_wp_options_handle, 'recovery_mail_infinite_rate_limit');
+             }
+
+             if($bn->email_err_msg){
+                 // E-Mail-Adresse für Error-Message
+                 $this->loader->add_filter('recovery_mode_email', $theme_wp_options_handle, 'send_sumun_the_recovery_mode_email',10,2);
+             }
+
+         }
+
         $this->loader->add_filter('the_content', $theme_wp_options_handle, 'hupa_theme_the_content_replace', 20);
 
     }
@@ -877,10 +933,12 @@ class HupaStarterThemeV2
     {
         $hupa_register_gutenberg_tools = HupaRegisterGutenbergTools::tools_instance($this->get_theme_slug(), $this->get_theme_version(), $this->main);
         $this->loader->add_action('init', $hupa_register_gutenberg_tools, 'gutenberg_block_google_maps_register');
+      //  $this->loader->add_action('init', $hupa_register_gutenberg_tools, 'hupa_bs_button_block_init');
+
         $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_hupa_carousel_scripts');
         $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_hupa_tools_scripts');
         $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_menu_scripts');
-
+        //$this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_bs_button_scripts');
     }
 
     /**
@@ -898,6 +956,18 @@ class HupaStarterThemeV2
         //TODO REGISTER SIDEBAR
         $this->loader->add_action('init', $hupa_register_gutenberg_sidebar, 'hupa_sidebar_plugin_register');
         $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_sidebar, 'hupa_sidebar_script_enqueue');
+    }
+
+    /**
+     * Register all the hooks related to the Gutenberg Plugins functionality
+     * of the plugin.
+     *
+     * @since    1.0.0
+     * @access   private
+     */
+    private function register_gutenberg_tools_render_callback() {
+        global $gutenberg_callback;
+        $gutenberg_callback = Gutenberg_Tools_Callback::init( $this->main );
     }
 
     /**
@@ -958,6 +1028,20 @@ class HupaStarterThemeV2
     {
         global $hupa_api_handle;
         $hupa_api_handle = HupaStarterThemeAPI::instance();
+
+    }
+
+    /** Register all the hooks related to the admin Uploads functionality
+     * of the theme.
+     *
+     * @since    2.0.0
+     * @access   private
+     */
+    private function define_admin_uploader()
+    {
+        global $hupa_upload_handle;
+        $hupa_upload_handle = ThemeV2Uploader::init($this->main);
+        $this->loader->add_filter('starter_v2_zip_upload', $hupa_upload_handle, 'theme_hupa_starter_v2_zip_upload');
 
     }
 
@@ -1041,16 +1125,6 @@ class HupaStarterThemeV2
     }
 
     /**
-     * Run the loader to execute all the hooks with WordPress.
-     *
-     * @since    2.0.0
-     */
-    public function run()
-    {
-        $this->loader->run();
-    }
-
-    /**
      * License Config for the plugin.
      *
      * @return    object License Config.
@@ -1061,5 +1135,62 @@ class HupaStarterThemeV2
         $config_file = Config::get('THEME_ADMIN_INCLUDES') . 'license/config.json';
 
         return json_decode(file_get_contents($config_file));
+    }
+
+    public function theme_upload_dir(): string
+    {
+         $this->get_theme_upload_dir();
+         return $this->upload_dir;
+    }
+
+    /**
+     * Upload Config for the plugin.
+     *
+     * @return    void UPLOAD DIR.
+     * @since     2.0.0
+     */
+    private function get_theme_upload_dir()
+    {
+        $upload  = wp_upload_dir();
+        $this->upload_dir = $upload['basedir'] . DIRECTORY_SEPARATOR . Config::get('HUPA_UPLOAD_FOLDER') . DIRECTORY_SEPARATOR;
+
+        if(!is_dir($this->upload_dir)){
+            mkdir($this->upload_dir, 0777, true);
+        }
+
+        if(!is_dir($this->upload_dir . 'log')){
+            mkdir($this->upload_dir . 'log', 0777, true);
+        }
+
+        $htaccess = 'Require all denied';
+        if(!is_file($this->upload_dir . '.htaccess')){
+            file_put_contents($this->upload_dir . '.htaccess', $htaccess);
+        }
+
+        if(!is_file($this->upload_dir . 'log' . DIRECTORY_SEPARATOR . '.htaccess')){
+            file_put_contents($this->upload_dir . 'log' . DIRECTORY_SEPARATOR . '.htaccess', $htaccess);
+        }
+    }
+
+    /**
+     * Upload Config for the plugin.
+     *
+     * @return    string UPLOAD URL.
+     * @since     1.0.0
+     */
+    public function get_theme_upload_url(): string
+    {
+        $upload  = wp_upload_dir();
+        return $upload['baseurl'] . '/'. Config::get('HUPA_UPLOAD_FOLDER');
+    }
+
+    /**
+     * Run the loader to execute all the hooks with WordPress.
+     *
+     * @since    2.0.0
+     */
+    public function run()
+    {
+        $this->loader->run();
     }
 }

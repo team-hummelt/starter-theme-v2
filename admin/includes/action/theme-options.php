@@ -146,10 +146,10 @@ class StarterThemeWPOptionen
     public function hupa_theme_the_content_replace($content)
     {
         $regEx = '/(\[hupa-theme-remove-container].+?(wp-container-\d{1,5}))/';
-        if(preg_match_all($regEx, $content, $matches)){
-            if(isset($matches[2]) && is_array($matches[2])){
+        if (preg_match_all($regEx, $content, $matches)) {
+            if (isset($matches[2]) && is_array($matches[2])) {
                 foreach ($matches[2] as $tmp) {
-                    $content = str_replace($tmp,'', $content);
+                    $content = str_replace($tmp, '', $content);
                 }
             }
         }
@@ -204,7 +204,7 @@ class StarterThemeWPOptionen
         echo '<link rel="stylesheet" type="text/css" href="' . get_template_directory_uri() . '/css/hupa-theme/auto-generate-login-style.css" />';
     }
 
-    function enqueue_hupa_login_footer_script($page)
+    public function enqueue_hupa_login_footer_script($page)
     {
 
         // TODO ADMIN ICONS
@@ -222,6 +222,30 @@ class StarterThemeWPOptionen
                 'language' => apply_filters('get_theme_language', 'login_site', '')->language
             )
         );
+    }
+
+    // Hide dashboard update notifications for all users
+    public function hupa_theme_hide_update_nag()
+    {
+        remove_action('admin_notices', 'update_nag', 3);
+    }
+
+    public function hupa_theme_hide_update_not_admin_nag()
+    {
+        if (!current_user_can('update_core')) {
+            remove_action('admin_notices', 'update_nag', 3);
+        }
+    }
+
+    public function recovery_mail_infinite_rate_limit($rate)
+    {
+        return 100 * YEAR_IN_SECONDS;
+    }
+
+    public function send_sumun_the_recovery_mode_email( $email, $url ) {
+        $bn = get_option('hupa_wp_upd_msg');
+        $email['to'] = $bn['email_err_msg'];
+        return $email;
     }
 
     public function hupa_bs_wrap_player($html): string

@@ -143,8 +143,8 @@ class Hupa_Starter_V2_Admin_Ajax
         $this->theme_version = $theme_version;
         $this->main = $main;
         $this->twig = $twig;
-        $this->systems_settings = ['CUSTOM_FOOTER', 'CUSTOM_HEADER', 'DESIGN_TEMPLATES','HUPA_SIDEBAR_OLD', 'HUPA_TOOLS', 'HUPA_CAROUSEL', 'HUPA_MAPS', 'HUPA_API_INSTALL'];
-        $this->wp_editor_settings = ['EDITOR_SHOW_PARAGRAPH_BORDER','EDITOR_SHOW_HEADLINE_BORDER','EDITOR_SHOW_COLUMN_BORDER','EDITOR_SHOW_GROUP_BORDER','EDITOR_SHOW_PLACEHOLDER','EDITOR_SHOW_FONT_SIZE', 'EDITOR_SHOW_BOOTSTRAP_CSS'];
+        $this->systems_settings = ['CUSTOM_FOOTER', 'CUSTOM_HEADER', 'DESIGN_TEMPLATES', 'HUPA_SIDEBAR_OLD', 'HUPA_TOOLS', 'HUPA_CAROUSEL', 'HUPA_MAPS', 'HUPA_API_INSTALL'];
+        $this->wp_editor_settings = ['EDITOR_SHOW_PARAGRAPH_BORDER', 'EDITOR_SHOW_HEADLINE_BORDER', 'EDITOR_SHOW_COLUMN_BORDER', 'EDITOR_SHOW_GROUP_BORDER', 'EDITOR_SHOW_PLACEHOLDER', 'EDITOR_SHOW_FONT_SIZE', 'EDITOR_SHOW_BOOTSTRAP_CSS'];
         $this->method = $_POST['method'];
         if (isset($_POST['daten'])) {
             $this->data = $_POST['daten'];
@@ -161,6 +161,7 @@ class Hupa_Starter_V2_Admin_Ajax
         global $hupa_api_handle;
         global $hupa_optionen_class;
         global $hupa_register_theme_options;
+        global $hupa_register_theme_helper;
         global $wpdb;
 
         $record = new stdClass();
@@ -748,6 +749,27 @@ class Hupa_Starter_V2_Admin_Ajax
                         $responseJson->spinner = true;
                         break;
 
+                    case'update_benachrichtigungen':
+                        $d_board_upd_anzeige = filter_input(INPUT_POST, 'd_board_upd_anzeige', FILTER_SANITIZE_NUMBER_INT);
+                        filter_input(INPUT_POST, 'core_upd_msg', FILTER_SANITIZE_STRING) ? $core_upd_msg = 1 : $core_upd_msg = 0;
+                        filter_input(INPUT_POST, 'plugin_upd_msg', FILTER_SANITIZE_STRING) ? $plugin_upd_msg = 1 : $plugin_upd_msg = 0;
+                        filter_input(INPUT_POST, 'theme_upd_msg', FILTER_SANITIZE_STRING) ? $theme_upd_msg = 1 : $theme_upd_msg = 0;
+                        filter_input(INPUT_POST, 'send_error_email', FILTER_SANITIZE_STRING) ? $send_error_email = 1 : $send_error_email = 0;
+                        $email_err_msg = filter_input(INPUT_POST, 'email_err_msg', FILTER_VALIDATE_EMAIL);
+                        $email_err_msg ? $errEmail = $email_err_msg : $errEmail = get_bloginfo('admin_email');
+                        $options = [
+                            'core_upd_msg' => $core_upd_msg,
+                            'plugin_upd_msg' => $plugin_upd_msg,
+                            'theme_upd_msg' => $theme_upd_msg,
+                            'd_board_upd_anzeige' => (int)$d_board_upd_anzeige,
+                            'send_error_email' => $send_error_email,
+                            'email_err_msg' => $errEmail
+                        ];
+
+                        update_option('hupa_wp_upd_msg', (object)$options);
+                        $responseJson->spinner = true;
+                        break;
+
                     case 'theme_map_placeholder':
                         $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
 
@@ -890,10 +912,10 @@ class Hupa_Starter_V2_Admin_Ajax
                         update_option('hupa_wp_script_debug', $hupa_wp_script_debug);
 
                         //Optionen
-                       /* update_option('hupa_wp_automatic_update', $hupa_wp_automatic_update);
-                        update_option('hupa_wp_disable_wp_cron', $hupa_wp_disable_wp_cron);
-                        update_option('hupa_wp_disallow_file_edit', $hupa_wp_disallow_file_edit);
-                        update_option('hupa_wp_disallow_file_mods', $hupa_wp_disallow_file_mods);*/
+                        /* update_option('hupa_wp_automatic_update', $hupa_wp_automatic_update);
+                         update_option('hupa_wp_disable_wp_cron', $hupa_wp_disable_wp_cron);
+                         update_option('hupa_wp_disallow_file_edit', $hupa_wp_disallow_file_edit);
+                         update_option('hupa_wp_disallow_file_mods', $hupa_wp_disallow_file_mods);*/
 
                         update_option('hupa_show_fatal_error', $show_fatal_error);
                         update_option('hupa_db_repair', $db_repair);
@@ -1283,7 +1305,7 @@ class Hupa_Starter_V2_Admin_Ajax
 
                 $pinInput = filter_input(INPUT_POST, 'setting_pin', FILTER_SANITIZE_NUMBER_INT);
                 $pin = apply_filters('get_settings_pin', null);
-                if(!apply_filters('hupa_validate_pin',$pinInput, $pin)){
+                if (!apply_filters('hupa_validate_pin', $pinInput, $pin)) {
                     $responseJson->msg = 'Falscher PIN!';
                     return $responseJson;
                 }
@@ -1293,7 +1315,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 }
 
                 $envValue = '';
-                $settArr = array_merge($this->systems_settings,$this->wp_editor_settings);
+                $settArr = array_merge($this->systems_settings, $this->wp_editor_settings);
                 if ($file) {
                     foreach ($file as $line) {
                         $split = explode('=', $line);
@@ -1321,7 +1343,7 @@ class Hupa_Starter_V2_Admin_Ajax
 
                 $pinInput = filter_input(INPUT_POST, 'setting_pin', FILTER_SANITIZE_NUMBER_INT);
                 $pin = apply_filters('get_settings_pin', null);
-                if(!apply_filters('hupa_validate_pin',$pinInput, $pin)){
+                if (!apply_filters('hupa_validate_pin', $pinInput, $pin)) {
                     $responseJson->msg = 'Falscher PIN!';
                     return $responseJson;
                 }
@@ -1412,14 +1434,14 @@ class Hupa_Starter_V2_Admin_Ajax
 
 
                 $responseJson->type = $this->method;
-                $zipFile =  apply_filters('get_api_download', get_option('hupa_server_url') . 'hupa', $body);
+                $zipFile = apply_filters('get_api_download', get_option('hupa_server_url') . 'hupa', $body);
                 if (!$zipFile) {
                     $responseJson->msg = 'Download fehlgeschlagen!';
                     return $responseJson;
                 }
 
                 do_action('is_hupa_custom_dir', Config::get('UPDATE_TEMP_FOLDER_DIR'));
-                if(!is_dir( Config::get('UPDATE_TEMP_FOLDER_DIR'))){
+                if (!is_dir(Config::get('UPDATE_TEMP_FOLDER_DIR'))) {
                     $responseJson->msg = 'Upload-Temp-Ordner nicht gefunden!';
                     return $responseJson;
                 }
@@ -1435,12 +1457,172 @@ class Hupa_Starter_V2_Admin_Ajax
                     return $responseJson;
                 }
 
-                if(is_file($filePath)){
+                if (is_file($filePath)) {
                     @unlink($filePath);
                 }
                 $responseJson->status = true;
                 break;
 
+            case'upload_patch_file':
+                apply_filters('starter_v2_zip_upload', NULL);
+                exit();
+            case'install_patch_file':
+                $patchFolder = filter_input(INPUT_POST, 'patch', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                $patchDir = $this->main->theme_upload_dir();
+                $dir = $patchDir . 'patch' . DIRECTORY_SEPARATOR . $patchFolder . DIRECTORY_SEPARATOR;
+
+                if (!is_dir($dir)) {
+                    $responseJson->msg = 'Patch nicht gefunden!';
+                    $hupa_register_theme_helper->delete_starter_patch($patchFolder);
+                    return $responseJson;
+                }
+
+                if (!is_file($dir . 'patch.json')) {
+                    $responseJson->msg = 'Patch nicht gefunden!';
+                    $hupa_register_theme_helper->delete_starter_patch($patchFolder);
+                    return $responseJson;
+                }
+
+                $json = json_decode(file_get_contents($dir . 'patch.json'), true);
+                $log = $json['bezeichnung'] . '|' . $json['beschreibung'] . '|' . $json['version'] . '|erfolgreich ausgeführt';
+                $destDir = '';
+                if ($json['type'] == 'plugin') {
+                    $destDir = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $json['slug'] . DIRECTORY_SEPARATOR;
+
+                    if (!is_dir($destDir)) {
+                        $hupa_register_theme_helper->delete_starter_patch($patchFolder);
+                        $responseJson->msg = $json['type'] . '-' . $json['slug'] . ' nicht gefunden!';
+                        return $responseJson;
+                    }
+                }
+
+                if ($json['type'] == 'theme') {
+                    $destDir = get_template_directory() . DIRECTORY_SEPARATOR;
+                }
+
+                if (is_array($json['patch'])) {
+                    foreach ($json['patch'] as $tmp) {
+                        $src = $dir . $json['src'] . DIRECTORY_SEPARATOR . $tmp['file'];
+                        $dest = $destDir . $tmp['path'] . DIRECTORY_SEPARATOR . $tmp['file'];
+
+                        if (!is_file($src)) {
+                            continue;
+                        }
+                        $source = file_get_contents($src);
+                        file_put_contents($dest, $source);
+                    }
+                }
+
+                $hupa_register_theme_helper->delete_starter_patch($patchFolder);
+                $hupa_register_theme_helper->set_patch_log($log);
+                $responseJson->id = $patchFolder;
+                $responseJson->status = true;
+                $responseJson->msg = 'Patch erfolgreich ausgeführt.';
+                break;
+            case'get-log-data':
+                $handle = filter_input(INPUT_POST, 'handle', FILTER_SANITIZE_STRING);
+                if (!$handle) {
+                    $responseJson->msg = 'keine Logfile vorhanden!';
+                    return $responseJson;
+                }
+
+                $logFile = $this->main->theme_upload_dir() . 'log' . DIRECTORY_SEPARATOR . $handle . '.log';
+                if (!is_file($logFile)) {
+                    $responseJson->msg = 'keine Logfile vorhanden!';
+                    return $responseJson;
+                }
+
+                $lines = file($logFile);
+                $arr = [];
+                $i = 0;
+                foreach ($lines as $line) {
+                    if (!$line) {
+                        continue;
+                    }
+
+                    $line = $hupa_register_theme_helper->cleanWhitespace($line);
+                    $lineData = explode('|', $line);
+                    $item = [
+                        'date' => date('d.m.Y', (int)$lineData[0]),
+                        'time' => date('H:i:s', (int)$lineData[0]),
+                        'patch' => $lineData[1],
+                        'bezeichnung' => $lineData[2],
+                        'version' => $lineData[3],
+                        'status' => $lineData[4],
+                        'line' => $i,
+                        'type' => $handle
+                    ];
+                    $arr[] = $item;
+                    $i++;
+                }
+                if ($arr) {
+                    try {
+                        $template = $this->twig->render('@partials-loops/modal-log-loop.twig', ['data' => $arr]);
+                        $responseJson->template = apply_filters('compress_template', $template);
+                    } catch (LoaderError|SyntaxError|RuntimeError $e) {
+                        echo $e->getMessage();
+                    } catch (Throwable $e) {
+                        echo $e->getMessage();
+                    }
+
+                    $responseJson->type = $arr[0]['patch'];
+                    $responseJson->status = true;
+                }
+                break;
+            case'delete-log-line':
+                $entry = filter_input(INPUT_POST, 'line', FILTER_SANITIZE_NUMBER_INT);
+                $handle = filter_input(INPUT_POST, 'handle', FILTER_SANITIZE_STRING);
+                if (!$handle || !isset($entry)) {
+                    $responseJson->msg = 'Eintrag nicht gefunden!';
+                    return $responseJson;
+                }
+
+                $logFile = $this->main->theme_upload_dir() . 'log' . DIRECTORY_SEPARATOR . $handle . '.log';
+                if (!is_file($logFile)) {
+                    $responseJson->msg = 'keine Logfile vorhanden!';
+                    return $responseJson;
+                }
+
+                $lines = file($logFile);
+                $i = 0;
+                $newFile = '';
+                foreach ($lines as $line) {
+                    if ($i != (int)$entry) {
+                        $newFile .= $line;
+                    }
+                    $i++;
+                }
+
+                file_put_contents($logFile, $newFile);
+                $responseJson->status = true;
+                $responseJson->entry = $entry;
+                break;
+            case'delete-log-file':
+                $handle = filter_input(INPUT_POST, 'handle', FILTER_SANITIZE_STRING);
+                if (!$handle) {
+                    $responseJson->msg = 'Log-Datei nicht gefunden!';
+                    return $responseJson;
+                }
+                $logFile = $this->main->theme_upload_dir() . 'log' . DIRECTORY_SEPARATOR . $handle . '.log';
+                if (!is_file($logFile)) {
+                    $responseJson->msg = 'Log-Datei nicht gefunden!';
+                    return $responseJson;
+                }
+                unlink($logFile);
+                $responseJson->status = true;
+                $responseJson->msg = 'Logfile erfolgreich gelöscht.';
+                break;
+            case'delete-patch-file':
+                $patch = filter_input(INPUT_POST, 'file', FILTER_SANITIZE_STRING);
+                if (!$patch) {
+                    $responseJson->msg = 'Patch-Datei nicht gefunden!';
+                    return $responseJson;
+                }
+                $hupa_register_theme_helper->delete_starter_patch($patch);
+                $responseJson->status = true;
+                $responseJson->msg = 'Patch erfolgreich gelöscht';
+                $responseJson->patch = $patch;
+                break;
             case'hupa_duplicate_post':
                 $post_type = filter_input(INPUT_POST, 'post_type', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
                 $paged = filter_input(INPUT_POST, 'paged', FILTER_SANITIZE_NUMBER_INT);

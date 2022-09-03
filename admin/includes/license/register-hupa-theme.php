@@ -252,6 +252,9 @@ final class RegisterHupaStarter
         delete_option('tools_hupa_address');
         delete_option('hupa_animation_settings');
 
+        delete_option('hupa_patch');
+        delete_option('hupa_wp_upd_msg');
+
 
     }
 

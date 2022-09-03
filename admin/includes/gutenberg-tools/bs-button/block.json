@@ -1,0 +1,23 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "hupa/bootstrap-button",
+  "title": "Custom Button",
+  "description": "Bootstrap Button",
+  "category": "Medien",
+  "textdomain": "bs-button",
+  "supports": {
+    "align": ["wide"]
+  },
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "wide"
+    },
+    "title" : {
+      "type": "string"
+    }
+  },
+  "editorScript": "file:wp-content/themes/starter-theme-v2/admin/includes/gutenberg-tools/bs-button/build/index.js"
+
+}

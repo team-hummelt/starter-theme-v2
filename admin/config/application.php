@@ -75,6 +75,8 @@ Config::define('WP_POST_SELECTOR_AKTIV', $postSelect);
 Config::define('BS_FORM_AKTIV', $bsFormular);
 Config::define('HUPA_MINIFY_AKTIV', $hupaMinify);
 
+Config::define('HUPA_PATCH_INSTALL_AKTIV', true);
+Config::define('HUPA_UPLOAD_FOLDER', 'starterV2-upload');
 /**
  * theme_capabilities
  */

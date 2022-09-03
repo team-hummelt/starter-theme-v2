@@ -178,6 +178,7 @@ class HupaStarterToolsFilter
                 'walker' => new bootstrap_5_menu_select_walker()
             ));
         }
+
     }
 
     public function getThemePreloader($args, $id = false): object

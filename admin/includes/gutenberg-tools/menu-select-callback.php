@@ -21,8 +21,10 @@ function gutenberg_block_menu_select_render_filter($attributes){
         isset($selectJson->menuWrapper) && $selectJson->menuWrapper ? $menuWrapper = trim($selectJson->menuWrapper) : $menuWrapper = '';
         isset($selectJson->menuUlClass) && $selectJson->menuUlClass ? $menuUlClass = trim($selectJson->menuUlClass) : $menuUlClass = '';
         isset($selectJson->menuLiClass) && $selectJson->menuLiClass ? $menuLiClass = trim($selectJson->menuLiClass) : $menuLiClass = '';
+        isset($selectJson->className) && $selectJson->className ? $className = trim($selectJson->className) : $className = '';
         if($selectedMenu){
-            echo do_shortcode('[select-menu selectedMenu="' . $selectedMenu . '" menuWrapper="'.$menuWrapper.'" menuUlClass="'.$menuUlClass.'" menuLiClass="'.$menuLiClass.'"]');
+
+            echo do_shortcode('[select-menu selectedMenu="' . $selectedMenu . '" menuWrapper="'.$menuWrapper.'" menuUlClass="'.$menuUlClass.'" menuLiClass="'.$menuLiClass.'", class_name ="'.$className.'"]');
         }
         return ob_get_clean();
     }

@@ -116,6 +116,12 @@ class HupaEnqueueStarterTheme
         wp_enqueue_script('hupa-starter-script', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/theme-scripte/hupa-starter-theme.js', array(), $modificated, true);
 
         if (!Config::get('WP_POST_SELECTOR_AKTIV')) {
+            // JOB Masonry
+            $modificated = date('YmdHi', filemtime(get_template_directory() . '/js/lib/masonry.pkgd.min.js'));
+            wp_enqueue_script('hupa-theme-masonry-script', get_template_directory_uri() . '/js/lib/masonry.pkgd.min.js', array(), $modificated, true);
+            // JOB Images loaded
+            $modificated = date('YmdHi', filemtime(get_template_directory() . '/js/lib/imagesloaded.pkgd.min.js'));
+            wp_enqueue_script('hupa-theme-imagesloaded-script', get_template_directory_uri() . '/js/lib/imagesloaded.pkgd.min.js', array(), $modificated, true);
             //JOB WOW JS
             $modificated = date('YmdHi', filemtime(get_template_directory() . '/js/wowjs/wow.min.js'));
             wp_enqueue_script('hupa-theme-wow-js-script', get_template_directory_uri() . '/js/wowjs/wow.min.js', array(), $modificated, true);
@@ -182,15 +188,21 @@ class HupaEnqueueStarterTheme
         $animateAsset = require Config::get('THEME_ADMIN_INCLUDES').'gutenberg-tools/animate-options/build/index.asset.php';
         $lightboxAsset = require Config::get('THEME_ADMIN_INCLUDES').'gutenberg-tools/lightbox-options/build/index.asset.php';
         $listGroupAsset = require Config::get('THEME_ADMIN_INCLUDES').'gutenberg-tools/group-list-tag-options/build/index.asset.php';
+        $iconBlockControls = require Config::get('THEME_ADMIN_INCLUDES').'gutenberg-tools/iconBlockControls/build/index.asset.php';
+
         wp_enqueue_style('hupa-starter-editor-ui-style', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/css/autogenerate-editor-ui-styles.css');
         wp_enqueue_style('hupa-starter-editor-bs-grid', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/css/bs/bs-wp-editor/grid-bootstrap.css');
+        wp_enqueue_style('bootstrap-icons-style', Config::get('HUPA_THEME_VENDOR_URL') . 'twbs/bootstrap-icons/font/bootstrap-icons.css');
+        wp_enqueue_style('font-awesome-icons-style', Config::get('HUPA_THEME_VENDOR_URL') . 'components/font-awesome/css/font-awesome.min.css');
+
         wp_enqueue_style('hupa-starter-gb-animate', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/css/bs/bs-wp-editor/animate-gb-block.css');
         wp_enqueue_script('hupa-gutenberg-filters', Config::get('HUPA_THEME_TOOLS_URL') . '/cover-parallax/build/index.js', $parallaxAsset['dependencies'], $this->theme_version, true);
         wp_enqueue_script('gutenberg-theme-tags', Config::get('HUPA_THEME_TOOLS_URL') . '/group-list-tag-options/build/index.js', $listGroupAsset['dependencies'], $this->theme_version, true);
         wp_enqueue_script('hupa-gutenberg-animation', Config::get('HUPA_THEME_TOOLS_URL') . '/animate-options/build/index.js', $animateAsset['dependencies'], $this->theme_version, true);
         wp_enqueue_script('hupa-gutenberg-lightbox', Config::get('HUPA_THEME_TOOLS_URL') . '/lightbox-options/build/index.js', $lightboxAsset['dependencies'], $this->theme_version, true);
+        wp_enqueue_script('icon-block-control', Config::get('HUPA_THEME_TOOLS_URL') . '/iconBlockControls/build/index.js', $iconBlockControls['dependencies'], $this->theme_version, true);
         //wp_enqueue_script('gutenberg-theme-tags', Config::get('WP_THEME_ADMIN_URL') . 'npm-animate/build/index.js');
-    }
+    } 
 
     public function add_type_attribute($tag, $handle, $src)
     {

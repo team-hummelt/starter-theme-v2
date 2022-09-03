@@ -33,6 +33,7 @@ Header-, Footer- und 404-Widgets.
 - Option "Update-Benachrichtigungen anzeigen" hinzugefügt
 - Option "E-Mail schwerwiegender Fehler senden deaktivieren" hinzugefügt
 - Option "E-Mail-Adresse für Error-Message ändern" hinzugefügt
+- Icon-Block-Controls hinzugefügt 
 
 ### 2.0.1
 - Gutenberg-Tools

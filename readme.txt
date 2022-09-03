@@ -28,6 +28,8 @@ Das Theme hat eine große Auswahl an Kategorie-, Seiten-, Beitrags-, Autoren- un
 * Option "Update-Benachrichtigungen anzeigen" hinzugefügt
 * Option "E-Mail schwerwiegender Fehler senden deaktivieren" hinzugefügt
 * Option "E-Mail-Adresse für Error-Message ändern" hinzugefügt
+* Icon-Block-Controls hinzugefügt
+* Bootstrap-Patterns hinzugefügt
 
 = 2.0.1 =
 * Parallax-Option für Cover-Image hinzugefügt

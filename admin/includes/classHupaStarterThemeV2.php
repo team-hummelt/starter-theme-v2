@@ -16,6 +16,7 @@ use Hupa\API\HupaStarterThemeAPI;
 use Hupa\MenuOrder\HupaMenuOrder;
 use Hupa\Optionen\HupaStarterThemeOptionen;
 use Hupa\Starter\Config;
+use Hupa\StarterThemeV2\Gutenberg_Tools_Callback;
 use Hupa\StarterThemeV2\HupaCarouselShortCode;
 use Hupa\StarterThemeV2\HupaGoogleMapsShortCode;
 use Hupa\StarterThemeV2\HupaIconsShortCode;
@@ -236,6 +237,8 @@ class HupaStarterThemeV2
 
         $this->define_menu_hupa_order_handle();
 
+        //Gutenberg Callback Class
+        $this->register_gutenberg_tools_render_callback();
         //Gutenberg Tools
         $this->define_gutenberg_tools_hooks();
         //Gutenberg Sidebar
@@ -251,6 +254,7 @@ class HupaStarterThemeV2
         $this->define_admin_hooks();
         //Vorlagen Pattern
         $this->register_starter_pattern();
+
     }
 
     /**
@@ -412,6 +416,11 @@ class HupaStarterThemeV2
          * The class responsible for defining all scripts that occur in the Theme Uploader OPTIONEN.
          */
         require(Config::get('THEME_ADMIN_INCLUDES') . 'filter/hupa-uploader.php');
+
+        /**
+         * The class responsible for defining all scripts that occur in the Theme Gutenberg Callback.
+         */
+        require(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/gutenberg-tools-callback.php');
 
         $this->loader = new Hupa_Theme_v2_Loader();
     }
@@ -924,9 +933,12 @@ class HupaStarterThemeV2
     {
         $hupa_register_gutenberg_tools = HupaRegisterGutenbergTools::tools_instance($this->get_theme_slug(), $this->get_theme_version(), $this->main);
         $this->loader->add_action('init', $hupa_register_gutenberg_tools, 'gutenberg_block_google_maps_register');
+      //  $this->loader->add_action('init', $hupa_register_gutenberg_tools, 'hupa_bs_button_block_init');
+
         $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_hupa_carousel_scripts');
         $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_hupa_tools_scripts');
         $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_menu_scripts');
+        //$this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_bs_button_scripts');
     }
 
     /**
@@ -944,6 +956,18 @@ class HupaStarterThemeV2
         //TODO REGISTER SIDEBAR
         $this->loader->add_action('init', $hupa_register_gutenberg_sidebar, 'hupa_sidebar_plugin_register');
         $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_sidebar, 'hupa_sidebar_script_enqueue');
+    }
+
+    /**
+     * Register all the hooks related to the Gutenberg Plugins functionality
+     * of the plugin.
+     *
+     * @since    1.0.0
+     * @access   private
+     */
+    private function register_gutenberg_tools_render_callback() {
+        global $gutenberg_callback;
+        $gutenberg_callback = Gutenberg_Tools_Callback::init( $this->main );
     }
 
     /**

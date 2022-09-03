@@ -1,0 +1,89 @@
+<!-- wp:group {"hupaGroupTag":"hupa-group-tag"} -->
+<div id="hupa-group-tag" class="wp-block-group"><!-- wp:heading {"level":4} -->
+<h4>Bootstrap Row-Gutter gleiche-Höhe</h4>
+<!-- /wp:heading -->
+
+<!-- wp:columns {"className":"row gx-3","hupaListTag":"no-wp-container","removeWpContainer":true} -->
+<div class="wp-block-columns row gx-3 no-wp-container hupa-theme-remove-container" id="hupa-list-options"><!-- wp:column {"className":"col-xl-4 col-12"} -->
+<div class="wp-block-column col-xl-4 col-12"><!-- wp:group {"className":"card h-100 ","hupaGroupTag":"hupa-group-tag"} -->
+<div id="hupa-group-tag" class="wp-block-group card h-100"><!-- wp:paragraph {"align":"center","className":"card-header bg-light "} -->
+<p class="has-text-align-center card-header bg-light">Col-4</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:group {"className":"card-body d-flex flex-column","hupaGroupTag":"hupa-group-tag"} -->
+<div id="hupa-group-tag" class="wp-block-group card-body d-flex flex-column"><!-- wp:paragraph {"className":"m-0"} -->
+<p class="m-0">Bootsrap Row</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph {"className":"m-0"} -->
+<p class="m-0">Bootsrap Row</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Bootsrap Row</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator {"className":"mt-auto border-bottom-0"} -->
+<hr class="wp-block-separator has-alpha-channel-opacity mt-auto border-bottom-0"/>
+<!-- /wp:separator -->
+
+<!-- wp:paragraph {"align":"center","className":"m-0"} -->
+<p class="has-text-align-center m-0">Bottom</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group -->
+
+<!-- wp:paragraph {"align":"center","className":"card-footer bg-light m-0 "} -->
+<p class="has-text-align-center card-footer bg-light m-0">Footer</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"className":"col-xl-4 col-12"} -->
+<div class="wp-block-column col-xl-4 col-12"><!-- wp:group {"className":"card h-100","hupaGroupTag":"hupa-group-tag"} -->
+<div id="hupa-group-tag" class="wp-block-group card h-100"><!-- wp:paragraph {"align":"center","className":"card-header bg-light "} -->
+<p class="has-text-align-center card-header bg-light">Col-4</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:group {"className":"card-body d-flex flex-column","hupaGroupTag":"hupa-group-tag"} -->
+<div id="hupa-group-tag" class="wp-block-group card-body d-flex flex-column"><!-- wp:paragraph {"className":"m-0 "} -->
+<p class="m-0">Bottom example</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator {"className":"mt-auto border-bottom-0"} -->
+<hr class="wp-block-separator has-alpha-channel-opacity mt-auto border-bottom-0"/>
+<!-- /wp:separator -->
+
+<!-- wp:paragraph {"align":"center","className":"m-0"} -->
+<p class="has-text-align-center m-0">Bottom</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group -->
+
+<!-- wp:paragraph {"align":"center","className":"card-footer bg-light m-0"} -->
+<p class="has-text-align-center card-footer bg-light m-0">Footer</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"className":"col-xl-4 col-12"} -->
+<div class="wp-block-column col-xl-4 col-12"><!-- wp:group {"className":"card h-100 ","hupaGroupTag":"hupa-group-tag"} -->
+<div id="hupa-group-tag" class="wp-block-group card h-100"><!-- wp:paragraph {"align":"center","className":"card-header bg-light "} -->
+<p class="has-text-align-center card-header bg-light">Col-4</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:group {"className":"card-body d-flex flex-column","hupaGroupTag":"hupa-group-tag"} -->
+<div id="hupa-group-tag" class="wp-block-group card-body d-flex flex-column"><!-- wp:separator {"className":"mt-auto border-bottom-0"} -->
+<hr class="wp-block-separator has-alpha-channel-opacity mt-auto border-bottom-0"/>
+<!-- /wp:separator -->
+
+<!-- wp:paragraph {"align":"center","className":"m-0"} -->
+<p class="has-text-align-center m-0">&nbsp;</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group -->
+
+<!-- wp:paragraph {"align":"center","className":"card-footer  bg-light  text-center m-0"} -->
+<p class="has-text-align-center card-footer bg-light text-center m-0">Footer</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns --></div>
+<!-- /wp:group -->

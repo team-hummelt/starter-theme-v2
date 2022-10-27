@@ -173,11 +173,23 @@ final class HupaRegisterStarterTheme
 
             add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
         }
+        if (!get_option('wp-security-header_user_role')) {
+            $hook_suffix = add_submenu_page(
+                'hupa-starter-home',
+                __('Security Header', 'bootscore'),
+                __('Security Header', 'bootscore'),
+                get_option('theme_capabilities')['security-header'],
+                'hupa-security-header',
+                array($this, 'hupa_admin_starter_theme_security_header'));
+
+            add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
+        }
+
         if (Config::get('HUPA_PATCH_INSTALL_AKTIV')) {
             $hook_suffix = add_submenu_page(
                 'hupa-starter-home',
-                __('Patch' .' '.__('Installation', 'bootscore'), 'bootscore'),
-                __('Patch'.' '.__('Installation', 'bootscore'), 'bootscore'),
+                __('Patch' . ' ' . __('Installation', 'bootscore'), 'bootscore'),
+                __('Patch' . ' ' . __('Installation', 'bootscore'), 'bootscore'),
                 'manage_options',
                 'hupa-install-patch',
                 array($this, 'hupa_admin_starter_theme_install_patch'));
@@ -369,6 +381,44 @@ final class HupaRegisterStarterTheme
         }
     }
 
+    public function hupa_admin_starter_theme_security_header(): void
+    {
+        //delete_option('theme_security_header');
+        $headers = get_option('theme_security_header');
+        $items = [
+            '0' => [
+                'bezeichnung' => 'Header',
+                'id' => 'ah',
+                'table' => $headers['ah']
+            ],
+            '1' => [
+                'bezeichnung' => 'Content-Security-Policy (CSP)',
+                'id' => 'csp',
+                'table' => $headers['csp']
+            ],
+            '2' => [
+                'bezeichnung' => 'Permissions-Policy',
+                'id' => 'pr',
+                'table' => $headers['pr']
+            ],
+        ];
+        $data = [
+            'site_section' => __('Security Header', 'bootscore'),
+            'first_title' => __('Security Header', 'bootscore'),
+            'second_title' => __('Settings', 'bootscore'),
+            'ds' => get_option($this->basename . '_csp_settings'),
+            'data' => $items
+        ];
+        try {
+            $template = $this->twig->render('@partials-templates/security-header-template.twig', $data);
+            echo apply_filters('compress_template', $template);
+        } catch (LoaderError|SyntaxError|RuntimeError $e) {
+            echo $e->getMessage();
+        } catch (Throwable $e) {
+            echo $e->getMessage();
+        }
+    }
+
     public function hupa_admin_starter_theme_install_patch(): void
     {
 
@@ -425,19 +475,19 @@ final class HupaRegisterStarterTheme
     {
 
         //delete_option('hupa_wp_upd_msg');
-        if(!get_option('hupa_wp_upd_msg')){
-           $trait = $this->get_theme_default_settings();
-           $def = $trait['theme_wp_optionen'];
+        if (!get_option('hupa_wp_upd_msg')) {
+            $trait = $this->get_theme_default_settings();
+            $def = $trait['theme_wp_optionen'];
             $def['email_err_msg'] ? $email = $def['email_err_msg'] : $email = get_bloginfo('admin_email');
-           $options = [
-               'core_upd_msg' => $def['core_upd_msg'],
-               'plugin_upd_msg' => $def['plugin_upd_msg'],
-               'theme_upd_msg' => $def['theme_upd_msg'],
-               'd_board_upd_anzeige' => $def['d_board_upd_anzeige'],
-               'send_error_email' => $def['send_error_email'],
-               'email_err_msg' => $email
-           ];
-           update_option('hupa_wp_upd_msg', (object) $options);
+            $options = [
+                'core_upd_msg' => $def['core_upd_msg'],
+                'plugin_upd_msg' => $def['plugin_upd_msg'],
+                'theme_upd_msg' => $def['theme_upd_msg'],
+                'd_board_upd_anzeige' => $def['d_board_upd_anzeige'],
+                'send_error_email' => $def['send_error_email'],
+                'email_err_msg' => $email
+            ];
+            update_option('hupa_wp_upd_msg', (object)$options);
         }
 
         require 'partials/hupa-options-page.php';
@@ -454,6 +504,10 @@ final class HupaRegisterStarterTheme
         if (get_option("hupa_theme_version") !== Config::get('THEME_VERSION')) {
             do_action('validate_install_optionen');
             update_option('hupa_theme_version', Config::get('THEME_VERSION'));
+        }
+        if (!get_option('theme_security_header')) {
+            $headers = $this->get_theme_default_settings('header');
+            update_option('theme_security_header', $headers);
         }
     }
 

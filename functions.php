@@ -29,7 +29,6 @@ add_action('hupa-theme/log', 'hupaThemeSystemLog', 0, 2);
 require_once('admin/hupa-starter-theme-v2-init.php');
 
 
-
 function load_woocommerce_function()
 {
     if (function_exists('get_hupa_option') && get_hupa_option('woocommerce_aktiv')) {
@@ -308,15 +307,15 @@ if (!function_exists('bootscore_widgets_init')) :
         // Footer 4 End
 
         // 404 Page
-       /* register_sidebar(array(
-            'name' => esc_html__('404 Page', 'bootscore'),
-            'id' => '404-page',
-            'description' => esc_html__('Add widgets here.', 'bootscore'),
-            'before_widget' => '<div id="%1$s" class="mb-4 %2$s">',
-            'after_widget' => '</div>',
-            'before_title' => '<h1 class="widget-title">',
-            'after_title' => '</h1>'
-        ));*/
+        /* register_sidebar(array(
+             'name' => esc_html__('404 Page', 'bootscore'),
+             'id' => '404-page',
+             'description' => esc_html__('Add widgets here.', 'bootscore'),
+             'before_widget' => '<div id="%1$s" class="mb-4 %2$s">',
+             'after_widget' => '</div>',
+             'before_title' => '<h1 class="widget-title">',
+             'after_title' => '</h1>'
+         ));*/
         // 404 Page End
 
     }
@@ -376,7 +375,7 @@ add_action('wp_enqueue_scripts', 'bootscore_scripts');
 function wpse_231597_style_loader_tag($tag)
 {
 
-   // return preg_replace("/id='font-awesome-css'/", "id='fontawesome-css' online=\"if(media!='all')media='all'\"", $tag);
+    // return preg_replace("/id='font-awesome-css'/", "id='fontawesome-css' online=\"if(media!='all')media='all'\"", $tag);
 
 }
 
@@ -606,14 +605,15 @@ if (!function_exists('bs_comment_links_in_new_tab')) :
     add_filter('comment_text', 'bs_comment_links_in_new_tab');
 endif;
 
-if ( ! function_exists( '_wp_render_title_tag' ) ) {
+if (!function_exists('_wp_render_title_tag')) {
     function hupa_starter_render_title()
     {
         ?>
         <title>
-            <?php wp_title( '|', true, 'right' ); ?>
+            <?php wp_title('|', true, 'right'); ?>
         </title>
         <?php
     }
-    add_action( 'wp_head', 'hupa_starter_render_title' );
+
+    add_action('wp_head', 'hupa_starter_render_title');
 }

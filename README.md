@@ -16,15 +16,25 @@ Header-, Footer- und 404-Widgets.
 ***
 * Contributors: jwiecker
 * Tags: Hupa Theme, Bootstrap
-* Version: 2.0.2
-* Stable tag: 2.0.2
+* Version: 2.0.3
+* Stable tag: 2.0.3
 * Requires at least: 5.6
-* Tested up to: 6.0.2
+* Tested up to: 6.0.3
 * Requires PHP: 7.4
 
 #### Theme ist nicht mit der Version 1 kompatibel.
 
 ## Changelog
+### 2.0.3
+- Security Header hinzugefügt
+  - Header Optionen hinzugefügt
+  - Security Policy (CSP) hinzugefügt
+  - Permissions Policy hinzugefügt
+  - Automatisches erstellen von nonce für script-src.
+  - CSP Vorlage für Google Fonts, Google Apis und Adobe Fonts hinzugefügt
+####
+- Meta description entfernt
+
 ### 2.0.2
 - Patch-Funktion hinzugefügt
 - Option "WordPress Update-Benachrichtigung deaktivieren" hinzugefügt

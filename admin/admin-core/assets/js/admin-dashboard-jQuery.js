@@ -45,13 +45,32 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     }
                     swal_fire_app_delete(formData);
                     break;
+                case'delete-security-header':
+                    formData = {
+                        'method': type,
+                        'id': $(this).attr('data-id'),
+                        'handle': $(this).attr('data-handle'),
+                        'btnText': 'Header Eintrag löschen?',
+                        'html': '<span class="swal-delete-body">Der Header Eintrag wird <b>unwiderruflich gelöscht!</b> Das Löschen kann <b>nicht</b> rückgängig gemacht werden.</span>',
+                        'title': 'Header Eintrag löschen'
+                    }
+                    swal_fire_app_delete(formData);
+                    break;
+                case'load-default-security-header':
+                    formData = {
+                        'method': type,
+                        'btnText': 'Alle Einstellungen zurücksetzen',
+                        'html': '<span class="swal-delete-body">Alle Werte werden <b>zurückgesetzt!</b> Die Änderungen können <b>nicht</b> rückgängig gemacht werden.</span>',
+                        'title': 'Einstellungen zurücksetzen?'
+                    }
+                    swal_fire_app_delete(formData);
+                    break;
             }
         });
 
         $(document).on('submit', '.save_system_settings', function (e) {
             let formData = $(this).closest("form").get(0);
             let method = $('[name="method"] ', formData).val();
-
             switch (method) {
                 case 'update_theme_over_api':
                     $('button.btn ', formData).remove();
@@ -105,9 +124,31 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 case'update-cancel':
                     settingsBody.toggleClass('d-none');
                     break;
+                case'add-header-config':
+                    formData = {
+                        'method': type,
+                        'handle': $(this).attr('data-handle')
+                    }
+                    break;
+            }
+            if (formData) {
+                xhr_ajax_handle(formData, false, admin_action_callback);
             }
         });
 
+        function admin_action_callback() {
+            let data = JSON.parse(this.responseText);
+            if (data.status) {
+                switch (data.type) {
+                    case'add-header-config':
+                        let tr = document.getElementById(data.handle);
+                        tr.insertAdjacentHTML('beforeend', data.template);
+                        break;
+                }
+            } else {
+                warning_message(data.msg)
+            }
+        }
 
         let start = new Date();
         start.setDate(start.getDate());
@@ -194,7 +235,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             function log_modal_callback() {
                 let data = JSON.parse(this.responseText);
                 let modal = $('#uploadLogModal');
-                if(data.status) {
+                if (data.status) {
                     $('.delete-log-file').prop('disabled', false)
                     $('.modal-body ', modal).html(data.template);
                     $('.delete-log-file ', modal).attr('data-type', handle);
@@ -207,17 +248,17 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
         $(document).on('click', '.delete-log-line', function () {
             let formData = {
-                'method' : 'delete-log-line',
+                'method': 'delete-log-line',
                 'line': $(this).attr('data-line'),
-                'handle':$(this).attr('data-type')
+                'handle': $(this).attr('data-type')
             }
             xhr_ajax_handle(formData, false, delete_log_line_callback);
         });
 
         function delete_log_line_callback() {
             let data = JSON.parse(this.responseText);
-            if(data.status){
-               $('.entry_'+data.entry).remove();
+            if (data.status) {
+                $('.entry_' + data.entry).remove();
             } else {
                 warning_message(data.msg);
             }
@@ -225,16 +266,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
         $(document).on('click', '.delete-log-file', function () {
             let formData = {
-                'method' : 'delete-log-file',
-                'handle':$(this).attr('data-type')
+                'method': 'delete-log-file',
+                'handle': $(this).attr('data-type')
             }
             xhr_ajax_handle(formData, false, delete_log_file_callback);
         });
 
         function delete_log_file_callback() {
             let data = JSON.parse(this.responseText);
-            if(data.status){
-               success_message(data.msg);
+            if (data.status) {
+                success_message(data.msg);
                 $('#uploadLogModal .modal-body').html('<h5 class="text-center">keine Daten vorhanden</h5>');
             } else {
                 warning_message(data.msg);
@@ -243,17 +284,17 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
         $(document).on('click', '.delete-patch-file', function () {
             let formData = {
-                'method' : 'delete-patch-file',
-                'file':$(this).attr('data-id')
+                'method': 'delete-patch-file',
+                'file': $(this).attr('data-id')
             }
             xhr_ajax_handle(formData, false, delete_patch_file_callback);
         });
 
         function delete_patch_file_callback() {
             let data = JSON.parse(this.responseText);
-            if(data.status){
+            if (data.status) {
                 success_message(data.msg);
-                $('#patch_'+data.patch).remove();
+                $('#patch_' + data.patch).remove();
             } else {
                 warning_message(data.msg);
             }
@@ -380,6 +421,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     }
                     success_message(data.msg);
                 }
+
+                if (data.type == 'delete-security-header') {
+                    $('#' + data.handle + ' tr.header' + data.id).remove();
+                    success_message(data.msg);
+                }
+                if(data.type == 'load-default-security-header'){
+                    location.reload();
+                }
+
             } else {
                 warning_message(data.msg);
             }

@@ -1,0 +1,40 @@
+{% for t in d.table %}
+    <tr class="header{{ t.id }}">
+        <td class="align-middle text-nowrap px-1">
+            <input type="hidden" name="id[]" value="{{ t.id }}">
+            <input type="text" class="form-control form-control-sm no-blur" name="wert[]"
+                   value="{{ t.name }}" id="headerWert{{ d.id }}-{{ t.id }}"
+                   aria-label="headerWert{{ d.id }}-{{ t.id }}">
+            {% if t.name == 'script-src' %}
+                <div class="form-text small-lg">
+                    &nbsp;
+                </div>
+            {% endif %}
+        </td>
+        <td class="align-middle px-1">
+            <input type="text" class="form-control form-control-sm no-blur" name="value[]"
+                   value="{{ t.value }}" id="headerValue{{ d.id }}-{{ t.id }}"
+                   aria-label="headerValue{{ d.id }}-{{ t.id }}">
+            {% if t.name == 'script-src' %}
+            <div class="form-text small-lg">
+               <span class="text-danger">%s</span> {{ 'is the placeholder for nonce'|__ }}
+            </div>
+            {% endif %}
+        </td>
+        <td class="align-middle text-nowrap px-1">
+            <div class="form-check">
+                <input class="form-check-input no-blur" type="checkbox" name="aktiv[{{ t.id }}]"
+                       id="headerActive{{ d.id }}-{{ t.id }}" {% if t.aktiv %}checked{% endif %}>
+                <label class="form-check-label" for="headerActive{{ d.id }}-{{ t.id }}">
+                    {{ 'active'|__ }}
+                </label>
+            </div>
+        </td>
+        <th class="align-middle">
+            <button data-type="delete-security-header" data-handle="{{ d.id }}" data-id="{{ t.id }}"
+                    type="button" class="sweet-alert2 btn btn-outline-danger btn-sm">
+                <i class="bi bi-trash"></i>
+            </button>
+        </th>
+    </tr>
+{% endfor %}

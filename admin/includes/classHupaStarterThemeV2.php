@@ -36,6 +36,7 @@ use Hupa\StarterThemeV2\HupaStarterToolsFilter;
 use Hupa\StarterThemeV2\Register_Starter_Theme_Gutenberg_Patterns;
 use Hupa\StarterThemeV2\StarterThemeUpdateAction;
 use Hupa\StarterThemeV2\StarterThemeWPOptionen;
+use Hupa\StarterThemeV2\Theme_v2_Header_SCP;
 use Hupa\StarterThemeV2\ThemeV2Uploader;
 use Hupa\StarterV2\HupaEnqueueStarterTheme;
 use Hupa\StarterV2\HupaRegisterStarterTheme;
@@ -235,6 +236,8 @@ class HupaStarterThemeV2
         $this->define_frontend_filter_hooks();
         $this->define_get_theme_actions_hooks();
 
+        $this->register_the_v2_csp_header();
+
         $this->define_menu_hupa_order_handle();
 
         //Gutenberg Callback Class
@@ -348,34 +351,34 @@ class HupaStarterThemeV2
         }
 
 
-        //TODO CAROUSEL CLASS
+        // CAROUSEL CLASS
         require(Config::get('THEME_ADMIN_INCLUDES') . 'filter/hupa-carousel-filter.php');
 
-        //TODO Tools CLASS
+        // Tools CLASS
         require(Config::get('THEME_ADMIN_INCLUDES') . 'filter/hupa-theme-tools-filter.php');
 
-        //TODO FONT HANDLE CLASS
+        // FONT HANDLE CLASS
         require(Config::get('THEME_ADMIN_INCLUDES') . 'font-handle/theme-fonts-handler.php');
 
-        // TODO SOCIAL MEDIA HOOK
+        //  SOCIAL MEDIA HOOK
         require(Config::get('THEME_ADMIN_INCLUDES') . 'action/social-media-hook.php');
 
-        //TODO JOB THEME WIDGETS
+        //  THEME WIDGETS
         require(Config::get('THEME_ADMIN_INCLUDES') . 'widgets/social-media-widget.php');
 
-        //TODO JOB WARNING GUTENBERG TOOLS
+        // JOB WARNING GUTENBERG TOOLS
         require(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/register-gutenberg-tools.php');
         require(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/google-maps-callback.php');
         require(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/theme-carousel-callback.php');
         require(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/menu-select-callback.php');
 
         if (Config::get('HUPA_SIDEBAR')) {
-            //TODO JOB WARNING GUTENBERG SIDEBAR
-            //TODO GUTENBERG SIDEBAR
+            // JOB WARNING GUTENBERG SIDEBAR
+            // GUTENBERG SIDEBAR
             require Config::get('THEME_ADMIN_INCLUDES') . 'hupa-gutenberg-sidebar/register-hupa-gutenberg-sidebar.php';
-            //TODO SIDEBAR ENDPOINT
+            // SIDEBAR ENDPOINT
             require Config::get('THEME_ADMIN_INCLUDES') . 'hupa-gutenberg-sidebar/sidebar-rest-endpoint.php';
-            //TODO JOB CLASSIC METABOX
+            // JOB CLASSIC METABOX
             require Config::get('THEME_ADMIN_INCLUDES') . 'hupa-gutenberg-sidebar/classic-meta-box/classic-meta-box.php';
         }
 
@@ -422,6 +425,11 @@ class HupaStarterThemeV2
          */
         require(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/gutenberg-tools-callback.php');
 
+        /**
+         * The class responsible for defining all scripts that occur in the Theme Gutenberg Callback.
+         */
+        require(Config::get('THEME_ADMIN_INCLUDES') . 'Header-SCP/class_theme_v2_header_scp.php');
+
         $this->loader = new Hupa_Theme_v2_Loader();
     }
 
@@ -466,6 +474,12 @@ class HupaStarterThemeV2
     {
         global $hupa_register_starter_options;
         if (file_exists(THEME_ADMIN_DIR . 'admin-core/register-hupa-starter-optionen.php') && get_option('hupa_starter_product_install_authorize')) {
+            if(!isset(get_option('theme_capabilities')['security-header'])){
+                $opt =  get_option('theme_capabilities');
+                $opt['security-header'] = 'manage_options';
+                update_option('theme_capabilities', $opt);
+            }
+
             $hupa_register_starter_options = HupaRegisterStarterTheme::hupa_option_instance($this->get_theme_slug(), $this->get_theme_version(), $this->main, $this->twig);
             $this->loader->add_action('init', $hupa_register_starter_options, 'set_hupa_theme_v2_update_checker');
             //$this->loader->add_action('in_theme_update_message-', $hupa_register_starter_options, 'set_hupa_theme_v2_update_checker');
@@ -603,7 +617,8 @@ class HupaStarterThemeV2
         $this->loader->add_filter('hupa_validate_pin', $hupa_register_theme_helper, 'hupa_settings_validate_pin', 10, 2);
         $this->loader->add_action('is_hupa_custom_dir', $hupa_register_theme_helper, 'hupa_is_custom_dir');
         $this->loader->add_filter('check_theme_install_table', $hupa_register_theme_helper, 'hupa_check_theme_install_table');
-
+        //$this->loader->add_filter('script_loader_tag', $hupa_register_theme_helper, 'starter_theme_v2_script_attributes',10,2);
+        //
     }
 
     /**
@@ -1057,6 +1072,38 @@ class HupaStarterThemeV2
         $hupa_menu_order = HupaMenuOrder::instance($this->get_theme_slug(), $this->get_theme_version(), $this->main, $this->twig);
     }
 
+    /**
+     * Register all the hooks related to the CSP-Header Plugins functionality
+     * of the plugin.
+     *
+     * @since    2.0.0
+     * @access   private
+     */
+    private function register_the_v2_csp_header() {
+
+
+        if (!get_option('wp-security-header_user_role')) {
+            if (!get_option($this->theme_slug . '_csp_settings')) {
+                $s = [
+                    'google_fonts' => 0,
+                    'google_apis' => 0,
+                    'adobe_fonts' => 0,
+                    'csp_aktiv' => 0
+                ];
+                update_option($this->theme_slug . '_csp_settings', $s);
+
+            }
+            global $cspHeader;
+            $cspHeader = Theme_v2_Header_SCP::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
+            $this->loader->add_filter('wp_loaded', $cspHeader, 'starter_theme_v2_get_footer_data');
+            $this->loader->add_action('template_redirect', $cspHeader, 'set_header_theme_v2_template_redirect');
+            $this->loader->add_filter('style_loader_tag', $cspHeader, 'starter_theme_vs_style_tag_nonce', 10, 3);
+        }
+
+        //$this->loader->add_filter('script_loader_tag', $cspHeader, 'starter_theme_vs_script_tag_nonce', 10,3);
+        //$this->loader->add_filter('wp_inline_script_attributes', $cspHeader, 'starter_inline_script_attributes',10,2);
+        //
+    }
 
     /**
      * Retrieve the database version number of the plugin.

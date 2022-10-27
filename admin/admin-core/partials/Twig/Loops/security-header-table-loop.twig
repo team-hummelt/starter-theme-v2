@@ -1,0 +1,43 @@
+<div class="container">
+    {% for d in data %}
+        <form class="save_system_settings">
+            <input type="hidden" name="method" value="security-header-handle">
+            <input type="hidden" name="handle" value="{{ d.id }}">
+            <div class="card shadow-sm mb-3">
+                <div class="card-header py-3 fs-5">
+                    {{ d.bezeichnung }}
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive-sm">
+                        <table class="table-security-header table table-bordered table-sm w-100 nowrap">
+                            <thead>
+                            <tr>
+                                <th style="width: 17%" scope="col" class="font-bold-light align-middle">{{ 'Header'|__ }}</th>
+                                <th scope="col" class="font-bold-light align-middle">{{ 'Value'|__ }}</th>
+                                <th width="9%" scope="col" class="font-bold-light align-middle">{{ 'active'|__ }}</th>
+                                <th width="3%" scope="col" class="font-bold-light align-middle text-center"><i
+                                            class="bi bi-trash"></i></th>
+                            </tr>
+                            </thead>
+                            <tbody id="{{ d.id }}">
+                            {{ include('@partials-loops/security-header-table.twig') }}
+                            </tbody>
+                        </table>
+                    </div>
+                    <button data-type="add-header-config" data-handle="{{ d.id }}"
+                            type="button" class="btn-admin-action btn btn-success btn-sm">
+                        <i class="bi bi-node-plus me-1"></i>
+                        {{ 'add new value'|__ }}
+                    </button>
+                    <hr>
+                    <button type="submit" class="btn btn-blue">
+                        <i class="bi bi-save2 me-1"></i>
+                        <span class="fw-light">{{ d.bezeichnung }}</span> {{ 'Save'|__ }}
+                    </button>
+                </div>
+            </div>
+        </form>
+    {% endfor %}
+</div>
+
+

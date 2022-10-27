@@ -89,6 +89,7 @@ if (!get_option('theme_capabilities')) {
         'maps-api' => 'manage_options',
         'maps-iframe' => 'manage_options',
         'maps-settings' => 'manage_options',
+        'security-header' => 'manage_options'
     ];
 
     update_option('theme_capabilities', $capabilities);

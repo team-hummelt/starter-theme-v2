@@ -2793,6 +2793,159 @@ class Hupa_Starter_V2_Admin_Ajax
                 do_action('change_beitragslisten_template', $id, $type);
                 break;
 
+            case 'security-header-handle':
+                $handle = filter_input(INPUT_POST, 'handle', FILTER_SANITIZE_STRING);
+                if (!$handle) {
+                    $responseJson->msg = __('Ajax transmission error', 'bootscore') . ' (Ajx - ' . __LINE__ . ')';
+                    return $responseJson;
+                }
+
+                $id = array($_POST['id']);
+                if (!$id) {
+                    $responseJson->msg = __('Ajax transmission error', 'bootscore') . ' (Ajx - ' . __LINE__ . ')';
+                    return $responseJson;
+                }
+                $id = array_map([$this, 'cleanWhitespace'], $id[0]);
+
+                $wert = array($_POST['wert']);
+                $wert = array_map([$this, 'cleanWhitespace'], $wert[0]);
+
+                $value = array($_POST['value']);
+                $value = array_map([$this, 'cleanWhitespace'], $value[0]);
+
+
+                isset($_POST['aktiv']) ? $aktiv = array($_POST['aktiv']) : $aktiv = [];
+                if ($aktiv) {
+                    $aktiv = array_map([$this, 'cleanWhitespace'], $aktiv[0]);
+                }
+
+                $arr = [];
+                for ($i = 0; $i < count($id); $i++) {
+                    $w = filter_var($wert[$i], FILTER_SANITIZE_STRING);
+                    $v = filter_var($value[$i], FILTER_SANITIZE_STRING);
+                    if (!$w) {
+                        continue;
+                    }
+                    $aktiv && isset($aktiv[$id[$i]]) ? $a = 1 : $a = 0;
+                    $item = [
+                        'name' => $w,
+                        'value' =>  str_replace('&#39;',"'", $v),
+                        'aktiv' => $a,
+                        'id' => (int)$id[$i],
+                        'help' => '',
+                    ];
+                    $arr[] = $item;
+
+                }
+                $headers = get_option('theme_security_header');
+
+                if (!$headers[$handle] || !$arr) {
+                    $responseJson->msg = __('Ajax transmission error', 'bootscore') . ' (Ajx - ' . __LINE__ . ')';
+                    return $responseJson;
+                }
+
+                $headers[$handle] = $arr;
+                update_option('theme_security_header', $headers);
+                $responseJson->status = true;
+                $responseJson->msg = 'Änderungen erfolgreich gespeichert.';
+                break;
+
+            case'security_header_settings':
+                filter_input(INPUT_POST, 'google_fonts', FILTER_SANITIZE_STRING) ? $google_fonts = 1 : $google_fonts = 0;
+                filter_input(INPUT_POST, 'google_apis', FILTER_SANITIZE_STRING) ? $google_apis = 1 : $google_apis = 0;
+                filter_input(INPUT_POST, 'adobe_fonts', FILTER_SANITIZE_STRING) ? $adobe_fonts = 1 : $adobe_fonts = 0;
+                filter_input(INPUT_POST, 'csp_aktiv', FILTER_SANITIZE_STRING) ? $csp_aktiv = 1 : $csp_aktiv = 0;
+
+                $s = [
+                    'google_fonts' => $google_fonts,
+                    'google_apis' => $google_apis,
+                    'adobe_fonts' => $adobe_fonts,
+                    'csp_aktiv' => $csp_aktiv,
+                ];
+                update_option($this->basename . '_csp_settings', $s);
+                $responseJson->status = true;
+                $responseJson->msg = 'Änderungen erfolgreich gespeichert.';
+                break;
+            case'add-header-config':
+                $responseJson->type = $this->method;
+                $handle = filter_input(INPUT_POST, 'handle', FILTER_SANITIZE_STRING);
+                if (!$handle) {
+                    $responseJson->msg = __('Ajax transmission error', 'bootscore') . ' (Ajx - ' . __LINE__ . ')';
+                    return $responseJson;
+                }
+                    $data = [
+                        'd' => [
+                            'id' => $handle,
+                            'table' => [
+                                '0' => [
+                                    'name' => '',
+                                    'value' => '',
+                                    'aktiv' => 0,
+                                    'id' => apply_filters('get_hupa_random_id', 6,0,6),
+                                    'help' => '',
+                                ]
+                            ]
+                        ]
+                    ];
+                try {
+                    $template = $this->twig->render('@partials-loops/security-header-table.twig', $data);
+                    $responseJson->template = apply_filters('compress_template', $template);
+                } catch (LoaderError|SyntaxError|RuntimeError $e) {
+                    $responseJson->msg = $e->getMessage();
+                    return $responseJson;
+                } catch (Throwable $e) {
+                    $responseJson->msg = $e->getMessage();
+                    return $responseJson;
+                }
+                $responseJson->handle = $handle;
+                $responseJson->status = true;
+                break;
+
+            case'delete-security-header':
+                $responseJson->type = $this->method;
+                $handle = filter_input(INPUT_POST, 'handle', FILTER_SANITIZE_STRING);
+                $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+                if (!$handle) {
+                    $responseJson->msg = __('Ajax transmission error', 'bootscore') . ' (Ajx - ' . __LINE__ . ')';
+                    return $responseJson;
+                }
+                $headers = get_option('theme_security_header');
+                if(!isset($headers[$handle])){
+                    $responseJson->msg = __('Ajax transmission error', 'bootscore') . ' (Ajx - ' . __LINE__ . ')';
+                    return $responseJson;
+                }
+
+                $arr = [];
+                foreach ($headers[$handle] as $tmp) {
+                    if($tmp['id'] == $id) {
+                        continue;
+                    }
+                    $item = [
+                        'name' => $tmp['name'],
+                        'value' => $tmp['value'],
+                        'aktiv' => $tmp['aktiv'],
+                        'id' => $tmp['id'],
+                        'help' => '',
+                    ];
+                    $arr[] = $item;
+                }
+
+                $headers[$handle] = $arr;
+                update_option('theme_security_header', $headers);
+                $responseJson->status = true;
+                $responseJson->msg = 'Änderungen erfolgreich gespeichert.';
+                $responseJson->id = $id;
+                $responseJson->handle = $handle;
+                break;
+            case'load-default-security-header':
+                $responseJson->type = $this->method;
+                $s = get_option($this->basename . '_csp_settings');
+                $headers = $this->get_theme_default_settings('header', $s);
+                update_option('theme_security_header', $headers);
+                $responseJson->status = true;
+                $responseJson->msg = 'Einstellungen zurückgesetzt!';
+                break;
+
             case 'iframe_data_table':
                 $query = '';
                 $columns = array(
@@ -3051,6 +3204,16 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
         }
         return $responseJson;
+    }
+
+    protected function cleanWhitespace($string): string
+    {
+        if (!$string) {
+            return '';
+        }
+        $return = trim(preg_replace('/\s+/', ' ', $string));
+        $return = html_entity_decode($return, ENT_QUOTES);
+        return stripslashes_deep($return);
     }
 }
 

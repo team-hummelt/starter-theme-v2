@@ -319,9 +319,44 @@ trait HupaOptionTrait
     protected string $hupa_tools_css_class = 'css_class';
     protected string $hupa_tools_other = 'other';
 
-    protected function get_theme_default_settings(): array
+    /*=======================
+    Security Header
+    =========================*/
+    protected string $styleSrc = '';
+    protected string $fontSrc = '';
+    protected string $scriptSrc = '';
+    protected string $imgSrc = '';
+    protected string $formAction = '';
+    protected string $connectSrc = '';
+    protected string $baseUri = '';
+    protected int $cspAktiv = 0;
+
+    protected function get_theme_default_settings($args = '', $csp = []): array
     {
-        return $this->settings_default_values = [
+        if ($csp) {
+            if ($csp['csp_aktiv'] == 1) {
+                $this->cspAktiv = 1;
+            }
+            if ($csp['google_fonts']) {
+                $this->styleSrc = ' https://fonts.googleapis.com';
+                $this->fontSrc = ' fonts.gstatic.com';
+            }
+
+            if ($csp['google_apis']) {
+                $this->imgSrc = ' https://*.googleapis.com https://*.gstatic.com *.google.com *.googleusercontent.com';
+                $this->formAction = ' *.google.com';
+                $this->connectSrc = ' https://*.googleapis.com *.google.com https://*.gstatic.com';
+                $this->baseUri = ' *.google.com';
+            }
+            if ($csp['adobe_fonts']) {
+                $this->scriptSrc = ' use.typekit.net';
+                $this->styleSrc .= ' use.typekit.net';
+                $this->imgSrc .= ' p.typekit.net';
+                $this->connectSrc .= ' performance.typekit.net';
+            }
+        }
+
+         $this->settings_default_values = [
             /*===============================================
             ================= THEME GENERAL =================
             =================================================*/
@@ -923,7 +958,249 @@ trait HupaOptionTrait
                 'moveBottomTop100' => 150,
                 'moveBottomBottom100' => 250
             ],
+            'header' => [
+                'csp' => [
+                    '0' => [
+                        'name' => 'default-src',
+                        'value' => "'none'",
+                        'aktiv' => $this->cspAktiv,
+                        'id' => 1,
+                        'help' => '',
+                    ],
+                    '1' => [
+                        'name' => 'object-src',
+                        'value' => "'none'",
+                        'aktiv' => $this->cspAktiv,
+                        'id' => 2,
+                        'help' => '',
+                    ],
+                    '2' => [
+                        'name' => 'script-src',
+                        'value' => "'self' https: http:%s 'strict-dynamic' $this->scriptSrc",
+                        'aktiv' => $this->cspAktiv,
+                        'id' => 3,
+                        'help' => '',
+                    ],
+                    '3' => [
+                        'name' => 'style-src',
+                        'value' => "'self' 'unsafe-inline' $this->styleSrc",
+                        'aktiv' => $this->cspAktiv,
+                        'id' => 4,
+                        'help' => '',
+                    ],
+                    '4' => [
+                        'name' => 'img-src',
+                        'value' => "'self' $this->imgSrc data: *",
+                        'aktiv' => $this->cspAktiv,
+                        'id' => 5,
+                        'help' => '',
+                    ],
+                    '5' => [
+                        'name' => 'form-action',
+                        'value' => "'self' $this->formAction",
+                        'aktiv' => $this->cspAktiv,
+                        'id' => 6,
+                        'help' => '',
+                    ],
+                    '6' => [
+                        'name' => 'connect-src',
+                        'value' => "'self' $this->connectSrc data: blob:",
+                        'aktiv' => $this->cspAktiv,
+                        'id' => 7,
+                        'help' => '',
+                    ],
+                    '7' => [
+                        'name' => 'frame-ancestors',
+                        'value' => "'self'",
+                        'aktiv' => $this->cspAktiv,
+                        'id' => 8,
+                        'help' => '',
+                    ],
+                    '8' => [
+                        'name' => 'base-uri',
+                        'value' => "'self' $this->baseUri",
+                        'aktiv' => $this->cspAktiv,
+                        'id' => 9,
+                        'help' => '',
+                    ],
+                    '9' => [
+                        'name' => 'media-src',
+                        'value' => "*",
+                        'aktiv' => $this->cspAktiv,
+                        'id' => 10,
+                        'help' => '',
+                    ],
+                    '10' => [
+                        'name' => 'font-src',
+                        'value' => "$this->fontSrc * data:",
+                        'aktiv' => $this->cspAktiv,
+                        'id' => 11,
+                        'help' => '',
+                    ],
+                    '11' => [
+                        'name' => 'worker-src',
+                        'value' => "blob:",
+                        'aktiv' => $this->cspAktiv,
+                        'id' => 12,
+                        'help' => '',
+                    ],
+                    '13' => [
+                        'name' => 'child-src',
+                        'value' => "*",
+                        'aktiv' => $this->cspAktiv,
+                        'id' => 14,
+                        'help' => '',
+                    ],
+                    '12' => [
+                        'name' => 'report-uri',
+                        'value' => "",
+                        'aktiv' => 0,
+                        'id' => 13,
+                        'help' => '',
+                    ],
+                ],
+                'pr' => [
+                    '0' => [
+                        'name' => 'fullscreen',
+                        'value' => "(self)",
+                        'aktiv' => 1,
+                        'id' => 1,
+                        'help' => '',
+                    ],
+                    '1' => [
+                        'name' => 'geolocation',
+                        'value' => "*",
+                        'aktiv' => 1,
+                        'id' => 2,
+                        'help' => '',
+                    ],
+                    '2' => [
+                        'name' => 'accelerometer',
+                        'value' => "()",
+                        'aktiv' => 1,
+                        'id' => 3,
+                        'help' => '',
+                    ],
+                    '3' => [
+                        'name' => 'autoplay',
+                        'value' => "(self)",
+                        'aktiv' => 1,
+                        'id' => 4,
+                        'help' => '',
+                    ],
+                    '4' => [
+                        'name' => 'camera',
+                        'value' => "()",
+                        'aktiv' => 1,
+                        'id' => 5,
+                        'help' => '',
+                    ],
+                    '5' => [
+                        'name' => 'encrypted-media',
+                        'value' => "()",
+                        'aktiv' => 1,
+                        'id' => 6,
+                        'help' => '',
+                    ],
+                    '6' => [
+                        'name' => 'gyroscope',
+                        'value' => "()",
+                        'aktiv' => 1,
+                        'id' => 7,
+                        'help' => '',
+                    ],
+                    '7' => [
+                        'name' => 'magnetometer',
+                        'value' => "()",
+                        'aktiv' => 1,
+                        'id' => 8,
+                        'help' => '',
+                    ],
+                    '8' => [
+                        'name' => 'microphone',
+                        'value' => "()",
+                        'aktiv' => 1,
+                        'id' => 9,
+                        'help' => '',
+                    ],
+                    '9' => [
+                        'name' => 'midi',
+                        'value' => "()",
+                        'aktiv' => 1,
+                        'id' => 10,
+                        'help' => '',
+                    ],
+                    '10' => [
+                        'name' => 'payment',
+                        'value' => "()",
+                        'aktiv' => 1,
+                        'id' => 11,
+                        'help' => '',
+                    ],
+                    '11' => [
+                        'name' => 'picture-in-picture',
+                        'value' => "(self)",
+                        'aktiv' => 1,
+                        'id' => 12,
+                        'help' => '',
+                    ],
+                    '12' => [
+                        'name' => 'usb',
+                        'value' => "(self)",
+                        'aktiv' => 1,
+                        'id' => 13,
+                        'help' => '',
+                    ],
+                ],
+                'ah' => [
+                    '0' => [
+                        'name' => 'Strict-Transport-Security',
+                        'value' => "max-age=15768000; preload; includeSubDomains",
+                        'aktiv' => 1,
+                        'id' => 1,
+                        'help' => '',
+                    ],
+                    '1' => [
+                        'name' => 'X-Frame-Options',
+                        'value' => "sameorigin",
+                        'aktiv' => 1,
+                        'id' => 2,
+                        'help' => '',
+                    ],
+                    '2' => [
+                        'name' => 'X-Content-Type-Options',
+                        'value' => "nosniff",
+                        'aktiv' => 1,
+                        'id' => 3,
+                        'help' => '',
+                    ],
+                    '3' => [
+                        'name' => 'X-XSS-Protection',
+                        'value' => "1; mode=block",
+                        'aktiv' => 1,
+                        'id' => 4,
+                        'help' => '',
+                    ],
+                    '4' => [
+                        'name' => 'Referrer-Policy',
+                        'value' => "no-referrer",
+                        'aktiv' => 1,
+                        'id' => 5,
+                        'help' => '',
+                    ],
+                ],
+            ],
         ];
+
+         if($args) {
+             foreach ($this->settings_default_values as $key => $val){
+                 if($key == $args){
+                     return $val;
+                 }
+             }
+         }
+
+         return $this->settings_default_values;
     }
 
     protected function theme_language(): array
@@ -940,6 +1217,13 @@ trait HupaOptionTrait
             __('Fax', 'bootscore'),
             __('delete', 'bootscore'),
             __('Contact details', 'bootscore'),
+            __('Security Header', 'bootscore'),
+            __('Save', 'bootscore'),
+            //neuen Wert hinzufügen
+            __('add new value', 'bootscore'),
+            //ist der Platzhalter für nonce
+            __('is the placeholder for nonce', 'bootscore'),
+            __('Restore default', 'bootscore')
         ];
 
     }

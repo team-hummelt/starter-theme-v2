@@ -4179,6 +4179,9 @@ use Hupa\Starter\Config;
                                     <button data-type="maps-settings" type="button"
                                             class="btn btn-blue-outline btn-sm me-1">Google Maps Settings
                                     </button>
+                                    <button data-type="security-header" type="button"
+                                            class="btn btn-blue-outline btn-sm me-1">Security Header
+                                    </button>
                                     <!--<button data-type="header" type="button" class="btn btn-blue-outline btn-sm me-1">Custom Header</button>
                                     <button data-type="footer" type="button" class="btn btn-blue-outline btn-sm me-1">Custom Footer</button>-->
                                 </div>

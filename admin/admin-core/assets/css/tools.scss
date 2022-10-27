@@ -64,7 +64,11 @@
   vertical-align: middle;
   margin-top: -1px;
 }
-
+#adminmenu div.wp-menu-image.svg {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px auto!important;
+}
 //
 div.wp-menu-image.dashicons-before.dashicons-admin-network::before {
   color: red !important;

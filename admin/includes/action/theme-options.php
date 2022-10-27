@@ -145,6 +145,7 @@ class StarterThemeWPOptionen
 
     public function hupa_theme_the_content_replace($content)
     {
+
         $regEx = '/(\[hupa-theme-remove-container].+?(wp-container-\d{1,5}))/';
         if (preg_match_all($regEx, $content, $matches)) {
             if (isset($matches[2]) && is_array($matches[2])) {
@@ -153,6 +154,9 @@ class StarterThemeWPOptionen
                 }
             }
         }
+
+        $reg = '/<script.*?type=\'text\/javascript\'.*js-extra.+?>/m';
+        //if (preg_match_all($reg, $content, $matches, PREG_SET_ORDER, 0)) {  }
         return $content;
     }
 

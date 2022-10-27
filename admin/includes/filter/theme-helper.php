@@ -121,7 +121,7 @@ class HupaStarterHelper
     /**
      * @throws Exception
      */
-    function load_random_string($args = null): string
+    public function load_random_string($args = null): string
     {
         if (function_exists('random_bytes')) {
             $bytes = random_bytes(16);
@@ -865,4 +865,18 @@ class HupaStarterHelper
         }
         return preg_replace(['/<!--(.*)-->/Uis', "/[[:blank:]]+/"], ['', ' '], str_replace(["\n", "\r", "\t"], '', $string));
     }
+
+    public function starter_theme_v2_script_attributes($tag, $handle) {
+
+        if ( $handle === 'hupa-starter-ajax-script-js-extra' /* handle used in wp_enqueue_script/wp_register_script */ ) {
+            $nonce = wp_create_nonce(); // Or whatever your nonce value should be
+
+            $tag = str_replace( '<script ', "<script nonce='$nonce' ", $tag );
+        }
+
+        return $tag;
+    }
+
+
+
 }

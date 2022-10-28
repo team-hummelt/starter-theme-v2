@@ -693,7 +693,7 @@ trait HupaOptionTrait
             ================= GMAPS STANDARD SETTINGS =================
             ===========================================================*/
             'google_maps' => [
-                $this->map_apikey => 'AIzaSyBZsmhttYU__3fAQGxMDremkGi_ywod0OA',
+                $this->map_apikey => 'key eingeben',
                 $this->map_datenschutz => 0,
                 $this->map_colorcheck => 0,
                 $this->map_standard_pin => 0,

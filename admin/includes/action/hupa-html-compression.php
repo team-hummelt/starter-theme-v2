@@ -86,7 +86,7 @@ final class HUPA_WP_HTML_Compression
                     continue;
                 } else if ($this->hupa_remove_comments) {
                     if (!$overriding && $raw_tag != 'textarea') {
-                        $content = preg_replace('/<!--(?!\s*(?:\[if [^\]]+]|<!|>))(?:(?!-->).)*-->/s', '', $content);
+                        $content = preg_replace('/<!--(?!\s*(?:\[if [^]]+]|<!|>))(?:(?!-->).)*-->/s', '', $content);
                     }
                 }
             } else {

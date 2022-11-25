@@ -32,7 +32,7 @@
                     <!-- Grid Layout -->
                     <?php if (have_posts() ) : ?>
                     <?php while (have_posts() ) : the_post();
-                    $pageSettings = apply_filters('get_page_meta_data', (int)get_the_ID());;?>
+                    $pageSettings = apply_filters('get_page_meta_data', (int)get_the_ID());?>
                     <div class="card horizontal mb-4">
                         <div class="row">
                             <!-- Featured Image-->

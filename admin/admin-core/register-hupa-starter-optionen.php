@@ -23,7 +23,6 @@ use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-use Twig\TwigFilter;
 use WP_User;
 
 
@@ -723,19 +722,19 @@ final class HupaRegisterStarterTheme
         foreach ($this->footerCustomCaps as $cap) {
             $singular = $cap['singular'];
             $plural = $cap['plural'];
-            $role->add_cap("edit_{$singular}");
-            $role->add_cap("edit_{$plural}");
-            $role->add_cap("edit_others_{$plural}");
-            $role->add_cap("publish_{$plural}");
-            $role->add_cap("read_{$singular}");
-            $role->add_cap("read_private_{$plural}");
-            $role->add_cap("delete_{$singular}");
-            $role->add_cap("delete_{$plural}");
-            $role->add_cap("delete_private_{$plural}");
-            $role->add_cap("delete_others_{$plural}");
-            $role->add_cap("edit_published_{$plural}");
-            $role->add_cap("edit_private_{$plural}");
-            $role->add_cap("delete_published_{$plural}");
+            $role->add_cap("edit_$singular");
+            $role->add_cap("edit_$plural");
+            $role->add_cap("edit_others_$plural");
+            $role->add_cap("publish_$plural");
+            $role->add_cap("read_$singular");
+            $role->add_cap("read_private_$plural");
+            $role->add_cap("delete_$singular");
+            $role->add_cap("delete_$plural");
+            $role->add_cap("delete_private_$plural");
+            $role->add_cap("delete_others_$plural");
+            $role->add_cap("edit_published_$plural");
+            $role->add_cap("edit_private_$plural");
+            $role->add_cap("delete_published_$plural");
         }
     }
 
@@ -879,7 +878,7 @@ final class HupaRegisterStarterTheme
          * class.
          */
 
-        $page = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_STRING);
+        $page = filter_input(INPUT_GET, 'page', FILTER_UNSAFE_RAW);
 
 
         //TODO FontAwesome / Bootstrap

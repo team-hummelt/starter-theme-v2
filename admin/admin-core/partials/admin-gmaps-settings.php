@@ -72,7 +72,7 @@ use Hupa\Starter\Config;
                                 <div class="standard-img d-flex flex-column">
                                     <?php
                                     if (get_hupa_option('map_img_id')) {
-                                        $img_full = wp_get_attachment_image_src(get_hupa_option('map_img_id'), 'large', false);
+                                        $img_full = wp_get_attachment_image_src(get_hupa_option('map_img_id'), 'large');
                                         $defaultImg = $img_full[0];
                                         $showDelBtn = true;
                                     } else {
@@ -103,7 +103,7 @@ use Hupa\Starter\Config;
                                 <h6 class="pb-1"><i class="fa fa-arrow-circle-right"></i> Datenschutz Seite auswählen:
                                 </h6>
                                 <div class="col-xl-5 col-lg-6 col-12">
-                                    <select id="inputState" name="map_ds_page" class="form-select">
+                                    <select id="inputState" name="map_ds_page" aria-label="select" class="form-select">
                                         <option value=""> auswählen...</option>
                                         <?php
                                         $pages = apply_filters('get_theme_pages', false);
@@ -193,8 +193,8 @@ use Hupa\Starter\Config;
                                 </h6>
                                 <div class="col-xl-5 col-lg-6 col-12">
                                     <div class="mb-3">
-                                    <label for="exampleInputEmail1" class="form-label mb-1">Button Text</label>
-                                    <input type="text" value="" name="map_btn_text" placeholder="z.B. Anfahrtskarte einblenden" class="form-control max-width26">
+                                    <label for="inputBtnTxt" class="form-label mb-1">Button Text</label>
+                                    <input id="inputBtnTxt" type="text" value="" name="map_btn_text" placeholder="z.B. Anfahrtskarte einblenden" class="form-control max-width26">
                                     </div>
 
                                     <div class="mb-3">

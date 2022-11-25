@@ -111,9 +111,9 @@ class HupaSocialMediaWidget extends WP_Widget {
 				'title' => __( 'Social Media', 'bootscore' ),
 			) );
 
-        isset($instance['header']) && !empty($instance['header']) ? $header =  filter_var( $instance['header'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH ) : $header = __( 'Social Media', 'bootscore' );
-        isset($instance['cssClass']) && !empty($instance['cssClass']) ? $cssClass =  filter_var( $instance['cssClass'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH ) : $cssClass = '';
-        isset($instance['isColor']) && !empty($instance['isColor']) ? $isColor =  filter_var( $instance['isColor'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH ) : $isColor = '';
+        isset($instance['header']) && !empty($instance['header']) ? $header =  filter_var( $instance['header'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH ) : $header = __( 'Social Media', 'bootscore' );
+        isset($instance['cssClass']) && !empty($instance['cssClass']) ? $cssClass =  filter_var( $instance['cssClass'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH ) : $cssClass = '';
+        isset($instance['isColor']) && !empty($instance['isColor']) ? $isColor =  filter_var( $instance['isColor'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH ) : $isColor = '';
         isset($instance['type']) && !empty($instance['type']) ? $type = (int) filter_var( $instance['type'], FILTER_SANITIZE_NUMBER_INT ) : $type = 1;
 		?>
 

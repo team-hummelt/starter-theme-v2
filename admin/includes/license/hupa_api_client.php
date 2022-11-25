@@ -2,8 +2,6 @@
 
 namespace Hupa\ThemeLicense;
 
-use Exception;
-use stdClass;
 
 defined('ABSPATH') or die();
 
@@ -141,7 +139,7 @@ if (!class_exists('HupaStarterApiUrlFilter')) {
          */
         private function hupaGetApiResource(string $access_token, string $resource_url): array
         {
-            $header = array("Authorization: Bearer {$access_token}");
+            $header = array("Authorization: Bearer $access_token");
             $curl = curl_init();
             curl_setopt_array($curl, array(
                 CURLOPT_URL => $resource_url,
@@ -177,7 +175,7 @@ if (!class_exists('HupaStarterApiUrlFilter')) {
             $token_url = $this->hupa_get_api_urls(false)->token_url;
 
             $authorization = base64_encode("$client_id:$client_secret");
-            $header = array("Authorization: Basic {$authorization}", "Content-Type: application/x-www-form-urlencoded");
+            $header = array("Authorization: Basic $authorization", "Content-Type: application/x-www-form-urlencoded");
             $content = "grant_type=authorization_code&code=$authorization_code";
 
             $curl = curl_init();
@@ -223,7 +221,7 @@ if (!class_exists('HupaStarterApiUrlFilter')) {
             $token_url = $this->hupa_get_api_urls(false)->token_url;
 
             $authorization = base64_encode("$client_id:$client_secret");
-            $header = array("Authorization: Basic {$authorization}", "Content-Type: application/x-www-form-urlencoded");
+            $header = array("Authorization: Basic $authorization", "Content-Type: application/x-www-form-urlencoded");
             $content = "grant_type=client_credentials";
 
             $curl = curl_init();

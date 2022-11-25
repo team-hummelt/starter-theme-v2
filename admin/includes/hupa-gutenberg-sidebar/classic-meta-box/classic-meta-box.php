@@ -311,19 +311,19 @@ class HupaStarterClassicMetaBox
         }
 
         $record = new stdClass();
-        filter_input(INPUT_POST, 'checkTitle', FILTER_SANITIZE_STRING) ? $record->checkTitle = true : $record->checkTitle = false;
-        $record->customTitle = filter_input(INPUT_POST, 'customTitle', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-        $record->titleCss = filter_input(INPUT_POST, 'titleCss', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-        filter_input(INPUT_POST, 'showMenuCheck', FILTER_SANITIZE_STRING) ? $record->showMenuCheck = true : $record->showMenuCheck = false;
+        filter_input(INPUT_POST, 'checkTitle', FILTER_UNSAFE_RAW) ? $record->checkTitle = true : $record->checkTitle = false;
+        $record->customTitle = filter_input(INPUT_POST, 'customTitle', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
+        $record->titleCss = filter_input(INPUT_POST, 'titleCss', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
+        filter_input(INPUT_POST, 'showMenuCheck', FILTER_UNSAFE_RAW) ? $record->showMenuCheck = true : $record->showMenuCheck = false;
         $record->menuSelect = filter_input(INPUT_POST, 'menuSelect', FILTER_SANITIZE_NUMBER_INT);
         $record->handyMenuSelect = filter_input(INPUT_POST, 'handyMenuSelect', FILTER_SANITIZE_NUMBER_INT);
         $record->topAreaSelect = filter_input(INPUT_POST, 'topAreaSelect', FILTER_SANITIZE_NUMBER_INT);
-        filter_input(INPUT_POST, 'bottomFooterCheck', FILTER_SANITIZE_STRING) ? $record->bottomFooterCheck = true : $record->bottomFooterCheck = false;
+        filter_input(INPUT_POST, 'bottomFooterCheck', FILTER_UNSAFE_RAW) ? $record->bottomFooterCheck = true : $record->bottomFooterCheck = false;
         $record->customHeaderSelect = filter_input(INPUT_POST, 'customHeaderSelect', FILTER_SANITIZE_NUMBER_INT);
         $record->customFooterSelect = filter_input(INPUT_POST, 'customFooterSelect', FILTER_SANITIZE_NUMBER_INT);
 
-        filter_input(INPUT_POST, 'topFooterWidgetCheck', FILTER_SANITIZE_STRING) ? $record->topFooterWidgetCheck = true : $record->topFooterWidgetCheck = false;
-        filter_input(INPUT_POST, 'footerWidgetCheck', FILTER_SANITIZE_STRING) ? $record->footerWidgetCheck = true : $record->footerWidgetCheck = false;
+        filter_input(INPUT_POST, 'topFooterWidgetCheck', FILTER_UNSAFE_RAW) ? $record->topFooterWidgetCheck = true : $record->topFooterWidgetCheck = false;
+        filter_input(INPUT_POST, 'footerWidgetCheck', FILTER_UNSAFE_RAW) ? $record->footerWidgetCheck = true : $record->footerWidgetCheck = false;
 
         $record->topAreaShoWSelect = filter_input(INPUT_POST, 'topAreaShoWSelect', FILTER_SANITIZE_NUMBER_INT);
         $record->topAriaContainer = filter_input(INPUT_POST, 'topAriaContainer', FILTER_SANITIZE_NUMBER_INT);

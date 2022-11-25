@@ -3,9 +3,7 @@
 namespace Hupa\StarterThemeV2;
 
 use HupaStarterThemeV2;
-use Hupa\Starter\Config;
-use stdClass;
-use WP_Query;
+
 
 defined('ABSPATH') or die();
 

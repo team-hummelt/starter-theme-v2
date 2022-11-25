@@ -185,7 +185,7 @@ use Hupa\Starter\Config;
                                     <div class="row">
                                         <div class="form-floating">
                                             <p>JavaScript Style Array</p>
-                                            <textarea class="form-control" name="map_color" id="MapColor"
+                                            <textarea class="form-control" aria-label="map-color" name="map_color" id="MapColor"
                                                       style="height: 400px"><?=get_hupa_option('map_color')?></textarea>
                                         </div>
                                     </div>

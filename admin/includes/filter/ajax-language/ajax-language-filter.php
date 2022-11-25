@@ -14,9 +14,7 @@ namespace Hupa\StarterThemeV2;
 use stdClass;
 defined( 'ABSPATH' ) or die();
 
-use Hupa\Starter\Config;
-use Hupa\StarterThemeV2\HupaCarouselTrait;
-use Hupa\StarterThemeV2\HupaOptionTrait;
+
 use HupaStarterThemeV2;
 /**
  * ADMIN AJAX LANGUAGE HANDLE

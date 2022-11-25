@@ -52,11 +52,11 @@ class HupaStarterOptionFilter
         $this->main = $main;
     }
 
-    public function hupa_get_hupa_option($option)
+    public function hupa_get_hupa_option($option): string
     {
         global $wpdb;
         $table = $wpdb->prefix . $this->table_settings;
-        $result = $wpdb->get_row("SELECT *  FROM {$table}");
+        $result = $wpdb->get_row("SELECT *  FROM $table");
         if ($result) {
             $settings[] = json_decode($result->hupa_general);
             $settings[] = json_decode($result->hupa_fonts);
@@ -246,7 +246,7 @@ class HupaStarterOptionFilter
         }
         global $wpdb;
         $table = $wpdb->prefix . $this->table_settings;
-        $result = $wpdb->get_row("SELECT hupa_fonts_src  FROM {$table}");
+        $result = $wpdb->get_row("SELECT hupa_fonts_src  FROM $table");
         foreach (json_decode($result->hupa_fonts_src) as $tmp) {
             if ($tmp->fontFamily === $family) {
                 return $tmp->fontStill->styleSelect;
@@ -264,7 +264,7 @@ class HupaStarterOptionFilter
     {
         global $wpdb;
         $table = $wpdb->prefix . $this->table_settings;
-        $result = $wpdb->get_row("SELECT hupa_fonts_src  FROM {$table}");
+        $result = $wpdb->get_row("SELECT hupa_fonts_src  FROM $table");
         $retArr = [];
         foreach (json_decode($result->hupa_fonts_src) as $tmp) {
             $retItem = [
@@ -280,7 +280,7 @@ class HupaStarterOptionFilter
         $get ? $fetch = $get : $fetch = 'get_results';
         global $wpdb;
         $table = $wpdb->prefix . $this->table_social;
-        $result = $wpdb->$fetch("SELECT *  FROM {$table} {$args} ORDER BY position ASC");
+        $result = $wpdb->$fetch("SELECT *  FROM $table $args ORDER BY position ASC ");
         $return = new stdClass();
         if (!$result) {
             $return->status = false;
@@ -297,7 +297,7 @@ class HupaStarterOptionFilter
         $defaults = apply_filters('arrayToObject', $this->get_theme_default_settings());
         global $wpdb;
         $table = $wpdb->prefix . $this->table_settings;
-        $result = $wpdb->get_row("SELECT *  FROM {$table}");
+        $result = $wpdb->get_row("SELECT *  FROM $table");
 
         if (!$result) {
             $wpdb->insert(
@@ -320,7 +320,7 @@ class HupaStarterOptionFilter
 
         //TODO DEFAULT HUPA TOOLS
         $table = $wpdb->prefix . $this->table_tools;
-        $toolsDb = $wpdb->get_row("SELECT *  FROM {$table}");
+        $toolsDb = $wpdb->get_row("SELECT *  FROM $table");
         if (!$toolsDb) {
             $tools = apply_filters('arrayToObject', $default['hupa_tools']);
             foreach ($tools as $tmp) {
@@ -342,7 +342,7 @@ class HupaStarterOptionFilter
 
         //TODO DEFAULT SOCIAL MEDIA
         $table = $wpdb->prefix . $this->table_social;
-        $socialDB = $wpdb->get_row("SELECT *  FROM {$table}");
+        $socialDB = $wpdb->get_row("SELECT *  FROM $table");
         if (!$socialDB) {
             $def = apply_filters('arrayToObject', $default['social_media']);
             foreach ($def as $tmp) {
@@ -369,7 +369,7 @@ class HupaStarterOptionFilter
         $default = $this->get_theme_default_settings();
         global $wpdb;
         $table = $wpdb->prefix . $this->table_social;
-        $socialDB = $wpdb->get_row("SELECT *  FROM {$table}");
+        $socialDB = $wpdb->get_row("SELECT *  FROM $table");
         if (!$socialDB) {
             $def = apply_filters('arrayToObject', $default['social_media']);
             foreach ($def as $tmp) {
@@ -397,7 +397,7 @@ class HupaStarterOptionFilter
         global $wpdb;
 
         $table = $wpdb->prefix . $this->table_settings;
-        $result = $wpdb->get_row("SELECT {$row}  FROM {$table}");
+        $result = $wpdb->get_row("SELECT $row  FROM $table");
         if (!$result) {
             $return->status = false;
 
@@ -419,7 +419,7 @@ class HupaStarterOptionFilter
         $return->status = false;
         global $wpdb;
         $table = $wpdb->prefix . $this->table_settings;
-        $result = $wpdb->get_row("SELECT google_maps_placeholder  FROM {$table}");
+        $result = $wpdb->get_row("SELECT google_maps_placeholder  FROM $table");
         if (!$result) {
             return $return;
         }
@@ -448,7 +448,7 @@ class HupaStarterOptionFilter
         $fetchType ? $fetch = $fetchType : $fetch = 'get_results';
         $select ? $sel = $select : $sel = '*';
         $table = $wpdb->prefix . $this->table_tools;
-        $result = $wpdb->$fetch("SELECT {$sel}  FROM {$table} {$args}");
+        $result = $wpdb->$fetch("SELECT $sel  FROM $table $args");
         if (!$result) {
             $return->status = false;
             return $return;
@@ -462,7 +462,7 @@ class HupaStarterOptionFilter
     {
         global $wpdb;
         $table = $wpdb->prefix . $this->table_tools;
-        $result = $wpdb->get_row("SELECT *  FROM {$table} WHERE slug=\"{$option}\"");
+        $result = $wpdb->get_row("SELECT *  FROM $table WHERE slug=\"$option\"");
         if (!$result) {
             return (object)[];
         }
@@ -921,7 +921,7 @@ class HupaStarterOptionFilter
                     $record->main_container = 0;
                     break;
             }
-        };
+        }
 
         //MENU CONTAINER
 

@@ -14,7 +14,6 @@ namespace Hupa\ThemeLicense;
 
 use Hupa\StarterThemeV2\HupaOptionTrait;
 use HupaStarterThemeV2;
-use Exception;
 use stdClass;
 
 defined('ABSPATH') or die();
@@ -104,7 +103,7 @@ class HupaApiServerHandle
         $args = array(
             'headers' => array(
                 'Content-Type' => 'application/x-www-form-urlencoded',
-                'Authorization' => "Basic {$authorization}"
+                'Authorization' => "Basic $authorization"
             ),
             'body' => [
                 'grant_type' => "authorization_code",

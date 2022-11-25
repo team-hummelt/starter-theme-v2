@@ -16,7 +16,7 @@ use bootstrap_5_menu_select_walker;
 use stdClass;
 
 use HupaStarterThemeV2;
-use Hupa\Starter\Config;
+
 
 
 /**
@@ -135,7 +135,7 @@ class HupaStarterToolsFilter
         $fetchMethod ? $fetch = 'get_results' : $fetch = 'get_row';
         $table = $wpdb->prefix . $this->table_iframes;
         $col ? $select = $col : $select = '*, DATE_FORMAT(created_at, \'%d.%m.%Y %H:%i:%s\') AS created';
-        $result = $wpdb->$fetch("SELECT {$select}  FROM {$table} {$args}");
+        $result = $wpdb->$fetch("SELECT $select  FROM $table $args");
         if (!$result) {
             return $return;
         }

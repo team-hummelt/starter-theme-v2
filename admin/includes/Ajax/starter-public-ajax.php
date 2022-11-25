@@ -8,13 +8,8 @@ use Hupa\StarterThemeV2\HupaCarouselTrait;
 use Hupa\StarterThemeV2\HupaOptionTrait;
 use HupaStarterThemeV2;
 use stdClass;
-use Throwable;
 use Twig\Environment;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
-use Twig\TwigFilter;
-use WP_User;
+
 
 /**
  * Define the Hupa_Starter_V2 Public AJAX functionality.
@@ -136,7 +131,7 @@ class Hupa_Starter_V2_Public_Ajax
         $this->method = '';
         if (isset($_POST['daten'])) {
             $this->data = $_POST['daten'];
-            $this->method = filter_var($this->data['method'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+            $this->method = filter_var($this->data['method'], FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
         }
 
         if (!$this->method) {
@@ -154,7 +149,6 @@ class Hupa_Starter_V2_Public_Ajax
      */
     public function hupa_starter_public_ajax_handle(): object
     {
-        $record = new stdClass();
         $responseJson = new stdClass();
         $responseJson->status = false;
         $responseJson->msg = date('H:i:s', current_time('timestamp'));
@@ -171,17 +165,17 @@ class Hupa_Starter_V2_Public_Ajax
                                 $imdId = $tmp->custom_pin_img;
                                 $img = wp_get_attachment_image_src($tmp->custom_pin_img);
                                 $imgUrl = $img[0];
-                                $imgStPin = '<img class="range-image img-fluid" src="' . $img[0] . '" width="' . $tmp->custom_width . '" height="' . $tmp->custom_height . '">';
+
                             } else {
                                 if ($hupa_register_theme_options->hupa_get_hupa_option('map_standard_pin')) {
                                     $imdId = $hupa_register_theme_options->hupa_get_hupa_option('map_standard_pin');
                                     $img = wp_get_attachment_image_src($imdId);
                                     $imgUrl = $img[0];
-                                    $imgStPin = '<img class="range-image img-fluid" src="' . $img[0] . '" width="' . $hupa_register_theme_options->hupa_get_hupa_option('map_pin_width') . '" height="' . $hupa_register_theme_options->hupa_get_hupa_option('map_pin_height') . '">';
+
                                 } else {
                                     $imdId = false;
                                     $imgUrl = Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/img-placeholder.svg';
-                                    $imgStPin = '<img class="img-fluid" src="' . Config::get('WP_THEME_ADMIN_URL') . '\'admin-core/assets/images/img-placeholder.svg\'" alt="" width="">';
+
                                 }
                             }
                         } else {
@@ -189,11 +183,11 @@ class Hupa_Starter_V2_Public_Ajax
                             if ($imdId) {
                                 $img = wp_get_attachment_image_src($imdId);
                                 $imgUrl = $img[0];
-                                $imgStPin = '<img class="range-image img-fluid" src="' . $img[0] . '" width="' . $hupa_register_theme_options->hupa_get_hupa_option('map_pin_width') . '" height="' . $hupa_register_theme_options->hupa_get_hupa_option('map_pin_height') . '">';
+
                             } else {
                                 $imdId = false;
                                 $imgUrl = Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/img-placeholder.svg';
-                                $imgStPin = '<img class="img-fluid" src="' . Config::get('WP_THEME_ADMIN_URL') . '\'admin-core/assets/images/img-placeholder.svg\'" alt="" width="">';
+
                             }
                         }
                         $retItem = [
@@ -238,9 +232,9 @@ class Hupa_Starter_V2_Public_Ajax
                 break;
 
             case 'get_iframe_card':
-                $shortcode = filter_input(INPUT_POST, 'code', FILTER_SANITIZE_STRING);
-                $width = filter_input(INPUT_POST, 'width', FILTER_SANITIZE_STRING);
-                $height = filter_input(INPUT_POST, 'height', FILTER_SANITIZE_STRING);
+                $shortcode = filter_input(INPUT_POST, 'code', FILTER_UNSAFE_RAW);
+                $width = filter_input(INPUT_POST, 'width', FILTER_UNSAFE_RAW);
+                $height = filter_input(INPUT_POST, 'height', FILTER_UNSAFE_RAW);
                 if (!$shortcode) {
                     $responseJson->staus = false;
                     return $responseJson;

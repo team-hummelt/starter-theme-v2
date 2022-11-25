@@ -406,7 +406,8 @@ final class HupaRegisterStarterTheme
             'first_title' => __('Security Header', 'bootscore'),
             'second_title' => __('Settings', 'bootscore'),
             'ds' => get_option($this->basename . '_csp_settings'),
-            'data' => $items
+            'data' => $items,
+            'site_url' => site_url()
         ];
         try {
             $template = $this->twig->render('@partials-templates/security-header-template.twig', $data);

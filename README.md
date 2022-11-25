@@ -27,6 +27,7 @@ Header-, Footer- und 404-Widgets.
 ## Changelog
 ### 2.0.4
 - PHP 8.1 kompatibel
+- Security Header Test hinzugefügt
 
 ### 2.0.3
 - Security Header hinzugefügt

@@ -14,7 +14,6 @@ namespace Hupa\StarterThemeV2;
 defined('ABSPATH') or die();
 use Exception;
 use HupaStarterThemeV2;
-use stdClass;
 use Hupa\Starter\Config;
 
 /**
@@ -92,7 +91,7 @@ use Hupa\Starter\Config;
             if(apply_filters('check_theme_install_table', $this->table_settings)){
                 global $wpdb;
                 $table = $wpdb->prefix . $this->table_settings;
-                $result = $wpdb->get_row("SELECT google_maps_placeholder FROM {$table} ");
+                $result = $wpdb->get_row("SELECT google_maps_placeholder FROM $table ");
 
                 if (!$result->google_maps_placeholder) {
                     apply_filters('update_hupa_options', 'reset_gmaps_settings', 'reset_settings');

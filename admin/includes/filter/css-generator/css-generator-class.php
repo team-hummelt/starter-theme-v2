@@ -1506,7 +1506,7 @@ class HupaStarterCssGenerator
         $return = new stdClass();
         global $wpdb;
         $table = $wpdb->prefix . $this->table_settings;
-        $result = $wpdb->get_row("SELECT {$row}  FROM {$table}");
+        $result = $wpdb->get_row("SELECT $row  FROM $table");
         if (!$result) {
             $return->status = false;
 

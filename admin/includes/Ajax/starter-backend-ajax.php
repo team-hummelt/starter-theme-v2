@@ -13,8 +13,7 @@ use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-use Twig\TwigFilter;
-use WP_User;
+
 
 /**
  * Define the Hupa_Starter_V2 Admin AJAX functionality.
@@ -172,7 +171,7 @@ class Hupa_Starter_V2_Admin_Ajax
         switch ($this->method) {
             case 'theme_form_handle':
 
-                $handle = filter_input(INPUT_POST, 'handle', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                $handle = filter_input(INPUT_POST, 'handle', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                 if (!$handle) {
                     $responseJson->spinner = true;
                     $responseJson->msg = sprintf(__('Save <b class="text-danger">failed</b> (transmission error) - %s', 'bootscore'), date('H:i:s', current_time('timestamp')));
@@ -181,21 +180,21 @@ class Hupa_Starter_V2_Admin_Ajax
                 switch ($handle) {
 
                     case'theme_optionen':
-                        filter_input(INPUT_POST, 'update_aktiv', FILTER_SANITIZE_STRING) ? $record->update_aktiv = 1 : $record->update_aktiv = 0;
-                        filter_input(INPUT_POST, 'svg_aktiv', FILTER_SANITIZE_STRING) ? $record->svg = 1 : $record->svg = 0;
-                        filter_input(INPUT_POST, 'gb_aktiv', FILTER_SANITIZE_STRING) ? $record->gutenberg = 1 : $record->gutenberg = 0;
-                        filter_input(INPUT_POST, 'version_aktiv', FILTER_SANITIZE_STRING) ? $record->version = 1 : $record->version = 0;
-                        filter_input(INPUT_POST, 'emoji_aktiv', FILTER_SANITIZE_STRING) ? $record->emoji = 1 : $record->emoji = 0;
-                        filter_input(INPUT_POST, 'css_aktiv', FILTER_SANITIZE_STRING) ? $record->block_css = 1 : $record->block_css = 0;
-                        filter_input(INPUT_POST, 'optimize', FILTER_SANITIZE_STRING) ? $record->optimize = 1 : $record->optimize = 0;
-                        filter_input(INPUT_POST, 'gb_widget_aktiv', FILTER_SANITIZE_STRING) ? $record->gb_widget = 1 : $record->gb_widget = 0;
+                        filter_input(INPUT_POST, 'update_aktiv', FILTER_UNSAFE_RAW) ? $record->update_aktiv = 1 : $record->update_aktiv = 0;
+                        filter_input(INPUT_POST, 'svg_aktiv', FILTER_UNSAFE_RAW) ? $record->svg = 1 : $record->svg = 0;
+                        filter_input(INPUT_POST, 'gb_aktiv', FILTER_UNSAFE_RAW) ? $record->gutenberg = 1 : $record->gutenberg = 0;
+                        filter_input(INPUT_POST, 'version_aktiv', FILTER_UNSAFE_RAW) ? $record->version = 1 : $record->version = 0;
+                        filter_input(INPUT_POST, 'emoji_aktiv', FILTER_UNSAFE_RAW) ? $record->emoji = 1 : $record->emoji = 0;
+                        filter_input(INPUT_POST, 'css_aktiv', FILTER_UNSAFE_RAW) ? $record->block_css = 1 : $record->block_css = 0;
+                        filter_input(INPUT_POST, 'optimize', FILTER_UNSAFE_RAW) ? $record->optimize = 1 : $record->optimize = 0;
+                        filter_input(INPUT_POST, 'gb_widget_aktiv', FILTER_UNSAFE_RAW) ? $record->gb_widget = 1 : $record->gb_widget = 0;
 
-                        filter_input(INPUT_POST, 'lizenz_login_aktiv', FILTER_SANITIZE_STRING) ? $record->lizenz_login_aktiv = 1 : $record->lizenz_login_aktiv = 0;
-                        filter_input(INPUT_POST, 'lizenz_page_aktiv', FILTER_SANITIZE_STRING) ? $record->lizenz_page_aktiv = 1 : $record->lizenz_page_aktiv = 0;
+                        filter_input(INPUT_POST, 'lizenz_login_aktiv', FILTER_UNSAFE_RAW) ? $record->lizenz_login_aktiv = 1 : $record->lizenz_login_aktiv = 0;
+                        filter_input(INPUT_POST, 'lizenz_page_aktiv', FILTER_UNSAFE_RAW) ? $record->lizenz_page_aktiv = 1 : $record->lizenz_page_aktiv = 0;
 
-                        filter_input(INPUT_POST, 'show_uhr_aktive', FILTER_SANITIZE_STRING) ? $record->show_uhr_aktive = 1 : $record->show_uhr_aktive = 0;
-                        filter_input(INPUT_POST, 'news_api_aktiv', FILTER_SANITIZE_STRING) ? $record->news_api_aktiv = 1 : $record->news_api_aktiv = 0;
-                        filter_input(INPUT_POST, 'disabled_wp_layout', FILTER_SANITIZE_STRING) ? $record->disabled_wp_layout = 1 : $record->disabled_wp_layout = 0;
+                        filter_input(INPUT_POST, 'show_uhr_aktive', FILTER_UNSAFE_RAW) ? $record->show_uhr_aktive = 1 : $record->show_uhr_aktive = 0;
+                        filter_input(INPUT_POST, 'news_api_aktiv', FILTER_UNSAFE_RAW) ? $record->news_api_aktiv = 1 : $record->news_api_aktiv = 0;
+                        filter_input(INPUT_POST, 'disabled_wp_layout', FILTER_UNSAFE_RAW) ? $record->disabled_wp_layout = 1 : $record->disabled_wp_layout = 0;
                         //$record->update_aktiv
                         $apiJson = $this->main->get_license_config();
                         $apiJson->update->update_aktiv = $record->update_aktiv;
@@ -207,17 +206,17 @@ class Hupa_Starter_V2_Admin_Ajax
                         break;
 
                     case'theme_tools':
-                        filter_input(INPUT_POST, 'areainfo_aktiv', FILTER_SANITIZE_STRING) ? $areainfo_aktiv = 1 : $areainfo_aktiv = 0;
-                        $areainfo_css_class = filter_input(INPUT_POST, 'areainfo_css_class', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                        filter_input(INPUT_POST, 'areainfo_aktiv', FILTER_UNSAFE_RAW) ? $areainfo_aktiv = 1 : $areainfo_aktiv = 0;
+                        $areainfo_css_class = filter_input(INPUT_POST, 'areainfo_css_class', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
 
-                        filter_input(INPUT_POST, 'areasocial_aktiv', FILTER_SANITIZE_STRING) ? $areasocial_aktiv = 1 : $areasocial_aktiv = 0;
-                        $areasocial_css_class = filter_input(INPUT_POST, 'areasocial_css_class', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                        filter_input(INPUT_POST, 'areasocial_aktiv', FILTER_UNSAFE_RAW) ? $areasocial_aktiv = 1 : $areasocial_aktiv = 0;
+                        $areasocial_css_class = filter_input(INPUT_POST, 'areasocial_css_class', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
 
-                        filter_input(INPUT_POST, 'areamenu_aktiv', FILTER_SANITIZE_STRING) ? $areamenu_aktiv = 1 : $areamenu_aktiv = 0;
-                        $areamenu_css_class = filter_input(INPUT_POST, 'areamenu_css_class', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                        filter_input(INPUT_POST, 'areamenu_aktiv', FILTER_UNSAFE_RAW) ? $areamenu_aktiv = 1 : $areamenu_aktiv = 0;
+                        $areamenu_css_class = filter_input(INPUT_POST, 'areamenu_css_class', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
 
-                        filter_input(INPUT_POST, 'areabtn_aktiv', FILTER_SANITIZE_STRING) ? $areabtn_aktiv = 1 : $areabtn_aktiv = 0;
-                        $areabtn_css_class = filter_input(INPUT_POST, 'areabtn_css_class', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                        filter_input(INPUT_POST, 'areabtn_aktiv', FILTER_UNSAFE_RAW) ? $areabtn_aktiv = 1 : $areabtn_aktiv = 0;
+                        $areabtn_css_class = filter_input(INPUT_POST, 'areabtn_css_class', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
 
                         $topArea = [
                             'top_area' => [
@@ -302,14 +301,14 @@ class Hupa_Starter_V2_Admin_Ajax
                         break;
 
                     case'smtp_settings':
-                        $email_abs_name = filter_input(INPUT_POST, 'email_abs_name', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                        $email_abs_name = filter_input(INPUT_POST, 'email_abs_name', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                         $email_adresse = filter_input(INPUT_POST, 'email_adresse', FILTER_VALIDATE_EMAIL);
-                        $smtp_host = filter_input(INPUT_POST, 'smtp_host', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                        $smtp_host = filter_input(INPUT_POST, 'smtp_host', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                         $smtp_port = filter_input(INPUT_POST, 'smtp_port', FILTER_SANITIZE_NUMBER_INT);
-                        $smtp_secure = filter_input(INPUT_POST, 'smtp_secure', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-                        $email_benutzer = filter_input(INPUT_POST, 'email_benutzer', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-                        $email_passwort = filter_input(INPUT_POST, 'email_passwort', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-                        filter_input(INPUT_POST, 'smtp_auth_check', FILTER_SANITIZE_STRING) ? $smtp_auth_check = 1 : $smtp_auth_check = 0;
+                        $smtp_secure = filter_input(INPUT_POST, 'smtp_secure', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
+                        $email_benutzer = filter_input(INPUT_POST, 'email_benutzer', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
+                        $email_passwort = filter_input(INPUT_POST, 'email_passwort', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
+                        filter_input(INPUT_POST, 'smtp_auth_check', FILTER_UNSAFE_RAW) ? $smtp_auth_check = 1 : $smtp_auth_check = 0;
 
                         if (!$email_passwort) {
                             $email_passwort = get_hupa_option('email_passwort');
@@ -330,13 +329,13 @@ class Hupa_Starter_V2_Admin_Ajax
                         break;
 
                     case'theme_general':
-                        filter_input(INPUT_POST, 'fix_header', FILTER_SANITIZE_STRING) ? $record->fix_header = 1 : $record->fix_header = 0;
-                        filter_input(INPUT_POST, 'fix_footer', FILTER_SANITIZE_STRING) ? $record->fix_footer = 1 : $record->fix_footer = 0;
-                        filter_input(INPUT_POST, 'scroll_top', FILTER_SANITIZE_STRING) ? $record->scroll_top = 1 : $record->scroll_top = 0;
-                        filter_input(INPUT_POST, 'edit_link', FILTER_SANITIZE_STRING) ? $record->edit_link = 1 : $record->edit_link = 0;
-                        filter_input(INPUT_POST, 'login_img_aktiv', FILTER_SANITIZE_STRING) ? $record->login_img_aktiv = 1 : $record->login_img_aktiv = 0;
+                        filter_input(INPUT_POST, 'fix_header', FILTER_UNSAFE_RAW) ? $record->fix_header = 1 : $record->fix_header = 0;
+                        filter_input(INPUT_POST, 'fix_footer', FILTER_UNSAFE_RAW) ? $record->fix_footer = 1 : $record->fix_footer = 0;
+                        filter_input(INPUT_POST, 'scroll_top', FILTER_UNSAFE_RAW) ? $record->scroll_top = 1 : $record->scroll_top = 0;
+                        filter_input(INPUT_POST, 'edit_link', FILTER_UNSAFE_RAW) ? $record->edit_link = 1 : $record->edit_link = 0;
+                        filter_input(INPUT_POST, 'login_img_aktiv', FILTER_UNSAFE_RAW) ? $record->login_img_aktiv = 1 : $record->login_img_aktiv = 0;
 
-                        filter_input(INPUT_POST, 'top_aktiv', FILTER_SANITIZE_STRING) ? $record->top_aktiv = 1 : $record->top_aktiv = 0;
+                        filter_input(INPUT_POST, 'top_aktiv', FILTER_UNSAFE_RAW) ? $record->top_aktiv = 1 : $record->top_aktiv = 0;
 
                         $record->top_area_container = filter_input(INPUT_POST, 'top_area_container', FILTER_SANITIZE_NUMBER_INT);
 
@@ -375,28 +374,28 @@ class Hupa_Starter_V2_Admin_Ajax
                         }
 
                         //Sonstige Settings
-                        filter_input(INPUT_POST, 'preloader_aktiv', FILTER_SANITIZE_STRING) ? $record->preloader_aktiv = 1 : $record->preloader_aktiv = 0;
+                        filter_input(INPUT_POST, 'preloader_aktiv', FILTER_UNSAFE_RAW) ? $record->preloader_aktiv = 1 : $record->preloader_aktiv = 0;
                         $bottom_area_text = filter_input(INPUT_POST, 'bottom_area_text');
                         $record->bottom_area_text = esc_textarea($bottom_area_text);
 
                         // Sitemap
-                        filter_input(INPUT_POST, 'sitemap_post', FILTER_SANITIZE_STRING) ? $record->sitemap_post = 1 : $record->sitemap_post = 0;
-                        filter_input(INPUT_POST, 'sitemap_page', FILTER_SANITIZE_STRING) ? $record->sitemap_page = 1 : $record->sitemap_page = 0;
+                        filter_input(INPUT_POST, 'sitemap_post', FILTER_UNSAFE_RAW) ? $record->sitemap_post = 1 : $record->sitemap_post = 0;
+                        filter_input(INPUT_POST, 'sitemap_page', FILTER_UNSAFE_RAW) ? $record->sitemap_page = 1 : $record->sitemap_page = 0;
 
                         //WooCommerce
-                        filter_input(INPUT_POST, 'woocommerce_aktiv', FILTER_SANITIZE_STRING) ? $record->woocommerce_aktiv = 1 : $record->woocommerce_aktiv = 0;
-                        filter_input(INPUT_POST, 'woocommerce_sidebar', FILTER_SANITIZE_STRING) ? $record->woocommerce_sidebar = 1 : $record->woocommerce_sidebar = 0;
+                        filter_input(INPUT_POST, 'woocommerce_aktiv', FILTER_UNSAFE_RAW) ? $record->woocommerce_aktiv = 1 : $record->woocommerce_aktiv = 0;
+                        filter_input(INPUT_POST, 'woocommerce_sidebar', FILTER_UNSAFE_RAW) ? $record->woocommerce_sidebar = 1 : $record->woocommerce_sidebar = 0;
 
                         //Soziale Medien
-                        filter_input(INPUT_POST, 'social_symbol_color', FILTER_SANITIZE_STRING) ? $record->social_symbol_color = 1 : $record->social_symbol_color = 0;
+                        filter_input(INPUT_POST, 'social_symbol_color', FILTER_UNSAFE_RAW) ? $record->social_symbol_color = 1 : $record->social_symbol_color = 0;
                         $record->social_type = filter_input(INPUT_POST, 'social_type', FILTER_SANITIZE_NUMBER_INT);
-                        $record->social_extra_css = filter_input(INPUT_POST, 'social_extra_css', FILTER_SANITIZE_STRING);
+                        $record->social_extra_css = filter_input(INPUT_POST, 'social_extra_css', FILTER_UNSAFE_RAW);
 
                         // Soziale ARCHIV SEITEN
-                        filter_input(INPUT_POST, 'social_kategorie', FILTER_SANITIZE_STRING) ? $record->social_kategorie = 1 : $record->social_kategorie = 0;
-                        filter_input(INPUT_POST, 'social_author', FILTER_SANITIZE_STRING) ? $record->social_author = 1 : $record->social_author = 0;
-                        filter_input(INPUT_POST, 'social_archiv', FILTER_SANITIZE_STRING) ? $record->social_archiv = 1 : $record->social_archiv = 0;
-                        filter_input(INPUT_POST, 'social_farbig', FILTER_SANITIZE_STRING) ? $record->social_farbig = 1 : $record->social_farbig = 0;
+                        filter_input(INPUT_POST, 'social_kategorie', FILTER_UNSAFE_RAW) ? $record->social_kategorie = 1 : $record->social_kategorie = 0;
+                        filter_input(INPUT_POST, 'social_author', FILTER_UNSAFE_RAW) ? $record->social_author = 1 : $record->social_author = 0;
+                        filter_input(INPUT_POST, 'social_archiv', FILTER_UNSAFE_RAW) ? $record->social_archiv = 1 : $record->social_archiv = 0;
+                        filter_input(INPUT_POST, 'social_farbig', FILTER_UNSAFE_RAW) ? $record->social_farbig = 1 : $record->social_farbig = 0;
 
                         // Template Vorlagen
                         $record->kategorie_template = filter_input(INPUT_POST, 'kategorie_template', FILTER_SANITIZE_NUMBER_INT);
@@ -405,55 +404,55 @@ class Hupa_Starter_V2_Admin_Ajax
 
                         //NEW TEMPLATES
                         //KATEGORIE
-                        filter_input(INPUT_POST, 'kategorie_show_sidebar', FILTER_SANITIZE_STRING) ? $record->kategorie_show_sidebar = 1 : $record->kategorie_show_sidebar = 0;
+                        filter_input(INPUT_POST, 'kategorie_show_sidebar', FILTER_UNSAFE_RAW) ? $record->kategorie_show_sidebar = 1 : $record->kategorie_show_sidebar = 0;
                         $record->kategorie_select_sidebar = filter_input(INPUT_POST, 'kategorie_select_sidebar', FILTER_SANITIZE_NUMBER_INT);
-                        filter_input(INPUT_POST, 'kategorie_show_image', FILTER_SANITIZE_STRING) ? $record->kategorie_show_image = 1 : $record->kategorie_show_image = 0;
-                        filter_input(INPUT_POST, 'kategorie_show_kategorie', FILTER_SANITIZE_STRING) ? $record->kategorie_show_kategorie = 1 : $record->kategorie_show_kategorie = 0;
-                        filter_input(INPUT_POST, 'kategorie_show_post_date', FILTER_SANITIZE_STRING) ? $record->kategorie_show_post_date = 1 : $record->kategorie_show_post_date = 0;
-                        filter_input(INPUT_POST, 'kategorie_show_post_author', FILTER_SANITIZE_STRING) ? $record->kategorie_show_post_author = 1 : $record->kategorie_show_post_author = 0;
-                        filter_input(INPUT_POST, 'kategorie_show_post_kommentar', FILTER_SANITIZE_STRING) ? $record->kategorie_show_post_kommentar = 1 : $record->kategorie_show_post_kommentar = 0;
-                        filter_input(INPUT_POST, 'kategorie_show_post_tags', FILTER_SANITIZE_STRING) ? $record->kategorie_show_post_tags = 1 : $record->kategorie_show_post_tags = 0;
+                        filter_input(INPUT_POST, 'kategorie_show_image', FILTER_UNSAFE_RAW) ? $record->kategorie_show_image = 1 : $record->kategorie_show_image = 0;
+                        filter_input(INPUT_POST, 'kategorie_show_kategorie', FILTER_UNSAFE_RAW) ? $record->kategorie_show_kategorie = 1 : $record->kategorie_show_kategorie = 0;
+                        filter_input(INPUT_POST, 'kategorie_show_post_date', FILTER_UNSAFE_RAW) ? $record->kategorie_show_post_date = 1 : $record->kategorie_show_post_date = 0;
+                        filter_input(INPUT_POST, 'kategorie_show_post_author', FILTER_UNSAFE_RAW) ? $record->kategorie_show_post_author = 1 : $record->kategorie_show_post_author = 0;
+                        filter_input(INPUT_POST, 'kategorie_show_post_kommentar', FILTER_UNSAFE_RAW) ? $record->kategorie_show_post_kommentar = 1 : $record->kategorie_show_post_kommentar = 0;
+                        filter_input(INPUT_POST, 'kategorie_show_post_tags', FILTER_UNSAFE_RAW) ? $record->kategorie_show_post_tags = 1 : $record->kategorie_show_post_tags = 0;
                         $record->kategorie_select_header = filter_input(INPUT_POST, 'kategorie_select_header', FILTER_SANITIZE_NUMBER_INT);
                         $record->kategorie_select_footer = filter_input(INPUT_POST, 'kategorie_select_footer', FILTER_SANITIZE_NUMBER_INT);
 
                         //ARCHIVE
-                        filter_input(INPUT_POST, 'archiv_show_sidebar', FILTER_SANITIZE_STRING) ? $record->archiv_show_sidebar = 1 : $record->archiv_show_sidebar = 0;
+                        filter_input(INPUT_POST, 'archiv_show_sidebar', FILTER_UNSAFE_RAW) ? $record->archiv_show_sidebar = 1 : $record->archiv_show_sidebar = 0;
                         $record->archiv_select_sidebar = filter_input(INPUT_POST, 'archiv_select_sidebar', FILTER_SANITIZE_NUMBER_INT);
-                        filter_input(INPUT_POST, 'archiv_show_post_image', FILTER_SANITIZE_STRING) ? $record->archiv_show_post_image = 1 : $record->archiv_show_post_image = 0;
-                        filter_input(INPUT_POST, 'archiv_show_kategorie', FILTER_SANITIZE_STRING) ? $record->archiv_show_kategorie = 1 : $record->archiv_show_kategorie = 0;
-                        filter_input(INPUT_POST, 'archiv_show_post_date', FILTER_SANITIZE_STRING) ? $record->archiv_show_post_date = 1 : $record->archiv_show_post_date = 0;
-                        filter_input(INPUT_POST, 'archiv_show_post_author', FILTER_SANITIZE_STRING) ? $record->archiv_show_post_author = 1 : $record->archiv_show_post_author = 0;
-                        filter_input(INPUT_POST, 'archiv_show_post_kommentar', FILTER_SANITIZE_STRING) ? $record->archiv_show_post_kommentar = 1 : $record->archiv_show_post_kommentar = 0;
-                        filter_input(INPUT_POST, 'archiv_show_post_tags', FILTER_SANITIZE_STRING) ? $record->archiv_show_post_tags = 1 : $record->archiv_show_post_tags = 0;
+                        filter_input(INPUT_POST, 'archiv_show_post_image', FILTER_UNSAFE_RAW) ? $record->archiv_show_post_image = 1 : $record->archiv_show_post_image = 0;
+                        filter_input(INPUT_POST, 'archiv_show_kategorie', FILTER_UNSAFE_RAW) ? $record->archiv_show_kategorie = 1 : $record->archiv_show_kategorie = 0;
+                        filter_input(INPUT_POST, 'archiv_show_post_date', FILTER_UNSAFE_RAW) ? $record->archiv_show_post_date = 1 : $record->archiv_show_post_date = 0;
+                        filter_input(INPUT_POST, 'archiv_show_post_author', FILTER_UNSAFE_RAW) ? $record->archiv_show_post_author = 1 : $record->archiv_show_post_author = 0;
+                        filter_input(INPUT_POST, 'archiv_show_post_kommentar', FILTER_UNSAFE_RAW) ? $record->archiv_show_post_kommentar = 1 : $record->archiv_show_post_kommentar = 0;
+                        filter_input(INPUT_POST, 'archiv_show_post_tags', FILTER_UNSAFE_RAW) ? $record->archiv_show_post_tags = 1 : $record->archiv_show_post_tags = 0;
                         $record->archiv_select_header = filter_input(INPUT_POST, 'archiv_select_header', FILTER_SANITIZE_NUMBER_INT);
                         $record->archiv_select_footer = filter_input(INPUT_POST, 'archiv_select_footer', FILTER_SANITIZE_NUMBER_INT);
 
                         //AUTHOR
-                        filter_input(INPUT_POST, 'autoren_show_sidebar', FILTER_SANITIZE_STRING) ? $record->autoren_show_sidebar = 1 : $record->autoren_show_sidebar = 0;
+                        filter_input(INPUT_POST, 'autoren_show_sidebar', FILTER_UNSAFE_RAW) ? $record->autoren_show_sidebar = 1 : $record->autoren_show_sidebar = 0;
                         $record->autoren_select_sidebar = filter_input(INPUT_POST, 'autoren_select_sidebar', FILTER_SANITIZE_NUMBER_INT);
-                        filter_input(INPUT_POST, 'autoren_show_post_image', FILTER_SANITIZE_STRING) ? $record->autoren_show_post_image = 1 : $record->autoren_show_post_image = 0;
-                        filter_input(INPUT_POST, 'autoren_show_kategorie', FILTER_SANITIZE_STRING) ? $record->autoren_show_kategorie = 1 : $record->autoren_show_kategorie = 0;
-                        filter_input(INPUT_POST, 'autoren_show_post_date', FILTER_SANITIZE_STRING) ? $record->autoren_show_post_date = 1 : $record->autoren_show_post_date = 0;
-                        filter_input(INPUT_POST, 'autoren_show_post_author', FILTER_SANITIZE_STRING) ? $record->autoren_show_post_author = 1 : $record->autoren_show_post_author = 0;
-                        filter_input(INPUT_POST, 'autoren_show_post_kommentar', FILTER_SANITIZE_STRING) ? $record->autoren_show_post_kommentar = 1 : $record->autoren_show_post_kommentar = 0;
-                        filter_input(INPUT_POST, 'autoren_show_post_tags', FILTER_SANITIZE_STRING) ? $record->autoren_show_post_tags = 1 : $record->autoren_show_post_tags = 0;
+                        filter_input(INPUT_POST, 'autoren_show_post_image', FILTER_UNSAFE_RAW) ? $record->autoren_show_post_image = 1 : $record->autoren_show_post_image = 0;
+                        filter_input(INPUT_POST, 'autoren_show_kategorie', FILTER_UNSAFE_RAW) ? $record->autoren_show_kategorie = 1 : $record->autoren_show_kategorie = 0;
+                        filter_input(INPUT_POST, 'autoren_show_post_date', FILTER_UNSAFE_RAW) ? $record->autoren_show_post_date = 1 : $record->autoren_show_post_date = 0;
+                        filter_input(INPUT_POST, 'autoren_show_post_author', FILTER_UNSAFE_RAW) ? $record->autoren_show_post_author = 1 : $record->autoren_show_post_author = 0;
+                        filter_input(INPUT_POST, 'autoren_show_post_kommentar', FILTER_UNSAFE_RAW) ? $record->autoren_show_post_kommentar = 1 : $record->autoren_show_post_kommentar = 0;
+                        filter_input(INPUT_POST, 'autoren_show_post_tags', FILTER_UNSAFE_RAW) ? $record->autoren_show_post_tags = 1 : $record->autoren_show_post_tags = 0;
                         $record->autoren_select_header = filter_input(INPUT_POST, 'autoren_select_header', FILTER_SANITIZE_NUMBER_INT);
                         $record->autoren_select_footer = filter_input(INPUT_POST, 'autoren_select_footer', FILTER_SANITIZE_NUMBER_INT);
 
                         //404 Page
                         $record->hupa_select_404 = filter_input(INPUT_POST, 'hupa_select_404', FILTER_SANITIZE_NUMBER_INT);
 
-                        filter_input(INPUT_POST, 'kategorie_image', FILTER_SANITIZE_STRING) ? $record->kategorie_image = 1 : $record->kategorie_image = 0;
-                        filter_input(INPUT_POST, 'archiv_image', FILTER_SANITIZE_STRING) ? $record->archiv_image = 1 : $record->archiv_image = 0;
-                        filter_input(INPUT_POST, 'author_image', FILTER_SANITIZE_STRING) ? $record->author_image = 1 : $record->author_image = 0;
+                        filter_input(INPUT_POST, 'kategorie_image', FILTER_UNSAFE_RAW) ? $record->kategorie_image = 1 : $record->kategorie_image = 0;
+                        filter_input(INPUT_POST, 'archiv_image', FILTER_UNSAFE_RAW) ? $record->archiv_image = 1 : $record->archiv_image = 0;
+                        filter_input(INPUT_POST, 'author_image', FILTER_UNSAFE_RAW) ? $record->author_image = 1 : $record->author_image = 0;
 
                         //Post Info Settings
-                        filter_input(INPUT_POST, 'post_kategorie', FILTER_SANITIZE_STRING) ? $record->post_kategorie = 1 : $record->post_kategorie = 0;
-                        filter_input(INPUT_POST, 'post_date', FILTER_SANITIZE_STRING) ? $record->post_date = 1 : $record->post_date = 0;
-                        filter_input(INPUT_POST, 'post_autor', FILTER_SANITIZE_STRING) ? $record->post_autor = 1 : $record->post_autor = 0;
-                        filter_input(INPUT_POST, 'post_kommentar', FILTER_SANITIZE_STRING) ? $record->post_kommentar = 1 : $record->post_kommentar = 0;
-                        filter_input(INPUT_POST, 'post_tags', FILTER_SANITIZE_STRING) ? $record->post_tags = 1 : $record->post_tags = 0;
-                        filter_input(INPUT_POST, 'post_breadcrumb', FILTER_SANITIZE_STRING) ? $record->post_breadcrumb = 1 : $record->post_breadcrumb = 0;
+                        filter_input(INPUT_POST, 'post_kategorie', FILTER_UNSAFE_RAW) ? $record->post_kategorie = 1 : $record->post_kategorie = 0;
+                        filter_input(INPUT_POST, 'post_date', FILTER_UNSAFE_RAW) ? $record->post_date = 1 : $record->post_date = 0;
+                        filter_input(INPUT_POST, 'post_autor', FILTER_UNSAFE_RAW) ? $record->post_autor = 1 : $record->post_autor = 0;
+                        filter_input(INPUT_POST, 'post_kommentar', FILTER_UNSAFE_RAW) ? $record->post_kommentar = 1 : $record->post_kommentar = 0;
+                        filter_input(INPUT_POST, 'post_tags', FILTER_UNSAFE_RAW) ? $record->post_tags = 1 : $record->post_tags = 0;
+                        filter_input(INPUT_POST, 'post_breadcrumb', FILTER_UNSAFE_RAW) ? $record->post_breadcrumb = 1 : $record->post_breadcrumb = 0;
 
 
                         apply_filters('update_hupa_options', $record, 'hupa_general');
@@ -464,23 +463,23 @@ class Hupa_Starter_V2_Admin_Ajax
                         break;
 
                     case'logo_image':
-                        $record->type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                        $record->type = filter_input(INPUT_POST, 'type', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                         $record->id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
                         apply_filters('update_hupa_options', $record, 'image_upload');
                         $responseJson->spinner = true;
                         break;
 
                     case 'theme_fonts':
-                        $record->fontType = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-                        $record->font_family = filter_input(INPUT_POST, 'font_family', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                        $record->fontType = filter_input(INPUT_POST, 'type', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
+                        $record->font_family = filter_input(INPUT_POST, 'font_family', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                         $record->font_style = filter_input(INPUT_POST, 'font_style', FILTER_SANITIZE_NUMBER_INT);
-                        $record->font_size = filter_input(INPUT_POST, 'font_size', FILTER_SANITIZE_STRING);
-                        $record->font_height = filter_input(INPUT_POST, 'font_height', FILTER_SANITIZE_STRING);
-                        $record->font_color = filter_input(INPUT_POST, 'font_color', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-                        filter_input(INPUT_POST, 'font_display_check', FILTER_SANITIZE_STRING) ? $record->font_display_check = 1 : $record->font_display_check = 0;
-                        filter_input(INPUT_POST, 'font_bs_check', FILTER_SANITIZE_STRING) ? $record->font_bs_check = 1 : $record->font_bs_check = 0;
+                        $record->font_size = filter_input(INPUT_POST, 'font_size', FILTER_UNSAFE_RAW);
+                        $record->font_height = filter_input(INPUT_POST, 'font_height', FILTER_UNSAFE_RAW);
+                        $record->font_color = filter_input(INPUT_POST, 'font_color', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
+                        filter_input(INPUT_POST, 'font_display_check', FILTER_UNSAFE_RAW) ? $record->font_display_check = 1 : $record->font_display_check = 0;
+                        filter_input(INPUT_POST, 'font_bs_check', FILTER_UNSAFE_RAW) ? $record->font_bs_check = 1 : $record->font_bs_check = 0;
                         //NUR Footer Widget
-                        filter_input(INPUT_POST, 'font_txt_decoration', FILTER_SANITIZE_STRING) ? $record->font_txt_decoration = 1 : $record->font_txt_decoration = 0;
+                        filter_input(INPUT_POST, 'font_txt_decoration', FILTER_UNSAFE_RAW) ? $record->font_txt_decoration = 1 : $record->font_txt_decoration = 0;
 
                         apply_filters('update_hupa_options', $record, 'hupa_fonts');
                         //TODO JOB WARNING UPDATE CSS FILE
@@ -492,69 +491,69 @@ class Hupa_Starter_V2_Admin_Ajax
                     case 'theme_colors':
 
                         //SEITEN FARBEN
-                        $record->site_bg = filter_input(INPUT_POST, 'site_bg', FILTER_SANITIZE_STRING);
-                        $record->nav_bg = filter_input(INPUT_POST, 'nav_bg', FILTER_SANITIZE_STRING);
+                        $record->site_bg = filter_input(INPUT_POST, 'site_bg', FILTER_UNSAFE_RAW);
+                        $record->nav_bg = filter_input(INPUT_POST, 'nav_bg', FILTER_UNSAFE_RAW);
                         $record->nav_bg_opacity = filter_input(INPUT_POST, 'nav_bg_opacity', FILTER_SANITIZE_NUMBER_INT);
-                        $record->footer_bg = filter_input(INPUT_POST, 'footer_bg', FILTER_SANITIZE_STRING);
-                        $record->mega_menu_bg = filter_input(INPUT_POST, 'mega_menu_bg', FILTER_SANITIZE_STRING);
+                        $record->footer_bg = filter_input(INPUT_POST, 'footer_bg', FILTER_UNSAFE_RAW);
+                        $record->mega_menu_bg = filter_input(INPUT_POST, 'mega_menu_bg', FILTER_UNSAFE_RAW);
 
                         //UPPERCASE
-                        filter_input(INPUT_POST, 'menu_uppercase', FILTER_SANITIZE_STRING) ? $record->menu_uppercase = 1 : $record->menu_uppercase = 0;
+                        filter_input(INPUT_POST, 'menu_uppercase', FILTER_UNSAFE_RAW) ? $record->menu_uppercase = 1 : $record->menu_uppercase = 0;
 
                         //MENU BUTTON
-                        $record->menu_btn_bg_color = filter_input(INPUT_POST, 'menu_btn_bg_color', FILTER_SANITIZE_STRING);
-                        $record->menu_btn_color = filter_input(INPUT_POST, 'menu_btn_color', FILTER_SANITIZE_STRING);
+                        $record->menu_btn_bg_color = filter_input(INPUT_POST, 'menu_btn_bg_color', FILTER_UNSAFE_RAW);
+                        $record->menu_btn_color = filter_input(INPUT_POST, 'menu_btn_color', FILTER_UNSAFE_RAW);
                         $record->menu_btn_bg_opacity = filter_input(INPUT_POST, 'menu_btn_bg_opacity', FILTER_SANITIZE_NUMBER_INT);
 
                         //MENU BUTTON AKTIV
-                        $record->menu_btn_active_bg = filter_input(INPUT_POST, 'menu_btn_active_bg', FILTER_SANITIZE_STRING);
-                        $record->menu_btn_active_color = filter_input(INPUT_POST, 'menu_btn_active_color', FILTER_SANITIZE_STRING);
+                        $record->menu_btn_active_bg = filter_input(INPUT_POST, 'menu_btn_active_bg', FILTER_UNSAFE_RAW);
+                        $record->menu_btn_active_color = filter_input(INPUT_POST, 'menu_btn_active_color', FILTER_UNSAFE_RAW);
                         $record->menu_btn_active_bg_opacity = filter_input(INPUT_POST, 'menu_btn_active_bg_opacity', FILTER_SANITIZE_NUMBER_INT);
 
                         //MENU BUTTON HOVER
-                        $record->menu_btn_hover_bg = filter_input(INPUT_POST, 'menu_btn_hover_bg', FILTER_SANITIZE_STRING);
-                        $record->menu_btn_hover_color = filter_input(INPUT_POST, 'menu_btn_hover_color', FILTER_SANITIZE_STRING);
+                        $record->menu_btn_hover_bg = filter_input(INPUT_POST, 'menu_btn_hover_bg', FILTER_UNSAFE_RAW);
+                        $record->menu_btn_hover_color = filter_input(INPUT_POST, 'menu_btn_hover_color', FILTER_UNSAFE_RAW);
                         $record->menu_btn_hover_bg_opacity = filter_input(INPUT_POST, 'menu_btn_hover_bg_opacity', FILTER_SANITIZE_NUMBER_INT);
 
                         //DROPDOWN
-                        $record->menu_dropdown_bg = filter_input(INPUT_POST, 'menu_dropdown_bg', FILTER_SANITIZE_STRING);
-                        $record->menu_dropdown_color = filter_input(INPUT_POST, 'menu_dropdown_color', FILTER_SANITIZE_STRING);
+                        $record->menu_dropdown_bg = filter_input(INPUT_POST, 'menu_dropdown_bg', FILTER_UNSAFE_RAW);
+                        $record->menu_dropdown_color = filter_input(INPUT_POST, 'menu_dropdown_color', FILTER_UNSAFE_RAW);
                         $record->menu_dropdown_bg_opacity = filter_input(INPUT_POST, 'menu_dropdown_bg_opacity', FILTER_SANITIZE_NUMBER_INT);
 
                         //DROPDOWN AKTIV
-                        $record->menu_dropdown_active_bg = filter_input(INPUT_POST, 'menu_dropdown_active_bg', FILTER_SANITIZE_STRING);
-                        $record->menu_dropdown_active_color = filter_input(INPUT_POST, 'menu_dropdown_active_color', FILTER_SANITIZE_STRING);
+                        $record->menu_dropdown_active_bg = filter_input(INPUT_POST, 'menu_dropdown_active_bg', FILTER_UNSAFE_RAW);
+                        $record->menu_dropdown_active_color = filter_input(INPUT_POST, 'menu_dropdown_active_color', FILTER_UNSAFE_RAW);
                         $record->menu_dropdown_active_bg_opacity = filter_input(INPUT_POST, 'menu_dropdown_active_bg_opacity', FILTER_SANITIZE_NUMBER_INT);
 
                         //DROPDOWN HOVER
-                        $record->menu_dropdown_hover_bg = filter_input(INPUT_POST, 'menu_dropdown_hover_bg', FILTER_SANITIZE_STRING);
-                        $record->menu_dropdown_hover_color = filter_input(INPUT_POST, 'menu_dropdown_hover_color', FILTER_SANITIZE_STRING);
+                        $record->menu_dropdown_hover_bg = filter_input(INPUT_POST, 'menu_dropdown_hover_bg', FILTER_UNSAFE_RAW);
+                        $record->menu_dropdown_hover_color = filter_input(INPUT_POST, 'menu_dropdown_hover_color', FILTER_UNSAFE_RAW);
                         $record->menu_dropdown_hover_bg_opacity = filter_input(INPUT_POST, 'menu_dropdown_hover_bg_opacity', FILTER_SANITIZE_NUMBER_INT);
 
                         //LOGIN SEITE
-                        $record->login_bg = filter_input(INPUT_POST, 'login_bg', FILTER_SANITIZE_STRING);
-                        $record->login_color = filter_input(INPUT_POST, 'login_color', FILTER_SANITIZE_STRING);
-                        $record->login_btn_bg = filter_input(INPUT_POST, 'login_btn_bg', FILTER_SANITIZE_STRING);
-                        $record->login_btn_color = filter_input(INPUT_POST, 'login_btn_color', FILTER_SANITIZE_STRING);
+                        $record->login_bg = filter_input(INPUT_POST, 'login_bg', FILTER_UNSAFE_RAW);
+                        $record->login_color = filter_input(INPUT_POST, 'login_color', FILTER_UNSAFE_RAW);
+                        $record->login_btn_bg = filter_input(INPUT_POST, 'login_btn_bg', FILTER_UNSAFE_RAW);
+                        $record->login_btn_color = filter_input(INPUT_POST, 'login_btn_color', FILTER_UNSAFE_RAW);
 
                         //LINK COLOR
-                        $record->link_color = filter_input(INPUT_POST, 'link_color', FILTER_SANITIZE_STRING);
-                        $record->link_aktiv_color = filter_input(INPUT_POST, 'link_aktiv_color', FILTER_SANITIZE_STRING);
-                        $record->link_hover_color = filter_input(INPUT_POST, 'link_hover_color', FILTER_SANITIZE_STRING);
+                        $record->link_color = filter_input(INPUT_POST, 'link_color', FILTER_UNSAFE_RAW);
+                        $record->link_aktiv_color = filter_input(INPUT_POST, 'link_aktiv_color', FILTER_UNSAFE_RAW);
+                        $record->link_hover_color = filter_input(INPUT_POST, 'link_hover_color', FILTER_UNSAFE_RAW);
 
                         //TOP AREA COLOR
-                        $record->top_bg_color = filter_input(INPUT_POST, 'top_bg_color', FILTER_SANITIZE_STRING);
-                        $record->top_font_color = filter_input(INPUT_POST, 'top_font_color', FILTER_SANITIZE_STRING);
+                        $record->top_bg_color = filter_input(INPUT_POST, 'top_bg_color', FILTER_UNSAFE_RAW);
+                        $record->top_font_color = filter_input(INPUT_POST, 'top_font_color', FILTER_UNSAFE_RAW);
                         $record->top_bg_opacity = filter_input(INPUT_POST, 'top_bg_opacity', FILTER_SANITIZE_NUMBER_INT);
 
                         //ScrollToTop Button
-                        $record->scroll_btn_bg = filter_input(INPUT_POST, 'scroll_btn_bg', FILTER_SANITIZE_STRING);
-                        $record->scroll_btn_color = filter_input(INPUT_POST, 'scroll_btn_color', FILTER_SANITIZE_STRING);
+                        $record->scroll_btn_bg = filter_input(INPUT_POST, 'scroll_btn_bg', FILTER_UNSAFE_RAW);
+                        $record->scroll_btn_color = filter_input(INPUT_POST, 'scroll_btn_color', FILTER_UNSAFE_RAW);
 
                         //WIDGET BACKGROUND COLOR
-                        $record->widget_bg = filter_input(INPUT_POST, 'widget_bg', FILTER_SANITIZE_STRING);
-                        $record->widget_border_color = filter_input(INPUT_POST, 'widget_border_color', FILTER_SANITIZE_STRING);
-                        filter_input(INPUT_POST, 'widget_border_aktiv', FILTER_SANITIZE_STRING) ? $record->widget_border_aktiv = 1 : $record->widget_border_aktiv = 0;
+                        $record->widget_bg = filter_input(INPUT_POST, 'widget_bg', FILTER_UNSAFE_RAW);
+                        $record->widget_border_color = filter_input(INPUT_POST, 'widget_border_color', FILTER_UNSAFE_RAW);
+                        filter_input(INPUT_POST, 'widget_border_aktiv', FILTER_UNSAFE_RAW) ? $record->widget_border_aktiv = 1 : $record->widget_border_aktiv = 0;
 
                         apply_filters('update_hupa_options', $record, 'theme_colors');
 
@@ -565,74 +564,74 @@ class Hupa_Starter_V2_Admin_Ajax
                         break;
 
                     case 'theme_social':
-                        filter_input(INPUT_POST, 'twitter_post_check', FILTER_SANITIZE_STRING) ? $twitter_post_check = 1 : $twitter_post_check = 0;
-                        filter_input(INPUT_POST, 'twitter_top_check', FILTER_SANITIZE_STRING) ? $twitter_top_check = 1 : $twitter_top_check = 0;
-                        $twitter_share_txt = filter_input(INPUT_POST, 'twitter_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                        filter_input(INPUT_POST, 'twitter_post_check', FILTER_UNSAFE_RAW) ? $twitter_post_check = 1 : $twitter_post_check = 0;
+                        filter_input(INPUT_POST, 'twitter_top_check', FILTER_UNSAFE_RAW) ? $twitter_top_check = 1 : $twitter_top_check = 0;
+                        $twitter_share_txt = filter_input(INPUT_POST, 'twitter_share_txt', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                         $twitter_url = filter_input(INPUT_POST, 'twitter_url', FILTER_VALIDATE_URL);
-                        filter_input(INPUT_POST, 'twitter_url_check', FILTER_SANITIZE_STRING) ? $twitter_url_check = 1 : $twitter_url_check = 0;
+                        filter_input(INPUT_POST, 'twitter_url_check', FILTER_UNSAFE_RAW) ? $twitter_url_check = 1 : $twitter_url_check = 0;
 
-                        filter_input(INPUT_POST, 'facebook_post_check', FILTER_SANITIZE_STRING) ? $facebook_post_check = 1 : $facebook_post_check = 0;
-                        filter_input(INPUT_POST, 'facebook_top_check', FILTER_SANITIZE_STRING) ? $facebook_top_check = 1 : $facebook_top_check = 0;
-                        $facebook_share_txt = filter_input(INPUT_POST, 'facebook_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                        filter_input(INPUT_POST, 'facebook_post_check', FILTER_UNSAFE_RAW) ? $facebook_post_check = 1 : $facebook_post_check = 0;
+                        filter_input(INPUT_POST, 'facebook_top_check', FILTER_UNSAFE_RAW) ? $facebook_top_check = 1 : $facebook_top_check = 0;
+                        $facebook_share_txt = filter_input(INPUT_POST, 'facebook_share_txt', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                         $facebook_url = filter_input(INPUT_POST, 'facebook_url', FILTER_VALIDATE_URL);
-                        filter_input(INPUT_POST, 'facebook_url_check', FILTER_SANITIZE_STRING) ? $facebook_url_check = 1 : $facebook_url_check = 0;
+                        filter_input(INPUT_POST, 'facebook_url_check', FILTER_UNSAFE_RAW) ? $facebook_url_check = 1 : $facebook_url_check = 0;
 
-                        filter_input(INPUT_POST, 'whatsapp_post_check', FILTER_SANITIZE_STRING) ? $whatsapp_post_check = 1 : $whatsapp_post_check = 0;
-                        filter_input(INPUT_POST, 'whatsapp_top_check', FILTER_SANITIZE_STRING) ? $whatsapp_top_check = 1 : $whatsapp_top_check = 0;
-                        $whatsapp_share_txt = filter_input(INPUT_POST, 'whatsapp_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                        filter_input(INPUT_POST, 'whatsapp_post_check', FILTER_UNSAFE_RAW) ? $whatsapp_post_check = 1 : $whatsapp_post_check = 0;
+                        filter_input(INPUT_POST, 'whatsapp_top_check', FILTER_UNSAFE_RAW) ? $whatsapp_top_check = 1 : $whatsapp_top_check = 0;
+                        $whatsapp_share_txt = filter_input(INPUT_POST, 'whatsapp_share_txt', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                         $whatsapp_url = filter_input(INPUT_POST, 'whatsapp_url', FILTER_VALIDATE_URL);
-                        filter_input(INPUT_POST, 'whatsapp_url_check', FILTER_SANITIZE_STRING) ? $whatsapp_url_check = 1 : $whatsapp_url_check = 0;
+                        filter_input(INPUT_POST, 'whatsapp_url_check', FILTER_UNSAFE_RAW) ? $whatsapp_url_check = 1 : $whatsapp_url_check = 0;
 
-                        filter_input(INPUT_POST, 'pinterest_post_check', FILTER_SANITIZE_STRING) ? $pinterest_post_check = 1 : $pinterest_post_check = 0;
-                        filter_input(INPUT_POST, 'pinterest_top_check', FILTER_SANITIZE_STRING) ? $pinterest_top_check = 1 : $pinterest_top_check = 0;
-                        $pinterest_share_txt = filter_input(INPUT_POST, 'pinterest_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                        filter_input(INPUT_POST, 'pinterest_post_check', FILTER_UNSAFE_RAW) ? $pinterest_post_check = 1 : $pinterest_post_check = 0;
+                        filter_input(INPUT_POST, 'pinterest_top_check', FILTER_UNSAFE_RAW) ? $pinterest_top_check = 1 : $pinterest_top_check = 0;
+                        $pinterest_share_txt = filter_input(INPUT_POST, 'pinterest_share_txt', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                         $pinterest_url = filter_input(INPUT_POST, 'pinterest_url', FILTER_VALIDATE_URL);
-                        filter_input(INPUT_POST, 'pinterest_url_check', FILTER_SANITIZE_STRING) ? $pinterest_url_check = 1 : $pinterest_url_check = 0;
+                        filter_input(INPUT_POST, 'pinterest_url_check', FILTER_UNSAFE_RAW) ? $pinterest_url_check = 1 : $pinterest_url_check = 0;
 
-                        filter_input(INPUT_POST, 'linkedin_post_check', FILTER_SANITIZE_STRING) ? $linkedin_post_check = 1 : $linkedin_post_check = 0;
-                        filter_input(INPUT_POST, 'linkedin_top_check', FILTER_SANITIZE_STRING) ? $linkedin_top_check = 1 : $linkedin_top_check = 0;
-                        $linkedin_share_txt = filter_input(INPUT_POST, 'linkedin_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                        filter_input(INPUT_POST, 'linkedin_post_check', FILTER_UNSAFE_RAW) ? $linkedin_post_check = 1 : $linkedin_post_check = 0;
+                        filter_input(INPUT_POST, 'linkedin_top_check', FILTER_UNSAFE_RAW) ? $linkedin_top_check = 1 : $linkedin_top_check = 0;
+                        $linkedin_share_txt = filter_input(INPUT_POST, 'linkedin_share_txt', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                         $linkedin_url = filter_input(INPUT_POST, 'linkedin_url', FILTER_VALIDATE_URL);
-                        filter_input(INPUT_POST, 'linkedin_url_check', FILTER_SANITIZE_STRING) ? $linkedin_url_check = 1 : $linkedin_url_check = 0;
+                        filter_input(INPUT_POST, 'linkedin_url_check', FILTER_UNSAFE_RAW) ? $linkedin_url_check = 1 : $linkedin_url_check = 0;
 
-                        filter_input(INPUT_POST, 'reddit_post_check', FILTER_SANITIZE_STRING) ? $reddit_post_check = 1 : $reddit_post_check = 0;
-                        filter_input(INPUT_POST, 'reddit_top_check', FILTER_SANITIZE_STRING) ? $reddit_top_check = 1 : $reddit_top_check = 0;
-                        $reddit_share_txt = filter_input(INPUT_POST, 'reddit_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                        filter_input(INPUT_POST, 'reddit_post_check', FILTER_UNSAFE_RAW) ? $reddit_post_check = 1 : $reddit_post_check = 0;
+                        filter_input(INPUT_POST, 'reddit_top_check', FILTER_UNSAFE_RAW) ? $reddit_top_check = 1 : $reddit_top_check = 0;
+                        $reddit_share_txt = filter_input(INPUT_POST, 'reddit_share_txt', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                         $reddit_url = filter_input(INPUT_POST, 'reddit_url', FILTER_VALIDATE_URL);
-                        filter_input(INPUT_POST, 'reddit_url_check', FILTER_SANITIZE_STRING) ? $reddit_url_check = 1 : $reddit_url_check = 0;
+                        filter_input(INPUT_POST, 'reddit_url_check', FILTER_UNSAFE_RAW) ? $reddit_url_check = 1 : $reddit_url_check = 0;
 
-                        filter_input(INPUT_POST, 'tumblr_post_check', FILTER_SANITIZE_STRING) ? $tumblr_post_check = 1 : $tumblr_post_check = 0;
-                        filter_input(INPUT_POST, 'tumblr_top_check', FILTER_SANITIZE_STRING) ? $tumblr_top_check = 1 : $tumblr_top_check = 0;
-                        $tumblr_share_txt = filter_input(INPUT_POST, 'tumblr_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                        filter_input(INPUT_POST, 'tumblr_post_check', FILTER_UNSAFE_RAW) ? $tumblr_post_check = 1 : $tumblr_post_check = 0;
+                        filter_input(INPUT_POST, 'tumblr_top_check', FILTER_UNSAFE_RAW) ? $tumblr_top_check = 1 : $tumblr_top_check = 0;
+                        $tumblr_share_txt = filter_input(INPUT_POST, 'tumblr_share_txt', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                         $tumblr_url = filter_input(INPUT_POST, 'tumblr_url', FILTER_VALIDATE_URL);
-                        filter_input(INPUT_POST, 'tumblr_url_check', FILTER_SANITIZE_STRING) ? $tumblr_url_check = 1 : $tumblr_url_check = 0;
+                        filter_input(INPUT_POST, 'tumblr_url_check', FILTER_UNSAFE_RAW) ? $tumblr_url_check = 1 : $tumblr_url_check = 0;
 
-                        filter_input(INPUT_POST, 'buffer_post_check', FILTER_SANITIZE_STRING) ? $buffer_post_check = 1 : $buffer_post_check = 0;
-                        filter_input(INPUT_POST, 'buffer_top_check', FILTER_SANITIZE_STRING) ? $buffer_top_check = 1 : $buffer_top_check = 0;
-                        $buffer_share_txt = filter_input(INPUT_POST, 'buffer_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                        filter_input(INPUT_POST, 'buffer_post_check', FILTER_UNSAFE_RAW) ? $buffer_post_check = 1 : $buffer_post_check = 0;
+                        filter_input(INPUT_POST, 'buffer_top_check', FILTER_UNSAFE_RAW) ? $buffer_top_check = 1 : $buffer_top_check = 0;
+                        $buffer_share_txt = filter_input(INPUT_POST, 'buffer_share_txt', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                         $buffer_url = filter_input(INPUT_POST, 'buffer_url', FILTER_VALIDATE_URL);
-                        filter_input(INPUT_POST, 'buffer_url_check', FILTER_SANITIZE_STRING) ? $buffer_url_check = 1 : $buffer_url_check = 0;
+                        filter_input(INPUT_POST, 'buffer_url_check', FILTER_UNSAFE_RAW) ? $buffer_url_check = 1 : $buffer_url_check = 0;
 
-                        filter_input(INPUT_POST, 'mix_post_check', FILTER_SANITIZE_STRING) ? $mix_post_check = 1 : $mix_post_check = 0;
-                        filter_input(INPUT_POST, 'mix_top_check', FILTER_SANITIZE_STRING) ? $mix_top_check = 1 : $mix_top_check = 0;
-                        $mix_share_txt = filter_input(INPUT_POST, 'mix_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                        filter_input(INPUT_POST, 'mix_post_check', FILTER_UNSAFE_RAW) ? $mix_post_check = 1 : $mix_post_check = 0;
+                        filter_input(INPUT_POST, 'mix_top_check', FILTER_UNSAFE_RAW) ? $mix_top_check = 1 : $mix_top_check = 0;
+                        $mix_share_txt = filter_input(INPUT_POST, 'mix_share_txt', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                         $mix_url = filter_input(INPUT_POST, 'mix_url', FILTER_VALIDATE_URL);
-                        filter_input(INPUT_POST, 'mix_url_check', FILTER_SANITIZE_STRING) ? $mix_url_check = 1 : $mix_url_check = 0;
+                        filter_input(INPUT_POST, 'mix_url_check', FILTER_UNSAFE_RAW) ? $mix_url_check = 1 : $mix_url_check = 0;
 
-                        filter_input(INPUT_POST, 'vk_post_check', FILTER_SANITIZE_STRING) ? $vk_post_check = 1 : $vk_post_check = 0;
-                        filter_input(INPUT_POST, 'vk_top_check', FILTER_SANITIZE_STRING) ? $vk_top_check = 1 : $vk_top_check = 0;
-                        $vk_share_txt = filter_input(INPUT_POST, 'vk_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                        filter_input(INPUT_POST, 'vk_post_check', FILTER_UNSAFE_RAW) ? $vk_post_check = 1 : $vk_post_check = 0;
+                        filter_input(INPUT_POST, 'vk_top_check', FILTER_UNSAFE_RAW) ? $vk_top_check = 1 : $vk_top_check = 0;
+                        $vk_share_txt = filter_input(INPUT_POST, 'vk_share_txt', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                         $vk_url = filter_input(INPUT_POST, 'vk_url', FILTER_VALIDATE_URL);
-                        filter_input(INPUT_POST, 'vk_url_check', FILTER_SANITIZE_STRING) ? $vk_url_check = 1 : $vk_url_check = 0;
+                        filter_input(INPUT_POST, 'vk_url_check', FILTER_UNSAFE_RAW) ? $vk_url_check = 1 : $vk_url_check = 0;
 
-                        filter_input(INPUT_POST, 'email_post_check', FILTER_SANITIZE_STRING) ? $email_post_check = 1 : $email_post_check = 0;
-                        filter_input(INPUT_POST, 'email_top_check', FILTER_SANITIZE_STRING) ? $email_top_check = 1 : $email_top_check = 0;
-                        $email_share_txt = filter_input(INPUT_POST, 'email_share_txt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                        filter_input(INPUT_POST, 'email_post_check', FILTER_UNSAFE_RAW) ? $email_post_check = 1 : $email_post_check = 0;
+                        filter_input(INPUT_POST, 'email_top_check', FILTER_UNSAFE_RAW) ? $email_top_check = 1 : $email_top_check = 0;
+                        $email_share_txt = filter_input(INPUT_POST, 'email_share_txt', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                         $email_url = filter_input(INPUT_POST, 'email_url', FILTER_VALIDATE_URL);
-                        filter_input(INPUT_POST, 'email_url_check', FILTER_SANITIZE_STRING) ? $email_url_check = 1 : $email_url_check = 0;
+                        filter_input(INPUT_POST, 'email_url_check', FILTER_UNSAFE_RAW) ? $email_url_check = 1 : $email_url_check = 0;
 
-                        filter_input(INPUT_POST, 'print_post_check', FILTER_SANITIZE_STRING) ? $print_post_check = 1 : $print_post_check = 0;
-                        filter_input(INPUT_POST, 'print_top_check', FILTER_SANITIZE_STRING) ? $print_top_check = 1 : $print_top_check = 0;
+                        filter_input(INPUT_POST, 'print_post_check', FILTER_UNSAFE_RAW) ? $print_post_check = 1 : $print_post_check = 0;
+                        filter_input(INPUT_POST, 'print_top_check', FILTER_UNSAFE_RAW) ? $print_top_check = 1 : $print_top_check = 0;
 
                         $facebook_url_check && $facebook_url ? $facebookUrlCheck = true : $facebookUrlCheck = false;
                         $twitter_url_check && $twitter_url ? $twitterUrlCheck = true : $twitterUrlCheck = false;
@@ -751,10 +750,10 @@ class Hupa_Starter_V2_Admin_Ajax
 
                     case'update_benachrichtigungen':
                         $d_board_upd_anzeige = filter_input(INPUT_POST, 'd_board_upd_anzeige', FILTER_SANITIZE_NUMBER_INT);
-                        filter_input(INPUT_POST, 'core_upd_msg', FILTER_SANITIZE_STRING) ? $core_upd_msg = 1 : $core_upd_msg = 0;
-                        filter_input(INPUT_POST, 'plugin_upd_msg', FILTER_SANITIZE_STRING) ? $plugin_upd_msg = 1 : $plugin_upd_msg = 0;
-                        filter_input(INPUT_POST, 'theme_upd_msg', FILTER_SANITIZE_STRING) ? $theme_upd_msg = 1 : $theme_upd_msg = 0;
-                        filter_input(INPUT_POST, 'send_error_email', FILTER_SANITIZE_STRING) ? $send_error_email = 1 : $send_error_email = 0;
+                        filter_input(INPUT_POST, 'core_upd_msg', FILTER_UNSAFE_RAW) ? $core_upd_msg = 1 : $core_upd_msg = 0;
+                        filter_input(INPUT_POST, 'plugin_upd_msg', FILTER_UNSAFE_RAW) ? $plugin_upd_msg = 1 : $plugin_upd_msg = 0;
+                        filter_input(INPUT_POST, 'theme_upd_msg', FILTER_UNSAFE_RAW) ? $theme_upd_msg = 1 : $theme_upd_msg = 0;
+                        filter_input(INPUT_POST, 'send_error_email', FILTER_UNSAFE_RAW) ? $send_error_email = 1 : $send_error_email = 0;
                         $email_err_msg = filter_input(INPUT_POST, 'email_err_msg', FILTER_VALIDATE_EMAIL);
                         $email_err_msg ? $errEmail = $email_err_msg : $errEmail = get_bloginfo('admin_email');
                         $options = [
@@ -771,28 +770,28 @@ class Hupa_Starter_V2_Admin_Ajax
                         break;
 
                     case 'theme_map_placeholder':
-                        $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
+                        $type = filter_input(INPUT_POST, 'type', FILTER_UNSAFE_RAW);
 
-                        $map_settings_bezeichnung = filter_input(INPUT_POST, 'map_settings_bezeichnung', FILTER_SANITIZE_STRING);
-                        $map_btn_text = filter_input(INPUT_POST, 'map_btn_text', FILTER_SANITIZE_STRING);
+                        $map_settings_bezeichnung = filter_input(INPUT_POST, 'map_settings_bezeichnung', FILTER_UNSAFE_RAW);
+                        $map_btn_text = filter_input(INPUT_POST, 'map_btn_text', FILTER_UNSAFE_RAW);
                         $map_ds_text = filter_input(INPUT_POST, 'map_ds_text');
 
                         $map_ds_id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
                         $map_img_id = filter_input(INPUT_POST, 'map_img_id', FILTER_SANITIZE_NUMBER_INT);
                         $map_ds_page = filter_input(INPUT_POST, 'map_ds_page', FILTER_SANITIZE_NUMBER_INT);
-                        filter_input(INPUT_POST, 'map_bg_grayscale', FILTER_SANITIZE_STRING) ? $map_bg_grayscale = 1 : $map_bg_grayscale = 0;
-                        $map_btn_bg = filter_input(INPUT_POST, 'map_btn_bg', FILTER_SANITIZE_STRING);
-                        $map_btn_color = filter_input(INPUT_POST, 'map_btn_color', FILTER_SANITIZE_STRING);
-                        $map_btn_border_color = filter_input(INPUT_POST, 'map_btn_border_color', FILTER_SANITIZE_STRING);
-                        $map_btn_hover_bg = filter_input(INPUT_POST, 'map_btn_hover_bg', FILTER_SANITIZE_STRING);
-                        $map_btn_hover_color = filter_input(INPUT_POST, 'map_btn_hover_color', FILTER_SANITIZE_STRING);
-                        $map_btn_hover_border = filter_input(INPUT_POST, 'map_btn_hover_border', FILTER_SANITIZE_STRING);
-                        $map_box_bg = filter_input(INPUT_POST, 'map_box_bg', FILTER_SANITIZE_STRING);
-                        $map_box_color = filter_input(INPUT_POST, 'map_box_color', FILTER_SANITIZE_STRING);
-                        $map_box_border = filter_input(INPUT_POST, 'map_box_border', FILTER_SANITIZE_STRING);
-                        filter_input(INPUT_POST, 'map_link_uppercase', FILTER_SANITIZE_STRING) ? $map_link_uppercase = 1 : $map_link_uppercase = 0;
-                        filter_input(INPUT_POST, 'map_link_underline', FILTER_SANITIZE_STRING) ? $map_link_underline = 1 : $map_link_underline = 0;
-                        $map_link_color = filter_input(INPUT_POST, 'map_link_color', FILTER_SANITIZE_STRING);
+                        filter_input(INPUT_POST, 'map_bg_grayscale', FILTER_UNSAFE_RAW) ? $map_bg_grayscale = 1 : $map_bg_grayscale = 0;
+                        $map_btn_bg = filter_input(INPUT_POST, 'map_btn_bg', FILTER_UNSAFE_RAW);
+                        $map_btn_color = filter_input(INPUT_POST, 'map_btn_color', FILTER_UNSAFE_RAW);
+                        $map_btn_border_color = filter_input(INPUT_POST, 'map_btn_border_color', FILTER_UNSAFE_RAW);
+                        $map_btn_hover_bg = filter_input(INPUT_POST, 'map_btn_hover_bg', FILTER_UNSAFE_RAW);
+                        $map_btn_hover_color = filter_input(INPUT_POST, 'map_btn_hover_color', FILTER_UNSAFE_RAW);
+                        $map_btn_hover_border = filter_input(INPUT_POST, 'map_btn_hover_border', FILTER_UNSAFE_RAW);
+                        $map_box_bg = filter_input(INPUT_POST, 'map_box_bg', FILTER_UNSAFE_RAW);
+                        $map_box_color = filter_input(INPUT_POST, 'map_box_color', FILTER_UNSAFE_RAW);
+                        $map_box_border = filter_input(INPUT_POST, 'map_box_border', FILTER_UNSAFE_RAW);
+                        filter_input(INPUT_POST, 'map_link_uppercase', FILTER_UNSAFE_RAW) ? $map_link_uppercase = 1 : $map_link_uppercase = 0;
+                        filter_input(INPUT_POST, 'map_link_underline', FILTER_UNSAFE_RAW) ? $map_link_underline = 1 : $map_link_underline = 0;
+                        $map_link_color = filter_input(INPUT_POST, 'map_link_color', FILTER_UNSAFE_RAW);
 
                         $random = apply_filters('get_hupa_random_id', 6, 0, 6);
                         $map_settings_bezeichnung ? $bezeichnung = $map_settings_bezeichnung : $bezeichnung = 'Datenschutz-' . $random;
@@ -875,29 +874,29 @@ class Hupa_Starter_V2_Admin_Ajax
                         break;
 
                     case 'theme_options_page':
-                        filter_input(INPUT_POST, 'wp_cache', FILTER_SANITIZE_STRING) ? $wp_cache = 1 : $wp_cache = 0;
-                        filter_input(INPUT_POST, 'wp_debug', FILTER_SANITIZE_STRING) ? $wp_debug = 1 : $wp_debug = 0;
-                        filter_input(INPUT_POST, 'wp_debug_log', FILTER_SANITIZE_STRING) ? $wp_debug_log = 1 : $wp_debug_log = 0;
-                        filter_input(INPUT_POST, 'hupa_wp_script_debug', FILTER_SANITIZE_STRING) ? $hupa_wp_script_debug = 1 : $hupa_wp_script_debug = 0;
+                        filter_input(INPUT_POST, 'wp_cache', FILTER_UNSAFE_RAW) ? $wp_cache = 1 : $wp_cache = 0;
+                        filter_input(INPUT_POST, 'wp_debug', FILTER_UNSAFE_RAW) ? $wp_debug = 1 : $wp_debug = 0;
+                        filter_input(INPUT_POST, 'wp_debug_log', FILTER_UNSAFE_RAW) ? $wp_debug_log = 1 : $wp_debug_log = 0;
+                        filter_input(INPUT_POST, 'hupa_wp_script_debug', FILTER_UNSAFE_RAW) ? $hupa_wp_script_debug = 1 : $hupa_wp_script_debug = 0;
 
                         //Optionen
-                        filter_input(INPUT_POST, 'hupa_wp_automatic_update', FILTER_SANITIZE_STRING) ? $hupa_wp_automatic_update = 1 : $hupa_wp_automatic_update = 0;
-                        filter_input(INPUT_POST, 'hupa_wp_disable_wp_cron', FILTER_SANITIZE_STRING) ? $hupa_wp_disable_wp_cron = 1 : $hupa_wp_disable_wp_cron = 0;
-                        filter_input(INPUT_POST, 'hupa_wp_disallow_file_edit', FILTER_SANITIZE_STRING) ? $hupa_wp_disallow_file_edit = 1 : $hupa_wp_disallow_file_edit = 0;
-                        filter_input(INPUT_POST, 'hupa_wp_disallow_file_mods', FILTER_SANITIZE_STRING) ? $hupa_wp_disallow_file_mods = 1 : $hupa_wp_disallow_file_mods = 0;
+                        filter_input(INPUT_POST, 'hupa_wp_automatic_update', FILTER_UNSAFE_RAW) ? $hupa_wp_automatic_update = 1 : $hupa_wp_automatic_update = 0;
+                        filter_input(INPUT_POST, 'hupa_wp_disable_wp_cron', FILTER_UNSAFE_RAW) ? $hupa_wp_disable_wp_cron = 1 : $hupa_wp_disable_wp_cron = 0;
+                        filter_input(INPUT_POST, 'hupa_wp_disallow_file_edit', FILTER_UNSAFE_RAW) ? $hupa_wp_disallow_file_edit = 1 : $hupa_wp_disallow_file_edit = 0;
+                        filter_input(INPUT_POST, 'hupa_wp_disallow_file_mods', FILTER_UNSAFE_RAW) ? $hupa_wp_disallow_file_mods = 1 : $hupa_wp_disallow_file_mods = 0;
 
                         $wp_debug_radio = filter_input(INPUT_POST, 'debug', FILTER_VALIDATE_INT);
 
-                        filter_input(INPUT_POST, 'show_fatal_error', FILTER_SANITIZE_STRING) ? $show_fatal_error = 1 : $show_fatal_error = 0;
-                        filter_input(INPUT_POST, 'mu_plugin', FILTER_SANITIZE_STRING) ? $mu_plugin = 1 : $mu_plugin = 0;
+                        filter_input(INPUT_POST, 'show_fatal_error', FILTER_UNSAFE_RAW) ? $show_fatal_error = 1 : $show_fatal_error = 0;
+                        filter_input(INPUT_POST, 'mu_plugin', FILTER_UNSAFE_RAW) ? $mu_plugin = 1 : $mu_plugin = 0;
 
-                        filter_input(INPUT_POST, 'db_repair', FILTER_SANITIZE_STRING) ? $db_repair = 1 : $db_repair = 0;
-                        filter_input(INPUT_POST, 'rev_wp_aktiv', FILTER_SANITIZE_STRING) ? $rev_wp_aktiv = 1 : $rev_wp_aktiv = 0;
-                        filter_input(INPUT_POST, 'trash_wp_aktiv', FILTER_SANITIZE_STRING) ? $trash_wp_aktiv = 1 : $trash_wp_aktiv = 0;
-                        filter_input(INPUT_POST, 'wp_debug_display', FILTER_SANITIZE_STRING) ? $wp_debug_display = 1 : $wp_debug_display = 0;
+                        filter_input(INPUT_POST, 'db_repair', FILTER_UNSAFE_RAW) ? $db_repair = 1 : $db_repair = 0;
+                        filter_input(INPUT_POST, 'rev_wp_aktiv', FILTER_UNSAFE_RAW) ? $rev_wp_aktiv = 1 : $rev_wp_aktiv = 0;
+                        filter_input(INPUT_POST, 'trash_wp_aktiv', FILTER_UNSAFE_RAW) ? $trash_wp_aktiv = 1 : $trash_wp_aktiv = 0;
+                        filter_input(INPUT_POST, 'wp_debug_display', FILTER_UNSAFE_RAW) ? $wp_debug_display = 1 : $wp_debug_display = 0;
 
-                        filter_input(INPUT_POST, 'ssl_login_aktiv', FILTER_SANITIZE_STRING) ? $ssl_login_aktiv = 1 : $ssl_login_aktiv = 0;
-                        filter_input(INPUT_POST, 'admin_ssl_login_aktiv', FILTER_SANITIZE_STRING) ? $admin_ssl_login_aktiv = 1 : $admin_ssl_login_aktiv = 0;
+                        filter_input(INPUT_POST, 'ssl_login_aktiv', FILTER_UNSAFE_RAW) ? $ssl_login_aktiv = 1 : $ssl_login_aktiv = 0;
+                        filter_input(INPUT_POST, 'admin_ssl_login_aktiv', FILTER_UNSAFE_RAW) ? $admin_ssl_login_aktiv = 1 : $admin_ssl_login_aktiv = 0;
 
                         $revision_anzahl = filter_input(INPUT_POST, 'revision_anzahl', FILTER_VALIDATE_INT);
                         $revision_interval = filter_input(INPUT_POST, 'revision_interval', FILTER_VALIDATE_INT);
@@ -942,6 +941,7 @@ class Hupa_Starter_V2_Admin_Ajax
                         } else {
                             $hupa_optionen_class->theme_deactivate_mu_plugin();
                         }
+                        $create = (object) [];
                         //JOB WP CACHE
                         if ($wp_cache) {
                             $create = $hupa_optionen_class->add_create_config_put('WP_CACHE', 'WP CACHE', 1);
@@ -1145,12 +1145,12 @@ class Hupa_Starter_V2_Admin_Ajax
                     case'theme_options_order':
                         $show_reorder_interfaces = array($_POST['show_reorder_interfaces']);
                         $show_reorder_interfaces = array_map('sanitize_key', $show_reorder_interfaces[0]);
-                        $capability = filter_input(INPUT_POST, 'capability', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-                        filter_input(INPUT_POST, 'autosort', FILTER_SANITIZE_STRING) ? $autosort = 1 : $autosort = '';
-                        filter_input(INPUT_POST, 'adminsort', FILTER_SANITIZE_STRING) ? $adminsort = 1 : $adminsort = '';
-                        filter_input(INPUT_POST, 'use_query_asc_desc', FILTER_SANITIZE_STRING) ? $use_query_asc_desc = 1 : $use_query_asc_desc = '';
-                        filter_input(INPUT_POST, 'archive_drag_drop', FILTER_SANITIZE_STRING) ? $archive_drag_drop = 1 : $archive_drag_drop = '';
-                        filter_input(INPUT_POST, 'navigation_sort_apply', FILTER_SANITIZE_STRING) ? $navigation_sort_apply = 1 : $navigation_sort_apply = '';
+                        $capability = filter_input(INPUT_POST, 'capability', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
+                        filter_input(INPUT_POST, 'autosort', FILTER_UNSAFE_RAW) ? $autosort = 1 : $autosort = '';
+                        filter_input(INPUT_POST, 'adminsort', FILTER_UNSAFE_RAW) ? $adminsort = 1 : $adminsort = '';
+                        filter_input(INPUT_POST, 'use_query_asc_desc', FILTER_UNSAFE_RAW) ? $use_query_asc_desc = 1 : $use_query_asc_desc = '';
+                        filter_input(INPUT_POST, 'archive_drag_drop', FILTER_UNSAFE_RAW) ? $archive_drag_drop = 1 : $archive_drag_drop = '';
+                        filter_input(INPUT_POST, 'navigation_sort_apply', FILTER_UNSAFE_RAW) ? $navigation_sort_apply = 1 : $navigation_sort_apply = '';
 
                         $options = [
                             'show_reorder_interfaces' => $show_reorder_interfaces,
@@ -1170,8 +1170,8 @@ class Hupa_Starter_V2_Admin_Ajax
                     case 'theme_options_duplicate':
                         $show_duplicate_interfaces = array($_POST['show_duplicate_interfaces']);
                         $show_duplicate_interfaces = array_map('sanitize_key', $show_duplicate_interfaces[0]);
-                        $capability = filter_input(INPUT_POST, 'capability', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-                        filter_input(INPUT_POST, 'copy_draft', FILTER_SANITIZE_STRING) ? $copy_draft = 1 : $copy_draft = '';
+                        $capability = filter_input(INPUT_POST, 'capability', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
+                        filter_input(INPUT_POST, 'copy_draft', FILTER_UNSAFE_RAW) ? $copy_draft = 1 : $copy_draft = '';
 
                         $options = array(
                             'show_duplicate_interfaces' => $show_duplicate_interfaces,
@@ -1286,22 +1286,22 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
 
             case'update_env_settings':
-                filter_input(INPUT_POST, 'CUSTOM_FOOTER', FILTER_SANITIZE_STRING) ? $record->CUSTOM_FOOTER = 1 : $record->CUSTOM_FOOTER = 0;
-                filter_input(INPUT_POST, 'CUSTOM_HEADER', FILTER_SANITIZE_STRING) ? $record->CUSTOM_HEADER = 1 : $record->CUSTOM_HEADER = 0;
-                filter_input(INPUT_POST, 'DESIGN_TEMPLATES', FILTER_SANITIZE_STRING) ? $record->DESIGN_TEMPLATES = 1 : $record->DESIGN_TEMPLATES = 0;
-                filter_input(INPUT_POST, 'HUPA_SIDEBAR', FILTER_SANITIZE_STRING) ? $record->HUPA_SIDEBAR = 1 : $record->HUPA_SIDEBAR = 0;
-                filter_input(INPUT_POST, 'HUPA_CAROUSEL', FILTER_SANITIZE_STRING) ? $record->HUPA_CAROUSEL = 1 : $record->HUPA_CAROUSEL = 0;
-                filter_input(INPUT_POST, 'HUPA_MAPS', FILTER_SANITIZE_STRING) ? $record->HUPA_MAPS = 1 : $record->HUPA_MAPS = 0;
-                filter_input(INPUT_POST, 'HUPA_TOOLS', FILTER_SANITIZE_STRING) ? $record->HUPA_TOOLS = 1 : $record->HUPA_TOOLS = 0;
-                filter_input(INPUT_POST, 'HUPA_API_INSTALL', FILTER_SANITIZE_STRING) ? $record->HUPA_API_INSTALL = 1 : $record->HUPA_API_INSTALL = 0;
+                filter_input(INPUT_POST, 'CUSTOM_FOOTER', FILTER_UNSAFE_RAW) ? $record->CUSTOM_FOOTER = 1 : $record->CUSTOM_FOOTER = 0;
+                filter_input(INPUT_POST, 'CUSTOM_HEADER', FILTER_UNSAFE_RAW) ? $record->CUSTOM_HEADER = 1 : $record->CUSTOM_HEADER = 0;
+                filter_input(INPUT_POST, 'DESIGN_TEMPLATES', FILTER_UNSAFE_RAW) ? $record->DESIGN_TEMPLATES = 1 : $record->DESIGN_TEMPLATES = 0;
+                filter_input(INPUT_POST, 'HUPA_SIDEBAR', FILTER_UNSAFE_RAW) ? $record->HUPA_SIDEBAR = 1 : $record->HUPA_SIDEBAR = 0;
+                filter_input(INPUT_POST, 'HUPA_CAROUSEL', FILTER_UNSAFE_RAW) ? $record->HUPA_CAROUSEL = 1 : $record->HUPA_CAROUSEL = 0;
+                filter_input(INPUT_POST, 'HUPA_MAPS', FILTER_UNSAFE_RAW) ? $record->HUPA_MAPS = 1 : $record->HUPA_MAPS = 0;
+                filter_input(INPUT_POST, 'HUPA_TOOLS', FILTER_UNSAFE_RAW) ? $record->HUPA_TOOLS = 1 : $record->HUPA_TOOLS = 0;
+                filter_input(INPUT_POST, 'HUPA_API_INSTALL', FILTER_UNSAFE_RAW) ? $record->HUPA_API_INSTALL = 1 : $record->HUPA_API_INSTALL = 0;
                 //WP-Editor Settings
-                filter_input(INPUT_POST, 'EDITOR_SHOW_PARAGRAPH_BORDER', FILTER_SANITIZE_STRING) ? $record->EDITOR_SHOW_PARAGRAPH_BORDER = 1 : $record->EDITOR_SHOW_PARAGRAPH_BORDER = 0;
-                filter_input(INPUT_POST, 'EDITOR_SHOW_HEADLINE_BORDER', FILTER_SANITIZE_STRING) ? $record->EDITOR_SHOW_HEADLINE_BORDER = 1 : $record->EDITOR_SHOW_HEADLINE_BORDER = 0;
-                filter_input(INPUT_POST, 'EDITOR_SHOW_COLUMN_BORDER', FILTER_SANITIZE_STRING) ? $record->EDITOR_SHOW_COLUMN_BORDER = 1 : $record->EDITOR_SHOW_COLUMN_BORDER = 0;
-                filter_input(INPUT_POST, 'EDITOR_SHOW_GROUP_BORDER', FILTER_SANITIZE_STRING) ? $record->EDITOR_SHOW_GROUP_BORDER = 1 : $record->EDITOR_SHOW_GROUP_BORDER = 0;
-                filter_input(INPUT_POST, 'EDITOR_SHOW_PLACEHOLDER', FILTER_SANITIZE_STRING) ? $record->EDITOR_SHOW_PLACEHOLDER = 1 : $record->EDITOR_SHOW_PLACEHOLDER = 0;
-                filter_input(INPUT_POST, 'EDITOR_SHOW_FONT_SIZE', FILTER_SANITIZE_STRING) ? $record->EDITOR_SHOW_FONT_SIZE = 1 : $record->EDITOR_SHOW_FONT_SIZE = 0;
-                filter_input(INPUT_POST, 'EDITOR_SHOW_BOOTSTRAP_CSS', FILTER_SANITIZE_STRING) ? $record->EDITOR_SHOW_BOOTSTRAP_CSS = 1 : $record->EDITOR_SHOW_BOOTSTRAP_CSS = 0;
+                filter_input(INPUT_POST, 'EDITOR_SHOW_PARAGRAPH_BORDER', FILTER_UNSAFE_RAW) ? $record->EDITOR_SHOW_PARAGRAPH_BORDER = 1 : $record->EDITOR_SHOW_PARAGRAPH_BORDER = 0;
+                filter_input(INPUT_POST, 'EDITOR_SHOW_HEADLINE_BORDER', FILTER_UNSAFE_RAW) ? $record->EDITOR_SHOW_HEADLINE_BORDER = 1 : $record->EDITOR_SHOW_HEADLINE_BORDER = 0;
+                filter_input(INPUT_POST, 'EDITOR_SHOW_COLUMN_BORDER', FILTER_UNSAFE_RAW) ? $record->EDITOR_SHOW_COLUMN_BORDER = 1 : $record->EDITOR_SHOW_COLUMN_BORDER = 0;
+                filter_input(INPUT_POST, 'EDITOR_SHOW_GROUP_BORDER', FILTER_UNSAFE_RAW) ? $record->EDITOR_SHOW_GROUP_BORDER = 1 : $record->EDITOR_SHOW_GROUP_BORDER = 0;
+                filter_input(INPUT_POST, 'EDITOR_SHOW_PLACEHOLDER', FILTER_UNSAFE_RAW) ? $record->EDITOR_SHOW_PLACEHOLDER = 1 : $record->EDITOR_SHOW_PLACEHOLDER = 0;
+                filter_input(INPUT_POST, 'EDITOR_SHOW_FONT_SIZE', FILTER_UNSAFE_RAW) ? $record->EDITOR_SHOW_FONT_SIZE = 1 : $record->EDITOR_SHOW_FONT_SIZE = 0;
+                filter_input(INPUT_POST, 'EDITOR_SHOW_BOOTSTRAP_CSS', FILTER_UNSAFE_RAW) ? $record->EDITOR_SHOW_BOOTSTRAP_CSS = 1 : $record->EDITOR_SHOW_BOOTSTRAP_CSS = 0;
 
                 $pinInput = filter_input(INPUT_POST, 'setting_pin', FILTER_SANITIZE_NUMBER_INT);
                 $pin = apply_filters('get_settings_pin', null);
@@ -1349,10 +1349,10 @@ class Hupa_Starter_V2_Admin_Ajax
                 }
 
                 //Optionen
-                filter_input(INPUT_POST, 'hupa_wp_automatic_update', FILTER_SANITIZE_STRING) ? $hupa_wp_automatic_update = 1 : $hupa_wp_automatic_update = 0;
-                filter_input(INPUT_POST, 'hupa_wp_disable_wp_cron', FILTER_SANITIZE_STRING) ? $hupa_wp_disable_wp_cron = 1 : $hupa_wp_disable_wp_cron = 0;
-                filter_input(INPUT_POST, 'hupa_wp_disallow_file_edit', FILTER_SANITIZE_STRING) ? $hupa_wp_disallow_file_edit = 1 : $hupa_wp_disallow_file_edit = 0;
-                filter_input(INPUT_POST, 'hupa_wp_disallow_file_mods', FILTER_SANITIZE_STRING) ? $hupa_wp_disallow_file_mods = 1 : $hupa_wp_disallow_file_mods = 0;
+                filter_input(INPUT_POST, 'hupa_wp_automatic_update', FILTER_UNSAFE_RAW) ? $hupa_wp_automatic_update = 1 : $hupa_wp_automatic_update = 0;
+                filter_input(INPUT_POST, 'hupa_wp_disable_wp_cron', FILTER_UNSAFE_RAW) ? $hupa_wp_disable_wp_cron = 1 : $hupa_wp_disable_wp_cron = 0;
+                filter_input(INPUT_POST, 'hupa_wp_disallow_file_edit', FILTER_UNSAFE_RAW) ? $hupa_wp_disallow_file_edit = 1 : $hupa_wp_disallow_file_edit = 0;
+                filter_input(INPUT_POST, 'hupa_wp_disallow_file_mods', FILTER_UNSAFE_RAW) ? $hupa_wp_disallow_file_mods = 1 : $hupa_wp_disallow_file_mods = 0;
 
                 //Optionen
                 update_option('hupa_wp_automatic_update', $hupa_wp_automatic_update);
@@ -1425,7 +1425,7 @@ class Hupa_Starter_V2_Admin_Ajax
 
                 break;
             case'update_theme_over_api':
-                $version = filter_input(INPUT_POST, 'version', FILTER_SANITIZE_STRING);
+                $version = filter_input(INPUT_POST, 'version', FILTER_UNSAFE_RAW);
                 $body = [
                     'method' => 'download_update',
                     'version' => $version,
@@ -1467,7 +1467,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 apply_filters('starter_v2_zip_upload', NULL);
                 exit();
             case'install_patch_file':
-                $patchFolder = filter_input(INPUT_POST, 'patch', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                $patchFolder = filter_input(INPUT_POST, 'patch', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                 $patchDir = $this->main->theme_upload_dir();
                 $dir = $patchDir . 'patch' . DIRECTORY_SEPARATOR . $patchFolder . DIRECTORY_SEPARATOR;
 
@@ -1520,7 +1520,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 $responseJson->msg = 'Patch erfolgreich ausgeführt.';
                 break;
             case'get-log-data':
-                $handle = filter_input(INPUT_POST, 'handle', FILTER_SANITIZE_STRING);
+                $handle = filter_input(INPUT_POST, 'handle', FILTER_UNSAFE_RAW);
                 if (!$handle) {
                     $responseJson->msg = 'keine Logfile vorhanden!';
                     return $responseJson;
@@ -1571,7 +1571,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
             case'delete-log-line':
                 $entry = filter_input(INPUT_POST, 'line', FILTER_SANITIZE_NUMBER_INT);
-                $handle = filter_input(INPUT_POST, 'handle', FILTER_SANITIZE_STRING);
+                $handle = filter_input(INPUT_POST, 'handle', FILTER_UNSAFE_RAW);
                 if (!$handle || !isset($entry)) {
                     $responseJson->msg = 'Eintrag nicht gefunden!';
                     return $responseJson;
@@ -1598,7 +1598,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 $responseJson->entry = $entry;
                 break;
             case'delete-log-file':
-                $handle = filter_input(INPUT_POST, 'handle', FILTER_SANITIZE_STRING);
+                $handle = filter_input(INPUT_POST, 'handle', FILTER_UNSAFE_RAW);
                 if (!$handle) {
                     $responseJson->msg = 'Log-Datei nicht gefunden!';
                     return $responseJson;
@@ -1613,7 +1613,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 $responseJson->msg = 'Logfile erfolgreich gelöscht.';
                 break;
             case'delete-patch-file':
-                $patch = filter_input(INPUT_POST, 'file', FILTER_SANITIZE_STRING);
+                $patch = filter_input(INPUT_POST, 'file', FILTER_UNSAFE_RAW);
                 if (!$patch) {
                     $responseJson->msg = 'Patch-Datei nicht gefunden!';
                     return $responseJson;
@@ -1624,7 +1624,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 $responseJson->patch = $patch;
                 break;
             case'hupa_duplicate_post':
-                $post_type = filter_input(INPUT_POST, 'post_type', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                $post_type = filter_input(INPUT_POST, 'post_type', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                 $paged = filter_input(INPUT_POST, 'paged', FILTER_SANITIZE_NUMBER_INT);
                 $postId = filter_input(INPUT_POST, 'postId', FILTER_SANITIZE_NUMBER_INT);
 
@@ -1673,7 +1673,7 @@ class Hupa_Starter_V2_Admin_Ajax
                     }
 
                     //TODO duplicate all post meta just in two SQL queries
-                    $post_meta_infos = $wpdb->get_results("SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id={$postId}");
+                    $post_meta_infos = $wpdb->get_results("SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id=$postId");
                     if (count($post_meta_infos) != 0) {
                         $sql_query = "INSERT INTO $wpdb->postmeta (post_id, meta_key, meta_value) ";
                         foreach ($post_meta_infos as $meta_info) {
@@ -1695,9 +1695,9 @@ class Hupa_Starter_V2_Admin_Ajax
 
                 break;
             case 'hupa_post_order':
-                $post_type = filter_input(INPUT_POST, 'post_type', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                $post_type = filter_input(INPUT_POST, 'post_type', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                 $paged = filter_input(INPUT_POST, 'paged');
-                $elements = filter_input(INPUT_POST, 'elements', FILTER_SANITIZE_STRING);
+                $elements = filter_input(INPUT_POST, 'elements', FILTER_UNSAFE_RAW);
                 $elements = preg_replace('/.*[^\d]/i', '', explode(',', $elements));
                 if (!$elements) {
                     return $responseJson;
@@ -1784,8 +1784,8 @@ class Hupa_Starter_V2_Admin_Ajax
 
 
             case 'change_font_select':
-                $font_family = filter_input(INPUT_POST, 'font_family', FILTER_SANITIZE_STRING);
-                $container = filter_input(INPUT_POST, 'select_container', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                $font_family = filter_input(INPUT_POST, 'font_family', FILTER_UNSAFE_RAW);
+                $container = filter_input(INPUT_POST, 'select_container', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                 $responseJson->select = apply_filters('get_font_style_select', $font_family);
 
                 $responseJson->method = $this->method;
@@ -1795,7 +1795,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
 
             case 'get_modal_layout':
-                $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                $type = filter_input(INPUT_POST, 'type', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                 $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
                 switch ($type) {
                     case'reset_general':
@@ -1826,7 +1826,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
 
             case'delete_carousel_item':
-                $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                $type = filter_input(INPUT_POST, 'type', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
 
                 switch ($type) {
                     case'carousel':
@@ -1840,7 +1840,7 @@ class Hupa_Starter_V2_Admin_Ajax
                         break;
 
                     case'slider':
-                        $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_STRING);
+                        $id = filter_input(INPUT_POST, 'id', FILTER_UNSAFE_RAW);
                         $cid = explode('_', $id);
                         $sliderId = $cid[1];
                         apply_filters('delete_hupa_slider', $sliderId);
@@ -1853,7 +1853,7 @@ class Hupa_Starter_V2_Admin_Ajax
 
 
             case'reset_settings':
-                $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                $type = filter_input(INPUT_POST, 'type', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                 apply_filters('update_hupa_options', $type, $this->method);
                 $responseJson->status = true;
                 $responseJson->resetMsg = true;
@@ -1863,13 +1863,13 @@ class Hupa_Starter_V2_Admin_Ajax
             case'theme_google_maps':
 
                 $data = json_decode(stripslashes_deep($_POST['daten']));
-                $record->map_apikey = filter_var($data->map_apikey, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-                filter_var($data->map_datenschutz, FILTER_SANITIZE_STRING) ? $record->map_datenschutz = 1 : $record->map_datenschutz = 0;
-                filter_var($data->map_colorcheck, FILTER_SANITIZE_STRING) ? $record->map_colorcheck = 1 : $record->map_colorcheck = 0;
+                $record->map_apikey = filter_var($data->map_apikey, FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
+                filter_var($data->map_datenschutz, FILTER_UNSAFE_RAW) ? $record->map_datenschutz = 1 : $record->map_datenschutz = 0;
+                filter_var($data->map_colorcheck, FILTER_UNSAFE_RAW) ? $record->map_colorcheck = 1 : $record->map_colorcheck = 0;
                 $record->map_standard_pin = filter_var($data->map_standard_pin, FILTER_SANITIZE_NUMBER_INT);
                 $record->map_pin_height = filter_var($data->map_pin_height, FILTER_SANITIZE_NUMBER_INT);
                 $record->map_pin_width = filter_var($data->map_pin_width, FILTER_SANITIZE_NUMBER_INT);
-                $record->map_color = filter_var($data->map_color, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                $record->map_color = filter_var($data->map_color, FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
 
                 if (!$data->map_pin_coords) {
                     $responseJson->status = false;
@@ -1926,13 +1926,13 @@ class Hupa_Starter_V2_Admin_Ajax
 
                 foreach ($pinCoords as $key => $val) {
 
-                    filter_var($customCheck[$i], FILTER_SANITIZE_STRING) ? $check = 1 : $check = 0;
+                    filter_var($customCheck[$i], FILTER_UNSAFE_RAW) ? $check = 1 : $check = 0;
                     filter_var($pinImgId[$i], FILTER_SANITIZE_NUMBER_INT) !== null ? $imgId = $pinImgId[$i] : $imgId = 0;
 
                     $pinItem = [
                         'id' => $i + 1,
-                        'coords' => filter_var($pinCoords[$i], FILTER_SANITIZE_STRING),
-                        'info_text' => filter_var($pinText[$i], FILTER_SANITIZE_STRING),
+                        'coords' => filter_var($pinCoords[$i], FILTER_UNSAFE_RAW),
+                        'info_text' => filter_var($pinText[$i], FILTER_UNSAFE_RAW),
                         'custom_pin_check' => $check,
                         'custom_pin_img' => $imgId,
                         'custom_height' => filter_var($customHeight[$i], FILTER_SANITIZE_NUMBER_INT),
@@ -1949,7 +1949,7 @@ class Hupa_Starter_V2_Admin_Ajax
 
                 break;
             case 'get_google_maps_pins':
-                $handle = filter_input(INPUT_POST, 'handle', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                $handle = filter_input(INPUT_POST, 'handle', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                 $dbPins = get_hupa_option('map_pins');
 
 
@@ -2005,7 +2005,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
 
             case 'change_sortable_position':
-                $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                $type = filter_input(INPUT_POST, 'type', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                 $pos = explode(',', $_POST['element']);
                 $i = 1;
                 foreach ($pos as $tmp) {
@@ -2024,7 +2024,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
 
             case'add_carousel':
-                $bezeichnung = filter_input(INPUT_POST, 'bezeichnung', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                $bezeichnung = filter_input(INPUT_POST, 'bezeichnung', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
                 $not_carousel = filter_input(INPUT_POST, 'not_carousel', FILTER_SANITIZE_NUMBER_INT);
                 if (!$bezeichnung) {
                     $responseJson->status = false;
@@ -2095,32 +2095,32 @@ class Hupa_Starter_V2_Admin_Ajax
             case 'update_carousel':
                 $record->id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
                 $record->data_animate = filter_input(INPUT_POST, 'data_animate', FILTER_SANITIZE_NUMBER_INT);
-                filter_input(INPUT_POST, 'margin_aktiv', FILTER_SANITIZE_STRING) ? $record->margin_aktiv = 1 : $record->margin_aktiv = 0;
-                filter_input(INPUT_POST, 'controls', FILTER_SANITIZE_STRING) ? $record->controls = 1 : $record->controls = 0;
-                filter_input(INPUT_POST, 'indicator', FILTER_SANITIZE_STRING) ? $record->indicator = 1 : $record->indicator = 0;
-                filter_input(INPUT_POST, 'data_autoplay', FILTER_SANITIZE_STRING) ? $record->data_autoplay = 1 : $record->data_autoplay = 0;
-                $record->bezeichnung = filter_input(INPUT_POST, 'bezeichnung', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                filter_input(INPUT_POST, 'margin_aktiv', FILTER_UNSAFE_RAW) ? $record->margin_aktiv = 1 : $record->margin_aktiv = 0;
+                filter_input(INPUT_POST, 'controls', FILTER_UNSAFE_RAW) ? $record->controls = 1 : $record->controls = 0;
+                filter_input(INPUT_POST, 'indicator', FILTER_UNSAFE_RAW) ? $record->indicator = 1 : $record->indicator = 0;
+                filter_input(INPUT_POST, 'data_autoplay', FILTER_UNSAFE_RAW) ? $record->data_autoplay = 1 : $record->data_autoplay = 0;
+                $record->bezeichnung = filter_input(INPUT_POST, 'bezeichnung', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
 
-                filter_input(INPUT_POST, 'full_width', FILTER_SANITIZE_STRING) ? $record->full_width = 1 : $record->full_width = 0;
+                filter_input(INPUT_POST, 'full_width', FILTER_UNSAFE_RAW) ? $record->full_width = 1 : $record->full_width = 0;
                 $record->caption_bg = filter_input(INPUT_POST, 'caption_bg', FILTER_SANITIZE_NUMBER_INT);
                 $record->select_bg = filter_input(INPUT_POST, 'select_bg', FILTER_SANITIZE_NUMBER_INT);
 
-                $container_height = filter_input(INPUT_POST, 'container_height', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-                $record->carousel_image_size = filter_input(INPUT_POST, 'carousel_image_size', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                $container_height = filter_input(INPUT_POST, 'container_height', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
+                $record->carousel_image_size = filter_input(INPUT_POST, 'carousel_image_size', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
 
-                filter_input(INPUT_POST, 'data_stop_hover', FILTER_SANITIZE_STRING) ? $record->data_stop_hover = 1 : $record->data_stop_hover = 0;
+                filter_input(INPUT_POST, 'data_stop_hover', FILTER_UNSAFE_RAW) ? $record->data_stop_hover = 1 : $record->data_stop_hover = 0;
                 $data_static_text = filter_input(INPUT_POST, 'data_static_text');
                 $record->data_static_text = esc_html(apply_filters('clean_white_space', $data_static_text));
 
-                filter_input(INPUT_POST, 'data_touch_active', FILTER_SANITIZE_STRING) ? $record->data_touch_active = 1 : $record->data_touch_active = 0;
-                filter_input(INPUT_POST, 'data_keyboard_active', FILTER_SANITIZE_STRING) ? $record->data_keyboard_active = 1 : $record->data_keyboard_active = 0;
+                filter_input(INPUT_POST, 'data_touch_active', FILTER_UNSAFE_RAW) ? $record->data_touch_active = 1 : $record->data_touch_active = 0;
+                filter_input(INPUT_POST, 'data_keyboard_active', FILTER_UNSAFE_RAW) ? $record->data_keyboard_active = 1 : $record->data_keyboard_active = 0;
 
                 $containerHeight = preg_replace('/\s+/', '', $container_height);
 
                 preg_match('/(vh|px|rem)/i', $containerHeight, $matches);
                 $matches ? $record->container_height = $containerHeight : $record->container_height = '65vh';
 
-                filter_input(INPUT_POST, 'carousel_lazy_load', FILTER_SANITIZE_STRING) ? $record->carousel_lazy_load = 1 : $record->carousel_lazy_load = 0;
+                filter_input(INPUT_POST, 'carousel_lazy_load', FILTER_UNSAFE_RAW) ? $record->carousel_lazy_load = 1 : $record->carousel_lazy_load = 0;
 
                 apply_filters('update_hupa_carousel', $record);
                 $responseJson->status = true;
@@ -2129,8 +2129,8 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
 
             case'get_page_site_select':
-                $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
-                $formId = filter_input(INPUT_POST, 'formId', FILTER_SANITIZE_STRING);
+                $type = filter_input(INPUT_POST, 'type', FILTER_UNSAFE_RAW);
+                $formId = filter_input(INPUT_POST, 'formId', FILTER_UNSAFE_RAW);
 
                 $post = [];
                 $return = [];
@@ -2150,35 +2150,35 @@ class Hupa_Starter_V2_Admin_Ajax
                 $responseJson->status = true;
                 break;
             case'update_slider':
-                $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_STRING);
+                $id = filter_input(INPUT_POST, 'id', FILTER_UNSAFE_RAW);
                 $record->img_id = filter_input(INPUT_POST, 'img_id', FILTER_SANITIZE_NUMBER_INT);
-                $record->img_size = filter_input(INPUT_POST, 'img_size', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-                filter_input(INPUT_POST, 'aktiv', FILTER_SANITIZE_STRING) ? $record->aktiv = 1 : $record->aktiv = 0;
-                filter_input(INPUT_POST, 'caption_aktiv', FILTER_SANITIZE_STRING) ? $record->caption_aktiv = 1 : $record->caption_aktiv = 0;
+                $record->img_size = filter_input(INPUT_POST, 'img_size', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
+                filter_input(INPUT_POST, 'aktiv', FILTER_UNSAFE_RAW) ? $record->aktiv = 1 : $record->aktiv = 0;
+                filter_input(INPUT_POST, 'caption_aktiv', FILTER_UNSAFE_RAW) ? $record->caption_aktiv = 1 : $record->caption_aktiv = 0;
                 $data_interval = filter_input(INPUT_POST, 'data_interval', FILTER_SANITIZE_NUMBER_INT);
-                $record->data_alt = filter_input(INPUT_POST, 'data_alt', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-                $record->data_title_tag = filter_input(INPUT_POST, 'data_title_tag', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-                filter_input(INPUT_POST, 'data_title_active', FILTER_SANITIZE_STRING) ? $record->data_title_active = 1 : $record->data_title_active = 0;
-                $record->font_color = filter_input(INPUT_POST, 'font_color', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+                $record->data_alt = filter_input(INPUT_POST, 'data_alt', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
+                $record->data_title_tag = filter_input(INPUT_POST, 'data_title_tag', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
+                filter_input(INPUT_POST, 'data_title_active', FILTER_UNSAFE_RAW) ? $record->data_title_active = 1 : $record->data_title_active = 0;
+                $record->font_color = filter_input(INPUT_POST, 'font_color', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
 
                 $first_caption = filter_input(INPUT_POST, 'first_caption');
 
                 $record->first_selector = filter_input(INPUT_POST, 'first_selector', FILTER_SANITIZE_NUMBER_INT);
-                $record->first_css = filter_input(INPUT_POST, 'first_css', FILTER_SANITIZE_STRING);
-                $first_font = filter_input(INPUT_POST, 'first_font', FILTER_SANITIZE_STRING);
+                $record->first_css = filter_input(INPUT_POST, 'first_css', FILTER_UNSAFE_RAW);
+                $first_font = filter_input(INPUT_POST, 'first_font', FILTER_UNSAFE_RAW);
                 $first_style = filter_input(INPUT_POST, 'first_style', FILTER_SANITIZE_NUMBER_INT);
                 $record->first_size = filter_input(INPUT_POST, 'first_size', FILTER_SANITIZE_NUMBER_INT);
-                $record->first_height = filter_input(INPUT_POST, 'first_height', FILTER_SANITIZE_STRING);
-                $record->first_ani = filter_input(INPUT_POST, 'first_ani', FILTER_SANITIZE_STRING);
+                $record->first_height = filter_input(INPUT_POST, 'first_height', FILTER_UNSAFE_RAW);
+                $record->first_ani = filter_input(INPUT_POST, 'first_ani', FILTER_UNSAFE_RAW);
 
                 $second_caption = filter_input(INPUT_POST, 'second_caption');
 
-                $record->second_css = filter_input(INPUT_POST, 'second_css', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-                $second_font = filter_input(INPUT_POST, 'second_font', FILTER_SANITIZE_STRING);
+                $record->second_css = filter_input(INPUT_POST, 'second_css', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
+                $second_font = filter_input(INPUT_POST, 'second_font', FILTER_UNSAFE_RAW);
                 $second_style = filter_input(INPUT_POST, 'second_style', FILTER_SANITIZE_NUMBER_INT);
                 $record->second_size = filter_input(INPUT_POST, 'second_size', FILTER_SANITIZE_NUMBER_INT);
-                $record->second_height = filter_input(INPUT_POST, 'second_height', FILTER_SANITIZE_STRING);
-                $record->second_ani = filter_input(INPUT_POST, 'second_ani', FILTER_SANITIZE_STRING);
+                $record->second_height = filter_input(INPUT_POST, 'second_height', FILTER_UNSAFE_RAW);
+                $record->second_ani = filter_input(INPUT_POST, 'second_ani', FILTER_UNSAFE_RAW);
 
                 $cid = explode('_', $id);
                 $record->id = $cid[1];
@@ -2284,8 +2284,8 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
 
             case'get_fa_slider_icons':
-                $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
-                $formId = filter_input(INPUT_POST, 'formId', FILTER_SANITIZE_STRING);
+                $type = filter_input(INPUT_POST, 'type', FILTER_UNSAFE_RAW);
+                $formId = filter_input(INPUT_POST, 'formId', FILTER_UNSAFE_RAW);
                 $status = false;
                 $responseJson->type = $type;
                 switch ($type) {
@@ -2319,7 +2319,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
 
             case'slider_sortable_position':
-                $el = filter_input(INPUT_POST, 'element', FILTER_SANITIZE_STRING);
+                $el = filter_input(INPUT_POST, 'element', FILTER_UNSAFE_RAW);
                 $element = explode(',', $el);
                 $i = 1;
                 foreach ($element as $tmp) {
@@ -2428,7 +2428,7 @@ class Hupa_Starter_V2_Admin_Ajax
 
             case 'install_api_font':
                 $id = filter_input(INPUT_POST, 'font_install_id', FILTER_SANITIZE_NUMBER_INT);
-                $font_name = filter_input(INPUT_POST, 'font_name', FILTER_SANITIZE_STRING);
+                $font_name = filter_input(INPUT_POST, 'font_name', FILTER_UNSAFE_RAW);
                 $font_name = trim($font_name);
                 $responseJson->method = $this->method;
                 if (!$id) {
@@ -2693,8 +2693,8 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
 
             case 'api_activate_plugin':
-                $slug = filter_input(INPUT_POST, 'slug', FILTER_SANITIZE_STRING);
-                $responseJson->selector = filter_input(INPUT_POST, 'selector', FILTER_SANITIZE_STRING);
+                $slug = filter_input(INPUT_POST, 'slug', FILTER_UNSAFE_RAW);
+                $responseJson->selector = filter_input(INPUT_POST, 'selector', FILTER_UNSAFE_RAW);
                 if (!$slug) {
                     $responseJson->msg = 'aktivierung fehlgeschlagen!';
                     return $responseJson;
@@ -2713,7 +2713,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
 
             case 'api_download_theme':
-                $responseJson->select = filter_input(INPUT_POST, 'select_container', FILTER_SANITIZE_STRING);
+                $responseJson->select = filter_input(INPUT_POST, 'select_container', FILTER_UNSAFE_RAW);
                 $responseJson->method = 'install_api_files';
                 $responseJson->data_method = 'api_activate_theme';
                 $pin = filter_input(INPUT_POST, 'download_pin', FILTER_SANITIZE_NUMBER_INT);
@@ -2767,8 +2767,8 @@ class Hupa_Starter_V2_Admin_Ajax
 
             case 'api_activate_theme':
 
-                $slug = filter_input(INPUT_POST, 'slug', FILTER_SANITIZE_STRING);
-                $responseJson->selector = filter_input(INPUT_POST, 'selector', FILTER_SANITIZE_STRING);
+                $slug = filter_input(INPUT_POST, 'slug', FILTER_UNSAFE_RAW);
+                $responseJson->selector = filter_input(INPUT_POST, 'selector', FILTER_UNSAFE_RAW);
 
                 if (!$slug) {
                     $responseJson->msg = 'aktivierung fehlgeschlagen!';
@@ -2788,13 +2788,13 @@ class Hupa_Starter_V2_Admin_Ajax
 
             case'change_beitragslisten_template':
                 $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
-                $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
+                $type = filter_input(INPUT_POST, 'type', FILTER_UNSAFE_RAW);
                 $responseJson->status = true;
                 do_action('change_beitragslisten_template', $id, $type);
                 break;
 
             case 'security-header-handle':
-                $handle = filter_input(INPUT_POST, 'handle', FILTER_SANITIZE_STRING);
+                $handle = filter_input(INPUT_POST, 'handle', FILTER_UNSAFE_RAW);
                 if (!$handle) {
                     $responseJson->msg = __('Ajax transmission error', 'bootscore') . ' (Ajx - ' . __LINE__ . ')';
                     return $responseJson;
@@ -2821,8 +2821,8 @@ class Hupa_Starter_V2_Admin_Ajax
 
                 $arr = [];
                 for ($i = 0; $i < count($id); $i++) {
-                    $w = filter_var($wert[$i], FILTER_SANITIZE_STRING);
-                    $v = filter_var($value[$i], FILTER_SANITIZE_STRING);
+                    $w = filter_var($wert[$i], FILTER_UNSAFE_RAW);
+                    $v = filter_var($value[$i], FILTER_UNSAFE_RAW);
                     if (!$w) {
                         continue;
                     }
@@ -2851,10 +2851,10 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
 
             case'security_header_settings':
-                filter_input(INPUT_POST, 'google_fonts', FILTER_SANITIZE_STRING) ? $google_fonts = 1 : $google_fonts = 0;
-                filter_input(INPUT_POST, 'google_apis', FILTER_SANITIZE_STRING) ? $google_apis = 1 : $google_apis = 0;
-                filter_input(INPUT_POST, 'adobe_fonts', FILTER_SANITIZE_STRING) ? $adobe_fonts = 1 : $adobe_fonts = 0;
-                filter_input(INPUT_POST, 'csp_aktiv', FILTER_SANITIZE_STRING) ? $csp_aktiv = 1 : $csp_aktiv = 0;
+                filter_input(INPUT_POST, 'google_fonts', FILTER_UNSAFE_RAW) ? $google_fonts = 1 : $google_fonts = 0;
+                filter_input(INPUT_POST, 'google_apis', FILTER_UNSAFE_RAW) ? $google_apis = 1 : $google_apis = 0;
+                filter_input(INPUT_POST, 'adobe_fonts', FILTER_UNSAFE_RAW) ? $adobe_fonts = 1 : $adobe_fonts = 0;
+                filter_input(INPUT_POST, 'csp_aktiv', FILTER_UNSAFE_RAW) ? $csp_aktiv = 1 : $csp_aktiv = 0;
 
                 $s = [
                     'google_fonts' => $google_fonts,
@@ -2868,7 +2868,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
             case'add-header-config':
                 $responseJson->type = $this->method;
-                $handle = filter_input(INPUT_POST, 'handle', FILTER_SANITIZE_STRING);
+                $handle = filter_input(INPUT_POST, 'handle', FILTER_UNSAFE_RAW);
                 if (!$handle) {
                     $responseJson->msg = __('Ajax transmission error', 'bootscore') . ' (Ajx - ' . __LINE__ . ')';
                     return $responseJson;
@@ -2903,7 +2903,7 @@ class Hupa_Starter_V2_Admin_Ajax
 
             case'delete-security-header':
                 $responseJson->type = $this->method;
-                $handle = filter_input(INPUT_POST, 'handle', FILTER_SANITIZE_STRING);
+                $handle = filter_input(INPUT_POST, 'handle', FILTER_UNSAFE_RAW);
                 $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
                 if (!$handle) {
                     $responseJson->msg = __('Ajax transmission error', 'bootscore') . ' (Ajx - ' . __LINE__ . ')';
@@ -3101,10 +3101,10 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
 
             case 'gmaps_iframe_handle':
-                $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
-                $bezeichnung = filter_input(INPUT_POST, 'bezeichnung', FILTER_SANITIZE_STRING);
+                $type = filter_input(INPUT_POST, 'type', FILTER_UNSAFE_RAW);
+                $bezeichnung = filter_input(INPUT_POST, 'bezeichnung', FILTER_UNSAFE_RAW);
                 $iframe = esc_html($_POST['iframe']);
-                filter_input(INPUT_POST, 'datenschutz', FILTER_SANITIZE_STRING) ? $record->datenschutz = true : $record->datenschutz = false;
+                filter_input(INPUT_POST, 'datenschutz', FILTER_UNSAFE_RAW) ? $record->datenschutz = true : $record->datenschutz = false;
 
                 if (!$iframe) {
                     $responseJson->msg = 'Keine Daten gespeichert! I-Frame eingabe ist leer.';
@@ -3141,7 +3141,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
 
             case'get_iframe_modal_data':
-                $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
+                $type = filter_input(INPUT_POST, 'type', FILTER_UNSAFE_RAW);
                 $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
 
                 $args = sprintf('WHERE id=%d', $id);
@@ -3178,7 +3178,7 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
 
             case'get_capabilities_settings':
-                $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
+                $type = filter_input(INPUT_POST, 'type', FILTER_UNSAFE_RAW);
                 if (!$type) {
 
                     return $responseJson;
@@ -3190,8 +3190,8 @@ class Hupa_Starter_V2_Admin_Ajax
                 break;
 
             case'update_capability':
-                $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
-                $value = filter_input(INPUT_POST, 'value', FILTER_SANITIZE_STRING);
+                $type = filter_input(INPUT_POST, 'type', FILTER_UNSAFE_RAW);
+                $value = filter_input(INPUT_POST, 'value', FILTER_UNSAFE_RAW);
                 if (!$type || !$value) {
                     $responseJson->msg = 'Ajax Übertragungsfehler...';
                     return $responseJson;

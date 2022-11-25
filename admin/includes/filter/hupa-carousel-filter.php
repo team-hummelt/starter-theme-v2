@@ -3,7 +3,7 @@
 
 namespace Hupa\StarterThemeV2;
 
-use http\Client;
+
 use HupaStarterThemeV2;
 use stdClass;
 
@@ -241,7 +241,7 @@ class HupaStarterCarouselFilter
         global $wpdb;
         $fetchMethod ? $fetch = $fetchMethod : $fetch = 'get_results';
         $table = $wpdb->prefix . $getTable;
-        $result = $wpdb->$fetch("SELECT * FROM {$table} {$args}");
+        $result = $wpdb->$fetch("SELECT * FROM $table $args");
 
         if (!$result) {
             return $return;

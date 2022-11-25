@@ -538,9 +538,7 @@ defined('ABSPATH') or die();
                                     if (in_array($post_type_name, $ignore_post_types)) {
                                         continue;
                                     }
-                                    if (is_post_type_hierarchical($post_type_name)) {
-                                        //continue;
-                                    }
+
                                     $post_type_data = get_post_type_object($post_type_name);
                                     if ($post_type_data->show_ui === FALSE) {
                                         continue;
@@ -568,7 +566,7 @@ defined('ABSPATH') or die();
                                     <option value="edit_posts" <?= isset($options['capability']) && $options['capability'] == "edit_posts" ? 'selected' : '' ?>><?= esc_html__('Contributor', 'bootscore') ?></option>
                                     <option value="publish_posts" <?= isset($options['capability']) && $options['capability'] == "publish_posts" ? 'selected' : '' ?>><?= esc_html__('Author', 'bootscore') ?></option>
                                     <option value="publish_pages" <?= isset($options['capability']) && $options['capability'] == "publish_pages" ? 'selected' : '' ?>><?= esc_html__('Editor', 'bootscore') ?></option>
-                                    <option value="manage_options" <?= !isset($options['capability']) || empty($options['capability']) || (isset($options['capability']) && $options['capability'] == "manage_options") ? 'selected' : '' ?>><?= esc_html__('Administrator', 'bootscore') ?></option>
+                                    <option value="manage_options" <?= empty($options['capability']) || ($options['capability'] == "manage_options") ? 'selected' : '' ?>><?= esc_html__('Administrator', 'bootscore') ?></option>
                                 </select>
                                 <hr>
 
@@ -665,9 +663,7 @@ defined('ABSPATH') or die();
                                         continue;
                                     }
 
-                                    if (is_post_type_hierarchical($post_type_name)) {
-                                        // continue;
-                                    }
+
                                     $post_type_data = get_post_type_object($post_type_name);
                                     if ($post_type_data->show_ui === FALSE) {
                                         continue;
@@ -695,7 +691,7 @@ defined('ABSPATH') or die();
                                     <option value="edit_posts" <?= isset($options['capability']) && $options['capability'] == "edit_posts" ? 'selected' : '' ?>><?= esc_html__('Contributor', 'bootscore') ?></option>
                                     <option value="publish_posts" <?= isset($options['capability']) && $options['capability'] == "publish_posts" ? 'selected' : '' ?>><?= esc_html__('Author', 'bootscore') ?></option>
                                     <option value="publish_pages" <?= isset($options['capability']) && $options['capability'] == "publish_pages" ? 'selected' : '' ?>><?= esc_html__('Editor', 'bootscore') ?></option>
-                                    <option value="manage_options" <?= !isset($options['capability']) || empty($options['capability']) || (isset($options['capability']) && $options['capability'] == "manage_options") ? 'selected' : '' ?>><?= esc_html__('Administrator', 'bootscore') ?></option>
+                                    <option value="manage_options" <?= empty($options['capability']) || ($options['capability'] == "manage_options") ? 'selected' : '' ?>><?= esc_html__('Administrator', 'bootscore') ?></option>
                                 </select>
                                 <hr>
                                 <div class="form-check form-switch mb-1">

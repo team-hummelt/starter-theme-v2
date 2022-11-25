@@ -4,7 +4,6 @@ namespace Hupa\StarterThemeV2;
 
 use Exception;
 use finfo;
-use Hupa\Starter\Config;
 use HupaStarterThemeV2;
 
 
@@ -180,7 +179,7 @@ class HupaStarterHelper
     {
         global $wpdb;
         $checkTable = $wpdb->prefix . $table;
-        $isTable = $wpdb->get_var("SHOW TABLES LIKE '{$checkTable}'");
+        $isTable = $wpdb->get_var("SHOW TABLES LIKE '$checkTable'");
         if ($isTable) {
             return true;
         }

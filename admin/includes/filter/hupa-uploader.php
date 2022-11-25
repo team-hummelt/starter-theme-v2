@@ -3,8 +3,6 @@
 
 namespace Hupa\StarterThemeV2;
 
-use Exception;
-use Hupa\Starter\Config;
 use HupaStarterThemeV2;
 use stdClass;
 
@@ -89,7 +87,7 @@ class ThemeV2Uploader
     {
         global $hupa_register_theme_helper;
         $response = new stdClass();
-        $upload_type = filter_input(INPUT_POST, 'upload_type', FILTER_SANITIZE_STRING);
+        $upload_type = filter_input(INPUT_POST, 'upload_type', FILTER_UNSAFE_RAW);
 
         if (!$upload_type) {
             $this->set_response_header(400, 'Übertragungsfehler!');

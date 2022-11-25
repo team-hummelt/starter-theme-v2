@@ -4,7 +4,7 @@
 namespace Hupa\StarterThemeV2;
 
 use HupaStarterThemeV2;
-use stdClass;
+
 use WP_Scripts;
 
 defined('ABSPATH') or die();
@@ -141,7 +141,7 @@ class Theme_v2_Header_SCP
                             $cspStyleNonce = true;
                         }
                     }
-                    $csp[] = "{$name} {$value}";
+                    $csp[] = "$name $value";
                 }
             }
             if($csp) {
@@ -155,21 +155,21 @@ class Theme_v2_Header_SCP
                     $name = stripslashes_deep($name);
                     $value = html_entity_decode($tmp['value'], ENT_QUOTES);
                     $value = str_replace('&#39;',"'", $value);
-                    $pr[] = "{$name}={$value}";
+                    $pr[] = "$name=$value";
                 }
             }
 
             $pr = implode(', ', $pr);
             $nonces = [];
-            $regEx = '#<script.*?\>#';
+            $regEx = '#<script.*?>#';
             $output = preg_replace_callback($regEx, function ($matches) use (&$nonces) {
                 $nonce = apply_filters('get_hupa_random_id', 10, 0, 7);
                 $nonces[] = $nonce;
-                return str_replace('<script', "<script nonce='{$nonce}'", $matches[0]);
+                return str_replace('<script', "<script nonce='$nonce'", $matches[0]);
             }, $output);
 
             $nonces_csp = array_reduce($nonces, function ($header, $nonce) {
-                return "{$header} 'nonce-{$nonce}'";
+                return "$header 'nonce-$nonce'";
             }, '');
 
             if($cspScriptNonce){
@@ -184,7 +184,7 @@ class Theme_v2_Header_SCP
                     $name = htmlspecialchars_decode($tmp['name']);
                     $value = html_entity_decode($tmp['value'], ENT_QUOTES);
                     $value = str_replace('&#39;',"'", $value);
-                    $ah[] = "{$name}: {$value}";
+                    $ah[] = "$name: $value";
                 }
             }
 

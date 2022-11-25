@@ -3,15 +3,20 @@
     <div id="securityParentCol">
     <div class="collapse show" id="securityHeaderStart" data-bs-parent="#securityParentCol">
         <div class="card-body">
-            <button data-type="load-default-security-header"
-                    class="sweet-alert2 btn btn-outline-secondary">
-                <i class="bi bi-exclamation-triangle me-1"></i>
-                {{ 'Restore default'|__ }}
-            </button>
-            <button data-bs-toggle="collapse" data-bs-target="#securityHeaderSettings"
-                    class="btn btn-outline-primary">
-                <i class="bi bi-gear me-1"></i> Standard-Einstellungen
-            </button>
+            <div class="d-flex flex-wrap">
+                <button data-type="load-default-security-header"
+                        class="sweet-alert2 btn btn-outline-secondary me-1 my-1">
+                    <i class="bi bi-exclamation-triangle me-1"></i>
+                    {{ 'Restore default'|__ }}
+                </button>
+                <button data-bs-toggle="collapse" data-bs-target="#securityHeaderSettings"
+                        class="btn btn-outline-primary me-1 my-1">
+                    <i class="bi bi-gear me-1"></i> Standard-Einstellungen
+                </button>
+                <a href="https://webbkoll.dataskydd.net/de?url={{ site_url|url_encode }}" target="_blank" class="btn btn-success ms-auto my-1">
+                    <i class="bi bi-box-arrow-up-right me-1"></i> Test -> webkoll|dataskydd.net
+                </a>
+            </div>
         </div>
         {{ include('@partials-loops/security-header-table-loop.twig') }}
     </div>

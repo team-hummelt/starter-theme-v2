@@ -9,7 +9,7 @@ defined('ABSPATH') or die();
  *
  */
 
-function hupa_starter_theme_social_media()
+function hupa_starter_theme_social_media(): string
 {
     global $post;
 
@@ -71,7 +71,7 @@ function hupa_starter_theme_social_media()
     } else {
         return '';
     }
-
+   return  '';
 }
 
 function get_the_post_thumbnail_src($img)

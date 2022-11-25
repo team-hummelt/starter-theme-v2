@@ -241,6 +241,10 @@ class StarterThemeWPOptionen
         }
     }
 
+    /**
+     * @param $rate
+     * @return float|int
+     */
     public function recovery_mail_infinite_rate_limit($rate)
     {
         return 100 * YEAR_IN_SECONDS;

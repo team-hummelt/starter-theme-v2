@@ -12,8 +12,8 @@ defined('ABSPATH') or die();
  * ====================================================
  */
 
-$type = filter_input(INPUT_GET, 'type', FILTER_SANITIZE_STRING);
-$file = filter_input(INPUT_GET, 'file', FILTER_SANITIZE_STRING);
+$type = filter_input(INPUT_GET, 'type', FILTER_UNSAFE_RAW);
+$file = filter_input(INPUT_GET, 'file', FILTER_UNSAFE_RAW);
 
 if(!isset($type) || !$file){
     wp_redirect(site_url());

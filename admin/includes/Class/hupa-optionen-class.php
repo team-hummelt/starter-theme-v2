@@ -130,7 +130,6 @@ class HupaStarterThemeOptionen
     {
         $config = file_get_contents (ABSPATH . "wp-config.php");
         $config = preg_replace ("/^([\r\n\t ]*)(\<\?)(php)?/i", "<?php define('$const', $bool);", $config);
-
         file_put_contents (ABSPATH . $slash . "wp-config.php", $config);
     }
 
@@ -150,6 +149,7 @@ class HupaStarterThemeOptionen
 
         if ( file_exists (ABSPATH . "wp-config.php") && is_writable (ABSPATH . "wp-config.php") ){
             $this->add_wp_config_put('',"$method", $bool);
+
         }
         else if (file_exists (dirname (ABSPATH) . "/wp-config.php") && is_writable (dirname (ABSPATH) . "/wp-config.php")){
             $this->add_wp_config_put('',"$method" , $bool);

@@ -110,7 +110,7 @@ if ($child_data->exists()) {
  */
 Config::define('WP_THEME_ADMIN_URL', get_template_directory_uri() . '/admin/');
 Config::define('THEME_JS_MODUL_URL', get_template_directory_uri() . '/admin/assets/admin/js/js-module/');
-
+Config::define('THEME_INCLUDES_URL', Config::get('WP_THEME_ADMIN_URL') .'includes/');
 
 /**
  * FONTs DIR | URL

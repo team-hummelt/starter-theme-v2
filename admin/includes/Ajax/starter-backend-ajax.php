@@ -941,7 +941,7 @@ class Hupa_Starter_V2_Admin_Ajax
                         } else {
                             $hupa_optionen_class->theme_deactivate_mu_plugin();
                         }
-                        $create = (object) [];
+                        $create = (object)[];
                         //JOB WP CACHE
                         if ($wp_cache) {
                             $create = $hupa_optionen_class->add_create_config_put('WP_CACHE', 'WP CACHE', 1);
@@ -951,21 +951,6 @@ class Hupa_Starter_V2_Admin_Ajax
                             }
                         } else {
                             $delete = $hupa_optionen_class->delete_config_put('WP_CACHE', 'WP CACHE', 1);
-                            if (!$delete->status) {
-                                $responseJson->msg = $delete->msg;
-                                return $responseJson;
-                            }
-                        }
-
-                        //JOB WP DEBUG
-                        if ($wp_debug) {
-                            // $create = $hupa_optionen_class->add_create_config_put('WP_DEBUG', 'WP DEBUG', 1);
-                            if (!$create->status) {
-                                $responseJson->msg = $create->msg;
-                                return $responseJson;
-                            }
-                        } else {
-                            // $delete = $hupa_optionen_class->delete_config_put('WP_DEBUG', 'WP DEBUG', 1);
                             if (!$delete->status) {
                                 $responseJson->msg = $delete->msg;
                                 return $responseJson;
@@ -2829,7 +2814,7 @@ class Hupa_Starter_V2_Admin_Ajax
                     $aktiv && isset($aktiv[$id[$i]]) ? $a = 1 : $a = 0;
                     $item = [
                         'name' => $w,
-                        'value' =>  str_replace('&#39;',"'", $v),
+                        'value' => str_replace('&#39;', "'", $v),
                         'aktiv' => $a,
                         'id' => (int)$id[$i],
                         'help' => '',
@@ -2873,20 +2858,20 @@ class Hupa_Starter_V2_Admin_Ajax
                     $responseJson->msg = __('Ajax transmission error', 'bootscore') . ' (Ajx - ' . __LINE__ . ')';
                     return $responseJson;
                 }
-                    $data = [
-                        'd' => [
-                            'id' => $handle,
-                            'table' => [
-                                '0' => [
-                                    'name' => '',
-                                    'value' => '',
-                                    'aktiv' => 0,
-                                    'id' => apply_filters('get_hupa_random_id', 6,0,6),
-                                    'help' => '',
-                                ]
+                $data = [
+                    'd' => [
+                        'id' => $handle,
+                        'table' => [
+                            '0' => [
+                                'name' => '',
+                                'value' => '',
+                                'aktiv' => 0,
+                                'id' => apply_filters('get_hupa_random_id', 6, 0, 6),
+                                'help' => '',
                             ]
                         ]
-                    ];
+                    ]
+                ];
                 try {
                     $template = $this->twig->render('@partials-loops/security-header-table.twig', $data);
                     $responseJson->template = apply_filters('compress_template', $template);
@@ -2910,14 +2895,14 @@ class Hupa_Starter_V2_Admin_Ajax
                     return $responseJson;
                 }
                 $headers = get_option('theme_security_header');
-                if(!isset($headers[$handle])){
+                if (!isset($headers[$handle])) {
                     $responseJson->msg = __('Ajax transmission error', 'bootscore') . ' (Ajx - ' . __LINE__ . ')';
                     return $responseJson;
                 }
 
                 $arr = [];
                 foreach ($headers[$handle] as $tmp) {
-                    if($tmp['id'] == $id) {
+                    if ($tmp['id'] == $id) {
                         continue;
                     }
                     $item = [
@@ -2936,6 +2921,60 @@ class Hupa_Starter_V2_Admin_Ajax
                 $responseJson->msg = 'Änderungen erfolgreich gespeichert.';
                 $responseJson->id = $id;
                 $responseJson->handle = $handle;
+                break;
+            case'update_scss_compiler':
+                $source = filter_input(INPUT_POST, 'source', FILTER_UNSAFE_RAW);
+                $destination = filter_input(INPUT_POST, 'destination', FILTER_UNSAFE_RAW);
+                $formatter_mode = filter_input(INPUT_POST, 'formatter_mode', FILTER_UNSAFE_RAW);
+                $map_option = filter_input(INPUT_POST, 'map_option', FILTER_UNSAFE_RAW);
+                filter_input(INPUT_POST, 'map', FILTER_UNSAFE_RAW) ? $map_aktiv = 1 : $map_aktiv = 0;
+                filter_input(INPUT_POST, 'scss_login_aktiv', FILTER_UNSAFE_RAW) ? $scss_login_aktiv = 1 : $scss_login_aktiv = 0;
+                filter_input(INPUT_POST, 'enqueue_aktiv', FILTER_UNSAFE_RAW) ? $enqueue_aktiv = 1 : $enqueue_aktiv = 0;
+                filter_input(INPUT_POST, 'cache_aktiv', FILTER_UNSAFE_RAW) ? $cache_aktiv = 1 : $cache_aktiv = 0;
+
+                if($source == $destination){
+                    $responseJson->msg = '';
+                    return $responseJson;
+                }
+
+                $cache_path = filter_input(INPUT_POST, 'cache_path', FILTER_UNSAFE_RAW);
+                if(!$cache_path) {
+                    $cache_path = WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'scss_cache';
+                }
+                if(!$cache_aktiv) {
+                    do_action($this->basename.'/delete_scss_compiler_cache', $cache_path);
+                }
+                $option = [
+                    'scss_source' => $source,
+                    'scss_destination' => $destination,
+                    'scss_formatter' => $formatter_mode,
+                    'map_aktiv' => $map_aktiv,
+                    'scss_map_option' => $map_option,
+                    'scss_login_aktiv' => $scss_login_aktiv,
+                    'cache_aktiv' => $cache_aktiv,
+                    'cache_path' => $cache_path,
+                    'enqueue_aktiv' => $enqueue_aktiv
+                ];
+
+                if(get_option($this->basename.'/scss_compiler', $option)){
+                    $option['compiler_aktiv'] = get_option($this->basename.'/scss_compiler', $option)['compiler_aktiv'];
+                }
+                update_option($this->basename.'/scss_compiler', $option);
+                $responseJson->status = true;
+                break;
+            case'clear-cache':
+                $optionen = get_option($this->basename.'/scss_compiler');
+                do_action($this->basename.'/delete_scss_compiler_cache', $optionen['cache_path']);
+                $responseJson->status = true;
+                $responseJson->msg = 'Cache erfolgreich gelöscht.';
+                break;
+            case'update_scss_compiler_aktiv':
+                $aktiv = filter_input(INPUT_POST, 'checked', FILTER_VALIDATE_INT);
+                $optionen = get_option($this->basename.'/scss_compiler');
+                $optionen['compiler_aktiv'] = $aktiv;
+                update_option($this->basename.'/scss_compiler', $optionen);
+                $aktiv == 1 ? $responseJson->disabled = false : $responseJson->disabled = true;
+                $responseJson->status = true;
                 break;
             case'load-default-security-header':
                 $responseJson->type = $this->method;

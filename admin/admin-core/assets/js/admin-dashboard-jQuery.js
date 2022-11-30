@@ -300,6 +300,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         }
 
+        $(document).on('click', '.btn.clear-cache', function () {
+            let formData = {
+                'method': 'clear-cache'
+            }
+            xhr_ajax_handle(formData, false, clear_cache_file_callback);
+        });
+
+        function clear_cache_file_callback() {
+            let data = JSON.parse(this.responseText);
+            if (data.status) {
+                success_message(data.msg);
+            }
+        }
+
+
         $(document).on('click', '.btn-log-renew', function () {
             let debLog = $('#debug-log');
             debLog.empty();

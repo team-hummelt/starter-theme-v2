@@ -16,8 +16,8 @@ Header-, Footer- und 404-Widgets.
 ***
 * Contributors: jwiecker
 * Tags: Hupa Theme, Bootstrap
-* Version: 2.0.4
-* Stable tag: 2.0.4
+* Version: 2.0.5
+* Stable tag: 2.0.5
 * Requires at least: 5.6
 * Tested up to: 6.1.1
 * Requires PHP: 7.4
@@ -25,6 +25,9 @@ Header-, Footer- und 404-Widgets.
 #### Theme ist nicht mit der Version 1 kompatibel.
 
 ## Changelog
+### 2.0.5
+- SCSS Compiler hinzugefügt (Werkzeuge)
+
 ### 2.0.4
 - PHP 8.1 kompatibel
 - Security Header Test hinzugefügt

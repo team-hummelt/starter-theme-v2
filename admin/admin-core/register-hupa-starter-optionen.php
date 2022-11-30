@@ -253,6 +253,20 @@ final class HupaRegisterStarterTheme
             add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
         }
 
+        // Werkzeuge Page
+        if (!HUPA_MINIFY_AKTIV) {
+            $hook_suffix = add_management_page(
+                __('SCSS Compiler', 'bootscore'),
+                '<img class="menu_hupa" src="' . Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/hupa-white-sm.png" alt="" /> SCSS Compiler',
+                'install_plugins',
+                'hupa-theme-tools',
+                array($this, 'hupa_theme_werkzeuge_page')
+            );
+
+            add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
+        }
+
+
         /** OPTIONS PAGE */
         $hook_suffix = add_options_page(
             __('HUPA Theme', 'bootscore'),
@@ -275,7 +289,8 @@ final class HupaRegisterStarterTheme
     /**
      * @param $wp_admin_bar
      */
-    public function hupa_toolbar_hupa_options($wp_admin_bar): void
+    public
+    function hupa_toolbar_hupa_options($wp_admin_bar): void
     {
 
         $args = array(
@@ -324,13 +339,15 @@ final class HupaRegisterStarterTheme
      * =========== ADMIN PAGES ===========
      * ===================================
      */
-    public function hupa_admin_starter_theme_home(): void
+    public
+    function hupa_admin_starter_theme_home(): void
     {
         wp_enqueue_media();
         require 'partials/admin-starter-theme-home.php';
     }
 
-    public function hupa_admin_starter_theme_media_tools(): void
+    public
+    function hupa_admin_starter_theme_media_tools(): void
     {
         $data = [
             'media' => apply_filters('get_social_media', ''),
@@ -351,7 +368,8 @@ final class HupaRegisterStarterTheme
         }
     }
 
-    public function hupa_admin_starter_theme_carousel(): void
+    public
+    function hupa_admin_starter_theme_carousel(): void
     {
         wp_enqueue_media();
         $carousel = apply_filters('get_carousel_komplett_data', false);
@@ -368,7 +386,8 @@ final class HupaRegisterStarterTheme
         }
     }
 
-    public function hupa_admin_starter_theme_install_font(): void
+    public
+    function hupa_admin_starter_theme_install_font(): void
     {
         try {
             $template = $this->twig->render('@partials-templates/admin-install-from-api.twig', []);
@@ -380,7 +399,8 @@ final class HupaRegisterStarterTheme
         }
     }
 
-    public function hupa_admin_starter_theme_security_header(): void
+    public
+    function hupa_admin_starter_theme_security_header(): void
     {
         //delete_option('theme_security_header');
         $headers = get_option('theme_security_header');
@@ -419,7 +439,8 @@ final class HupaRegisterStarterTheme
         }
     }
 
-    public function hupa_admin_starter_theme_install_patch(): void
+    public
+    function hupa_admin_starter_theme_install_patch(): void
     {
 
         $data = [
@@ -441,29 +462,54 @@ final class HupaRegisterStarterTheme
 
 
     //Lizenzen
-    public function hupa_admin_starter_license(): void
+    public
+    function hupa_admin_starter_license(): void
     {
         require 'partials/hupa-starter-license.php';
     }
 
     //HUPA MAPS
-    public function hupa_admin_starter_theme_maps(): void
+    public
+    function hupa_admin_starter_theme_maps(): void
     {
         wp_enqueue_media();
         require 'partials/admin-starter-theme-maps.php';
     }
 
     //HUPA IFRAME MAPS
-    public function hupa_admin_starter_iframe_maps(): void
+    public
+    function hupa_admin_starter_iframe_maps(): void
     {
         require 'partials/admin-iframe-maps.php';
     }
 
     //HUPA IFRAME MAPS
-    public function hupa_admin_starter_maps_settings(): void
+    public
+    function hupa_admin_starter_maps_settings(): void
     {
         wp_enqueue_media();
         require 'partials/admin-gmaps-settings.php';
+    }
+
+    public
+    function hupa_theme_werkzeuge_page(): void
+    {
+        $data = [
+            'site_section' => 'SCSS Compiler',
+            'first_title' => 'Compiler',
+            'second_title' => 'Settings',
+            'theme_dir' => SCSS_COMPILER_ROOT,
+            'option' => get_option($this->basename . '/scss_compiler')
+        ];
+
+        try {
+            $template = $this->twig->render('@partials-templates/tool-scss-compiler.twig', $data);
+            echo apply_filters('compress_template', $template);
+        } catch (LoaderError|SyntaxError|RuntimeError $e) {
+            echo $e->getMessage();
+        } catch (Throwable $e) {
+            echo $e->getMessage();
+        }
     }
 
     /**
@@ -471,7 +517,8 @@ final class HupaRegisterStarterTheme
      * =========== ADMIN OPTION PAGE ===========
      * =========================================
      */
-    public function hupa_theme_options_page(): void
+    public
+    function hupa_theme_options_page(): void
     {
 
         //delete_option('hupa_wp_upd_msg');
@@ -494,7 +541,8 @@ final class HupaRegisterStarterTheme
     }
 
 
-    public function hupa_starter_theme_update_db(): void
+    public
+    function hupa_starter_theme_update_db(): void
     {
         if (get_option("theme_db_version") !== $this->main->get_db_version()) {
             apply_filters('theme_database_install', false);
@@ -511,7 +559,8 @@ final class HupaRegisterStarterTheme
         }
     }
 
-    public function hupa_starter_theme_load_ajax_admin_options_script()
+    public
+    function hupa_starter_theme_load_ajax_admin_options_script()
     {
         add_action('admin_enqueue_scripts', array($this, 'load_hupa_starter_theme_admin_style'));
         $title_nonce = wp_create_nonce('theme_admin_handle');
@@ -536,6 +585,13 @@ final class HupaRegisterStarterTheme
         require Config::get('THEME_ADMIN_INCLUDES') . 'Ajax/starter-backend-ajax.php';
         $adminAjaxHandle = Hupa_Starter_V2_Admin_Ajax::hupa_admin_ajax_instance($this->basename, $this->theme_version, $this->main, $this->twig);
         wp_send_json($adminAjaxHandle->hupa_starter_admin_ajax_handle());
+    }
+
+    public function prefix_ajax_HupaFolderHandle(): void
+    {
+        check_ajax_referer('theme_admin_handle');
+        $adminAjaxFolder = Starter_Folder_Three::folder_three_instance();
+        wp_send_json($adminAjaxFolder->create_folder_tree());
     }
 
     public function hupa_starter_theme_public_one_trigger_check(): void
@@ -960,6 +1016,13 @@ final class HupaRegisterStarterTheme
             wp_enqueue_script('hupa-starter-dropzone-option-script', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/js/patch-zip-dropzone.js', array(), $this->theme_version, true);
         }
 
+
+        if (!HUPA_MINIFY_AKTIV) {
+            if ($page == 'hupa-theme-tools') {
+                wp_enqueue_script('hupa-starter-folder-three-script', Config::get('WP_THEME_ADMIN_URL') . 'includes/folderTree/folderTree.js', array(), $this->theme_version, true);
+                wp_enqueue_style('hupa-starter-folder-three-style', Config::get('WP_THEME_ADMIN_URL') . 'includes/folderTree/filetree.css', array(), $this->theme_version, 'all');
+            }
+        }
     }
 
     /**

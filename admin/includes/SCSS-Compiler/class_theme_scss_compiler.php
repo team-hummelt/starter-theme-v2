@@ -78,7 +78,9 @@ class Theme_SCSS_Compiler
         $src = array_diff(scandir($source_dir), array('..', '.'));
         if ($src) {
             foreach ($src as $tmp) {
-
+                if(substr($tmp,0,1) == '_') {
+                    continue;
+                }
                 $file = $source_dir . DIRECTORY_SEPARATOR . $tmp;
                 if (!is_file($file)) {
                     continue;
@@ -125,7 +127,7 @@ class Theme_SCSS_Compiler
         $cacheArr = null;
         if ($this->option['cache_aktiv'] && !empty($this->option['cache_path'])) {
             /** ?? Cache löschen ? */
-            $this->delete_scss_compiler_cache($this->option['cache_path']);
+            //$this->delete_scss_compiler_cache($this->option['cache_path']);
             $cacheArr = ['cacheDir' => $this->option['cache_path']];
         }
         $scssCompiler = new Compiler($cacheArr);

@@ -172,17 +172,6 @@ final class HupaRegisterStarterTheme
 
             add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
         }
-        if (!get_option('wp-security-header_user_role')) {
-            $hook_suffix = add_submenu_page(
-                'hupa-starter-home',
-                __('Security Header', 'bootscore'),
-                __('Security Header', 'bootscore'),
-                get_option('theme_capabilities')['security-header'],
-                'hupa-security-header',
-                array($this, 'hupa_admin_starter_theme_security_header'));
-
-            add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
-        }
 
         if (Config::get('HUPA_PATCH_INSTALL_AKTIV')) {
             $hook_suffix = add_submenu_page(
@@ -262,6 +251,17 @@ final class HupaRegisterStarterTheme
                 'hupa-theme-tools',
                 array($this, 'hupa_theme_werkzeuge_page')
             );
+
+            add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
+        }
+
+        if (!get_option('wp-security-header_user_role')) {
+            $hook_suffix = add_management_page(
+                __('Security Header', 'bootscore'),
+                '<img class="menu_hupa" src="' . Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/images/hupa-white-sm.png" alt="" /> Security Header',
+                get_option('theme_capabilities')['security-header'],
+                'hupa-security-header',
+                array($this, 'hupa_admin_starter_theme_security_header'));
 
             add_action('load-' . $hook_suffix, array($this, 'hupa_starter_theme_load_ajax_admin_options_script'));
         }

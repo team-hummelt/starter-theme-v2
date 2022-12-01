@@ -40,8 +40,10 @@ use Hupa\StarterThemeV2\Theme_v2_Header_SCP;
 use Hupa\StarterThemeV2\ThemeV2Uploader;
 use Hupa\StarterV2\HupaEnqueueStarterTheme;
 use Hupa\StarterV2\HupaRegisterStarterTheme;
+use Hupa\StarterV2\Theme_SCSS_Compiler;
 use Hupa\ThemeLicense\HupaApiServerHandle;
 use Hupa\ThemeLicense\RegisterHupaStarter;
+use ScssPhp\ScssPhp\Exception\SassException;
 use StarterAPIExec\EXEC\HupaStarterLicenseExecAPI;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -171,6 +173,8 @@ class HupaStarterThemeV2
         $this->settings_id = Config::get('THEME_SETTINGS_ID');
         $this->main = $this;
 
+        define("HUPA_MINIFY_AKTIV", Config::get('HUPA_MINIFY_AKTIV'));
+        define("SCSS_COMPILER_ROOT", wp_get_theme()->get_theme_root());
 
         $this->load_dependencies();
 
@@ -229,6 +233,8 @@ class HupaStarterThemeV2
         // License API
         $this->define_theme_api_handle();
 
+        $this->register_scss_compiler();
+
         $this->define_enqueue_hooks();
         $this->define_get_theme_language_hooks();
         $this->define_get_css_generator_hooks();
@@ -283,60 +289,60 @@ class HupaStarterThemeV2
          * The class responsible for orchestrating the actions and filters of the
          * core plugin.
          */
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'class-hupa-starter-v2-loader.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'class-hupa-starter-v2-loader.php');
 
 
         /**
          * The class responsible for defining option trait admin area.
          */
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'traits/HupaOptionTrait.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'traits/HupaOptionTrait.php');
 
         /**
          * The class responsible for defining carousel trait admin area.
          */
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'traits/HupaCarouselTrait.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'traits/HupaCarouselTrait.php');
 
         /**
          * The class responsible for defining option Render-Block admin area.
          */
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'filter/hupa-theme-render-block.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'filter/hupa-theme-render-block.php');
 
         /**
          * The class responsible for defining database admin area.
          */
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'hupa-theme-database.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'hupa-theme-database.php');
 
         //MENU ORDER
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'menu-order/class/class-order-core.php');
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'menu-order/hupa-menu-order-init.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'menu-order/class/class-order-core.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'menu-order/hupa-menu-order-init.php');
 
         /**
          * The class responsible for defining theme options.
          */
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'filter/theme-helper.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'filter/theme-helper.php');
 
         /**
          * The class responsible for defining oAuth2 Server options.
          */
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'oAuthServer/OauthServer.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'oAuthServer/OauthServer.php');
 
         /**
          * The class responsible for defining theme options.
          */
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'filter/hupa-theme-option-filter.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'filter/hupa-theme-option-filter.php');
 
         //TODO LICENSE
-        require Config::get('THEME_ADMIN_INCLUDES') . 'license/license-init.php';
+        require_once Config::get('THEME_ADMIN_INCLUDES') . 'license/license-init.php';
 
         /**
          * JOB Actions
          * The class responsible for defining all scripts that occur in the Theme Actions.
          */
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'action/hupa-update-action.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'action/hupa-update-action.php');
 
 
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'Class/hupa-optionen-class.php');
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'Class/class-api-handle.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'Class/hupa-optionen-class.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'Class/class-api-handle.php');
 
         //Editor CSS
         //require(THEME_ADMIN_DIR . 'admin-core/assets/css/editor-ui-styles-css.php');
@@ -345,90 +351,95 @@ class HupaStarterThemeV2
          * The class responsible for defining all actions that occur in the admin area.
          */
         if (file_exists(THEME_ADMIN_DIR . 'admin-core/register-hupa-starter-optionen.php')) {
-            require(THEME_ADMIN_DIR . 'admin-core/register-hupa-starter-optionen.php');
+            require_once(THEME_ADMIN_DIR . 'admin-core/register-hupa-starter-optionen.php');
 
-            require(Config::get('THEME_ADMIN_INCLUDES') . 'patterns/class_register_starter_theme_gutenberg_patterns.php');
+            require_once(Config::get('THEME_ADMIN_INCLUDES') . 'patterns/class_register_starter_theme_gutenberg_patterns.php');
+        }
+
+        if(!HUPA_MINIFY_AKTIV) {
+            require_once(Config::get('THEME_ADMIN_INCLUDES') . 'Ajax/starter_folder_three.php');
+            require_once (Config::get('THEME_ADMIN_INCLUDES') . 'SCSS-Compiler/class_theme_scss_compiler.php');
         }
 
 
         // CAROUSEL CLASS
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'filter/hupa-carousel-filter.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'filter/hupa-carousel-filter.php');
 
         // Tools CLASS
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'filter/hupa-theme-tools-filter.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'filter/hupa-theme-tools-filter.php');
 
         // FONT HANDLE CLASS
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'font-handle/theme-fonts-handler.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'font-handle/theme-fonts-handler.php');
 
         //  SOCIAL MEDIA HOOK
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'action/social-media-hook.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'action/social-media-hook.php');
 
         //  THEME WIDGETS
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'widgets/social-media-widget.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'widgets/social-media-widget.php');
 
         // JOB WARNING GUTENBERG TOOLS
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/register-gutenberg-tools.php');
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/google-maps-callback.php');
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/theme-carousel-callback.php');
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/menu-select-callback.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/register-gutenberg-tools.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/google-maps-callback.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/theme-carousel-callback.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/menu-select-callback.php');
 
         if (Config::get('HUPA_SIDEBAR')) {
             // JOB WARNING GUTENBERG SIDEBAR
             // GUTENBERG SIDEBAR
-            require Config::get('THEME_ADMIN_INCLUDES') . 'hupa-gutenberg-sidebar/register-hupa-gutenberg-sidebar.php';
+            require_once Config::get('THEME_ADMIN_INCLUDES') . 'hupa-gutenberg-sidebar/register-hupa-gutenberg-sidebar.php';
             // SIDEBAR ENDPOINT
-            require Config::get('THEME_ADMIN_INCLUDES') . 'hupa-gutenberg-sidebar/sidebar-rest-endpoint.php';
+            require_once Config::get('THEME_ADMIN_INCLUDES') . 'hupa-gutenberg-sidebar/sidebar-rest-endpoint.php';
             // JOB CLASSIC METABOX
-            require Config::get('THEME_ADMIN_INCLUDES') . 'hupa-gutenberg-sidebar/classic-meta-box/classic-meta-box.php';
+            require_once Config::get('THEME_ADMIN_INCLUDES') . 'hupa-gutenberg-sidebar/classic-meta-box/classic-meta-box.php';
         }
 
         //TODO JOB SHORTCODES
-        require Config::get('THEME_ADMIN_INCLUDES') . 'shortcode/hupa-carousel-shortcode.php';
-        require Config::get('THEME_ADMIN_INCLUDES') . 'shortcode/hupa-social-button.php';
-        require Config::get('THEME_ADMIN_INCLUDES') . 'shortcode/hupa-icon-shortcode.php';
-        require Config::get('THEME_ADMIN_INCLUDES') . 'shortcode/hupa-theme-google-maps.php';
+        require_once Config::get('THEME_ADMIN_INCLUDES') . 'shortcode/hupa-carousel-shortcode.php';
+        require_once Config::get('THEME_ADMIN_INCLUDES') . 'shortcode/hupa-social-button.php';
+        require_once Config::get('THEME_ADMIN_INCLUDES') . 'shortcode/hupa-icon-shortcode.php';
+        require_once Config::get('THEME_ADMIN_INCLUDES') . 'shortcode/hupa-theme-google-maps.php';
 
         //WARNING JOB MENU ORDER
-        require Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/menu-select/menu-select-nav-walker.php';
+        require_once Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/menu-select/menu-select-nav-walker.php';
 
         //TODO WP THEME OPTIONEN
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'action/theme-options.php');
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'action/hupa-html-compression.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'action/theme-options.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'action/hupa-html-compression.php');
 
         /**
          * The class responsible for defining all scripts that occur in the admin area.
          */
-        require(THEME_ADMIN_DIR . 'admin-core/enqueue.php');
+        require_once(THEME_ADMIN_DIR . 'admin-core/enqueue.php');
 
         /**
          * The class responsible for defining all scripts that occur in the FRONTEND OPTIONEN.
          */
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'filter/frontend/frontend-filter-class.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'filter/frontend/frontend-filter-class.php');
 
         /**
          * The class responsible for defining all scripts that occur in the AJAX Language OPTIONEN.
          */
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'filter/ajax-language/ajax-language-filter.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'filter/ajax-language/ajax-language-filter.php');
 
         /**
          * The class responsible for defining all scripts that occur in the Theme Fonts OPTIONEN.
          */
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'filter/css-generator/css-generator-class.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'filter/css-generator/css-generator-class.php');
 
         /**
          * The class responsible for defining all scripts that occur in the Theme Uploader OPTIONEN.
          */
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'filter/hupa-uploader.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'filter/hupa-uploader.php');
 
         /**
          * The class responsible for defining all scripts that occur in the Theme Gutenberg Callback.
          */
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/gutenberg-tools-callback.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/gutenberg-tools-callback.php');
 
         /**
          * The class responsible for defining all scripts that occur in the Theme Gutenberg Callback.
          */
-        require(Config::get('THEME_ADMIN_INCLUDES') . 'Header-SCP/class_theme_v2_header_scp.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'Header-SCP/class_theme_v2_header_scp.php');
 
         $this->loader = new Hupa_Theme_v2_Loader();
     }
@@ -473,9 +484,10 @@ class HupaStarterThemeV2
     private function define_admin_hooks()
     {
         global $hupa_register_starter_options;
+
         if (file_exists(THEME_ADMIN_DIR . 'admin-core/register-hupa-starter-optionen.php') && get_option('hupa_starter_product_install_authorize')) {
-            if(!isset(get_option('theme_capabilities')['security-header'])){
-                $opt =  get_option('theme_capabilities');
+            if (!isset(get_option('theme_capabilities')['security-header'])) {
+                $opt = get_option('theme_capabilities');
                 $opt['security-header'] = 'manage_options';
                 update_option('theme_capabilities', $opt);
             }
@@ -498,6 +510,10 @@ class HupaStarterThemeV2
             $this->loader->add_action('wp_ajax_HupaStarterHandle', $hupa_register_starter_options, 'prefix_ajax_HupaStarterHandle');
             $this->loader->add_action('wp_ajax_nopriv_HupaStarterNoAdmin', $hupa_register_starter_options, 'prefix_ajax_HupaStarterNoAdmin');
             $this->loader->add_action('wp_ajax_HupaStarterNoAdmin', $hupa_register_starter_options, 'prefix_ajax_HupaStarterNoAdmin');
+
+            if(!HUPA_MINIFY_AKTIV) {
+               $this->loader->add_action('wp_ajax_HupaFolderHandle', $hupa_register_starter_options, 'prefix_ajax_HupaFolderHandle');
+            }
 
             if (Config::get('CUSTOM_HEADER')) {
                 /**CREATE CUSTOM HEADER POST TYPE */
@@ -630,55 +646,56 @@ class HupaStarterThemeV2
      */
     private function define_theme_options_hooks()
     {
-            global $hupa_register_theme_options;
-            $hupa_register_theme_options = HupaStarterOptionFilter::init($this->main);
 
-            $this->loader->add_filter('set_database_defaults', $hupa_register_theme_options, 'hupa_set_database_defaults');
-            //JOB GET HUPA OPTION
-            $this->loader->add_filter('get_hupa_option', $hupa_register_theme_options, 'hupa_get_hupa_option');
-            //JOB GET HUPA TOOLS
-            $this->loader->add_filter('get_hupa_tools', $hupa_register_theme_options, 'hupa_get_hupa_tools');
-            //JOB GET PAGE META DATA
-            $this->loader->add_filter('get_page_meta_data', $hupa_register_theme_options, 'getHupaPageMetaDaten');
+        global $hupa_register_theme_options;
+        $hupa_register_theme_options = HupaStarterOptionFilter::init($this->main);
 
-            //GET FONT STYLE BY FONT-FAMILY
-            $this->loader->add_filter('get_font_style_select', $hupa_register_theme_options, 'hupa_get_font_style_select');
-            //GET FONT FAMILY
-            $this->loader->add_filter('get_font_family_select', $hupa_register_theme_options, 'hupa_get_font_family_select');
-            //UPDATE DER THEME OPTIONEN
-            $this->loader->add_filter('update_hupa_options', $hupa_register_theme_options, 'hupa_update_hupa_options', 10, 2);
-            //GET SOCIAL MEDIA
-            $this->loader->add_filter('get_social_media', $hupa_register_theme_options, 'hupa_get_social_media', 10, 2);
-            //GET ANIMATE OPTIONEN
-            $this->loader->add_filter('get_animate_option', $hupa_register_theme_options, 'hupa_get_animate_option');
-            //GET HUPA TOOLS
-            $this->loader->add_filter('get_hupa_tools_by_args', $hupa_register_theme_options, 'hupa_get_hupa_tools_by_args', 10, 3);
-            //UPDATE Sortable Position
-            $this->loader->add_filter('update_sortable_position', $hupa_register_theme_options, 'hupa_update_sortable_position', 10, 2);
-            //SETTINGS MENU LABEL
-            $this->loader->add_filter('get_settings_menu_label', $hupa_register_theme_options, 'hupa_get_settings_menu_label');
-            //MENU AUSWAHL
-            $this->loader->add_filter('get_menu_auswahl', $hupa_register_theme_options, 'hupa_get_menu_auswahl');
-            // Social Button URL
-            $this->loader->add_filter('get_social_button_url', $hupa_register_theme_options, 'hupa_get_social_button_url', 10, 2);
+        $this->loader->add_filter('set_database_defaults', $hupa_register_theme_options, 'hupa_set_database_defaults');
+        //JOB GET HUPA OPTION
+        $this->loader->add_filter('get_hupa_option', $hupa_register_theme_options, 'hupa_get_hupa_option');
+        //JOB GET HUPA TOOLS
+        $this->loader->add_filter('get_hupa_tools', $hupa_register_theme_options, 'hupa_get_hupa_tools');
+        //JOB GET PAGE META DATA
+        $this->loader->add_filter('get_page_meta_data', $hupa_register_theme_options, 'getHupaPageMetaDaten');
 
-            // JOB SITEMAP ERSTELLEN
-            if ($hupa_register_theme_options->hupa_get_hupa_option('sitemap_post')) {
-                $this->loader->add_action('publish_post', $hupa_register_theme_options, 'hupa_starter_create_sitemap');
-            }
-            if ($hupa_register_theme_options->hupa_get_hupa_option('sitemap_page')) {
-                $this->loader->add_action('publish_page', $hupa_register_theme_options, 'hupa_starter_create_sitemap');
-            }
+        //GET FONT STYLE BY FONT-FAMILY
+        $this->loader->add_filter('get_font_style_select', $hupa_register_theme_options, 'hupa_get_font_style_select');
+        //GET FONT FAMILY
+        $this->loader->add_filter('get_font_family_select', $hupa_register_theme_options, 'hupa_get_font_family_select');
+        //UPDATE DER THEME OPTIONEN
+        $this->loader->add_filter('update_hupa_options', $hupa_register_theme_options, 'hupa_update_hupa_options', 10, 2);
+        //GET SOCIAL MEDIA
+        $this->loader->add_filter('get_social_media', $hupa_register_theme_options, 'hupa_get_social_media', 10, 2);
+        //GET ANIMATE OPTIONEN
+        $this->loader->add_filter('get_animate_option', $hupa_register_theme_options, 'hupa_get_animate_option');
+        //GET HUPA TOOLS
+        $this->loader->add_filter('get_hupa_tools_by_args', $hupa_register_theme_options, 'hupa_get_hupa_tools_by_args', 10, 3);
+        //UPDATE Sortable Position
+        $this->loader->add_filter('update_sortable_position', $hupa_register_theme_options, 'hupa_update_sortable_position', 10, 2);
+        //SETTINGS MENU LABEL
+        $this->loader->add_filter('get_settings_menu_label', $hupa_register_theme_options, 'hupa_get_settings_menu_label');
+        //MENU AUSWAHL
+        $this->loader->add_filter('get_menu_auswahl', $hupa_register_theme_options, 'hupa_get_menu_auswahl');
+        // Social Button URL
+        $this->loader->add_filter('get_social_button_url', $hupa_register_theme_options, 'hupa_get_social_button_url', 10, 2);
 
-            $this->loader->add_filter('get_default_settings', $hupa_register_theme_options, 'getHupaDefaultSettings');
-            // ALL Sidebars
-            $this->loader->add_filter('get_registered_sidebar', $hupa_register_theme_options, 'hupa_get_registered_sidebar');
-            //All Footer AND Header SELECT
-            $this->loader->add_filter('get_custom_header', $hupa_register_theme_options, 'getCustomHeader');
-            $this->loader->add_filter('get_custom_footer', $hupa_register_theme_options, 'getCustomFooter');
-            //FOOTER HEADER CONTENT BY POST ID
-            $this->loader->add_filter('get_content_custom_header', $hupa_register_theme_options, 'getContentCustomHeader');
-            $this->loader->add_filter('get_content_custom_footer', $hupa_register_theme_options, 'getContentCustomFooter');
+        // JOB SITEMAP ERSTELLEN
+        if ($hupa_register_theme_options->hupa_get_hupa_option('sitemap_post')) {
+            $this->loader->add_action('publish_post', $hupa_register_theme_options, 'hupa_starter_create_sitemap');
+        }
+        if ($hupa_register_theme_options->hupa_get_hupa_option('sitemap_page')) {
+            $this->loader->add_action('publish_page', $hupa_register_theme_options, 'hupa_starter_create_sitemap');
+        }
+
+        $this->loader->add_filter('get_default_settings', $hupa_register_theme_options, 'getHupaDefaultSettings');
+        // ALL Sidebars
+        $this->loader->add_filter('get_registered_sidebar', $hupa_register_theme_options, 'hupa_get_registered_sidebar');
+        //All Footer AND Header SELECT
+        $this->loader->add_filter('get_custom_header', $hupa_register_theme_options, 'getCustomHeader');
+        $this->loader->add_filter('get_custom_footer', $hupa_register_theme_options, 'getCustomFooter');
+        //FOOTER HEADER CONTENT BY POST ID
+        $this->loader->add_filter('get_content_custom_header', $hupa_register_theme_options, 'getContentCustomHeader');
+        $this->loader->add_filter('get_content_custom_footer', $hupa_register_theme_options, 'getContentCustomFooter');
 
     }
 
@@ -824,41 +841,41 @@ class HupaStarterThemeV2
             remove_filter('render_block', 'gutenberg_render_layout_support_flag', 10, 2);
         }
 
-         if(get_option('hupa_wp_upd_msg')){
-             $bn = get_option('hupa_wp_upd_msg');
-             if($bn->core_upd_msg) {
-                 // Disable core update emails
-                 add_filter( 'auto_core_update_send_email', '__return_false' );
-             }
-             if($bn->plugin_upd_msg){
-                 // Disable plugin update emails
-                 add_filter( 'auto_plugin_update_send_email', '__return_false' );
-             }
-             if($bn->theme_upd_msg){
-                 // Disable theme update emails
-                 add_filter( 'auto_theme_update_send_email', '__return_false' );
-             }
-             if($bn->d_board_upd_anzeige == 2) {
+        if (get_option('hupa_wp_upd_msg')) {
+            $bn = get_option('hupa_wp_upd_msg');
+            if ($bn->core_upd_msg) {
+                // Disable core update emails
+                add_filter('auto_core_update_send_email', '__return_false');
+            }
+            if ($bn->plugin_upd_msg) {
+                // Disable plugin update emails
+                add_filter('auto_plugin_update_send_email', '__return_false');
+            }
+            if ($bn->theme_upd_msg) {
+                // Disable theme update emails
+                add_filter('auto_theme_update_send_email', '__return_false');
+            }
+            if ($bn->d_board_upd_anzeige == 2) {
                 // Hide dashboard update notifications for all users
-                 $this->loader->add_action('admin_menu', $theme_wp_options_handle, 'hupa_theme_hide_update_nag');
-             }
+                $this->loader->add_action('admin_menu', $theme_wp_options_handle, 'hupa_theme_hide_update_nag');
+            }
 
-             if($bn->d_board_upd_anzeige == 3) {
-                 // Hide dashboard update notifications for all users
-                 $this->loader->add_action('admin_menu', $theme_wp_options_handle, 'hupa_theme_hide_update_not_admin_nag');
-             }
+            if ($bn->d_board_upd_anzeige == 3) {
+                // Hide dashboard update notifications for all users
+                $this->loader->add_action('admin_menu', $theme_wp_options_handle, 'hupa_theme_hide_update_not_admin_nag');
+            }
 
-             if($bn->send_error_email){
-                 // Disable Error emails
-                 $this->loader->add_filter('recovery_mode_email_rate_limit', $theme_wp_options_handle, 'recovery_mail_infinite_rate_limit');
-             }
+            if ($bn->send_error_email) {
+                // Disable Error emails
+                $this->loader->add_filter('recovery_mode_email_rate_limit', $theme_wp_options_handle, 'recovery_mail_infinite_rate_limit');
+            }
 
-             if($bn->email_err_msg){
-                 // E-Mail-Adresse für Error-Message
-                 $this->loader->add_filter('recovery_mode_email', $theme_wp_options_handle, 'send_sumun_the_recovery_mode_email',10,2);
-             }
+            if ($bn->email_err_msg) {
+                // E-Mail-Adresse für Error-Message
+                $this->loader->add_filter('recovery_mode_email', $theme_wp_options_handle, 'send_sumun_the_recovery_mode_email', 10, 2);
+            }
 
-         }
+        }
 
         $this->loader->add_filter('the_content', $theme_wp_options_handle, 'hupa_theme_the_content_replace', 20);
 
@@ -908,7 +925,6 @@ class HupaStarterThemeV2
         $hupa_wp_remote_action = HupaApiServerHandle::init($this->get_theme_slug(), $this->get_theme_version(), $this->main);
 
 
-
         //TODO Endpoints URL's
         $this->loader->add_filter('get_api_urls', $hupa_wp_remote_action, 'hupaGetApiUrl');
         //TODO POST Resources Endpoints
@@ -948,7 +964,7 @@ class HupaStarterThemeV2
     {
         $hupa_register_gutenberg_tools = HupaRegisterGutenbergTools::tools_instance($this->get_theme_slug(), $this->get_theme_version(), $this->main);
         $this->loader->add_action('init', $hupa_register_gutenberg_tools, 'gutenberg_block_google_maps_register');
-      //  $this->loader->add_action('init', $hupa_register_gutenberg_tools, 'hupa_bs_button_block_init');
+        //  $this->loader->add_action('init', $hupa_register_gutenberg_tools, 'hupa_bs_button_block_init');
 
         $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_hupa_carousel_scripts');
         $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_hupa_tools_scripts');
@@ -980,9 +996,10 @@ class HupaStarterThemeV2
      * @since    1.0.0
      * @access   private
      */
-    private function register_gutenberg_tools_render_callback() {
+    private function register_gutenberg_tools_render_callback()
+    {
         global $gutenberg_callback;
-        $gutenberg_callback = Gutenberg_Tools_Callback::init( $this->main );
+        $gutenberg_callback = Gutenberg_Tools_Callback::init($this->main);
     }
 
     /**
@@ -1079,7 +1096,8 @@ class HupaStarterThemeV2
      * @since    2.0.0
      * @access   private
      */
-    private function register_the_v2_csp_header() {
+    private function register_the_v2_csp_header()
+    {
 
 
         if (!get_option('wp-security-header_user_role')) {
@@ -1103,6 +1121,43 @@ class HupaStarterThemeV2
         //$this->loader->add_filter('script_loader_tag', $cspHeader, 'starter_theme_vs_script_tag_nonce', 10,3);
         //$this->loader->add_filter('wp_inline_script_attributes', $cspHeader, 'starter_inline_script_attributes',10,2);
         //
+    }
+
+    /**
+     * Register all the hooks related to the SCSS-Compiler functionality
+     * of the plugin.
+     *
+     * @since    2.0.0
+     * @access   private
+     */
+    private function register_scss_compiler()
+    {
+        if (!get_option($this->get_theme_slug() . '/scss_compiler')) {
+            $cache_path = WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'scss_cache';
+            $option = [
+                'scss_source' => '',
+                'scss_destination' => '',
+                'scss_formatter' => 'expanded',
+                'map_aktiv' => 0,
+                'scss_map_option' => 'map_file',
+                'scss_login_aktiv' => 0,
+                'cache_aktiv' => 0,
+                'enqueue_aktiv' => 0,
+                'cache_path' =>  $cache_path
+            ];
+            if(!is_dir($cache_path)){
+                @mkdir($cache_path, 0755, true);
+            }
+            update_option($this->get_theme_slug() . '/scss_compiler', $option);
+        }
+
+        if(!HUPA_MINIFY_AKTIV) {
+           global $scssCompiler;
+            $scssCompiler = Theme_SCSS_Compiler::scss_compiler_instance($this->get_theme_slug(), $this->get_theme_version());
+            $scssCompiler->start_scss_compiler_file();
+            $this->loader->add_action($this->get_theme_slug().'/delete_scss_compiler_cache', $scssCompiler, 'delete_scss_compiler_cache');
+            $this->loader->add_action('wp_enqueue_scripts', $scssCompiler, 'enqueue_scss_script');
+        }
     }
 
     /**
@@ -1186,8 +1241,8 @@ class HupaStarterThemeV2
 
     public function theme_upload_dir(): string
     {
-         $this->get_theme_upload_dir();
-         return $this->upload_dir;
+        $this->get_theme_upload_dir();
+        return $this->upload_dir;
     }
 
     /**
@@ -1198,23 +1253,23 @@ class HupaStarterThemeV2
      */
     private function get_theme_upload_dir()
     {
-        $upload  = wp_upload_dir();
+        $upload = wp_upload_dir();
         $this->upload_dir = $upload['basedir'] . DIRECTORY_SEPARATOR . Config::get('HUPA_UPLOAD_FOLDER') . DIRECTORY_SEPARATOR;
 
-        if(!is_dir($this->upload_dir)){
+        if (!is_dir($this->upload_dir)) {
             mkdir($this->upload_dir, 0777, true);
         }
 
-        if(!is_dir($this->upload_dir . 'log')){
+        if (!is_dir($this->upload_dir . 'log')) {
             mkdir($this->upload_dir . 'log', 0777, true);
         }
 
         $htaccess = 'Require all denied';
-        if(!is_file($this->upload_dir . '.htaccess')){
+        if (!is_file($this->upload_dir . '.htaccess')) {
             file_put_contents($this->upload_dir . '.htaccess', $htaccess);
         }
 
-        if(!is_file($this->upload_dir . 'log' . DIRECTORY_SEPARATOR . '.htaccess')){
+        if (!is_file($this->upload_dir . 'log' . DIRECTORY_SEPARATOR . '.htaccess')) {
             file_put_contents($this->upload_dir . 'log' . DIRECTORY_SEPARATOR . '.htaccess', $htaccess);
         }
     }
@@ -1227,8 +1282,8 @@ class HupaStarterThemeV2
      */
     public function get_theme_upload_url(): string
     {
-        $upload  = wp_upload_dir();
-        return $upload['baseurl'] . '/'. Config::get('HUPA_UPLOAD_FOLDER');
+        $upload = wp_upload_dir();
+        return $upload['baseurl'] . '/' . Config::get('HUPA_UPLOAD_FOLDER');
     }
 
     /**

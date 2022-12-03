@@ -17,3 +17,7 @@ admin/includes/gutenberg-tools/google-maps/src/
 /admin/includes/gutenberg-tools/iconBlockControls/src/
 /admin/includes/gutenberg-tools/bs-button/
 /admin/composer.lock
+/admin/includes/gutenberg-tools/group-list-tag-options/src/
+/admin/includes/gutenberg-tools/theme-video/src/
+/admin/includes/gutenberg-tools/theme-video/node_modules/
+/admin/includes/gutenberg-tools/theme-video/package-lock.json

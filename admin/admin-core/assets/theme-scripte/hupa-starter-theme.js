@@ -495,7 +495,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 script.src = src;
                 script.id = id;
                 script.type = 'text/javascript';
-                script.onload = () => resolve(script);
+                script.onload = () => resolve('Script geladen');
                 document.head.append(script);
             });
         }
@@ -503,54 +503,63 @@ document.addEventListener("DOMContentLoaded", function (event) {
         /**========================================
          * =============== LIGHTBOX ===============
          ========================================== */
-        let galleryLightbox = $('.gallery-lightbox');
-        if (galleryLightbox.length) {
-            let blueImpId = $('#blueimp-gallery-script');
-            if (!blueImpId.length) {
-                let loadCarouselModul = loadModulScript(get_hupa_option.admin_url + 'admin-core/assets/js/tools/lightbox/blueimp-gallery.min.js', 'blueimp-gallery-script');
-                loadCarouselModul.then(() => {
-                    starter_blueimp_gallery();
-                });
-            }
-            let galleryImg = $('img', galleryLightbox);
-            if ($('a ', galleryLightbox)) {
-                let aHref = $('a ', galleryLightbox);
-                aHref.addClass('theme-lightbox');
-                if (galleryLightbox.hasClass('lightbox-single')) {
-                    aHref.attr('data-gallery', 'single');
-                } else {
-                    aHref.attr('data-gallery', 'slides');
+
+        load_theme_lightbox().then(r => {
+            starter_blueimp_gallery();
+        })
+
+        load_theme_gallery_lightbox().then(r => {
+            starter_blueimp_gallery();
+        })
+
+        async function load_theme_gallery_lightbox() {
+            let galleryLightbox = $('.gallery-lightbox');
+            if (galleryLightbox.length) {
+                let blueImpId = $('#blueimp-gallery-script');
+                if (!blueImpId.length) {
+                  let response = await loadModulScript(get_hupa_option.admin_url + 'admin-core/assets/js/tools/lightbox/blueimp-gallery.min.js', 'blueimp-gallery-script');
                 }
-                if (galleryImg.prop('title')) {
-                    galleryImg.each(function (index, el) {
-                        let elTitle = $(galleryImg[index]).attr('title');
-                        let hrefTitle = $(galleryImg[index]).parent();
-                        hrefTitle.attr('title', elTitle)
-                    });
+
+                let galleryImg = $('img', galleryLightbox);
+                if ($('a ', galleryLightbox)) {
+                    let aHref = $('a ', galleryLightbox);
+                    aHref.addClass('theme-lightbox');
+                    if (galleryLightbox.hasClass('lightbox-single')) {
+                        aHref.attr('data-gallery', 'single');
+                    } else {
+                        aHref.attr('data-gallery', 'slides');
+                    }
+                    if (galleryImg.prop('title')) {
+                        galleryImg.each(function (index, el) {
+                            let elTitle = $(galleryImg[index]).attr('title');
+                            let hrefTitle = $(galleryImg[index]).parent();
+                            hrefTitle.attr('title', elTitle)
+                        });
+                    }
                 }
             }
         }
 
-        let hupaLightBox = $('.hupa-lightbox');
-        if (hupaLightBox) {
-            let blueImpId = $('#blueimp-gallery-script');
-            if (!blueImpId.length) {
-                let loadCarouselModul = loadModulScript(get_hupa_option.admin_url + 'admin-core/assets/js/tools/lightbox/blueimp-gallery.min.js');
-                loadCarouselModul.then(() => {
-                    starter_blueimp_gallery();
-                });
+        async function load_theme_lightbox() {
+            let hupaLightBox = $('.hupa-lightbox');
+            if (hupaLightBox) {
+                let blueImpId = $('#blueimp-gallery-script');
+                if (!blueImpId.length) {
+                    await loadModulScript(get_hupa_option.admin_url + 'admin-core/assets/js/tools/lightbox/blueimp-gallery.min.js','blueimp-gallery-script');
+                }
+
+                let aHref = $('a ', hupaLightBox);
+                let singleImg = $('img', hupaLightBox);
+                if (singleImg.prop('title')) {
+                    singleImg.each(function (index, el) {
+                        let elTitle = $(singleImg[index]).attr('title');
+                        let hrefTitle = $(singleImg[index]).parent();
+                        hrefTitle.attr('title', elTitle)
+                    });
+                }
+                aHref.addClass('theme-lightbox');
+                aHref.attr('data-gallery', 'single');
             }
-            let aHref = $('a ', hupaLightBox);
-            let singleImg = $('img', hupaLightBox);
-            if (singleImg.prop('title')) {
-                singleImg.each(function (index, el) {
-                    let elTitle = $(singleImg[index]).attr('title');
-                    let hrefTitle = $(singleImg[index]).parent();
-                    hrefTitle.attr('title', elTitle)
-                });
-            }
-            aHref.addClass('theme-lightbox');
-            aHref.attr('data-gallery', 'single');
         }
 
         function starter_blueimp_gallery() {

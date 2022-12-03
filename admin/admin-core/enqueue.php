@@ -95,15 +95,16 @@ class HupaEnqueueStarterTheme
 
         $modificated = date('YmdHi', filemtime(get_template_directory() . '/js/hupa-gmaps-script.js'));
         $modificated = date('YmdHi', filemtime(THEME_ADMIN_DIR . 'admin-core/assets/theme-scripte/hupa-starter-theme.js'));
+        $modificated = date('YmdHi', filemtime(THEME_ADMIN_DIR . 'admin-core/assets/theme-scripte/video-gallery.js'));
         $modificated = date('YmdHi', filemtime(get_template_directory() . '/css/lib/blueimp-gallery.min.css'));
 
         wp_enqueue_style('bootscore-style', get_stylesheet_uri(), array(), $modificated);
-        // TODO ANIMATE
+        // JOB ANIMATE
         wp_enqueue_style('hupa-starter-public-animate', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/css/tools/animate.min.css', array(), $modificated);
-        // TODO ICONS
+        // JOB ICONS
         //wp_enqueue_style('hupa-starter-bootstrap-icons-style', get_template_directory_uri() . '/icons/bootstrap-icons/bootstrap-icons.css', array(), $modificated);
         //wp_enqueue_style('hupa-starter-font-awesome-icons-style', get_template_directory_uri() . '/icons/font-awesome-4.7.0/font-awesome.css', array(), $modificated);
-        // TODO jQuery LazyLoad
+        // JOB jQuery LazyLoad
         wp_enqueue_script('hupa-lazy-load', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/theme-scripte/tools/jquery.lazy.min.js', array(), $modificated, true);
         wp_enqueue_script('hupa-lazy-load-plugins', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/theme-scripte/tools/jquery.lazy.plugins.min.js', array(), $modificated, true);
         //scrollspy js
@@ -112,7 +113,10 @@ class HupaEnqueueStarterTheme
         wp_enqueue_script('jarallax-script', get_template_directory_uri() . '/js/lib/jarallax.min.js', array(), $modificated, true);
 
         wp_enqueue_script('hupa-gmaps-script', get_template_directory_uri() . '/js/hupa-gmaps-script.js', array(), $modificated, true);
-        // TODO HUPA-STARTER-THEME Theme JS
+        // JOB HUPA-STARTER-THEME Video Gallery JS
+        wp_enqueue_script('hupa-starter-video-script', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/theme-scripte/video-gallery.js', array(), $modificated, true);
+
+        // JOB HUPA-STARTER-THEME Theme JS
         wp_enqueue_script('hupa-starter-script', Config::get('WP_THEME_ADMIN_URL') . 'admin-core/assets/theme-scripte/hupa-starter-theme.js', array(), $modificated, true);
 
         if (!Config::get('WP_POST_SELECTOR_AKTIV')) {

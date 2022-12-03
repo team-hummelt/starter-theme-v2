@@ -4,6 +4,8 @@ namespace Hupa\StarterThemeV2;
 
 use HupaStarterThemeV2;
 use Hupa\Starter\Config;
+use Theme_Video_Gutenberg_Block_Callback;
+
 /**
  * The admin-specific Gutenberg Tools functionality of the theme.
  *
@@ -128,6 +130,18 @@ final class HupaRegisterGutenbergTools {
             Config::get('HUPA_THEME_TOOLS_URL') . '/bs-button/build/index.js',
             $plugin_asset['dependencies'], $this->theme_version, true );
 
+        //Theme Video
+
+        register_block_type('hupa/video-block', array(
+            'render_callback' => [Theme_Video_Gutenberg_Block_Callback::class, 'callback_video_block_type'],
+            'editor_script' => 'hupa-theme-video-gutenberg',
+        ));
+        $plugin_asset = require 'theme-video/build/index.asset.php';
+        wp_register_script(
+            'hupa-theme-video',
+            Config::get('HUPA_THEME_TOOLS_URL') . '/theme-video/build/index.js',
+            $plugin_asset['dependencies'], $plugin_asset['version'], true
+        );
 
         global $gutenberg_callback;
         /*register_block_type( 'hupa/bootstrap-button', array(
@@ -170,6 +184,18 @@ final class HupaRegisterGutenbergTools {
         wp_enqueue_script( 'hupa-theme-carousel-tools' );
         wp_enqueue_style( 'hupa-theme-carousel-style');
         wp_enqueue_style( 'hupa-theme-carousel-style', Config::get('HUPA_THEME_TOOLS_URL') . '/theme-carousel/build/index.css',
+            [], '' );
+    }
+
+    /**
+     * =======================================================================
+     * =========== REGISTER GUTENBERG VIDEO BLOCK JAVASCRIPT | CSS ===========
+     * =======================================================================
+     */
+    public function hupa_theme_editor_hupa_video_scripts(): void {
+        wp_enqueue_script( 'hupa-theme-video' );
+        wp_enqueue_style( 'hupa-theme-video-style');
+        wp_enqueue_style( 'hupa-theme-video-style', Config::get('HUPA_THEME_TOOLS_URL') . '/theme-video/build/index.css',
             [], '' );
     }
 

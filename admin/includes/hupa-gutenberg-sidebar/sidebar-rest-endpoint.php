@@ -32,7 +32,7 @@ function hupa_starter_rest_endpoint_get_response( $request ): WP_REST_Response {
         ], 400 );
     }
     $response = new stdClass();
-//selectSidebar
+
     switch ( $method ) {
         case 'get_hupa_post_sidebar':
 
@@ -172,6 +172,24 @@ function hupa_starter_rest_endpoint_get_response( $request ): WP_REST_Response {
                 $menArr[]   = $menu_items;
             }
             $response->themeMenu = $menArr;
+            break;
+        case'get-video-block':
+            $cat = [
+                '0' => [
+                    'id' => '1',
+                    'name' => 'Group 1'
+                ],
+                '1' => [
+                    'id' => '2',
+                    'name' => 'Group 2'
+                ],
+                '2' => [
+                    'id' => '3',
+                    'name' => 'Group 3'
+                ]
+            ];
+            $response->templates = [];
+            $response->categories = $cat;
             break;
     }
 

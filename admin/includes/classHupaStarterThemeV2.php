@@ -382,6 +382,7 @@ class HupaStarterThemeV2
         require_once(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/google-maps-callback.php');
         require_once(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/theme-carousel-callback.php');
         require_once(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/menu-select-callback.php');
+        require_once(Config::get('THEME_ADMIN_INCLUDES') . 'gutenberg-tools/class_theme_video_gutenberg_block_callback.php');
 
         if (Config::get('HUPA_SIDEBAR')) {
             // JOB WARNING GUTENBERG SIDEBAR
@@ -969,6 +970,7 @@ class HupaStarterThemeV2
         $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_hupa_carousel_scripts');
         $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_hupa_tools_scripts');
         $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_menu_scripts');
+        $this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_editor_hupa_video_scripts');
         //$this->loader->add_action('enqueue_block_editor_assets', $hupa_register_gutenberg_tools, 'hupa_theme_bs_button_scripts');
     }
 

@@ -97,6 +97,22 @@ class HupaStarterRenderBlock
                 return $html;
             }
 
+            if ($currentId == 'hupa-video-group') {
+                if ($block['attrs']['className']) {
+                    $html .= '<div class="hupa-video-group ' . $block['attrs']['className'] . '">';
+                } else {
+                    $html .= '<div class="hupa-video-group">';
+                }
+                if (isset($block['innerBlocks'])) {
+                    foreach ($block['innerBlocks'] as $inner_block) {
+                        $inner_block['attrs']['className'] ??= '';
+                        $html .= render_block($inner_block);
+                    }
+                }
+                $html .= '</div>';
+                return $html;
+            }
+
             /**
              * ID: hupa-row
              */

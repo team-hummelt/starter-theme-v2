@@ -363,6 +363,23 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         });
 
+        $(document).on('click', '.reload-sitemap', function () {
+           console.log('CLICK')
+            let formData = {
+                'method': 'reload_sitemap'
+            }
+
+            xhr_ajax_handle(formData, false, reload_sitemap_callback)
+        })
+
+        function reload_sitemap_callback(){
+            let data = JSON.parse(this.responseText);
+            if (data.status) {
+                success_message(data.msg);
+            }
+        }
+
+
         $(document).on('change', '.change-help-info-select', function () {
             let change = $(this).val();
             if (!change) {

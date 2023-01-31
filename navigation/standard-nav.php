@@ -30,18 +30,18 @@ get_hupa_option( 'handy' ) == 1 ? $handyMenu = 'menu1' : $handyMenu = 'menu2';
             <a class="middle-image-nav-sm" href="<?php echo esc_url( home_url() ); ?>">
                 <img src="<?=get_hupa_frontend('nav-img')->url?>"
                      alt="<?=get_bloginfo('name')?>"
-                     class="img-fluid logo md" width="">
+                     class="img-fluid logo md" style="width: <?=get_hupa_frontend('nav-img')->width?>px">
             </a>
         <?php endif; ?>
         <?php if(get_hupa_frontend('nav-img') && $menu->show_img): ?>
             <a class="navbar-brand d-none d-xl-flex <?=$menu->logo?>" href="<?php echo esc_url( home_url() ); ?>">
                 <img src="<?= get_hupa_frontend('nav-img')->url?>"
-                     alt="<?=get_bloginfo('name')?>" class="logo md" width="">
+                     alt="<?=get_bloginfo('name')?>" class="logo md" style="width: <?=get_hupa_frontend('nav-img')->width?>px">
             </a>
             <a class="navbar-brand  ps-2 img-fluid d-lg-flex d-xl-none <?=$menu->logo?>" href="<?php echo esc_url( home_url() ); ?>">
                 <img src="<?=get_hupa_frontend('nav-img')->url?>"
                      alt="<?=get_bloginfo('name')?>"
-                     class="logo sm" width="">
+                     class="logo sm" style="width: <?=get_hupa_frontend('nav-img')->width_mobil?>px">
             </a>
         <?php endif; ?>
         <!-- Top Nav Widget -->

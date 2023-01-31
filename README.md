@@ -26,6 +26,7 @@ Header-, Footer- und 404-Widgets.
 
 ## Changelog
 ### 2.0.5
+- Sitemap Update hinzugefügt
 - SCSS Compiler hinzugefügt (Werkzeuge)
 
 ### 2.0.4

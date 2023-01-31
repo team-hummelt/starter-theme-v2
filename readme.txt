@@ -1,9 +1,9 @@
 === HUPA Theme V2 ===
 Contributors: jwiecker
 Requires at least: 5.6
-Stable tag: 2.0.2
-Version: 2.0.2
-Tested up to: 6.0.2
+Stable tag: 2.0.5
+Version: 2.0.5
+Tested up to: 6.1.1
 Requires PHP: 7.4
 License: MIT-Lizenz
 License URI: https://github.com/team-hummelt/starter-theme-v2/blob/master/LICENSE.txt

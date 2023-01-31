@@ -80,7 +80,6 @@ class ThemeV2Uploader
             'patch_mime_type' => 'application/zip',
             'upload_patch_dir' => $this->upload_dir . 'patch' . DIRECTORY_SEPARATOR,
         );
-
     }
 
     public function theme_hupa_starter_v2_zip_upload($args = NULL)

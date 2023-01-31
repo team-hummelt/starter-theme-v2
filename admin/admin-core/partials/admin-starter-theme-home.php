@@ -1162,6 +1162,12 @@ use Hupa\Starter\Config;
                                                 <div class="form-text">Nach dem erstellen von Beiträgen und Seiten, wird
                                                     die Sitemap aktualisiert.
                                                 </div>
+                                                <hr>
+                                                <div>
+                                                    <button type="button" class="reload-sitemap btn btn-secondary btn-sm">
+                                                        Sitemap jetzt neu erstellen
+                                                    </button>
+                                                </div>
                                             </div>
                                             <div class="col-lg-12">
                                                 <div class="bg-settings">

@@ -1269,7 +1269,11 @@ class Hupa_Starter_V2_Admin_Ajax
                 }
                 $responseJson->status = true;
                 break;
-
+            case'reload_sitemap':
+                do_action('publish_post','');
+                $responseJson->msg = 'Sitemap wurde neu erstellt.';
+                $responseJson->status = true;
+                break;
             case'update_env_settings':
                 filter_input(INPUT_POST, 'CUSTOM_FOOTER', FILTER_UNSAFE_RAW) ? $record->CUSTOM_FOOTER = 1 : $record->CUSTOM_FOOTER = 0;
                 filter_input(INPUT_POST, 'CUSTOM_HEADER', FILTER_UNSAFE_RAW) ? $record->CUSTOM_HEADER = 1 : $record->CUSTOM_HEADER = 0;
@@ -2932,17 +2936,17 @@ class Hupa_Starter_V2_Admin_Ajax
                 filter_input(INPUT_POST, 'enqueue_aktiv', FILTER_UNSAFE_RAW) ? $enqueue_aktiv = 1 : $enqueue_aktiv = 0;
                 filter_input(INPUT_POST, 'cache_aktiv', FILTER_UNSAFE_RAW) ? $cache_aktiv = 1 : $cache_aktiv = 0;
 
-                if($source == $destination){
+                if ($source == $destination) {
                     $responseJson->msg = '';
                     return $responseJson;
                 }
 
                 $cache_path = filter_input(INPUT_POST, 'cache_path', FILTER_UNSAFE_RAW);
-                if(!$cache_path) {
+                if (!$cache_path) {
                     $cache_path = WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'scss_cache';
                 }
-                if(!$cache_aktiv) {
-                    do_action($this->basename.'/delete_scss_compiler_cache', $cache_path);
+                if (!$cache_aktiv) {
+                    do_action($this->basename . '/delete_scss_compiler_cache', $cache_path);
                 }
                 $option = [
                     'scss_source' => $source,
@@ -2956,23 +2960,23 @@ class Hupa_Starter_V2_Admin_Ajax
                     'enqueue_aktiv' => $enqueue_aktiv
                 ];
 
-                if(get_option($this->basename.'/scss_compiler', $option)){
-                    $option['compiler_aktiv'] = get_option($this->basename.'/scss_compiler', $option)['compiler_aktiv'];
+                if (get_option($this->basename . '/scss_compiler', $option)) {
+                    $option['compiler_aktiv'] = get_option($this->basename . '/scss_compiler', $option)['compiler_aktiv'];
                 }
-                update_option($this->basename.'/scss_compiler', $option);
+                update_option($this->basename . '/scss_compiler', $option);
                 $responseJson->status = true;
                 break;
             case'clear-cache':
-                $optionen = get_option($this->basename.'/scss_compiler');
-                do_action($this->basename.'/delete_scss_compiler_cache', $optionen['cache_path']);
+                $optionen = get_option($this->basename . '/scss_compiler');
+                do_action($this->basename . '/delete_scss_compiler_cache', $optionen['cache_path']);
                 $responseJson->status = true;
                 $responseJson->msg = 'Cache erfolgreich gelöscht.';
                 break;
             case'update_scss_compiler_aktiv':
                 $aktiv = filter_input(INPUT_POST, 'checked', FILTER_VALIDATE_INT);
-                $optionen = get_option($this->basename.'/scss_compiler');
+                $optionen = get_option($this->basename . '/scss_compiler');
                 $optionen['compiler_aktiv'] = $aktiv;
-                update_option($this->basename.'/scss_compiler', $optionen);
+                update_option($this->basename . '/scss_compiler', $optionen);
                 $aktiv == 1 ? $responseJson->disabled = false : $responseJson->disabled = true;
                 $responseJson->status = true;
                 break;

@@ -1396,6 +1396,7 @@ class HupaStarterOptionFilter
             'numberposts' => -1,
             'orderby' => 'modified',
             'order' => 'DESC',
+            'post_status' => 'publish',
             'post_type' => array('post', 'page')
         ));
         $sitemap = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";

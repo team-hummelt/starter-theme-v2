@@ -307,10 +307,10 @@ class HupaCarouselShortCode
                         </<?= $firstSelector ?>>
                         <?php endif;
                         if ($tmp->second_caption): ?>
-                            <p style="<?= $secondStyle ?>"
+                            <div style="<?= $secondStyle ?>"
                                class="<?= $tmp->second_css ?>  animate__animated animate__<?= $tmp->second_ani ?>">
-                                <?= $tmp->second_caption ?>
-                            </p>
+                                <?= html_entity_decode($tmp->second_caption) ?>
+                            </div>
                         <?php endif; ?>
                         <!--Button-->
                         <?php

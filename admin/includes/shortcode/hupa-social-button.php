@@ -208,7 +208,19 @@ class HupaSocialButtonShortCode
                 $target = '';
             }
 
-            $url = '<a href="' . $urlType . $addressData['value'].'" '. $target.'>';
+            if($atts['url_type'] == 'tel'){
+                $regEx = '@(\+?\d+)@';
+                preg_match_all($regEx, $addressData['value'], $matches);
+                if(isset($matches[0])){
+                    $urlHref = implode( '', $matches[0] );
+                } else {
+                    $urlHref = $addressData['value'];
+                }
+            } else {
+                $urlHref = $addressData['value'];
+            }
+
+            $url = '<a href="' . $urlType . $urlHref . '" '. $target.'>';
             $url_end = '</a>';
         } else {
             $url = '';

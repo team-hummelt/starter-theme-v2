@@ -132,7 +132,7 @@ class HupaApiServerHandle
         return $this->hupaPOSTApiResource('install', $body);
     }
 
-    public function hupaPOSTApiResource($scope, $body = false)
+    public function hupaPOSTApiResource($scope, $body = [])
     {
         $error = new stdClass();
         $error->status = false;
@@ -235,7 +235,7 @@ class HupaApiServerHandle
                 'Content-Type' => 'application/x-www-form-urlencoded',
                 'Authorization' => "Bearer $bearerToken"
             ],
-            'body' => [$body]
+            'body' => $body
 
         ];
     }

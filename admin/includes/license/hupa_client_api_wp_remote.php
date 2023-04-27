@@ -235,7 +235,7 @@ class HupaApiServerHandle
                 'Content-Type' => 'application/x-www-form-urlencoded',
                 'Authorization' => "Bearer $bearerToken"
             ],
-            'body' => $body
+            'body' => [$body]
 
         ];
     }

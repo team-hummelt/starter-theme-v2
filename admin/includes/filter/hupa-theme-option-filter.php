@@ -52,7 +52,7 @@ class HupaStarterOptionFilter
         $this->main = $main;
     }
 
-    public function hupa_get_hupa_option($option): string
+    public function hupa_get_hupa_option($option)
     {
         global $wpdb;
         $table = $wpdb->prefix . $this->table_settings;
